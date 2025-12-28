@@ -504,9 +504,114 @@ def parse_mcnp_materials(mcnp_file, required_materials=None):
 # HDF5 EXTRACTION
 # ============================================================================
 
+def get_all_mesh_geometries(h5_file, verbose=True):
+    """
+    Extract geometry summary for all mesh tallies in an HDF5 file.
+    
+    This is a convenience function for notebooks/scripts that need to know
+    the sample geometries without running the full workflow.
+    
+    Parameters:
+        h5_file: Path to HDF5 file from MCNP
+        verbose: Print geometry details
+        
+    Returns:
+        dict: {tally_num: {'mesh_type': str, 'radius': float, 'height': float, 
+                          'volume_cm3': float, 'n_voxels': int, ...}}
+    """
+    if not HAS_H5PY:
+        raise ImportError("h5py is required for HDF5 geometry extraction")
+    
+    geometries = {}
+    
+    with h5py.File(h5_file, 'r') as f:
+        mesh_tally_group = f['results']['mesh_tally']
+        
+        for tally_name in mesh_tally_group.keys():
+            tally = mesh_tally_group[tally_name]
+            tally_num = int(tally_name.replace('mesh_tally_', ''))
+            
+            # Get grid coordinates
+            grid_r = tally['grid_r'][:] if 'grid_r' in tally else None
+            grid_z = tally['grid_z'][:] if 'grid_z' in tally else None
+            grid_t = tally['grid_t'][:] if 'grid_t' in tally else None
+            grid_x = tally['grid_x'][:] if 'grid_x' in tally else None
+            grid_y = tally['grid_y'][:] if 'grid_y' in tally else None
+            
+            geom = {'tally_num': tally_num}
+            
+            if grid_r is not None:
+                # Cylindrical mesh
+                geom['mesh_type'] = 'cylindrical'
+                geom['r_min'] = float(grid_r.min())
+                geom['r_max'] = float(grid_r.max())
+                geom['radius'] = float(grid_r.max())
+                
+                if grid_z is not None:
+                    geom['z_min'] = float(grid_z.min())
+                    geom['z_max'] = float(grid_z.max())
+                    geom['height'] = float(grid_z.max() - grid_z.min())
+                
+                if grid_t is not None:
+                    geom['theta_min'] = float(grid_t.min())
+                    geom['theta_max'] = float(grid_t.max())
+                else:
+                    geom['theta_min'] = 0.0
+                    geom['theta_max'] = 2 * np.pi
+                
+                # Calculate total volume
+                geom['volume_cm3'] = np.pi * geom['radius']**2 * geom.get('height', 1.0)
+                
+                # Voxel count
+                n_r = len(grid_r) - 1
+                n_t = (len(grid_t) - 1) if grid_t is not None else 1
+                n_z = (len(grid_z) - 1) if grid_z is not None else 1
+                geom['n_voxels'] = n_r * n_t * n_z
+                geom['grid_dims'] = (n_r, n_t, n_z)
+                
+            elif grid_x is not None:
+                # Rectangular mesh
+                geom['mesh_type'] = 'rectangular'
+                geom['x_min'] = float(grid_x.min())
+                geom['x_max'] = float(grid_x.max())
+                geom['y_min'] = float(grid_y.min())
+                geom['y_max'] = float(grid_y.max())
+                geom['z_min'] = float(grid_z.min())
+                geom['z_max'] = float(grid_z.max())
+                
+                dx = grid_x.max() - grid_x.min()
+                dy = grid_y.max() - grid_y.min()
+                dz = grid_z.max() - grid_z.min()
+                
+                # Equivalent cylinder
+                geom['radius'] = float(min(dx, dy) / 2)
+                geom['height'] = float(dz)
+                geom['volume_cm3'] = float(np.pi * geom['radius']**2 * geom['height'])
+                
+                n_x = len(grid_x) - 1
+                n_y = len(grid_y) - 1
+                n_z = len(grid_z) - 1
+                geom['n_voxels'] = n_x * n_y * n_z
+                geom['grid_dims'] = (n_x, n_y, n_z)
+            else:
+                geom['mesh_type'] = 'unknown'
+            
+            geometries[tally_num] = geom
+            
+            if verbose:
+                print(f"Tally {tally_num}: {geom['mesh_type']} mesh")
+                print(f"  R: {geom.get('radius', 'N/A'):.4f} cm, H: {geom.get('height', 'N/A'):.4f} cm")
+                print(f"  Volume: {geom.get('volume_cm3', 0):.6f} cm³, Voxels: {geom.get('n_voxels', 0)}")
+    
+    return geometries
+
+
 def extract_mesh_tally_from_h5(h5_file, tally_number):
     """
-    Extract mesh tally data from HDF5 file.
+    Extract mesh tally data from HDF5 file, including grid coordinates for volume calculation.
+    
+    For cylindrical meshes, calculates voxel volumes as:
+        V = (1/2) * (r_outer^2 - r_inner^2) * (z_outer - z_inner) * delta_theta
     """
     if not HAS_H5PY:
         return None
@@ -526,10 +631,61 @@ def extract_mesh_tally_from_h5(h5_file, tally_number):
         if 'grid_energy' in tally_group:
             energy_bins = tally_group['grid_energy'][:]
         
+        # Extract grid coordinates for volume calculation
+        grid_r = tally_group['grid_r'][:] if 'grid_r' in tally_group else None
+        grid_z = tally_group['grid_z'][:] if 'grid_z' in tally_group else None
+        grid_t = tally_group['grid_t'][:] if 'grid_t' in tally_group else None  # theta
+        
+        # Determine mesh type and calculate voxel volumes
+        is_cylindrical = grid_r is not None and grid_z is not None
+        voxel_volumes = None
+        total_volume = None
+        
+        if is_cylindrical:
+            # Cylindrical mesh: voxels indexed as (r, theta, z)
+            # grid_r, grid_t, grid_z are bin BOUNDARIES (n+1 values for n bins)
+            n_r = len(grid_r) - 1
+            n_t = len(grid_t) - 1 if grid_t is not None else 1
+            n_z = len(grid_z) - 1
+            
+            if grid_t is None:
+                grid_t = np.array([0, 2 * np.pi])  # Full circle if not specified
+            
+            voxel_volumes = []
+            
+            # Calculate volume for each voxel in (r, theta, z) order
+            # This must match the order in generate_combined_flux_file
+            for ir in range(n_r):
+                r_inner = grid_r[ir]
+                r_outer = grid_r[ir + 1]
+                for it in range(n_t):
+                    theta_inner = grid_t[it]
+                    theta_outer = grid_t[it + 1]
+                    delta_theta = theta_outer - theta_inner
+                    for iz in range(n_z):
+                        z_inner = grid_z[iz]
+                        z_outer = grid_z[iz + 1]
+                        dz = z_outer - z_inner
+                        
+                        # Cylindrical volume element: V = (1/2)*(r_o^2 - r_i^2) * dz * d_theta
+                        vol = 0.5 * (r_outer**2 - r_inner**2) * dz * delta_theta
+                        voxel_volumes.append(vol)
+            
+            total_volume = sum(voxel_volumes)
+            print(f"  Cylindrical mesh: R=[{grid_r.min():.4f}, {grid_r.max():.4f}], Z=[{grid_z.min():.4f}, {grid_z.max():.4f}]")
+            print(f"  Voxel grid: {n_r} × {n_t} × {n_z} = {len(voxel_volumes)} voxels")
+            print(f"  Total mesh volume: {total_volume:.6f} cm³")
+        
         return {
             'mean': mean,
             'energy_bins': energy_bins,
-            'shape': mean.shape
+            'shape': mean.shape,
+            'grid_r': grid_r,
+            'grid_z': grid_z,
+            'grid_t': grid_t,
+            'is_cylindrical': is_cylindrical,
+            'voxel_volumes': voxel_volumes,
+            'total_volume': total_volume,
         }
 
 
@@ -1043,7 +1199,8 @@ def generate_multizone_alara_input(material_name, material_data, voxel_info,
                                     combined_flux_file, output_file, n_groups, 
                                     library='fendl2', mesh_dims=None,
                                     voxel_volumes=None, elelib_file=None,
-                                    matlib_file=None, schedules=None):
+                                    matlib_file=None, schedules=None,
+                                    geometry_type='rectangular', cylinder_dims=None):
     """
     Generate a single ALARA input file with all voxels as separate zones.
     
@@ -1128,8 +1285,8 @@ def generate_multizone_alara_input(material_name, material_data, voxel_info,
         f.write(f"# Library: {lib_info['description']}\n")
         f.write(f"# Generated automatically from MCNP mesh tally data\n\n")
         
-        # Geometry
-        f.write("geometry rectangular\n\n")
+        # Geometry - support both rectangular and cylindrical
+        f.write(f"geometry {geometry_type}\n\n")
         
         # Use volumes block - define each voxel as a separate zone
         f.write("# Zone volumes (one entry per voxel)\n")
@@ -1197,10 +1354,13 @@ def generate_multizone_alara_input(material_name, material_data, voxel_info,
             phase1_irr = phase1.get('irradiation_time', '3 s')
             phase1_times = phase1.get('cooling_times', [])
             
-            # Phase 2 starts after last Phase 1 measurement
-            # Use last Phase 1 cooling time as the delay before Phase 2
-            if phase1_times:
-                delay_to_phase2 = phase1_times[-1]  # e.g., "4 d"
+            # Phase 2 starts at a fixed time (e.g., Aug 4, 1PM)
+            # Use delay_from_phase1 if available (calculated from actual timestamps)
+            # Otherwise fall back to last Phase 1 cooling time
+            if phase2 and phase2.get('delay_from_phase1'):
+                delay_to_phase2 = phase2['delay_from_phase1']
+            elif phase1_times:
+                delay_to_phase2 = phase1_times[-1]  # Fallback: use last Phase 1 time
             else:
                 delay_to_phase2 = "0 s"
             
@@ -1267,13 +1427,15 @@ def generate_multizone_alara_input(material_name, material_data, voxel_info,
         f.write("    beta_heat\n")
         f.write("    gamma_heat\n")
         
-        # Photon source
+        # Photon source with improved energy resolution
+        # Bins: 10keV, 50keV, 100keV, 200keV, 500keV, 750keV, 1MeV, 1.5MeV, 2MeV, 3MeV, 5MeV, 10MeV
+        # This provides better resolution in the 0.1-3 MeV range for gamma spectroscopy
         if lib_info.get('gamma_lib'):
             photon_output = os.path.basename(output_file).replace('.inp', '.photonSrc')
             # Use dedicated gamma library file if available, otherwise use main library
             gamma_file = lib_info.get('gamma_lib_file', lib_info['gamma_lib'])
             f.write("    # Photon source spectrum [gammas/s/cm³]\n")
-            f.write(f"    photon_source {gamma_file} {photon_output} 5 1e4 1e5 1e6 5e6 1e7\n")
+            f.write(f"    photon_source {gamma_file} {photon_output} 12 1e4 5e4 1e5 2e5 5e5 7.5e5 1e6 1.5e6 2e6 3e6 5e6 1e7\n")
         
         f.write("end\n\n")
         
@@ -1420,10 +1582,10 @@ def generate_alara_input_comprehensive(material_name, material_data, flux_file, 
             photon_output = os.path.basename(output_file).replace('.inp', '.photonSrc')
             # Use dedicated gamma library file if available, otherwise use main library
             gamma_file = lib_info.get('gamma_lib_file', lib_info['gamma_lib'])
-            # 5 gamma energy groups (same format as sample5)
-            # Groups span: 10keV to 10MeV
+            # 12 gamma energy groups for improved resolution in gamma spectroscopy range
+            # Groups span: 10keV to 10MeV with finer resolution in 0.1-3 MeV range
             f.write("    # Photon source spectrum [gammas/s/cm³]\n")
-            f.write(f"    photon_source {gamma_file} {photon_output} 5 1e4 1e5 1e6 5e6 1e7\n")
+            f.write(f"    photon_source {gamma_file} {photon_output} 12 1e4 5e4 1e5 2e5 5e5 7.5e5 1e6 1.5e6 2e6 3e6 5e6 1e7\n")
         
         f.write("end\n\n")
         
@@ -1766,16 +1928,45 @@ Output Quantities:
                         help='Use natural isotopic abundances instead of MCNP isotopic ratios (default: use MCNP)')
     parser.add_argument('--exp-data-dir', type=str, default=None,
                         help='Experimental data directory for sample-specific cooling times. If provided, cooling times will be calculated from gamma spec measurement timestamps.')
+    parser.add_argument('--geometry', type=str, default='rectangular', choices=['rectangular', 'cylindrical'],
+                        help='ALARA geometry type: rectangular (default) or cylindrical')
     
     args = parser.parse_args()
     
     # Now always generating DUAL-PHASE schedules (3s + 2h irradiations)
     # No need for --phase argument anymore
     
-    # Load sample-specific schedules if experimental data directory provided
+    # Load sample-specific schedules
+    # Priority: 1) JSON file in output dir, 2) sample_irradiation_schedule module, 3) defaults
     sample_schedules = None
     material_to_schedule = {}
-    if args.exp_data_dir:
+    
+    # First, check for sample_schedules.json in output directory (generated by notebook)
+    json_schedule_file = Path(args.output) / 'sample_schedules.json'
+    if json_schedule_file.exists():
+        print(f"Loading schedules from: {json_schedule_file}")
+        with open(json_schedule_file, 'r') as f:
+            config = json.load(f)
+        
+        schedules_data = config.get('schedules', {})
+        
+        # Map sample schedules to materials
+        for sample_letter, schedule in schedules_data.items():
+            material = schedule.get('material')
+            if material:
+                material_to_schedule[material] = schedule
+        
+        print(f"Loaded sample-specific schedules for {len(schedules_data)} samples from JSON")
+        for mat, sched in sorted(material_to_schedule.items()):
+            if sched.get('phase1'):
+                p1_times = [ct['alara_format'] for ct in sched['phase1'].get('cooling_times', [])]
+                print(f"  {mat} Phase 1: {', '.join(p1_times)}")
+            if sched.get('phase2'):
+                p2_times = [ct['alara_format'] for ct in sched['phase2'].get('cooling_times', [])]
+                print(f"  {mat} Phase 2: {', '.join(p2_times)}")
+    
+    elif args.exp_data_dir:
+        # Fallback to sample_irradiation_schedule module
         if HAS_SAMPLE_SCHEDULE:
             exp_path = Path(args.exp_data_dir)
             if exp_path.exists():
@@ -1785,7 +1976,7 @@ Output Quantities:
                     material = SAMPLE_TO_MATERIAL.get(sample_letter)
                     if material:
                         material_to_schedule[material] = schedule
-                print(f"Loaded sample-specific schedules for {len(sample_schedules)} samples")
+                print(f"Loaded sample-specific schedules for {len(sample_schedules)} samples from module")
                 print(f"  Materials with custom cooling times: {', '.join(sorted(material_to_schedule.keys()))}")
             else:
                 print(f"Warning: Experimental data directory not found: {exp_path}")
@@ -2014,12 +2205,18 @@ Output Quantities:
             # Phase 2: 2h irradiation
             if schedule.get('phase2'):
                 p2 = schedule['phase2']
-                schedules.append({
+                phase2_schedule = {
                     'irradiation_time': p2['irradiation_time'],
                     'cooling_times': [ct['alara_format'] for ct in p2['cooling_times']]
-                })
+                }
+                # Add the actual delay from Phase 1 end to Phase 2 start if available
+                if p2.get('delay_from_phase1_alara'):
+                    phase2_schedule['delay_from_phase1'] = p2['delay_from_phase1_alara']
+                schedules.append(phase2_schedule)
                 print(f"  Phase 2 (sample-specific):")
                 print(f"    Irradiation: {p2['irradiation_time']}")
+                if p2.get('delay_from_phase1_alara'):
+                    print(f"    Delay from Phase 1: {p2['delay_from_phase1_alara']}")
                 print(f"    Cooling times: {', '.join([ct['alara_format'] for ct in p2['cooling_times']])}")
         else:
             # Use default global schedules for both phases
@@ -2031,11 +2228,42 @@ Output Quantities:
             print(f"    Phase 1: 3s irradiation, cooling: {', '.join(COOLING_TIMES_PHASE1)}")
             print(f"    Phase 2: 2h irradiation, cooling: {', '.join(COOLING_TIMES_PHASE2)}")
         
-        # Get voxel volumes from FMESH parsing (actual mesh geometry)
-        voxel_volumes = fmesh_info.get('voxel_volumes', None)
-        if voxel_volumes:
-            print(f"  Using actual voxel volumes from MCNP mesh ({len(voxel_volumes)} voxels)")
+        # Get voxel volumes - prefer H5-derived volumes (correct cylindrical geometry)
+        # over MCNP FMESH parsing (which may give incorrect Cartesian volumes)
+        voxel_volumes = None
+        if has_h5 and tally_data is not None and tally_data.get('voxel_volumes'):
+            voxel_volumes = tally_data['voxel_volumes']
+            print(f"  Using voxel volumes from HDF5 mesh geometry ({len(voxel_volumes)} voxels)")
+            print(f"    Total mesh volume: {sum(voxel_volumes):.6f} cm³")
+            if tally_data.get('is_cylindrical'):
+                print(f"    Geometry: Cylindrical (correct volume calculation)")
+        elif fmesh_info.get('voxel_volumes'):
+            voxel_volumes = fmesh_info['voxel_volumes']
+            print(f"  WARNING: Using voxel volumes from MCNP FMESH parsing ({len(voxel_volumes)} voxels)")
             print(f"    Total mesh volume: {sum(voxel_volumes):.4f} cm³")
+            print(f"    Note: These may be incorrect for cylindrical meshes - consider using H5 file")
+        
+        # Determine geometry type and cylinder dimensions from H5 file if cylindrical
+        geometry_type = args.geometry
+        cylinder_dims = None
+        if geometry_type == 'cylindrical' and args.h5:
+            try:
+                with h5py.File(args.h5, 'r') as f:
+                    tally_path = f'/results/mesh_tally/mesh_tally_{tally_num}'
+                    if tally_path in f:
+                        tally_grp = f[tally_path]
+                        if 'grid_r' in tally_grp:
+                            r_data = tally_grp['grid_r'][:]
+                            z_data = tally_grp['grid_z'][:] if 'grid_z' in tally_grp else [0, 1]
+                            cylinder_dims = {
+                                'radius': float(r_data.max()),
+                                'height': float(z_data.max() - z_data.min()),
+                            }
+                            print(f"  Cylindrical geometry: r={cylinder_dims['radius']:.4f} cm, h={cylinder_dims['height']:.4f} cm")
+            except Exception as e:
+                print(f"  Warning: Could not extract cylinder dims from H5: {e}")
+        
+        print(f"  Geometry type: {geometry_type}")
         
         # Generate multi-zone ALARA input file
         multizone_input = os.path.join(tally_output_dir, f"tally_{tally_num}_multizone.inp")
@@ -2051,7 +2279,9 @@ Output Quantities:
             voxel_volumes=voxel_volumes,
             elelib_file=elelib_file,
             matlib_file=matlib_file,
-            schedules=schedules
+            schedules=schedules,
+            geometry_type=geometry_type,
+            cylinder_dims=cylinder_dims
         )
         
         # Run ALARA if requested
