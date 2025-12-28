@@ -44,6 +44,8 @@ from matplotlib.colors import LogNorm
 from pathlib import Path
 from typing import Optional, Dict, List, Tuple, Any
 
+from alara_data_loader import build_cooling_map
+
 # ==============================================================================
 # STYLE CONSTANTS - Single Source of Truth
 # ==============================================================================
@@ -759,19 +761,7 @@ def plot_threshold_comparison(
     
     # Build default cooling map if not provided
     if cooling_map is None:
-        cooling_map = {}
-        for col in alara_df.columns:
-            col_lower = col.lower()
-            if '300' in col_lower or '5min' in col_lower:
-                cooling_map['300s'] = col
-            elif '2h' in col_lower or '7200' in col_lower:
-                cooling_map['2h'] = col
-            elif '24h' in col_lower or '86400' in col_lower:
-                cooling_map['24h'] = col
-            elif '4d' in col_lower or '345600' in col_lower:
-                cooling_map['4d'] = col
-            elif '15d' in col_lower or '1296000' in col_lower:
-                cooling_map['15d'] = col
+        cooling_map = build_cooling_map(alara_df, cooling_order)
     
     valid_cols = [c for c in cooling_order if cooling_map.get(c) in alara_df.columns]
     if not valid_cols:
@@ -904,19 +894,7 @@ def plot_vit_j_comparison(
     
     # Build default cooling map if not provided
     if cooling_map is None:
-        cooling_map = {}
-        for col in alara_df.columns:
-            col_lower = col.lower()
-            if '300' in col_lower or '5min' in col_lower:
-                cooling_map['300s'] = col
-            elif '2h' in col_lower or '7200' in col_lower:
-                cooling_map['2h'] = col
-            elif '24h' in col_lower or '86400' in col_lower:
-                cooling_map['24h'] = col
-            elif '4d' in col_lower or '345600' in col_lower:
-                cooling_map['4d'] = col
-            elif '15d' in col_lower or '1296000' in col_lower:
-                cooling_map['15d'] = col
+        cooling_map = build_cooling_map(alara_df, cooling_order)
     
     valid_cols = [c for c in cooling_order if cooling_map.get(c) in alara_df.columns]
     if not valid_cols:
