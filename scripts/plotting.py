@@ -45,7 +45,7 @@ from pathlib import Path
 from typing import Optional, Dict, List, Tuple, Any
 
 from alara_data_loader import build_cooling_map
-from flux_wire_loader import compute_flux_from_measurements, load_mcnp_spectrum
+from data_loaders import compute_flux_from_measurements, load_mcnp_spectrum
 
 # ==============================================================================
 # STYLE CONSTANTS - Single Source of Truth
@@ -1005,10 +1005,10 @@ def plot_all_materials_threshold(
     """
     if material_to_tally is None:
         try:
-            from experimental_data_loader import MATERIAL_TO_TALLY
+            from data_loaders import MATERIAL_TO_TALLY
             material_to_tally = MATERIAL_TO_TALLY
         except ImportError:
-            raise ValueError("material_to_tally must be provided when experimental_data_loader is not available")
+            raise ValueError("material_to_tally must be provided when data_loaders is not available")
     if cooling_times is None:
         cooling_times = ['300s', '2h', '24h', '4d', '15d']
     if show_materials is None:
@@ -1089,10 +1089,10 @@ def count_alara_isotopes_by_material(
     """
     if material_to_tally is None:
         try:
-            from experimental_data_loader import MATERIAL_TO_TALLY
+            from data_loaders import MATERIAL_TO_TALLY
             material_to_tally = MATERIAL_TO_TALLY
         except ImportError:
-            raise ValueError("material_to_tally must be provided when experimental_data_loader is not available")
+            raise ValueError("material_to_tally must be provided when data_loaders is not available")
     if cooling_times is None:
         cooling_times = ['300s', '2h', '24h', '4d', '15d']
 

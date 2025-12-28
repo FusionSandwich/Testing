@@ -11,8 +11,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from experimental_data_loader import load_experimental_data
-from flux_wire_loader import load_flux_wires, get_metadata_df
+from data_loaders import load_experimental_data, load_flux_wires, get_metadata_df
 
 
 def summarize_experimental(exp_dir: Path) -> None:
