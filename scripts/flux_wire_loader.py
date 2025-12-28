@@ -112,6 +112,247 @@ def get_metadata_df() -> pd.DataFrame:
 
 
 # ==============================================================================
+# FLUX CALCULATION HELPERS
+# ==============================================================================
+
+def parse_half_life_seconds(hl_str: str) -> Optional[float]:
+    """Convert half-life string like '5.271 y' to seconds."""
+    if not hl_str:
+        return None
+    try:
+        parts = hl_str.split()
+        if len(parts) != 2:
+            return None
+        val, unit = parts
+        val = float(val)
+        unit = unit.lower()
+        mult = {
+            's': 1, 'sec': 1,
+            'm': 60, 'min': 60,
+            'h': 3600, 'hr': 3600,
+            'd': 86400, 'day': 86400,
+            'w': 604800, 'wk': 604800,
+            'y': 365.25 * 86400, 'yr': 365.25 * 86400,
+        }.get(unit)
+        return val * mult if mult else None
+    except Exception:
+        return None
+
+
+def compute_flux_from_measurements(
+    flux_wires_df: pd.DataFrame,
+    meta_df: Optional[pd.DataFrame] = None,
+    default_irradiation_seconds: float = 7203,
+    default_decay_seconds: float = 0
+) -> pd.DataFrame:
+    """
+    Compute neutron flux from flux wire activity measurements.
+    """
+    if meta_df is None:
+        meta_df = get_metadata_df()
+
+    flux_records = []
+    skipped = []
+
+    for _, row in flux_wires_df.iterrows():
+        sample = row['sample']
+        prod_iso = canonical_iso(row['isotope'])
+
+        base_sample = re.sub(r'_\d+cm$', '', sample)
+        base_sample = re.sub(r'[a-z]$', '', base_sample)
+
+        mrow = meta_df[(meta_df['sample'] == sample) & (meta_df['prod_canon'] == prod_iso)]
+        if mrow.empty:
+            mrow = meta_df[(meta_df['sample'] == base_sample) & (meta_df['prod_canon'] == prod_iso)]
+        if mrow.empty:
+            mrow = meta_df[meta_df['prod_canon'] == prod_iso]
+        if mrow.empty:
+            skipped.append((sample, prod_iso, 'no metadata'))
+            continue
+
+        mrow = mrow.iloc[0]
+        mass_g = mrow['mass_g'] if not pd.isna(mrow['mass_g']) else row.get('mass_g', 1.0)
+        activity_Bq = row.get('activity_Bq', np.nan)
+        unc_Bq = row.get('uncertainty_Bq', np.nan)
+
+        hl_seconds = parse_half_life_seconds(row.get('half_life'))
+        if not hl_seconds or hl_seconds <= 0:
+            skipped.append((sample, prod_iso, 'half-life parse failed'))
+            continue
+
+        lam = np.log(2) / hl_seconds
+
+        mass_match = re.search(r"(\\d+)", mrow['iso_canon'])
+        A_mass = float(mass_match.group(1)) if mass_match else None
+        if not A_mass:
+            skipped.append((sample, prod_iso, 'mass number missing'))
+            continue
+
+        N_atoms = (mass_g / A_mass) * AVOGADRO
+
+        irr_sec = float(row.get('irradiation_seconds', default_irradiation_seconds))
+        dec_sec = float(row.get('decay_seconds', default_decay_seconds))
+
+        S = 1 - np.exp(-lam * irr_sec)
+        D = np.exp(-lam * dec_sec)
+
+        denom = N_atoms * mrow['sigma_cm2'] * S * D
+        phi = activity_Bq / denom if denom > 0 else np.nan
+
+        phi_unc = np.nan
+        if np.isfinite(phi) and activity_Bq > 0 and np.isfinite(unc_Bq):
+            phi_unc = phi * (unc_Bq / activity_Bq)
+
+        flux_records.append({
+            'sample': sample,
+            'product': prod_iso,
+            'phi': phi,
+            'phi_unc': phi_unc,
+            'activity_Bq': activity_Bq,
+            'uncertainty_Bq': unc_Bq,
+            'N_atoms': N_atoms,
+            'sigma_cm2': mrow['sigma_cm2'],
+            'S': S,
+            'D': D,
+            'denom': denom,
+            'energy_MeV': mrow['energy_mid_MeV'],
+            'e_start': mrow['e_start'],
+            'e_end': mrow['e_end'],
+            'category': mrow['category']
+        })
+
+    if skipped:
+        print("Skipped entries:")
+        for s in skipped[:10]:
+            print(f"  {s[0]} {s[1]} -> {s[2]}")
+        if len(skipped) > 10:
+            print(f"  ... and {len(skipped) - 10} more")
+
+    if not flux_records:
+        print("No flux records computed. Check mapping, half-life strings, or decay time.")
+        return pd.DataFrame()
+
+    return pd.DataFrame(flux_records).dropna(subset=['phi', 'e_start', 'e_end'])
+
+
+def load_mcnp_spectrum(
+    spectrum_csv: str,
+    energy_scale: str = 'MeV',
+    flux_divisor: float = 15.0
+) -> Optional[Dict[str, np.ndarray]]:
+    """
+    Load MCNP spectrum data from CSV file.
+    """
+    try:
+        df = pd.read_csv(spectrum_csv)
+        if 'energy' in df.columns and 'flux' in df.columns:
+            energies = df['energy'].values
+            flux = df['flux'].values
+        else:
+            energies = df.iloc[:, 0].values
+            flux = df.iloc[:, 1].values
+
+        if energy_scale.lower() == 'mev':
+            energies = energies / 1e6 if energies.max() > 1e3 else energies
+
+        flux = flux / flux_divisor if flux_divisor else flux
+
+        e_low = energies[:-1]
+        e_high = energies[1:]
+        edges = np.concatenate([e_low[:1], e_high])
+
+        return {
+            'e_low': e_low,
+            'e_high': e_high,
+            'edges': edges,
+            'flux': flux
+        }
+    except Exception as e:
+        print(f"Could not load spectrum CSV: {e}")
+        return None
+
+
+def recompute_phi_in_dataframe(
+    flux_wires_df: pd.DataFrame,
+    meta_df: Optional[pd.DataFrame] = None,
+    default_irradiation_seconds: float = 7203,
+    default_decay_seconds: float = 0,
+    verbose: bool = True
+) -> pd.DataFrame:
+    """
+    Recompute phi (neutron flux) values in-place in flux_wires_df.
+    """
+    if meta_df is None:
+        meta_df = get_metadata_df()
+
+    new_cols = ['phi', 'phi_unc', 'sigma_cm2', 'mass_used_g', 'A_mass',
+                'N_atoms', 'lam', 'S', 'D', 'denom', 'irradiation_seconds_used']
+
+    for col in new_cols:
+        if col not in flux_wires_df.columns:
+            flux_wires_df[col] = np.nan
+
+    for idx, row in flux_wires_df.iterrows():
+        sample = row['sample']
+        prod_iso = canonical_iso(row['isotope'])
+        base_sample = re.sub(r'_\d+cm$', '', sample)
+        base_sample = re.sub(r'[a-z]$', '', base_sample)
+
+        mrow = meta_df[(meta_df['sample'] == sample) & (meta_df['prod_canon'] == prod_iso)]
+        if mrow.empty:
+            mrow = meta_df[(meta_df['sample'] == base_sample) & (meta_df['prod_canon'] == prod_iso)]
+        if mrow.empty:
+            mrow = meta_df[meta_df['prod_canon'] == prod_iso]
+        if mrow.empty:
+            if verbose:
+                print(f"Skipping {sample} {prod_iso}: no metadata")
+            continue
+
+        mrow = mrow.iloc[0]
+        mass_g = mrow['mass_g'] if not pd.isna(mrow['mass_g']) else row.get('mass_g', 1.0)
+        activity_Bq = row.get('activity_Bq', np.nan)
+        unc_Bq = row.get('uncertainty_Bq', np.nan)
+        hl_seconds = parse_half_life_seconds(row.get('half_life'))
+        if not hl_seconds or hl_seconds <= 0:
+            if verbose:
+                print(f"Skipping {sample} {prod_iso}: half-life parse failed")
+            continue
+
+        lam = np.log(2) / hl_seconds
+        mass_match = re.search(r"(\\d+)", mrow['iso_canon'])
+        A_mass = float(mass_match.group(1)) if mass_match else None
+        if not A_mass:
+            if verbose:
+                print(f"Skipping {sample} {prod_iso}: mass number missing")
+            continue
+
+        N_atoms = (mass_g / A_mass) * AVOGADRO
+        irr_sec = float(row.get('irradiation_seconds', default_irradiation_seconds))
+        dec_sec = float(row.get('decay_seconds', default_decay_seconds))
+        S = 1 - np.exp(-lam * irr_sec)
+        D = np.exp(-lam * dec_sec)
+        denom = N_atoms * mrow['sigma_cm2'] * S * D
+        phi = activity_Bq / denom if denom > 0 else np.nan
+
+        phi_unc = np.nan
+        if np.isfinite(phi) and activity_Bq > 0 and np.isfinite(unc_Bq):
+            phi_unc = phi * (unc_Bq / activity_Bq)
+
+        flux_wires_df.loc[idx, 'phi'] = phi
+        flux_wires_df.loc[idx, 'phi_unc'] = phi_unc
+        flux_wires_df.loc[idx, 'sigma_cm2'] = mrow['sigma_cm2']
+        flux_wires_df.loc[idx, 'mass_used_g'] = mass_g
+        flux_wires_df.loc[idx, 'A_mass'] = A_mass
+        flux_wires_df.loc[idx, 'N_atoms'] = N_atoms
+        flux_wires_df.loc[idx, 'lam'] = lam
+        flux_wires_df.loc[idx, 'S'] = S
+        flux_wires_df.loc[idx, 'D'] = D
+        flux_wires_df.loc[idx, 'denom'] = denom
+        flux_wires_df.loc[idx, 'irradiation_seconds_used'] = irr_sec
+
+    return flux_wires_df
+
+# ==============================================================================
 # FILE PARSING
 # ==============================================================================
 # Regex for parsing activity lines
