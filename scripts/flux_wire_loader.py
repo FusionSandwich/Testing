@@ -30,8 +30,8 @@ from typing import Optional, List, Dict, Any
 
 from dateutil import parser as dtparser
 
-# Import from isotope_utils
-from isotope_utils import (
+# Import from nuclear_data
+from nuclear_data import (
     canonical_iso, parse_activity_unit, get_half_life_seconds,
     half_life_to_lambda, calculate_n_atoms, extract_mass_number,
     LN2, AVOGADRO,

@@ -28,8 +28,8 @@ import pandas as pd
 from pathlib import Path
 from typing import Dict, List, Optional, Any
 
-# Import from isotope_utils (which uses alara_output_processing where possible)
-from isotope_utils import canonical_iso, format_iso_pretty, parse_activity_unit
+# Import from nuclear_data (which uses paceENSDF where possible)
+from nuclear_data import canonical_iso, format_iso_pretty, parse_activity_unit
 
 # ==============================================================================
 # SAMPLE MAPPINGS

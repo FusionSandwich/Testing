@@ -174,10 +174,10 @@ def _safe_import_decay_physics():
         return None
 
 
-def _safe_import_isotope_utils():
-    """Safely import isotope_utils module."""
+def _safe_import_nuclear_data():
+    """Safely import nuclear_data module."""
     try:
-        from isotope_utils import (
+        from nuclear_data import (
             canonical_iso, format_iso_pretty, has_gamma_emission, LN2, AVOGADRO,
             GAMMA_ENERGY_MIN_KEV, GAMMA_ENERGY_MAX_KEV
         )
@@ -619,11 +619,11 @@ def plot_snr_lines(
     -------
     plt.Figure or None
     """
-    utils = _safe_import_isotope_utils()
+    utils = _safe_import_nuclear_data()
     decay = _safe_import_decay_physics()
     
     if not utils or not decay:
-        print("Required modules (isotope_utils, decay_physics) not available")
+        print("Required modules (nuclear_data, decay_physics) not available")
         return None
     
     format_iso_pretty = utils['format_iso_pretty']
@@ -754,9 +754,9 @@ def plot_threshold_comparison(
     -------
     plt.Figure or None
     """
-    utils = _safe_import_isotope_utils()
+    utils = _safe_import_nuclear_data()
     if not utils:
-        print("isotope_utils not available")
+        print("nuclear_data not available")
         return None
     
     canonical_iso = utils['canonical_iso']
@@ -869,9 +869,9 @@ def plot_alara_predicted_threshold(
     """
     Plot ALARA-predicted isotopes above threshold with gamma-emitter status.
     """
-    utils = _safe_import_isotope_utils()
+    utils = _safe_import_nuclear_data()
     if not utils:
-        print("isotope_utils not available")
+        print("nuclear_data not available")
         return None
 
     has_gamma_emission = utils['has_gamma_emission']
@@ -1149,9 +1149,9 @@ def plot_vit_j_comparison(
     -------
     plt.Figure or None
     """
-    utils = _safe_import_isotope_utils()
+    utils = _safe_import_nuclear_data()
     if not utils:
-        print("isotope_utils not available")
+        print("nuclear_data not available")
         return None
     
     canonical_iso = utils['canonical_iso']
@@ -1567,7 +1567,7 @@ def plot_decay_curves(
     -------
     plt.Figure or None
     """
-    utils = _safe_import_isotope_utils()
+    utils = _safe_import_nuclear_data()
     if not utils:
         LN2 = 0.693147
         format_iso_pretty = lambda x: x

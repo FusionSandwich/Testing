@@ -45,6 +45,24 @@ except ImportError:
 # CONSTANTS
 # ==============================================================================
 LN2 = np.log(2)
+AVOGADRO = 6.02214076e23
+
+# HPGe detector energy range for gamma spectroscopy
+GAMMA_ENERGY_MIN_KEV = 80.0
+GAMMA_ENERGY_MAX_KEV = 4000.0
+GAMMA_INTENSITY_MIN = 0.01
+
+# Unit conversion factors to Bq
+UNIT_TO_BQ = {
+    'bq': 1.0,
+    'kbq': 1e3,
+    'mbq': 1e-3,
+    'ci': 3.7e10,
+    'mci': 3.7e7,
+    'uci': 37000.0,
+    'µci': 37000.0,
+    'nci': 37.0,
+}
 
 
 # ==============================================================================
@@ -77,6 +95,37 @@ def normalize_isotope(label: str) -> str:
             return f"{el}-{mass}{meta}"
     
     return s.lower()
+
+
+def canonical_iso(name: str) -> str:
+    """
+    Normalize isotope strings to lowercase element + mass (+ metastable suffix).
+
+    Examples:
+        'Ta-182' -> 'ta182'
+        'Co 60'  -> 'co60'
+        'In-115m' -> 'in115m'
+        'Sc_46'  -> 'sc46'
+    """
+    if name is None:
+        return ''
+    s = str(name).strip().replace(' ', '').replace('_', '').replace('-', '')
+    m = re.match(r'(?i)^([a-z]+)(\d+)(m?)$', s)
+    if not m:
+        return s.lower()
+    elem, mass, meta = m.group(1, 2, 3)
+    return f"{elem.lower()}{mass}{meta.lower()}"
+
+
+def format_iso_pretty(iso: str) -> str:
+    """Format isotope name for display (e.g., 'ta182' -> 'Ta-182')."""
+    if not iso:
+        return iso
+    m = re.match(r'(?i)^([a-z]+)(\d+)(m?)$', iso.replace('-', '').replace('_', ''))
+    if m:
+        elem, mass, meta = m.group(1, 2, 3)
+        return f"{elem.capitalize()}-{mass}{meta.lower()}"
+    return iso.capitalize()
 
 
 def isotope_to_display(isotope: str) -> str:
@@ -312,7 +361,12 @@ def get_gamma_info(isotope: str) -> Optional[Dict[str, Any]]:
     return None
 
 
-def has_gamma_emission(isotope: str, min_intensity: float = 0.01) -> bool:
+def has_gamma_emission(
+    isotope: str,
+    min_intensity: float = GAMMA_INTENSITY_MIN,
+    energy_min_keV: float = GAMMA_ENERGY_MIN_KEV,
+    energy_max_keV: float = GAMMA_ENERGY_MAX_KEV
+) -> bool:
     """
     Check if isotope has detectable gamma emission.
     
@@ -322,6 +376,10 @@ def has_gamma_emission(isotope: str, min_intensity: float = 0.01) -> bool:
         Isotope label
     min_intensity : float
         Minimum intensity threshold (default 1%)
+    energy_min_keV : float
+        Minimum gamma energy (default 80 keV)
+    energy_max_keV : float
+        Maximum gamma energy (default 4000 keV)
     
     Returns
     -------
@@ -335,7 +393,10 @@ def has_gamma_emission(isotope: str, min_intensity: float = 0.01) -> bool:
     
     if info is None:
         return False
-    return any(g[1] >= min_intensity for g in info['gammas'])
+    for energy, intensity in info['gammas']:
+        if energy_min_keV <= energy <= energy_max_keV and intensity >= min_intensity:
+            return True
+    return False
 
 
 def get_decay_constant(isotope: str) -> Optional[float]:
@@ -344,6 +405,184 @@ def get_decay_constant(isotope: str) -> Optional[float]:
     if hl is None or hl <= 0:
         return None
     return LN2 / hl
+
+
+def get_half_life_seconds(isotope: str) -> Optional[float]:
+    """Alias for get_half_life (seconds)."""
+    return get_half_life(isotope)
+
+
+def half_life_to_lambda(half_life_seconds: float) -> float:
+    """Convert half-life (seconds) to decay constant lambda (1/s)."""
+    if half_life_seconds <= 0:
+        return 0.0
+    return LN2 / half_life_seconds
+
+
+def parse_half_life_string(hl_string: str) -> Optional[float]:
+    """
+    Parse a half-life string like '12.7 h' or '27.7 d' to seconds.
+    """
+    if not hl_string:
+        return None
+    parts = hl_string.strip().split()
+    if len(parts) < 2:
+        return None
+    try:
+        val = float(parts[0])
+        unit = parts[1].lower().rstrip('.')
+        unit_map = {
+            'sec': 's', 'second': 's', 'seconds': 's',
+            'min': 'm', 'minute': 'm', 'minutes': 'm',
+            'hr': 'h', 'hour': 'h', 'hours': 'h',
+            'day': 'd', 'days': 'd',
+            'wk': 'w', 'week': 'w', 'weeks': 'w',
+            'yr': 'y', 'year': 'y', 'years': 'y',
+        }
+        unit_key = unit_map.get(unit, unit)
+        mult = SECONDS_CONV.get(unit_key, None)
+        if mult is None:
+            return None
+        return val * mult
+    except (ValueError, IndexError):
+        return None
+
+
+def parse_activity_unit(unit_str: str) -> float:
+    """
+    Parse activity unit string and return conversion factor to Bq.
+    """
+    if not unit_str:
+        return UNIT_TO_BQ['uci']
+
+    u = unit_str.strip().lower()
+    u = u.replace('\u00b5', 'u').replace('µ', 'u')
+    u = re.sub(r'/[gk]?g?', '', u)
+    u = u.replace('per', '').strip()
+
+    tokens = re.findall(r'[a-z]+', u)
+
+    for key in sorted(UNIT_TO_BQ.keys(), key=len, reverse=True):
+        for token in tokens:
+            if token == key:
+                return UNIT_TO_BQ[key]
+
+    for key in sorted(UNIT_TO_BQ.keys(), key=len, reverse=True):
+        if key in u:
+            return UNIT_TO_BQ[key]
+
+    return UNIT_TO_BQ['uci']
+
+
+def activity_bq_to_uci(activity_bq: float) -> float:
+    """Convert activity from Bq to µCi."""
+    return activity_bq / 37000.0
+
+
+def activity_uci_to_bq(activity_uci: float) -> float:
+    """Convert activity from µCi to Bq."""
+    return activity_uci * 37000.0
+
+
+def cross_section_to_cm2(xs: float, unit: str) -> float:
+    """
+    Convert cross-section to cm².
+    """
+    unit_lower = unit.lower().strip()
+    if unit_lower in ('b', 'barn', 'barns'):
+        return xs * 1e-24
+    if unit_lower in ('mb', 'millibarn', 'millibarns'):
+        return xs * 1e-27
+    return xs * 1e-24
+
+
+def calculate_n_atoms(mass_g: float, atomic_mass: float) -> float:
+    """
+    Calculate number of atoms from mass and atomic mass.
+    """
+    return (mass_g / atomic_mass) * AVOGADRO
+
+
+def extract_mass_number(isotope: str) -> Optional[int]:
+    """
+    Extract mass number from isotope string.
+    """
+    m = re.search(r'(\d+)', isotope)
+    if m:
+        return int(m.group(1))
+    return None
+
+
+def get_half_life_info(isotope: str) -> tuple:
+    """Get half-life info using paceENSDF via nuclear_data module."""
+    hl_days = get_half_life_days(isotope)
+    decay_modes = None
+    decay_info = get_gamma_info(isotope)
+    if decay_info and 'decay_modes' in decay_info:
+        decay_modes = decay_info['decay_modes']
+    return hl_days, decay_modes
+
+
+def format_half_life(hl_days: float) -> str:
+    """Format half-life for display."""
+    if hl_days is None:
+        return "?"
+    if hl_days < 1/24:
+        return f"{hl_days * 24 * 60:.1f} min"
+    if hl_days < 1:
+        return f"{hl_days * 24:.1f} h"
+    if hl_days < 365:
+        return f"{hl_days:.1f} d"
+    return f"{hl_days / 365:.1f} y"
+
+
+def get_gamma_info_filtered(
+    isotope: str,
+    energy_min_keV: float = GAMMA_ENERGY_MIN_KEV,
+    energy_max_keV: float = GAMMA_ENERGY_MAX_KEV
+) -> Optional[dict]:
+    """
+    Get gamma emission information filtered to an energy range.
+    """
+    nd_info = get_gamma_info(isotope)
+    if nd_info is None:
+        return None
+
+    all_gammas = nd_info.get('gammas', [])
+    filtered_gammas = [
+        (e, i) for e, i in all_gammas
+        if energy_min_keV <= e <= energy_max_keV
+    ]
+
+    if not filtered_gammas:
+        return None
+
+    primary = max(filtered_gammas, key=lambda x: x[1])
+
+    return {
+        'main_gamma_keV': primary[0],
+        'intensity': primary[1],
+        'gammas': filtered_gammas,
+        'other_gammas': [g[0] for g in filtered_gammas if g[0] != primary[0]],
+        '_from_ensdf': True,
+    }
+
+
+def filter_gamma_emitters(
+    isotopes: list,
+    min_intensity: float = GAMMA_INTENSITY_MIN,
+    energy_min_keV: float = GAMMA_ENERGY_MIN_KEV,
+    energy_max_keV: float = GAMMA_ENERGY_MAX_KEV
+) -> list:
+    """
+    Filter a list of isotopes to only those with detectable gamma emissions.
+    """
+    result = []
+    for item in isotopes:
+        iso = item.get('isotope', '') if isinstance(item, dict) else str(item)
+        if has_gamma_emission(iso, min_intensity, energy_min_keV, energy_max_keV):
+            result.append(item)
+    return result
 
 
 # ==============================================================================

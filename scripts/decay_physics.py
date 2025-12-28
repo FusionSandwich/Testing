@@ -38,8 +38,8 @@ from matplotlib.colors import LogNorm
 from pathlib import Path
 from typing import Optional, Tuple, List, Dict, Union
 
-# Import from isotope_utils (which uses alara_output_processing where possible)
-from isotope_utils import (
+# Import from nuclear_data (which uses paceENSDF where possible)
+from nuclear_data import (
     LN2, AVOGADRO,
     get_half_life_days, get_half_life_seconds,
     half_life_to_lambda, canonical_iso, format_iso_pretty
