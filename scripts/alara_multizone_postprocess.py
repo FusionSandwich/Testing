@@ -18,11 +18,14 @@ import json
 import os
 import re
 import sys
-import csv
-from collections import defaultdict
-from typing import Dict, List, Tuple, Optional
+from pathlib import Path
+from typing import Dict, List, Optional, Tuple
 
 import numpy as np
+import pandas as pd
+
+from alara_output_processing import ALARADFrame, FileParser
+from alara_data_loader import format_seconds_label, parse_time_to_seconds
 
 # Use periodictable library for accurate atomic masses
 try:
@@ -110,345 +113,189 @@ def get_element_info(element_symbol: str) -> dict:
     return {'symbol': element_symbol, 'name': '', 'mass': 0.0, 'number': 0}
 
 
-def parse_json_results_all_voxels(json_file: str) -> Dict:
+
+
+def load_alara_zone_data(output_file: str, time_unit: str = 's') -> pd.DataFrame:
     """
-    Parse ALARA results from JSON file, returning data for ALL voxels.
-    
-    Returns a dictionary with:
-    {
-        'voxels': {
-            voxel_id: {
-                'isotopes': {
-                    isotope_name: {
-                        'number_density': [...],
-                        'specific_activity': [...],
-                        'total_heat': [...]
-                    }
-                }
-            }
-        },
-        'cooling_times': [...],
-        'n_voxels': int
-    }
+    Parse ALARA multi-zone output using the ALARA helper parser.
+
+    Returns a DataFrame filtered to zone blocks only.
+    """
+    parser = FileParser(output_file, run_lbl=Path(output_file).stem, time_unit=time_unit)
+    adf = parser.extract_tables()
+    zone_block = ALARADFrame.BLOCK_ENUM['Zone']
+    return adf[adf['block'] == zone_block].copy()
+
+
+def compute_variable_stats(adf: pd.DataFrame, variable_name: str) -> pd.DataFrame:
+    """
+    Compute voxel mean/std/sem/rel_unc for a single ALARA variable.
+    """
+    variable_code = ALARADFrame.VARIABLE_ENUM[variable_name]
+    subset = adf[adf['variable'] == variable_code]
+    if subset.empty:
+        return pd.DataFrame()
+
+    grouped = subset.groupby(['nuclide', 'time'])['value']
+    stats = grouped.agg(['mean', 'std', 'count']).reset_index()
+    stats['sem'] = stats['std'] / np.sqrt(stats['count'])
+    with np.errstate(divide='ignore', invalid='ignore'):
+        stats['rel_unc'] = np.where(stats['mean'] > 0, stats['sem'] / stats['mean'], 0.0)
+    return stats
+
+
+def build_time_labels(times: List[float]) -> Dict[float, str]:
+    """
+    Map numeric cooling times to display labels.
+    """
+    return {t: format_seconds_label(t) for t in times}
+
+
+def stats_to_csv_table(stats_df: pd.DataFrame, time_labels: Dict[float, str]) -> pd.DataFrame:
+    """
+    Expand stats into wide CSV format with mean/sem/rel_unc columns.
+    """
+    if stats_df.empty:
+        return pd.DataFrame()
+
+    isotopes = sorted(stats_df['nuclide'].unique())
+    output = pd.DataFrame({'isotope': isotopes})
+
+    for time in sorted(time_labels.keys()):
+        label = time_labels[time]
+        time_slice = stats_df[stats_df['time'] == time].set_index('nuclide')
+        output[f'mean_{label}'] = output['isotope'].map(time_slice['mean']).fillna(0.0)
+        output[f'sem_{label}'] = output['isotope'].map(time_slice['sem']).fillna(0.0)
+        output[f'rel_unc_{label}'] = output['isotope'].map(time_slice['rel_unc']).fillna(0.0)
+
+    return output
+
+
+def load_json_stats(json_file: str) -> Tuple[Dict[str, pd.DataFrame], Dict[float, str], int]:
+    """
+    Load ALARA JSON voxel results into stats tables per output type.
     """
     with open(json_file, 'r') as f:
         data = json.load(f)
-    
-    results = {
-        'voxels': {},
-        'cooling_times': data.get('cooling_time_labels', []),
-        'material': data.get('material', 'unknown'),
-        'tally_number': data.get('tally_number', 0),
-        'n_voxels': 0
-    }
-    
-    # Handle voxel_results format
+
+    cooling_labels = data.get('cooling_time_labels', [])
+    times = [parse_time_to_seconds(label) for label in cooling_labels]
+    time_labels = build_time_labels(times)
+
     voxel_results = data.get('voxel_results', {})
-    
-    for voxel_id, voxel_data in voxel_results.items():
-        results['voxels'][voxel_id] = {
-            'isotopes': voxel_data.get('isotopes', {})
-        }
-        results['n_voxels'] += 1
-    
-    return results
+    n_voxels = len(voxel_results)
 
+    output_types = ['number_density', 'specific_activity', 'total_heat']
+    rows_by_type = {ot: [] for ot in output_types}
 
-def parse_alara_multizone_output(output_file: str) -> Dict:
-    """
-    Parse ALARA multi-zone .out file to extract per-zone isotope data.
-    
-    Returns a dictionary with same structure as parse_json_results_all_voxels.
-    """
-    results = {
-        'voxels': {},
-        'cooling_times': [],
-        'material': 'unknown',
-        'n_voxels': 0
-    }
-    
-    with open(output_file, 'r') as f:
-        content = f.read()
-    
-    # Find output type sections
-    output_types = {
-        'number_density': r'\*\*\* Number Density \[atoms/cm3\] \*\*\*',
-        'specific_activity': r'\*\*\* Specific Activity \[Bq/cm3\] \*\*\*',
-        'total_heat': r'\*\*\* Total Decay Heat \[W/cm3\] \*\*\*'
-    }
-    
-    for output_type, pattern in output_types.items():
-        # Find the section
-        match = re.search(pattern, content)
-        if not match:
-            continue
-            
-        # Extract from this point to the next *** section or end
-        start = match.end()
-        next_section = re.search(r'\n\*\*\*', content[start:])
-        if next_section:
-            section_content = content[start:start + next_section.start()]
-        else:
-            section_content = content[start:]
-        
-        # Parse zones within this section
-        zone_pattern = r'Zone #(\d+): (zone_\d+)'
-        zone_matches = list(re.finditer(zone_pattern, section_content))
-        
-        for i, zone_match in enumerate(zone_matches):
-            zone_num = zone_match.group(1)
-            zone_name = zone_match.group(2)
-            voxel_id = zone_name.replace('zone_', '')
-            
-            # Get content until next zone or end of section
-            zone_start = zone_match.end()
-            if i + 1 < len(zone_matches):
-                zone_end = zone_matches[i + 1].start()
-            else:
-                zone_end = len(section_content)
-            
-            zone_content = section_content[zone_start:zone_end]
-            
-            # Initialize voxel if needed
-            if voxel_id not in results['voxels']:
-                results['voxels'][voxel_id] = {'isotopes': {}}
-                results['n_voxels'] += 1
-            
-            # Find the data table in this zone
-            # Look for the header line: "isotope  shutdown  ..."
-            header_match = re.search(r'isotope\s+(shutdown.*?)(?:\n|$)', zone_content)
-            if not header_match:
-                continue
-            
-            # Extract cooling times from header (only once)
-            # Header looks like: "shutdown         0 s         3 d         7 d        45 d         1 y"
-            # or with decimals: "shutdown      5.95 m   25.5469 h    3.9491 d"
-            # Need to combine value+unit pairs like "0 s" -> "0s", "5.95 m" -> "5.95m"
-            if not results['cooling_times']:
-                header_text = header_match.group(1)
-                # Parse by fixed column widths or regex
-                # Pattern: number (with optional decimal) followed by unit, or 'shutdown'
-                # Match integers or decimals like: 0, 3, 45, 5.95, 25.5469
-                parts = re.findall(r'(\d+\.?\d*)\s+([smhdy])|shutdown', header_text)
-                cooling_times = ['shutdown']
-                for match in parts:
-                    if match[0]:  # number+unit pair
-                        cooling_times.append(f"{match[0]}{match[1]}")
-                results['cooling_times'] = cooling_times
-            
-            # Find the data lines (after the === separator)
-            data_start = header_match.end()
-            # Skip separator line
-            sep_match = re.search(r'=+\n', zone_content[data_start:])
-            if sep_match:
-                data_start += sep_match.end()
-            
-            # Parse data lines until we hit an empty line or a non-data line
-            lines = zone_content[data_start:].split('\n')
-            for line in lines:
-                line = line.strip()
-                if not line or line.startswith('=') or line.startswith('-'):
-                    continue
-                if line.startswith('Zone') or line.startswith('Constituent') or line.startswith('Total'):
-                    break
-                
-                parts = line.split()
-                if len(parts) < 2:
-                    continue
-                
-                isotope = parts[0]
-                try:
-                    values = [float(v) for v in parts[1:]]
-                except ValueError:
-                    continue
-                
-                # Store in isotopes dict
-                if isotope not in results['voxels'][voxel_id]['isotopes']:
-                    results['voxels'][voxel_id]['isotopes'][isotope] = {}
-                
-                results['voxels'][voxel_id]['isotopes'][isotope][output_type] = values
-    
-    return results
-
-
-def compute_voxel_averages_with_uncertainty(all_voxel_data: Dict) -> Dict:
-    """
-    Compute average values across all voxels with statistical uncertainty.
-    
-    For each isotope and each cooling time, computes:
-    - mean: arithmetic mean across voxels
-    - std: standard deviation across voxels  
-    - sem: standard error of the mean (std / sqrt(n))
-    - rel_unc: relative uncertainty (sem / mean)
-    
-    Args:
-        all_voxel_data: Dict from parse_json_results_all_voxels
-        
-    Returns:
-        Dict with averaged isotope data and uncertainties
-    """
-    cooling_times = all_voxel_data['cooling_times']
-    n_times = len(cooling_times)
-    n_voxels = all_voxel_data['n_voxels']
-    
-    if n_voxels == 0:
-        return {}
-    
-    # Collect all isotope data across voxels
-    # Structure: {isotope: {output_type: [[values_per_time] for each voxel]}}
-    isotope_collections = defaultdict(lambda: defaultdict(list))
-    
-    for voxel_id, voxel_data in all_voxel_data['voxels'].items():
+    for voxel_data in voxel_results.values():
         for iso_name, iso_data in voxel_data.get('isotopes', {}).items():
-            if isinstance(iso_data, dict):
-                for output_type in ['number_density', 'specific_activity', 'total_heat']:
-                    if output_type in iso_data:
-                        values = iso_data[output_type]
-                        isotope_collections[iso_name][output_type].append(values)
-    
-    # Compute statistics for each isotope
-    averaged = {}
-    
-    for iso_name, output_types in isotope_collections.items():
-        averaged[iso_name] = {}
-        
-        for output_type, voxel_values_list in output_types.items():
-            # Convert to numpy array: shape (n_voxels, n_cooling_times)
-            arr = np.array(voxel_values_list)
-            
-            # Compute statistics along voxel axis (axis=0)
-            mean_vals = np.mean(arr, axis=0)
-            std_vals = np.std(arr, axis=0, ddof=1)  # Sample std dev
-            n = arr.shape[0]
-            sem_vals = std_vals / np.sqrt(n)  # Standard error of mean
-            
-            # Relative uncertainty (handle division by zero)
-            with np.errstate(divide='ignore', invalid='ignore'):
-                rel_unc = np.where(mean_vals > 0, sem_vals / mean_vals, 0.0)
-            
-            averaged[iso_name][output_type] = {
-                'mean': mean_vals.tolist(),
-                'std': std_vals.tolist(),
-                'sem': sem_vals.tolist(),
-                'rel_unc': rel_unc.tolist(),
-                'n_voxels': n
-            }
-    
-    return averaged
+            for output_type in output_types:
+                values = iso_data.get(output_type)
+                if values is None:
+                    continue
+                for time, value in zip(times, values):
+                    rows_by_type[output_type].append({
+                        'nuclide': iso_name,
+                        'time': time,
+                        'value': value
+                    })
+
+    stats_by_type = {}
+    for output_type, rows in rows_by_type.items():
+        if rows:
+            stats_by_type[output_type] = aggregate_stats(pd.DataFrame(rows))
+        else:
+            stats_by_type[output_type] = pd.DataFrame()
+
+    return stats_by_type, time_labels, n_voxels
 
 
-def calculate_isotopic_mass_with_uncertainty(averaged_data: Dict) -> Dict:
+def aggregate_stats(values_df: pd.DataFrame) -> pd.DataFrame:
     """
-    Calculate isotopic mass [g/cm³] from number density [atoms/cm³].
-    
-    mass = number_density × atomic_mass / Avogadro
-    
-    Uncertainty propagates linearly since atomic mass has no uncertainty.
+    Aggregate voxel values into mean/std/sem/rel_unc per isotope/time.
     """
-    mass_data = {}
-    
-    for isotope, output_types in averaged_data.items():
-        if 'number_density' not in output_types:
-            continue
-            
-        nd_data = output_types['number_density']
-        atomic_mass = get_atomic_mass(isotope)
-        
-        if atomic_mass <= 0:
-            continue
-        
-        conversion = atomic_mass / AVOGADRO
-        
-        mass_data[isotope] = {
-            'mean': [v * conversion for v in nd_data['mean']],
-            'std': [v * conversion for v in nd_data['std']],
-            'sem': [v * conversion for v in nd_data['sem']],
-            'rel_unc': nd_data['rel_unc'],  # Relative uncertainty unchanged
-            'n_voxels': nd_data['n_voxels']
-        }
-    
-    return mass_data
+    if values_df.empty:
+        return pd.DataFrame()
+
+    grouped = values_df.groupby(['nuclide', 'time'])['value']
+    stats = grouped.agg(['mean', 'std', 'count']).reset_index()
+    stats['sem'] = stats['std'] / np.sqrt(stats['count'])
+    with np.errstate(divide='ignore', invalid='ignore'):
+        stats['rel_unc'] = np.where(stats['mean'] > 0, stats['sem'] / stats['mean'], 0.0)
+    return stats
 
 
-def export_averaged_csv(averaged_data: Dict, output_type: str, cooling_times: List[str],
-                        output_file: str, filter_zeros: bool = True):
+def calculate_mass_stats(number_density_stats: pd.DataFrame) -> pd.DataFrame:
     """
-    Export averaged data to CSV with uncertainties.
-    
-    Format:
-    isotope, mean_t0, unc_t0, mean_t1, unc_t1, ...
+    Calculate isotopic mass [g/cm³] from number density stats [atoms/cm³].
     """
-    os.makedirs(os.path.dirname(output_file), exist_ok=True)
-    
-    # Filter data
-    if filter_zeros:
-        filtered = {k: v for k, v in averaged_data.items() 
-                   if output_type in v and any(abs(val) > 1e-30 for val in v[output_type]['mean'])}
-    else:
-        filtered = {k: v for k, v in averaged_data.items() if output_type in v}
-    
-    if not filtered:
-        return 0
-    
-    with open(output_file, 'w', newline='') as f:
-        writer = csv.writer(f)
-        
-        # Header: isotope, mean_t0, sem_t0, rel_unc_t0, ...
-        header = ['isotope']
-        for ct in cooling_times:
-            header.extend([f'mean_{ct}', f'sem_{ct}', f'rel_unc_{ct}'])
-        writer.writerow(header)
-        
-        # Data rows
-        for isotope in sorted(filtered.keys()):
-            data = filtered[isotope][output_type]
-            row = [isotope]
-            for i in range(len(cooling_times)):
-                row.extend([
-                    data['mean'][i],
-                    data['sem'][i],
-                    data['rel_unc'][i]
-                ])
-            writer.writerow(row)
-    
-    return len(filtered)
+    if number_density_stats.empty:
+        return pd.DataFrame()
+
+    mass_stats = number_density_stats.copy()
+    mass_stats['atomic_mass'] = mass_stats['nuclide'].map(get_atomic_mass)
+    mass_stats = mass_stats[mass_stats['atomic_mass'] > 0]
+    conversion = mass_stats['atomic_mass'] / AVOGADRO
+    mass_stats['mean'] = mass_stats['mean'] * conversion
+    mass_stats['std'] = mass_stats['std'] * conversion
+    mass_stats['sem'] = mass_stats['sem'] * conversion
+    return mass_stats
 
 
-def find_activation_products(averaged_data: Dict, products: List[str]) -> Dict:
+def filter_zero_rows(table: pd.DataFrame) -> pd.DataFrame:
     """
-    Search for specific activation products in averaged data.
+    Drop isotopes with no meaningful mean values.
+    """
+    mean_cols = [c for c in table.columns if c.startswith('mean_')]
+    if not mean_cols:
+        return table
+    return table[table[mean_cols].abs().max(axis=1) > 1e-30]
+
+
+def find_activation_products(stats_df: pd.DataFrame, products: List[str]) -> Dict[str, Dict]:
+    """
+    Search for specific activation products in stats data.
     """
     found = {}
-    
+    if stats_df.empty:
+        return found
+
     for product in products:
-        if product in averaged_data:
-            iso_data = averaged_data[product]
-            if 'specific_activity' in iso_data:
-                sa = iso_data['specific_activity']
-                if any(abs(v) > 1e-30 for v in sa['mean']):
-                    found[product] = sa
-    
+        iso_stats = stats_df[stats_df['nuclide'] == product]
+        if iso_stats.empty:
+            continue
+        if (iso_stats['mean'].abs() > 1e-30).any():
+            found[product] = iso_stats
     return found
 
 
-def print_activation_summary(found_products: Dict, cooling_times: List[str], expected: List[str]):
+def print_activation_summary(found_products: Dict[str, pd.DataFrame],
+                             time_labels: Dict[float, str],
+                             expected: List[str]):
     """
     Print a summary of found activation products with uncertainties.
     """
     print("\n" + "=" * 80)
     print("ACTIVATION PRODUCTS VERIFICATION (Voxel-Averaged)")
     print("=" * 80)
-    
+
+    times = sorted(time_labels.keys())
+
     for product in expected:
         if product in found_products:
-            data = found_products[product]
-            print(f"\n{product.upper()}: FOUND (averaged over {data['n_voxels']} voxels)")
+            data = found_products[product].set_index('time')
+            n_voxels = int(found_products[product]['count'].max())
+            print(f"\n{product.upper()}: FOUND (averaged over {n_voxels} voxels)")
             print(f"  {'Cooling Time':>12s}  {'Activity (Bq/cm³)':>18s}  {'Uncertainty':>12s}  {'Rel.Unc.':>10s}")
             print(f"  {'-'*12}  {'-'*18}  {'-'*12}  {'-'*10}")
-            for i, ct in enumerate(cooling_times):
-                mean = data['mean'][i]
-                sem = data['sem'][i]
-                rel = data['rel_unc'][i]
+            for time in times:
+                ct = time_labels[time]
+                if time not in data.index:
+                    continue
+                mean = data.loc[time, 'mean']
+                sem = data.loc[time, 'sem']
+                rel = data.loc[time, 'rel_unc']
                 if mean > 1e-30:
                     print(f"  {ct:>12s}  {mean:>18.4e}  {sem:>12.4e}  {rel*100:>9.2f}%")
         else:
@@ -512,60 +359,86 @@ def main():
         out_file = os.path.join(tally_path, f"{tally_name}_multizone.out")
         json_file = os.path.join(tally_path, f"{tally_name}_results.json")
         
+        stats_by_type = {}
+        time_labels = {}
+        n_voxels = 0
+
         if os.path.exists(out_file):
             print(f"  Parsing ALARA output: {out_file}")
-            all_voxel_data = parse_alara_multizone_output(out_file)
+            adf_zone = load_alara_zone_data(out_file, time_unit='s')
+            if adf_zone.empty:
+                print("  Warning: No zone data found in output file")
+                continue
+
+            n_voxels = adf_zone['block_name'].nunique()
+            variable_map = {
+                'specific_activity': 'Specific Activity',
+                'number_density': 'Number Density',
+                'total_heat': 'Total Decay Heat'
+            }
+
+            for output_type, variable_name in variable_map.items():
+                stats = compute_variable_stats(adf_zone, variable_name)
+                stats_by_type[output_type] = stats
+                if not time_labels and not stats.empty:
+                    time_labels = build_time_labels(sorted(stats['time'].unique()))
         elif os.path.exists(json_file):
             print(f"  Parsing JSON: {json_file}")
-            all_voxel_data = parse_json_results_all_voxels(json_file)
+            stats_by_type, time_labels, n_voxels = load_json_stats(json_file)
         else:
             print(f"  Warning: No output file found (tried .out and .json)")
             continue
-        
-        n_voxels = all_voxel_data['n_voxels']
-        cooling_times = all_voxel_data['cooling_times']
-        
+
+        if not time_labels:
+            print("  Warning: No cooling times found")
+            continue
+
+        cooling_times = [time_labels[t] for t in sorted(time_labels.keys())]
+
         print(f"  Found {n_voxels} voxels")
         print(f"  Cooling times: {cooling_times}")
-        print(f"  Material: {all_voxel_data.get('material', 'unknown')}")
-        
-        # Compute averages with uncertainty
+
         print(f"\n  Computing voxel averages with uncertainty...")
-        averaged = compute_voxel_averages_with_uncertainty(all_voxel_data)
-        
-        # Calculate isotopic mass
-        mass_data = calculate_isotopic_mass_with_uncertainty(averaged)
-        
-        # Add mass data to averaged dict
-        for iso, mass_vals in mass_data.items():
-            if iso in averaged:
-                averaged[iso]['isotopic_mass'] = mass_vals
-        
-        print(f"  Processed {len(averaged)} isotopes")
-        
-        # Export CSVs
+        stats_by_type['isotopic_mass'] = calculate_mass_stats(
+            stats_by_type.get('number_density', pd.DataFrame())
+        )
+
+        total_isotopes = 0
+        for stats_df in stats_by_type.values():
+            if not stats_df.empty:
+                total_isotopes = max(total_isotopes, stats_df['nuclide'].nunique())
+        print(f"  Processed {total_isotopes} isotopes")
+
         os.makedirs(args.output, exist_ok=True)
-        
+
         output_types = ['specific_activity', 'number_density', 'total_heat', 'isotopic_mass']
         units = {
             'specific_activity': 'Bq_per_cm3',
-            'number_density': 'atoms_per_cm3', 
+            'number_density': 'atoms_per_cm3',
             'total_heat': 'W_per_cm3',
             'isotopic_mass': 'g_per_cm3'
         }
-        
+
         print(f"\n  Exporting averaged CSV files...")
         for ot in output_types:
+            stats_df = stats_by_type.get(ot, pd.DataFrame())
+            if stats_df.empty:
+                continue
             csv_file = os.path.join(args.output, f"{tally_name}_{units[ot]}.csv")
-            n_isotopes = export_averaged_csv(averaged, ot, cooling_times, csv_file)
-            if n_isotopes > 0:
-                print(f"    Written: {csv_file} ({n_isotopes} isotopes)")
-        
-        # Verify activation products
+            table = stats_to_csv_table(stats_df, time_labels)
+            table = filter_zero_rows(table)
+            if table.empty:
+                continue
+            table.to_csv(csv_file, index=False)
+            print(f"    Written: {csv_file} ({len(table)} isotopes)")
+
         if args.verify:
-            found = find_activation_products(averaged, expected_products)
+            found = find_activation_products(
+                stats_by_type.get('specific_activity', pd.DataFrame()),
+                expected_products
+            )
             all_found_products[tally_name] = found
-            print_activation_summary(found, cooling_times, expected_products)
+            print_activation_summary(found, time_labels, expected_products)
     
     # Final summary
     if args.verify and all_found_products:

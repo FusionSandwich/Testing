@@ -63,7 +63,7 @@ if str(_script_dir) not in sys.path:
 from alara_output_processing import SECONDS_CONV, convert_times, FileParser, ALARADFrame, DataLibrary
 
 # Import isotope utilities (half-life, gamma info, formatting)
-from isotope_utils import (
+from nuclear_data import (
     canonical_iso, format_iso_pretty,
     get_half_life_days, get_half_life_seconds,
     has_gamma_emission, get_gamma_info,

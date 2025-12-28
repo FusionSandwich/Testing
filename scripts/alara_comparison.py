@@ -24,13 +24,7 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Any
 
 # Import dynamic column mapping from alara_data_loader
-from alara_data_loader import (
-    build_cooling_map,
-    extract_mean_columns,
-    find_closest_column,
-    parse_time_to_seconds,
-    ALARADataLoader
-)
+from alara_data_loader import build_cooling_map
 
 # ============================================================
 # Constants

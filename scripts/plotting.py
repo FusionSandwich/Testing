@@ -44,6 +44,9 @@ from matplotlib.colors import LogNorm
 from pathlib import Path
 from typing import Optional, Dict, List, Tuple, Any
 
+from alara_data_loader import build_cooling_map
+from data_loaders import compute_flux_from_measurements, load_mcnp_spectrum
+
 # ==============================================================================
 # STYLE CONSTANTS - Single Source of Truth
 # ==============================================================================
@@ -171,11 +174,12 @@ def _safe_import_decay_physics():
         return None
 
 
-def _safe_import_isotope_utils():
-    """Safely import isotope_utils module."""
+def _safe_import_nuclear_data():
+    """Safely import nuclear_data module."""
     try:
-        from isotope_utils import (
-            canonical_iso, format_iso_pretty, has_gamma_emission, LN2, AVOGADRO
+        from nuclear_data import (
+            canonical_iso, format_iso_pretty, has_gamma_emission, LN2, AVOGADRO,
+            GAMMA_ENERGY_MIN_KEV, GAMMA_ENERGY_MAX_KEV
         )
         return {
             'canonical_iso': canonical_iso,
@@ -183,6 +187,8 @@ def _safe_import_isotope_utils():
             'has_gamma_emission': has_gamma_emission,
             'LN2': LN2,
             'AVOGADRO': AVOGADRO,
+            'GAMMA_ENERGY_MIN_KEV': GAMMA_ENERGY_MIN_KEV,
+            'GAMMA_ENERGY_MAX_KEV': GAMMA_ENERGY_MAX_KEV,
         }
     except ImportError:
         return None
@@ -613,11 +619,11 @@ def plot_snr_lines(
     -------
     plt.Figure or None
     """
-    utils = _safe_import_isotope_utils()
+    utils = _safe_import_nuclear_data()
     decay = _safe_import_decay_physics()
     
     if not utils or not decay:
-        print("Required modules (isotope_utils, decay_physics) not available")
+        print("Required modules (nuclear_data, decay_physics) not available")
         return None
     
     format_iso_pretty = utils['format_iso_pretty']
@@ -748,9 +754,9 @@ def plot_threshold_comparison(
     -------
     plt.Figure or None
     """
-    utils = _safe_import_isotope_utils()
+    utils = _safe_import_nuclear_data()
     if not utils:
-        print("isotope_utils not available")
+        print("nuclear_data not available")
         return None
     
     canonical_iso = utils['canonical_iso']
@@ -759,19 +765,7 @@ def plot_threshold_comparison(
     
     # Build default cooling map if not provided
     if cooling_map is None:
-        cooling_map = {}
-        for col in alara_df.columns:
-            col_lower = col.lower()
-            if '300' in col_lower or '5min' in col_lower:
-                cooling_map['300s'] = col
-            elif '2h' in col_lower or '7200' in col_lower:
-                cooling_map['2h'] = col
-            elif '24h' in col_lower or '86400' in col_lower:
-                cooling_map['24h'] = col
-            elif '4d' in col_lower or '345600' in col_lower:
-                cooling_map['4d'] = col
-            elif '15d' in col_lower or '1296000' in col_lower:
-                cooling_map['15d'] = col
+        cooling_map = build_cooling_map(alara_df, cooling_order)
     
     valid_cols = [c for c in cooling_order if cooling_map.get(c) in alara_df.columns]
     if not valid_cols:
@@ -862,6 +856,268 @@ def plot_threshold_comparison(
     return fig
 
 
+def plot_alara_predicted_threshold(
+    alara_activity_file: Path,
+    material: str,
+    cooling_time: str,
+    experimental_data: Optional[Dict[str, Dict[str, Any]]] = None,
+    threshold_uCi: float = 1e-4,
+    save_path: Optional[Path] = None,
+    show_plot: bool = True,
+    figsize: Tuple[int, int] = (12, 7)
+) -> Optional[plt.Figure]:
+    """
+    Plot ALARA-predicted isotopes above threshold with gamma-emitter status.
+    """
+    utils = _safe_import_nuclear_data()
+    if not utils:
+        print("nuclear_data not available")
+        return None
+
+    has_gamma_emission = utils['has_gamma_emission']
+    gamma_min = utils['GAMMA_ENERGY_MIN_KEV']
+    gamma_max = utils['GAMMA_ENERGY_MAX_KEV']
+
+    colors = {
+        'Measured': '#2a9d8f',
+        'Not measured (γ)': '#e76f51',
+        'Not measured (no γ)': '#adb5bd',
+        'Total': '#264653'
+    }
+
+    alara_df = pd.read_csv(alara_activity_file)
+    alara_col = build_cooling_map(alara_df, [cooling_time]).get(cooling_time)
+    if not alara_col or alara_col not in alara_df.columns:
+        print(f"No matching ALARA column for cooling time: {cooling_time}")
+        return None
+
+    ct_df = alara_df[['isotope', alara_col]].copy()
+    ct_df = ct_df[ct_df['isotope'].str.lower() != 'total']
+    ct_df['ALARA_uCi'] = ct_df[alara_col] * BQ_TO_UCI
+    ct_df = ct_df[ct_df['ALARA_uCi'] > threshold_uCi]
+
+    if ct_df.empty:
+        print(f"No ALARA isotopes > threshold for {material} at {cooling_time}")
+        return None
+
+    exp_nuclides = experimental_data.get(cooling_time, {}) if experimental_data else {}
+    exp_iso_set = {iso.lower() for iso in exp_nuclides.keys()}
+    detection_floor = None
+    if exp_nuclides:
+        detection_values = [v['activity'] for v in exp_nuclides.values() if v.get('activity', 0) > 0]
+        if detection_values:
+            detection_floor = min(detection_values)
+
+    def classify_isotope(iso):
+        iso_clean = iso.lower().replace('_', '').replace('-', '')
+        exp_clean = {s.replace('_', '').replace('-', '') for s in exp_iso_set}
+        if iso_clean in exp_clean:
+            return 'Measured'
+        if has_gamma_emission(iso, min_intensity=0.01,
+                              energy_min_keV=gamma_min,
+                              energy_max_keV=gamma_max):
+            return 'Not measured (γ)'
+        return 'Not measured (no γ)'
+
+    ct_df['status'] = ct_df['isotope'].apply(classify_isotope)
+    ct_df = ct_df.sort_values('ALARA_uCi', ascending=False)
+
+    total_row = pd.DataFrame({
+        'isotope': ['TOTAL'],
+        'ALARA_uCi': [ct_df['ALARA_uCi'].sum()],
+        'status': ['Total']
+    })
+    ct_df = pd.concat([total_row, ct_df], ignore_index=True)
+    bar_colors = ct_df['status'].map(colors).fillna('#264653')
+
+    n_isotopes = len(ct_df)
+    fig_width = max(figsize[0], n_isotopes * 0.35) if n_isotopes > 30 else figsize[0]
+    fig, ax = plt.subplots(figsize=(fig_width, figsize[1]))
+    x = np.arange(len(ct_df))
+    ax.bar(x, ct_df['ALARA_uCi'], color=bar_colors, edgecolor='black', linewidth=0.5)
+
+    if n_isotopes > 50:
+        ax.set_xticks(x)
+        ax.set_xticklabels(ct_df['isotope'], rotation=90, ha='center', fontsize=6)
+    elif n_isotopes > 30:
+        ax.set_xticks(x)
+        ax.set_xticklabels(ct_df['isotope'], rotation=75, ha='right', fontsize=7)
+    elif n_isotopes > 15:
+        ax.set_xticks(x)
+        ax.set_xticklabels(ct_df['isotope'], rotation=60, ha='right', fontsize=8)
+    else:
+        ax.set_xticks(x)
+        ax.set_xticklabels(ct_df['isotope'], rotation=45, ha='right', fontsize=10)
+
+    ax.set_yscale('log')
+    ax.set_title(f'ALARA predicted isotopes > {threshold_uCi} µCi — {material} — {cooling_time}',
+                 fontsize=14, fontweight='bold', pad=15)
+    ax.set_ylabel('ALARA Activity (µCi)', fontsize=12, fontweight='bold')
+    ax.set_xlabel('Isotope', fontsize=12, fontweight='bold')
+    ax.grid(True, which='both', alpha=0.3, linestyle='--')
+    ax.set_axisbelow(True)
+
+    if detection_floor is not None and detection_floor > 0:
+        ax.axhline(detection_floor, color='red', linestyle='--', linewidth=1.2,
+                   label='Lowest experimental activity')
+
+    n_measured = (ct_df['status'] == 'Measured').sum()
+    n_gamma = (ct_df['status'] == 'Not measured (γ)').sum()
+    n_no_gamma = (ct_df['status'] == 'Not measured (no γ)').sum()
+
+    legend_handles = [
+        mpatches.Patch(color=colors['Total'], label='Total (ALARA)'),
+        mpatches.Patch(color=colors['Measured'], label=f'Measured experimentally ({n_measured})'),
+        mpatches.Patch(color=colors['Not measured (γ)'], label=f'Not measured, γ emitter ({n_gamma})'),
+        mpatches.Patch(color=colors['Not measured (no γ)'], label=f'Not measured, no γ ({n_no_gamma})'),
+        mlines.Line2D([0], [0], color='red', linestyle='--',
+                      label='Lowest experimental activity')
+    ]
+    ax.legend(handles=legend_handles, fontsize=9, loc='upper right',
+              title=f'γ range: {int(gamma_min)}-{int(gamma_max)} keV')
+
+    plt.tight_layout()
+
+    if save_path:
+        plt.savefig(save_path, dpi=300, bbox_inches='tight')
+        print(f"Saved plot to: {save_path}")
+
+    if show_plot:
+        plt.show()
+    else:
+        plt.close(fig)
+
+    return fig
+
+
+def plot_all_materials_threshold(
+    alara_output_dir: Path,
+    experimental_data: Dict[str, Dict[str, Dict[str, Any]]],
+    material_to_tally: Optional[Dict[str, str]] = None,
+    threshold_uCi: float = 1e-4,
+    cooling_times: Optional[List[str]] = None,
+    save_dir: Optional[Path] = None,
+    show_plots: bool = False,
+    show_materials: Optional[List[str]] = None
+) -> Dict[str, Dict[str, plt.Figure]]:
+    """
+    Plot threshold plots for all materials and cooling times.
+    """
+    if material_to_tally is None:
+        try:
+            from data_loaders import MATERIAL_TO_TALLY
+            material_to_tally = MATERIAL_TO_TALLY
+        except ImportError:
+            raise ValueError("material_to_tally must be provided when data_loaders is not available")
+    if cooling_times is None:
+        cooling_times = ['300s', '2h', '24h', '4d', '15d']
+    if show_materials is None:
+        show_materials = []
+
+    alara_output_dir = Path(alara_output_dir)
+    figures = {}
+
+    for material, tally_folder in material_to_tally.items():
+        alara_activity_file = alara_output_dir / f"{tally_folder}_Bq_per_cm3.csv"
+        if not alara_activity_file.exists():
+            print(f"⚠ Missing ALARA activity file for {material}: {alara_activity_file}")
+            continue
+
+        safe_mat = str(material).replace(' ', '_')
+        figures[material] = {}
+        any_plotted = False
+
+        mat_exp_data = experimental_data.get(material, {})
+
+        for ct in cooling_times:
+            save_path = None
+            if save_dir:
+                save_path = Path(save_dir) / f"alara_predicted_threshold_{safe_mat}_{ct}.png"
+
+            should_show = show_plots or (material in show_materials)
+
+            fig = plot_alara_predicted_threshold(
+                alara_activity_file=alara_activity_file,
+                material=material,
+                cooling_time=ct,
+                experimental_data=mat_exp_data,
+                threshold_uCi=threshold_uCi,
+                save_path=save_path,
+                show_plot=should_show
+            )
+
+            if fig is not None:
+                figures[material][ct] = fig
+                any_plotted = True
+
+        if not any_plotted:
+            print(f"No ALARA isotopes above threshold for {material}.")
+
+    return figures
+
+
+def get_alara_isotopes_above_threshold(
+    alara_activity_file: Path,
+    cooling_time: str,
+    threshold_uCi: float = 1e-4
+) -> pd.DataFrame:
+    """
+    Get ALARA isotopes above threshold for a given cooling time.
+    """
+    alara_df = pd.read_csv(alara_activity_file)
+    alara_col = build_cooling_map(alara_df, [cooling_time]).get(cooling_time)
+    if not alara_col or alara_col not in alara_df.columns:
+        return pd.DataFrame()
+
+    result = alara_df[['isotope', alara_col]].copy()
+    result = result[result['isotope'].str.lower() != 'total']
+    result['activity_uCi'] = result[alara_col] * BQ_TO_UCI
+    result = result[result['activity_uCi'] > threshold_uCi]
+    result = result.rename(columns={alara_col: 'activity_Bq_cm3'})
+    result = result.sort_values('activity_uCi', ascending=False)
+    return result
+
+
+def count_alara_isotopes_by_material(
+    alara_output_dir: Path,
+    material_to_tally: Optional[Dict[str, str]] = None,
+    threshold_uCi: float = 1e-4,
+    cooling_times: Optional[List[str]] = None
+) -> pd.DataFrame:
+    """
+    Count ALARA isotopes above threshold for all materials and cooling times.
+    """
+    if material_to_tally is None:
+        try:
+            from data_loaders import MATERIAL_TO_TALLY
+            material_to_tally = MATERIAL_TO_TALLY
+        except ImportError:
+            raise ValueError("material_to_tally must be provided when data_loaders is not available")
+    if cooling_times is None:
+        cooling_times = ['300s', '2h', '24h', '4d', '15d']
+
+    alara_output_dir = Path(alara_output_dir)
+    results = []
+
+    for material, tally_folder in material_to_tally.items():
+        alara_activity_file = alara_output_dir / f"{tally_folder}_Bq_per_cm3.csv"
+        if not alara_activity_file.exists():
+            continue
+
+        for ct in cooling_times:
+            df = get_alara_isotopes_above_threshold(
+                alara_activity_file, ct, threshold_uCi
+            )
+            results.append({
+                'material': material,
+                'cooling_time': ct,
+                'isotope_count': len(df),
+                'total_activity_uCi': df['activity_uCi'].sum() if not df.empty else 0
+            })
+
+    return pd.DataFrame(results)
+
+
 def plot_vit_j_comparison(
     alara_df: pd.DataFrame,
     material_name: str,
@@ -893,9 +1149,9 @@ def plot_vit_j_comparison(
     -------
     plt.Figure or None
     """
-    utils = _safe_import_isotope_utils()
+    utils = _safe_import_nuclear_data()
     if not utils:
-        print("isotope_utils not available")
+        print("nuclear_data not available")
         return None
     
     canonical_iso = utils['canonical_iso']
@@ -904,19 +1160,7 @@ def plot_vit_j_comparison(
     
     # Build default cooling map if not provided
     if cooling_map is None:
-        cooling_map = {}
-        for col in alara_df.columns:
-            col_lower = col.lower()
-            if '300' in col_lower or '5min' in col_lower:
-                cooling_map['300s'] = col
-            elif '2h' in col_lower or '7200' in col_lower:
-                cooling_map['2h'] = col
-            elif '24h' in col_lower or '86400' in col_lower:
-                cooling_map['24h'] = col
-            elif '4d' in col_lower or '345600' in col_lower:
-                cooling_map['4d'] = col
-            elif '15d' in col_lower or '1296000' in col_lower:
-                cooling_map['15d'] = col
+        cooling_map = build_cooling_map(alara_df, cooling_order)
     
     valid_cols = [c for c in cooling_order if cooling_map.get(c) in alara_df.columns]
     if not valid_cols:
@@ -1167,6 +1411,122 @@ def plot_flux_vs_spectrum(
     return fig
 
 
+def plot_flux_energy_ranges(
+    flux_df: pd.DataFrame,
+    spectrum_edges: np.ndarray,
+    spectrum_flux: np.ndarray,
+    spectrum_label: str = 'MCNP Spectrum',
+    output_dir: Optional[str] = None,
+    figsize: Tuple[float, float] = (12, 7),
+    title: str = 'Flux Wire Energy Ranges vs MCNP Spectrum',
+    show_errorbar: bool = True,
+    show: bool = True
+) -> Optional[plt.Figure]:
+    """
+    Plot flux wire energy ranges (as horizontal lines) over MCNP spectrum.
+    """
+    if flux_df.empty:
+        print("Flux DataFrame is empty, cannot plot.")
+        return None
+
+    fig, ax = plt.subplots(figsize=figsize)
+    ax.step(spectrum_edges,
+            np.concatenate([spectrum_flux, spectrum_flux[-1:]]),
+            where='post', color='gray', linewidth=2.2, alpha=0.7,
+            label=spectrum_label)
+
+    samples = sorted(flux_df['sample'].unique())
+    cmap = plt.cm.get_cmap('tab20', max(20, len(samples)))
+    handles = {}
+
+    for idx, sample in enumerate(samples):
+        sub = flux_df[flux_df['sample'] == sample]
+        color = cmap(idx % 20)
+
+        for _, r in sub.iterrows():
+            ax.hlines(y=r['phi'], xmin=r['e_start'], xmax=r['e_end'],
+                      color=color, linewidth=4, alpha=0.9)
+            if show_errorbar and np.isfinite(r.get('phi_unc', np.nan)) and r['phi_unc'] > 0:
+                ax.errorbar(r['energy_MeV'], r['phi'], yerr=r['phi_unc'],
+                            fmt='none', ecolor=color, elinewidth=1.5, capsize=4, zorder=4)
+
+        legend_label = re.sub(r'_\d+cm$', '', sample)
+        handles[sample] = plt.Line2D([0], [0], color=color, lw=4, label=legend_label)
+
+    legend_elements = [plt.Line2D([0], [0], color='gray', lw=2.2,
+                                  label=spectrum_label)] + list(handles.values())
+    ax.legend(handles=legend_elements, bbox_to_anchor=(1.02, 1.0),
+              loc='upper left', fontsize=7)
+
+    ax.set_xlabel('Neutron Energy (MeV)', fontsize=12, fontweight='bold')
+    ax.set_ylabel('Flux (n/cm²/s)', fontsize=12, fontweight='bold')
+    ax.set_title(title, fontsize=14, fontweight='bold')
+    ax.set_xscale('log')
+    ax.set_yscale('log')
+    ax.grid(True, which='both', alpha=0.3)
+    plt.tight_layout()
+
+    if output_dir:
+        out_path = os.path.join(output_dir, 'flux_wire_vs_spectrum_ranges.png')
+        plt.savefig(out_path, dpi=300, bbox_inches='tight')
+        print(f"Saved: {out_path}")
+
+    if show:
+        plt.show()
+    else:
+        plt.close(fig)
+
+    return fig
+
+
+def create_all_flux_plots(
+    flux_wires_df: pd.DataFrame,
+    spectrum_csv: str,
+    output_dir: str,
+    meta_df: Optional[pd.DataFrame] = None,
+    show_plots: bool = True
+) -> Dict[str, plt.Figure]:
+    """
+    Create all flux wire plots in one call.
+    """
+    flux_df = compute_flux_from_measurements(flux_wires_df, meta_df)
+    if flux_df.empty:
+        print("No flux data to plot")
+        return {}
+
+    spectrum = load_mcnp_spectrum(spectrum_csv)
+    if spectrum is None:
+        return {}
+
+    figures = {}
+
+    fig1 = plot_flux_wire_measurements(flux_df, output_dir=output_dir, show=show_plots)
+    if fig1:
+        figures['measurements'] = fig1
+
+    fig2 = plot_flux_vs_spectrum(
+        flux_df,
+        spectrum_edges=spectrum['edges'],
+        spectrum_flux=spectrum['flux'],
+        output_dir=output_dir,
+        show=show_plots
+    )
+    if fig2:
+        figures['vs_spectrum'] = fig2
+
+    fig3 = plot_flux_energy_ranges(
+        flux_df,
+        spectrum_edges=spectrum['edges'],
+        spectrum_flux=spectrum['flux'],
+        output_dir=output_dir,
+        show=show_plots
+    )
+    if fig3:
+        figures['energy_ranges'] = fig3
+
+    return figures
+
+
 # ==============================================================================
 # DECAY CURVE PLOTS  
 # ==============================================================================
@@ -1207,7 +1567,7 @@ def plot_decay_curves(
     -------
     plt.Figure or None
     """
-    utils = _safe_import_isotope_utils()
+    utils = _safe_import_nuclear_data()
     if not utils:
         LN2 = 0.693147
         format_iso_pretty = lambda x: x
