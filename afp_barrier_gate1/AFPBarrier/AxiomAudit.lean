@@ -1,0 +1,8 @@
+import AFPBarrier
+
+#print axioms AFPBarrier.jumpGenerator_square_identity
+#print axioms AFPBarrier.jumpGenerator_sq_le_rate_mul_carre
+#print axioms AFPBarrier.no_exact_linear_and_square_at_peak
+#print axioms AFPBarrier.no_exact_shifted_quadratic_at_peak
+#print axioms AFPBarrier.eigenvalue_sq_le_rate_mul_peakDefect
+#print axioms AFPBarrier.no_exact_S2_degree_two_at_peak
