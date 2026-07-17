@@ -21,15 +21,15 @@ def offdiag (i : ι) : Finset ι := Finset.univ.erase i
 
 /-- A finite-state jump generator. -/
 def jumpGenerator (a : ι → ι → ℝ) (f : ι → ℝ) (i : ι) : ℝ :=
-  ∑ j in offdiag i, a i j * (f j - f i)
+  (offdiag i).sum (fun j => a i j * (f j - f i))
 
 /-- Total outgoing jump rate at `i`. -/
 def jumpRate (a : ι → ι → ℝ) (i : ι) : ℝ :=
-  ∑ j in offdiag i, a i j
+  (offdiag i).sum (fun j => a i j)
 
 /-- The pointwise carré du champ of a finite jump generator. -/
 def carreDuChamp (a : ι → ι → ℝ) (f : ι → ℝ) (i : ι) : ℝ :=
-  ∑ j in offdiag i, a i j * (f j - f i) ^ 2
+  (offdiag i).sum (fun j => a i j * (f j - f i) ^ 2)
 
 @[simp] theorem jumpGenerator_const
     (a : ι → ι → ℝ) (c : ℝ) (i : ι) :
@@ -97,7 +97,9 @@ theorem jumpGenerator_sq_le_rate_mul_carre
     (fun j hj => ha j (Finset.mem_erase.mp hj).1)
     (fun j hj =>
       mul_nonneg (ha j (Finset.mem_erase.mp hj).1) (sq_nonneg (f j - f i)))
-    (fun j hj => by ring)
+    (fun j hj => by
+      apply le_of_eq
+      ring)
   simpa [jumpGenerator, jumpRate, carreDuChamp] using h
 
 /-- If the carré du champ vanishes, then the generator vanishes on that
