@@ -37,8 +37,10 @@ theorem S2_four_le_rate_mul_defect
     (hgi : g i = 1)
     (hdegreeOne : jumpGenerator a g i = -2) :
     4 ≤ jumpRate a i * peakDefect a g i 2 := by
-  simpa using eigenvalue_sq_le_rate_mul_peakDefect
+  have h := eigenvalue_sq_le_rate_mul_peakDefect
     (a := a) (f := g) (i := i) (lam := 2)
     ha hgi hdegreeOne
+  norm_num at h
+  exact h
 
 end AFPBarrier
