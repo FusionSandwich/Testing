@@ -26,7 +26,6 @@ theorem peakDefect_eq_carreDuChamp
         = jumpGenerator a (fun j => (f j) ^ 2) i
             - 2 * f i * jumpGenerator a f i := by
               simp [peakDefect, hfi, hlinear]
-              ring
     _ = carreDuChamp a f i :=
       jumpGenerator_square_identity (a := a) (f := f) (i := i)
 
