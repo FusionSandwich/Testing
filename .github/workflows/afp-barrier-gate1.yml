@@ -83,7 +83,7 @@ jobs:
             echo "Proof placeholder found." >&2
             exit 1
           fi
-          if grep -RInE --include='*.lean' '^\s*axiom([[:space:]]|$)' AFPBarrier AFPBarrier.lean; then
+          if grep -RInE --include='*.lean' '^[[:space:]]*axiom([[:space:]]|$)' AFPBarrier AFPBarrier.lean; then
             echo "User axiom declaration found." >&2
             exit 1
           fi
