@@ -27,7 +27,6 @@ theorem conductanceRate_common_scale
       = conductanceRate c d i j := by
   unfold conductanceRate
   field_simp [hα, hd i]
-  ring
 
 /-- The whole jump generator is invariant under a common nonzero scale. -/
 theorem jumpGenerator_conductance_common_scale
