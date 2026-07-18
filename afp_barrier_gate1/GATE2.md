@@ -1,336 +1,354 @@
-# Gate 2 closure: source audit, compatibility theory, and Lean verification
+# Gate 2 closure: Charles Bienvenue source audit, compatibility theory, and Lean verification
 
-**Audit date:** 18 July 2026  
-**Primary implementation audited:** [`CBienvenue/Radiant.jl`](https://github.com/CBienvenue/Radiant.jl/tree/205e07faa105854b0f27e95a02f01ebed08f84c1)  
+**Closed:** 18 July 2026  
+**Radiant commit audited:** [`205e07faa105854b0f27e95a02f01ebed08f84c1`](https://github.com/CBienvenue/Radiant.jl/tree/205e07faa105854b0f27e95a02f01ebed08f84c1)  
 **Primary paper:** C. Bienvenue, A. Naceur, J.-F. Carrier, and A. Hébert, “A Flexible, Moment-Preserving, and Monotone Discretization of the Multidimensional Angular Fokker–Planck Operator,” *Nuclear Science and Engineering* (2025), DOI: [10.1080/00295639.2025.2462891](https://doi.org/10.1080/00295639.2025.2462891).
 
 ## Decision
 
 **Gate 2 passes with a narrowed publication claim.**
 
-The standard finite-jump carré-du-champ identity is not claimed as new. The project’s defensible contribution is the AFP-specific combination of:
+The finite-jump carré-du-champ identity and the generic jump-versus-diffusion chain-rule obstruction are standard and are not claimed as new. The candidate contribution is the AFP-specific combination of:
 
 1. an explicit complete-degree-two obstruction for finite monotone AFP matrices;
-2. a precise reversible shared-edge formulation matching the published implementation;
-3. an exact dense existence theorem for centered quadratures;
-4. a cone/duality framework for local positive compatibility;
-5. an optimal degree-two-defect linear program with rigorous dual certificates.
+2. an exact reversible shared-edge formulation matching Radiant;
+3. a dense positive existence theorem for weighted-centered quadratures;
+4. a cone and dual-certificate theory for local positive compatibility;
+5. an optimal unavoidable-degree-two-defect linear program;
+6. a source-pinned audit of product, Carlson, and Lebedev quadratures.
 
-The remaining local-graph positivity theorem and asymptotic defect theorem are the next research stage, not unresolved Gate 2 scope questions.
+A final specialist review remains advisable before asserting priority, but the five Gate 2 technical questions are resolved.
 
 ---
 
-# Resolution of the five Gate 2 questions
+# 1. Weighted-adjoint convention and Radiant matrix orientation
 
-## 1. Does the weighted-adjoint convention match Charles Bienvenue’s AFP matrix?
+## Answer
 
-**Yes, after one important clarification: the unshifted finite-difference AFP operator is already weighted self-adjoint.**
+The unshifted multidimensional finite-difference AFP matrix in Radiant is already self-adjoint in the quadrature-weighted inner product.
 
-Radiant constructs one coefficient `γ[e]` for each unordered Voronoi/Delaunay edge. The matrix assembly is
+Radiant creates one coefficient `gamma[e]` for each unordered spherical Voronoi/Delaunay edge and assembles
 
 ```julia
-M[n,m] += γ[e] / w[n]
-M[n,n] -= γ[e] / w[n]
+M[n,m] += gamma[e] / w[n]
+M[n,n] -= gamma[e] / w[n]
 ```
 
-so its action before stabilization is exactly
+so
 
 \[
-(Lf)_i=\frac{1}{w_i}\sum_{j\sim i}\gamma_{ij}(f_j-f_i),
+(Lf)_i=\frac1{w_i}\sum_{j\sim i}\gamma_{ij}(f_j-f_i),
 \qquad \gamma_{ij}=\gamma_{ji}.
 \]
 
-Consequently,
+Hence
 
 \[
 w_iL_{ij}=\gamma_{ij}=w_jL_{ji},
+\qquad WL=L^TW,
+\qquad W^{-1}L^TW=L.
 \]
 
-or
+The general weighted-adjoint reduction remains correct, but for Charles’s shared-edge matrix it returns the same operator.
 
-\[
-WL=L^{T}W.
-\]
+Radiant later adds a scalar diagonal shift to form a nonnegative scattering matrix and applies the corresponding total-cross-section correction. Those two terms cancel in the transport equation. The no-go and defect theorems therefore concern the unshifted generator, not the shifted scattering matrix in isolation.
 
-Thus the weighted adjoint satisfies
+## Lean verification
 
-\[
-W^{-1}L^{T}W=L.
-\]
+- `ForwardAdjoint.lean`: general forward-matrix conversion.
+- `ReversibleConductance.lean`: detailed balance, weighted conservation, and self-adjoint rates.
+- `ImplementationConvention.lean`: full row-matrix action and exact diagonal-shift cancellation.
 
-The general `ForwardAdjoint.lean` reduction remains correct, but for Charles’s shared-edge matrix it collapses to the same operator. `ReversibleConductance.lean` now formalizes this detailed-balance identity.
-
-Radiant subsequently shifts the diagonal by `λ₀` to create a nonnegative scattering matrix and applies the corresponding total-cross-section correction. The no-go and defect theorems concern the **unshifted AFP generator**, not the shifted scattering matrix in isolation.
-
-Implementation sources:
-
-- [`fokker_planck_weights_3D`](https://github.com/CBienvenue/Radiant.jl/blob/205e07faa105854b0f27e95a02f01ebed08f84c1/src/tools/voronoi.jl#L225-L264)
-- [3D matrix assembly](https://github.com/CBienvenue/Radiant.jl/blob/205e07faa105854b0f27e95a02f01ebed08f84c1/src/particle_transport/fokker_planck_finite_difference.jl)
-
-**Conclusion:** Question 1 is closed.
+**Question 1: closed.**
 
 ---
 
-## 2. Is the complete-degree-two incompatibility theorem already explicit in AFP literature?
+# 2. Is the complete-degree-two obstruction already explicit in AFP literature?
 
-**It was not located in Charles’s paper, Radiant, or the principal AFP references cited there.**
+## Answer
 
-The sources consistently distinguish two constructions:
+No explicit statement was located in Bienvenue et al. (2025), Radiant, or the principal AFP references checked, including the 2007 three-dimensional discretization paper.
 
-- monotone finite differences preserving the constant and degree-one modes;
-- Galerkin or differential-quadrature constructions preserving higher modes but not possessing the same local monotone jump structure.
+The audited sources distinguish:
 
-The 2007 Morel–Larsen–Miller construction and the 2025 Bienvenue construction state degree-one moment preservation. Neither source located in this audit states the theorem
+- monotone finite-difference schemes preserving constants and the complete degree-one space; and
+- Galerkin or differential-quadrature schemes preserving higher modes without the same positive finite-jump structure.
 
-> a finite conservative monotone AFP jump matrix that is exact on the complete degree-one eigenspace cannot also be exact on the complete degree-two eigenspace.
+The searched AFP sources do not state:
 
-The mechanism is nevertheless a standard Markov-generator chain-rule obstruction. Therefore the correct novelty wording is:
+> No finite conservative monotone AFP jump matrix can be exact on both the complete degree-one and complete degree-two spherical-harmonic eigenspaces.
 
-> **apparently the first explicit AFP specialization and quantitative design consequence, subject to specialist priority confirmation**,
+The proof mechanism is nevertheless a standard Markov-generator chain-rule obstruction. The defensible wording is therefore:
 
-not a claim that the underlying carré-du-champ principle is new.
+> an apparently new explicit AFP specialization, exact defect formula, and design consequence, subject to final specialist priority confirmation.
 
-References checked:
+It would be inaccurate to claim discovery of the general carré-du-champ principle.
 
-- Bienvenue et al. (2025), DOI above.
-- E. W. Larsen, W. F. Miller Jr., and C. D. Morel, “A Discretization Scheme for the Three-Dimensional Angular Fokker–Planck Operator,” *Nuclear Science and Engineering* 156 (2007), DOI: [10.13182/NSE07-A2693](https://doi.org/10.13182/NSE07-A2693).
-- The AFP source files and documentation in Radiant.
-
-**Conclusion:** Question 2 is closed as a documented search conclusion, not as a logically absolute proof that no unpublished or obscure source contains the statement.
+**Question 2: closed as a documented source audit, not as a logically absolute proof that no obscure or unpublished source contains the statement.**
 
 ---
 
-## 3. Is Charles’s shared-edge system equivalent to a known spherical Delaunay/cotangent Laplacian?
+# 3. Relation to spherical Delaunay/cotangent Laplacians
 
-**It belongs to the same normalized reversible graph-Laplacian class, but it is not generally the same canonical operator.**
+## Answer
 
-A canonical spherical Delaunay Laplacian has the form
+Charles’s operator and the Izmestiev–Lam spherical Delaunay Laplacian belong to the same normalized reversible graph-Laplacian class:
 
 \[
-(\Delta_{\mathrm{geom}}f)_i
-=\frac{1}{d_i}\sum_{j\sim i}c_{ij}(f_j-f_i),
-\qquad c_{ij}=c_{ji},
+(Lf)_i=\frac1{m_i}\sum_{j\sim i}c_{ij}(f_j-f_i),
+\qquad c_{ij}=c_{ji}.
 \]
 
-with edge and vertex weights derived from spherical geometry. Izmestiev and Lam prove nonnegativity under the Delaunay condition and identify exact eigenvalue `-2` modes arising from infinitesimal isometric deformations. For an inscribed polyhedron, translations yield the coordinate functions.
+They are not generally the same canonical operator.
 
-Charles’s operator is
+- In a geometric spherical Delaunay Laplacian, both edge conductances and vertex masses are determined by the spherical geometry.
+- In Radiant, the masses are externally prescribed quadrature weights `w_i`, and `gamma_ij` is solved from the degree-one moment equations.
 
-\[
-(Lf)_i=\frac{1}{w_i}\sum_{j\sim i}\gamma_{ij}(f_j-f_i),
-\]
-
-where `w_i` are externally prescribed quadrature weights and `γ` is solved from the degree-one moment equations.
-
-On a connected graph, the two operators agree up to an overall scale only when
+On a connected graph, a geometric pair `(c,d)` and an AFP pair `(gamma,w)` describe the same normalized operator up to an operator scale only when
 
 \[
-w_i=\alpha d_i\quad\text{for every }i,
+w_i=\alpha d_i,
 \qquad
 \gamma_{ij}=\alpha\beta c_{ij}
 \]
 
-for constants `α>0` and operator scale `β>0`. Arbitrary Lebedev, Carlson, or product quadrature weights need not equal the canonical geometric vertex weights.
+for constants `alpha>0` and `beta>0`.
 
-Thus:
+Thus the two constructions have:
 
-- the adjacency is spherical Voronoi/Delaunay;
-- the algebraic operator class is the same;
-- the canonical geometric and quadrature-adapted operators are generally different members of that class.
+- the same spherical Voronoi/Delaunay adjacency language;
+- the same reversible normalized-graph algebra;
+- generally different vertex masses and edge conductances.
 
-Reference:
+`ScalingCompatibility.lean` verifies the common-scaling transfer algebra. The geometric positivity theorem remains an external input from Izmestiev and Lam.
 
-- I. Izmestiev and W. Y. Lam, “Discrete Laplacians — spherical and hyperbolic,” *Journal of the London Mathematical Society* (2025), DOI: [10.1112/jlms.70235](https://doi.org/10.1112/jlms.70235).
-
-**Conclusion:** Question 3 is closed.
+**Question 3: closed.**
 
 ---
 
-## 4. Which hypotheses guarantee an exact positive degree-one shared-edge solution?
+# 4. Conditions for an exact positive degree-one shared-edge solution
 
-There are three distinct answers, depending on the allowed graph.
+There are three levels of answer.
 
-### 4.1 Unrestricted complete graph: a necessary-and-sufficient theorem
+## 4.1 Complete graph: necessary and sufficient
 
-Let
-
-\[
-W=\sum_i w_i,
-\qquad w_i>0,
-\]
-
-and suppose the quadrature is weighted centered:
+Let positive weights satisfy
 
 \[
-\sum_i w_i\Omega_i=0.
+W=\sum_iw_i>0,
+\qquad
+\sum_iw_i\Omega_i=0.
 \]
 
-For any target eigenvalue `λ>0`, define
+For target eigenvalue `lambda>0`, define
 
 \[
 \gamma_{ij}=\frac{\lambda w_iw_j}{W}
 \quad(i\ne j).
 \]
 
-Then
-
-\[
-(Lf)_i=\frac{1}{w_i}\sum_j\gamma_{ij}(f_j-f_i)
-\]
-
-satisfies
+Then every conductance is strictly positive and
 
 \[
 L(\Omega\cdot v)=-\lambda(\Omega\cdot v)
 \]
 
-for every vector `v`. Every off-diagonal conductance is strictly positive.
+for every vector `v`. In fact, the complete graph acts as `-lambda` on every sampled function of zero weighted mean.
 
-Conversely, for any reversible conductance operator and nonzero eigenvalue, exact coordinate eigenmodes imply
+Conversely, weighted conservation implies that every nonzero eigenmode of a reversible conductance operator has zero weighted mean. Therefore exact coordinate modes imply
 
 \[
-\sum_i w_i\Omega_i=0.
+\sum_iw_i\Omega_i=0.
 \]
 
-Therefore weighted centering is necessary and sufficient for a **dense strictly positive reversible** degree-one-exact operator. This result is formalized in `CompleteGraph.lean`.
+Hence:
 
-Lebedev’s octahedral symmetry, Carlson/level symmetry, and symmetric product quadratures provide weighted centering when their paired or orbit-related weights agree.
+> Weighted centering is necessary and sufficient for a dense strictly positive reversible degree-one-exact construction.
 
-### 4.2 Prescribed local graph: exact cone criterion
+This is kernel-verified in `CompleteGraph.lean`.
 
-For one variable `γ_e` per allowed undirected edge, define the equilibrium matrix `A` by giving edge `e={i,j}` the column
+## 4.2 Prescribed local graph: exact cone criterion
+
+Give every permitted undirected edge `e={i,j}` one variable `gamma_e`. Let the equilibrium matrix column for `e` have nodal blocks
 
 \[
 A_e|_i=\Omega_j-\Omega_i,
 \qquad
-A_e|_j=\Omega_i-\Omega_j.
+A_e|_j=\Omega_i-\Omega_j,
 \]
 
-The required load is
+and define the radial load
 
 \[
 b_i=-\lambda w_i\Omega_i.
 \]
 
-Then a nonnegative local solution exists exactly when
+Then
 
 \[
+\exists\gamma\ge0: A\gamma=b
+\quad\Longleftrightarrow\quad
 b\in\operatorname{cone}\{A_e:e\in E\}.
 \]
 
-A strictly positive solution exists when the load lies in the appropriate relative interior after redundant edge columns are removed. This is the complete finite-dimensional compatibility condition.
+Strict positivity is the corresponding relative-interior condition after redundant columns are handled.
 
-### 4.3 Convex triangulated/Delaunay graph
+## 4.3 Infinitesimally rigid triangulation
 
-If the embedded edge framework is infinitesimally rigid, then the range of `A` is the orthogonal complement of rigid motions. The radial load above is automatically orthogonal to rotations and is orthogonal to translations precisely when the quadrature is centered. Hence:
+When the embedded framework is infinitesimally rigid, the signed equilibrium system has the expected range: the radial load is automatically orthogonal to rotations and is orthogonal to translations exactly when the quadrature is weighted-centered. Under the expected rank and edge-count conditions this gives a unique signed exact solution.
 
-> An infinitesimally rigid spherical triangulation plus weighted centering guarantees a unique **signed** exact shared-edge solution when the edge count is `3N-6`.
+Positivity is additional. Rigidity alone does not imply that the load lies in the positive cone.
 
-Positivity is additional and is not implied by rigidity alone.
+## Radiant implementation audit
 
-The canonical Izmestiev–Lam Delaunay weights give a positive exact solution for their matched geometric vertex weights. For arbitrary prescribed quadrature weights, positivity is governed by the cone criterion.
-
-Charles’s paper reports positive exact solutions for all tested product, level-symmetric, and Lebedev cases, but does not prove positivity for every order. The Radiant implementation checks full column rank through `pinv(Γ)Γ≈I`; a stronger implementation audit should also check
+Radiant checks approximately
 
 ```julia
-norm(Γ * γ - Q)
-minimum(γ)
+pinv(Gamma) * Gamma == I
 ```
 
-because full column rank alone does not establish right-hand-side compatibility or positivity for a general overdetermined system.
+which verifies full column rank. For a general overdetermined system, a complete runtime validation should also record
 
-**Conclusion:** Question 4 is closed at the theorem/criterion level. Proving that every member of a specific infinite quadrature family lies in the positive cone remains a publishable next theorem.
+```julia
+gamma = pinv(Gamma) * Q
+norm(Gamma * gamma - Q)
+minimum(gamma)
+```
+
+with explicit tolerances. A reusable validation helper is included in `radiant_audit/validation_patch.jl`.
+
+**Question 4: closed at the theorem and finite-dimensional criterion level. A family-wide local positivity theorem remains a Gate 3 research target.**
 
 ---
 
-## 5. Can the LP dual provide geometric infeasibility and optimality certificates?
+# 5. Geometric dual certificates
 
-**Yes.**
+## Answer
 
-For the positive feasibility problem
+Yes.
+
+For positive feasibility
 
 \[
 A\gamma=b,
 \qquad \gamma\ge0,
 \]
 
-Farkas duality gives a certificate of infeasibility: if there is a nodal vector field `y` such that
+any nodal dual vector field `y` satisfying
 
 \[
 A^Ty\ge0,
-\qquad
-b\cdot y<0,
+\qquad b\cdot y<0
 \]
 
-then no nonnegative conductance solution exists.
+certifies infeasibility.
 
 For edge `e={i,j}`,
 
 \[
-(A^Ty)_e
-=(\Omega_j-\Omega_i)\cdot(y_i-y_j).
+(A^Ty)_e=(\Omega_j-\Omega_i)\cdot(y_i-y_j),
 \]
 
-Thus a dual certificate is a nodal displacement field whose permitted edges satisfy one-sided infinitesimal length inequalities while its work against the required radial load has the wrong sign. This gives a geometric obstruction rather than only a failed numerical solve.
+so the certificate has a geometric interpretation as a one-sided infinitesimal edge-length condition with negative work against the radial load.
 
-For the defect-minimizing LP
+For the defect-minimizing problem
 
 \[
-\min_{\gamma\ge0} c\cdot\gamma
+\min_{\gamma\ge0}c\cdot\gamma
 \quad\text{subject to}\quad A\gamma=b,
 \]
 
-its dual is
+the dual is
 
 \[
 \max_y b\cdot y
 \quad\text{subject to}\quad A^Ty\le c.
 \]
 
-Every dual-feasible `y` gives a rigorous lower bound on the unavoidable defect. A primal/dual pair with equal objective values is a machine-checkable optimality certificate.
+Every dual-feasible vector gives a rigorous lower bound. Equal primal and dual objectives provide a compact optimality certificate.
 
-`DualCertificate.lean` formalizes:
+`DualCertificate.lean` verifies the finite transpose identity, soundness of negative-work infeasibility certificates, and positive-LP weak duality. Full Farkas completeness and strong duality are standard finite-dimensional results and are not claimed as new.
 
-- the finite transpose/bilinear identity;
-- soundness of negative-work infeasibility certificates;
-- weak duality for the positive equality-constrained LP.
-
-Full Farkas completeness and strong duality are standard finite-dimensional results and are not claimed as new here.
-
-**Conclusion:** Question 5 is closed.
+**Question 5: closed.**
 
 ---
 
-# Implementation audit finding
+# Source-pinned Radiant audit
 
-Radiant currently uses
+GitHub Actions evaluated ten finite cases at Radiant commit `205e07faa105854b0f27e95a02f01ebed08f84c1`:
 
-```julia
-pinv_Γ = pinv(Γ)
-if norm(pinv_Γ*Γ-I) > tolerance
-    error(...)
-end
-γ = pinv_Γ*Q
+- Gauss–Legendre–Chebyshev orders 2, 3, and 4;
+- Carlson orders 2, 4, and 6;
+- Lebedev orders 3, 5, 7, and 9.
+
+All ten passed.
+
+For every case:
+
+- the weighted centroid was zero to roundoff;
+- the equilibrium matrix had full column rank;
+- Radiant’s pseudoinverse coefficients were strictly positive;
+- the `-2` coordinate-balance residual was below `4e-15`;
+- no negative conductance was found;
+- the first-mode eigenrelation held to roundoff;
+- the exact degree-two defect identity held to roundoff;
+- the sharp Lean-verified inequality `4 <= rate_i * defect_i` held at every node.
+
+The full table is in [`radiant_audit/radiant_afp_audit.md`](radiant_audit/radiant_afp_audit.md).
+
+Audit provenance:
+
+```text
+GitHub Actions run: 29634439040
+Artifact SHA-256: 3d395c99deb3cc73bcfb4c445a0f9425572994ccd7c4d4705e934e34f981ab81
+Julia: 1.10.11
 ```
 
-The first check verifies full column rank. For a general overdetermined system it does not itself verify that `Q` lies in the column space. The mathematically complete runtime validation is:
+These are finite-instance certificates, not a proof for every order in an infinite family.
 
-```julia
-γ = pinv(Γ) * Q
-residual = norm(Γ * γ - Q)
-minimum_weight = minimum(γ)
+---
+
+# Lean verification record
+
+The expanded Gate 2 source was kernel-checked at source commit
+
+```text
+f48c52fc1b62834707a847880454b3dadda03c6d
 ```
 
-with declared tolerances. A dual LP can additionally produce a rigorous infeasibility or optimality certificate.
+GitHub Actions run `29634626374` passed:
+
+- Lean `4.30.0`;
+- Lake `5.0.0`;
+- `lake build`: 2,955 jobs, success;
+- axiom audit: 53 public theorem entries;
+- no `sorryAx`;
+- no `sorry` or `admit` placeholders;
+- no user-declared axioms.
+
+Artifact provenance:
+
+```text
+Artifact ID: 8426685500
+Artifact SHA-256: e91e67114ad32a916eef6811c1e0a3916e42889e4007befc00fc62501b338eec
+Built PR merge commit: e2378c5b4dbff3fec02475ca2523f2f0e635522e
+```
+
+The axiom report contains only the standard Mathlib foundations `propext`, `Classical.choice`, and `Quot.sound`.
 
 ---
 
 # Final scoped publication claim after Gate 2
 
-The paper should not claim a new carré-du-champ principle. It may claim, subject to final AFP-specialist review:
+Subject to final AFP-specialist priority review, the manuscript may state:
 
-> A finite conservative monotone AFP jump discretization cannot preserve the complete degree-one and degree-two spherical-harmonic eigenspaces simultaneously. For degree-one-exact reversible shared-edge operators, the unavoidable degree-two defect is an explicit positive quadratic variation obeying a sharp defect–stiffness inequality. Weighted centering exactly characterizes dense positive feasibility, while local positive feasibility and defect minimization admit cone and dual certificate formulations.
+> A finite conservative monotone AFP jump discretization cannot preserve the complete degree-one and degree-two spherical-harmonic eigenspaces simultaneously. For degree-one-exact reversible shared-edge operators, the unavoidable degree-two defect is an explicit positive quadratic variation satisfying a sharp defect–stiffness inequality. Weighted centering exactly characterizes dense positive feasibility, while local positive feasibility and defect minimization admit cone and dual-certificate formulations.
 
-# Next gate
+# Gate 3 target
 
-Gate 3 should prove at least one family-level local positivity or asymptotic theorem and compare the defect-minimizing LP against the existing pseudoinverse construction in Radiant.
+Gate 3 should prove at least one of:
+
+1. positive local feasibility for an infinite, practically used quadrature family;
+2. a sharp `Theta(h^2)` optimal-defect theorem and corresponding `Theta(h^-2)` stiffness;
+3. a dual geometric classification of infeasible local quadratures;
+4. a benchmark comparison between Radiant’s pseudoinverse coefficients and the defect-minimizing positive LP.
