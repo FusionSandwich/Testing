@@ -46,7 +46,6 @@ theorem conductanceRate_completeConductance_eq_completeRate
       = completeRate w lam i j := by
   unfold conductanceRate completeConductance completeRate
   field_simp [hw i]
-  ring
 
 /-- The complete graph acts as `-lam` on every weighted-mean-zero sampled
 function. -/
