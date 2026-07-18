@@ -43,21 +43,38 @@ theorem matrixAction_conductanceMatrix_eq_jumpGenerator
       -(offdiag i).sum (fun k => conductanceRate γ w i k)
     else conductanceRate γ w i j) * f j)
     (Finset.mem_univ i)]
-  simp only [if_pos, Finset.sum_erase]
-  have hi : i ∉ offdiag i := by simp [offdiag]
-  simp only [Finset.mem_univ, hi, not_false_eq_true]
+  change
+    (offdiag i).sum
+        (fun j => (if j = i then
+          -(offdiag i).sum (fun k => conductanceRate γ w i k)
+        else conductanceRate γ w i j) * f j)
+      + (if i = i then
+          -(offdiag i).sum (fun k => conductanceRate γ w i k)
+        else conductanceRate γ w i i) * f i
+      = (offdiag i).sum
+          (fun j => conductanceRate γ w i j * (f j - f i))
   calc
     (offdiag i).sum
+        (fun j => (if j = i then
+          -(offdiag i).sum (fun k => conductanceRate γ w i k)
+        else conductanceRate γ w i j) * f j)
+      + (if i = i then
+          -(offdiag i).sum (fun k => conductanceRate γ w i k)
+        else conductanceRate γ w i i) * f i
+      = (offdiag i).sum
           (fun j => conductanceRate γ w i j * f j)
         + (-(offdiag i).sum
-          (fun k => conductanceRate γ w i k)) * f i
-        = (offdiag i).sum
+          (fun k => conductanceRate γ w i k)) * f i := by
+            congr 1
+            · apply Finset.sum_congr rfl
+              intro j hj
+              have hji : j ≠ i := (Finset.mem_erase.mp hj).1
+              simp [hji]
+            · simp
+    _ = (offdiag i).sum
           (fun j => conductanceRate γ w i j * (f j - f i)) := by
             rw [Finset.sum_sub_distrib, ← Finset.sum_mul]
-            apply congrArg₂ (· + ·) ?_ ?_
-            · rfl
-            · ring
-    _ = _ := rfl
+            ring
 
 /-- Add a scalar multiple of the identity to a matrix. -/
 def diagonalShift (M : ι → ι → ℝ) (s : ℝ) (i j : ι) : ℝ :=
