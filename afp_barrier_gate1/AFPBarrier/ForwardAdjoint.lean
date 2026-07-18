@@ -17,7 +17,7 @@ namespace AFPBarrier
 variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 /-- Off-diagonal jump rates of the weighted adjoint `A = W⁻¹ Mᵀ W`. -/
-def weightedAdjointRate
+noncomputable def weightedAdjointRate
     (M : ι → ι → ℝ) (w : ι → ℝ) (i j : ι) : ℝ :=
   (w j * M j i) / w i
 
@@ -50,7 +50,10 @@ theorem jumpGenerator_weightedAdjointRate_eq
         =
       Finset.univ.sum
           (fun j => weightedAdjointRate M w i j * (f j - f i)) := by
-    rw [← Finset.sum_erase_add _ (Finset.mem_univ i)]
+    rw [← Finset.sum_erase_add
+      Finset.univ
+      (fun j => weightedAdjointRate M w i j * (f j - f i))
+      (Finset.mem_univ i)]
     simp [offdiag]
 
   rw [jumpGenerator, hfull]
@@ -132,8 +135,10 @@ theorem no_exact_forward_linear_and_square_at_peak
       (i := i) (lam := 2 * lam)
       hw (hconservation i) (by
         simpa [mul_assoc] using hsquareMoment i)
-    rw [hfi] at h
-    simpa [a] using h
+    calc
+      jumpGenerator a (fun j => (f j) ^ 2) i
+          = -(2 * lam) * (f i) ^ 2 := by simpa [a] using h
+      _ = -2 * lam := by rw [hfi]; ring
   exact no_exact_linear_and_square_at_peak
     (a := a) (f := f) (i := i) (lam := lam)
     ha hlam hfi hlinear hsquare
