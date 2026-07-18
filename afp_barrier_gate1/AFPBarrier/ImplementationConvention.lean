@@ -72,8 +72,14 @@ theorem matrixAction_conductanceMatrix_eq_jumpGenerator
               simp [hji]
             · simp
     _ = (offdiag i).sum
-          (fun j => conductanceRate γ w i j * (f j - f i)) := by
+          (fun j => conductanceRate γ w i j * f j
+            - conductanceRate γ w i j * f i) := by
             rw [Finset.sum_sub_distrib, ← Finset.sum_mul]
+            ring
+    _ = (offdiag i).sum
+          (fun j => conductanceRate γ w i j * (f j - f i)) := by
+            apply Finset.sum_congr rfl
+            intro j hj
             ring
 
 /-- Add a scalar multiple of the identity to a matrix. -/
