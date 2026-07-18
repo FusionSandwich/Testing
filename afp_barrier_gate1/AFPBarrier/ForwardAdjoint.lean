@@ -23,6 +23,7 @@ noncomputable def weightedAdjointRate
 
 /-- Positive weights and nonnegative forward off-diagonal entries produce
 nonnegative weighted-adjoint jump rates. -/
+omit [Fintype ι] [DecidableEq ι] in
 theorem weightedAdjointRate_nonneg
     (M : ι → ι → ℝ) (w : ι → ℝ)
     (hw : ∀ i, 0 < w i)
@@ -38,7 +39,6 @@ theorem weightedAdjointRate_nonneg
 jump-generator form. -/
 theorem jumpGenerator_weightedAdjointRate_eq
     (M : ι → ι → ℝ) (w f : ι → ℝ) (i : ι)
-    (hwi : w i ≠ 0)
     (hconservation :
       Finset.univ.sum (fun j => w j * M j i) = 0) :
     jumpGenerator (weightedAdjointRate M w) f i
@@ -91,7 +91,7 @@ theorem jumpGenerator_weightedAdjointRate_eigen
     jumpGenerator (weightedAdjointRate M w) f i = -lam * f i := by
   have hbase := jumpGenerator_weightedAdjointRate_eq
     (M := M) (w := w) (f := f) (i := i)
-    (ne_of_gt (hw i)) hconservation
+    hconservation
   rw [hbase]
   have hrewrite :
       Finset.univ.sum (fun j => w j * M j i * f j)
