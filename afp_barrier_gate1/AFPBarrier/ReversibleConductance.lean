@@ -5,7 +5,7 @@ import AFPBarrier.ForwardAdjoint
 
 The multidimensional finite-difference AFP matrix in Bienvenue et al. is built
 from one symmetric coefficient `γ i j = γ j i` per undirected Voronoi edge and
-positive quadrature weights `w i`.  Its off-diagonal jump rate is
+positive quadrature weights `w i`. Its off-diagonal jump rate is
 
   `a i j = γ i j / w i`.
 
@@ -58,14 +58,12 @@ theorem weightedAdjointRate_conductanceRate_eq
     weightedAdjointRate (conductanceRate γ w) w i j
       = conductanceRate γ w i j := by
   unfold weightedAdjointRate conductanceRate
-  calc
-    (w j * (γ j i / w j)) / w i = γ j i / w i := by
-      rw [mul_div_cancel_left₀]
-      exact hw j
-    _ = γ i j / w i := by rw [hγsymm i j]
+  have hj : w j * (γ j i / w j) = γ j i := by
+    field_simp [hw j]
+  rw [hj, hγsymm j i]
 
 /-- Multiplying a conductance-generated row by its vertex weight removes the
-normalization.  The diagonal term can be included because its difference is
+normalization. The diagonal term can be included because its difference is
 zero. -/
 theorem weight_mul_jumpGenerator_conductanceRate
     (γ : ι → ι → ℝ) (w f : ι → ℝ)
