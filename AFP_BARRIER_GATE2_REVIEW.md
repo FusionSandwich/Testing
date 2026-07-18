@@ -1,65 +1,72 @@
-# AFP Barrier — Gate 2 priority review
+# AFP Barrier — Gate 2 closure review
 
-**Audit date:** 18 July 2026
+**Closure date:** 18 July 2026
 
 ## Decision
 
-**Conditional pass.** The project remains worth pursuing, but the novelty claim must be narrowed.
+**Pass, with a narrowed publication claim.**
 
-The finite carré-du-champ identity and the fact that a nontrivial finite jump generator cannot satisfy an exact diffusion chain rule are standard Markov-generator facts. They are formalized in Lean for reliability, not claimed as new probability theory.
+Charles Bienvenue’s 2025 paper and the corresponding `Radiant.jl` implementation answer the outstanding operator and compatibility questions sufficiently to close the source-audit gate. The standard finite-jump carré-du-champ mechanism is not claimed as new. The candidate contribution is the AFP-specific no-go theorem together with reversible shared-edge feasibility, defect optimization, and dual certification.
 
-The strongest research direction is instead:
+The detailed five-question resolution is in [`afp_barrier_gate1/GATE2.md`](afp_barrier_gate1/GATE2.md).
 
-> Characterize the positive spherical quadratures and shared-edge graphs that admit a weighted-reversible monotone angular Fokker–Planck operator preserving the complete degree-one eigenspace, and optimize the unavoidable degree-two defect.
+## Source conclusions
 
-This directly addresses the compatibility question left for future investigation in Bienvenue, Naceur, Carrier, and Hébert (2025), DOI 10.1080/00295639.2025.2462891.
+1. **Operator convention:** Radiant assembles the unshifted AFP generator as
+   \[
+   (Lf)_i=\frac1{w_i}\sum_{j\sim i}\gamma_{ij}(f_j-f_i),
+   \qquad \gamma_{ij}=\gamma_{ji}.
+   \]
+   Hence `WL=LᵀW`; the weighted adjoint is the same operator. The later diagonal `λ₀` shift belongs to the scattering-matrix/total-cross-section decomposition.
 
-## Claim classification
+2. **Degree-two priority:** no explicit complete-degree-two monotonicity obstruction was located in Bienvenue et al., Radiant, or the principal AFP references checked. The underlying jump-versus-diffusion chain-rule mechanism is standard, so only the AFP specialization and consequences are candidate novelty.
 
-| Claim | Gate 2 assessment |
-|---|---|
-| Finite jump carré-du-champ identity | Standard |
-| Exact nonlinear diffusion chain rule is impossible for a nontrivial finite jump generator | Standard mechanism; new Lean formalization only |
-| AFP monotonicity plus complete degree-one exactness forbids complete degree-two exactness | Explicit AFP formulation not located; modest candidate novelty requiring specialist confirmation |
-| Peak defect equals carré du champ | Elementary consequence; useful AFP design formula |
-| Defect–stiffness inequality | Sharp Cauchy–Schwarz consequence; not strong alone |
-| Rowwise convex-hull feasibility | Adaptation of positive-stencil theory |
-| Rowwise linear program | Adaptation of Seibold’s positive-stencil method |
-| Shared-edge weighted-reversible compatibility theorem | Strong candidate novelty |
-| Coupled reversible defect-minimizing LP and geometric dual | Promising candidate novelty |
-| Uniform optimal defect scaling `Theta(h^2)` | Research target, not yet proved |
-| Physical transport advantage | Gate 3 target |
+3. **Delaunay comparison:** Charles’s construction and the Izmestiev–Lam spherical Delaunay Laplacian are members of the same normalized reversible graph-Laplacian class. They coincide up to scale only when the prescribed quadrature weights are proportional to the canonical geometric vertex weights and the conductances scale accordingly.
 
-## Nearest prior art
+4. **Compatibility:** weighted centering is necessary and sufficient for a dense strictly positive reversible degree-one-exact construction. For a prescribed local graph, positivity is exactly a finite cone-membership problem. Infinitesimal rigidity plus centering guarantees a signed exact solution; positivity is additional.
 
-1. Bienvenue et al. (2025): monotone nonorthogonal AFP discretization preserving degree zero and the three degree-one moments; exact positive pseudoinverse solutions observed for tested product, level-symmetric, and Lebedev quadratures; compatible quadrature properties left open.
-2. Bakry, Gentil, and Ledoux (2014): standard carré-du-champ and diffusion-property framework for Markov generators.
-3. Seibold (2008): minimal positive Laplace stencils constructed by linear programming with geometric existence conditions.
-4. Izmestiev and Lam (2025): positive spherical Delaunay Laplacians with exact `-2` modes.
-5. López Pouso et al. (2025): rigorous order and moment analysis for one-dimensional angular Fokker–Planck difference schemes.
+5. **Dual certificate:** the local positive feasibility and defect-minimization problems admit Farkas and LP dual certificates. A dual nodal displacement field can certify infeasibility or provide a rigorous lower bound and optimality certificate.
 
-## Lean extension in this branch
+## New Lean modules
 
-- `DiffusionProperty.lean`: general tangent-gap chain-rule defect and strict-convexity rigidity.
-- `ForwardAdjoint.lean`: componentwise conversion from a weighted conservative forward AFP matrix to a finite jump generator, plus a forward-matrix no-go theorem.
-- expanded axiom audit and dedicated Gate 2 GitHub Actions workflow.
+- `ReversibleConductance.lean`
+  - detailed balance;
+  - weighted self-adjointness;
+  - weighted conservation;
+  - weighted-centering necessity;
+  - conductance-form degree-two obstruction.
 
-## Publication threshold
+- `CompleteGraph.lean`
+  - explicit strictly positive dense construction;
+  - exact eigenvalue theorem for every weighted-mean-zero sampled function;
+  - necessity and sufficiency of weighted centering for coordinate exactness.
 
-A strong final paper should add at least one of:
+- `DualCertificate.lean`
+  - finite transpose identity;
+  - sound Farkas-type infeasibility certificates;
+  - positive-LP weak duality.
 
-- necessary and sufficient compatibility conditions for a substantial quadrature class;
-- a broad Delaunay/convex-polyhedral sufficient theorem;
-- a sharp `Theta(h^2)` optimal-defect theorem;
-- a duality theorem with geometric infeasibility/optimality certificates;
-- a demonstrated transport improvement over the current pseudoinverse construction.
+## Lean validation
 
-## Human review required
+The closure build used Lean `v4.30.0` and completed all `2952` Lake jobs. The axiom audit covered `42` public theorems. No `sorry`, `admit`, `sorryAx`, or user-declared axiom was present. The only dependencies reported were the standard Mathlib foundations `propext`, `Classical.choice`, and `Quot.sound`.
 
-Before making priority claims, obtain review from:
+GitHub Actions run: `29633967639`  
+Source branch commit: `9434ab3efd6d0f7ffef3e183ad2194f636d83948`  
+Built PR merge commit: `ec610a767550abc0aa5e679f37ba97de8d2908b9`  
+Artifact digest: `sha256:e67e6c5e52ee0348de9f1e2a72fe0826a8250eccd7d97c2673b4e5b05f5174f1`
 
-- Charles Bienvenue or another AFP specialist;
-- a specialist in discrete spherical Laplacians;
-- optionally, a Markov-semigroup specialist for canonical attribution of the chain-rule obstruction.
+## Implementation audit finding
 
-The complete standalone Gate 2 repository archive contains a claim matrix, literature review, search log, revised manuscript, expert review packet, and reproducible Lean project.
+Radiant checks `pinv(Γ)Γ≈I`, which verifies full column rank. A robust general-purpose implementation should additionally verify the actual residual and positivity:
+
+```julia
+γ = pinv(Γ) * Q
+norm(Γ * γ - Q)
+minimum(γ)
+```
+
+A positive LP can replace or supplement the pseudoinverse and return a dual certificate.
+
+## Gate 3 target
+
+The next gate should prove a local family-level theorem—such as positivity for a specified quadrature/Delaunay family or sharp `Theta(h^2)` optimal defect scaling—and compare the LP-optimal operator against Radiant’s pseudoinverse construction in transport benchmarks.
