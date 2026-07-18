@@ -6,4 +6,7 @@ import AFPBarrier.ForwardAdjoint
 import AFPBarrier.ReversibleConductance
 import AFPBarrier.CompleteGraph
 import AFPBarrier.DualCertificate
+import AFPBarrier.ImplementationConvention
+import AFPBarrier.ScalingCompatibility
+import AFPBarrier.NormalizationAudit
 import AFPBarrier.SphereSpecialization
