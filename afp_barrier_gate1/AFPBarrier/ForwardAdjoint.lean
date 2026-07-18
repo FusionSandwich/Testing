@@ -23,12 +23,12 @@ noncomputable def weightedAdjointRate
 
 /-- Positive weights and nonnegative forward off-diagonal entries produce
 nonnegative weighted-adjoint jump rates. -/
-omit [Fintype ι] [DecidableEq ι] in
 theorem weightedAdjointRate_nonneg
-    (M : ι → ι → ℝ) (w : ι → ℝ)
+    {κ : Type*}
+    (M : κ → κ → ℝ) (w : κ → ℝ)
     (hw : ∀ i, 0 < w i)
     (hM : ∀ i j, i ≠ j → 0 ≤ M i j)
-    (i j : ι) (hji : j ≠ i) :
+    (i j : κ) (hji : j ≠ i) :
     0 ≤ weightedAdjointRate M w i j := by
   unfold weightedAdjointRate
   exact div_nonneg
