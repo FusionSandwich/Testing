@@ -1,4 +1,6 @@
 import AFPBarrier.JumpGenerator
+import AFPBarrier.DiffusionProperty
 import AFPBarrier.NoGo
 import AFPBarrier.Quantitative
+import AFPBarrier.ForwardAdjoint
 import AFPBarrier.SphereSpecialization
