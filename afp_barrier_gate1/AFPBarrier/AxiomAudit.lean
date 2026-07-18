@@ -50,5 +50,19 @@ import AFPBarrier
 #print axioms AFPBarrier.negative_dualWork_certifies_infeasible
 #print axioms AFPBarrier.positiveLP_weak_duality
 
+#print axioms AFPBarrier.matrixAction_conductanceMatrix_eq_jumpGenerator
+#print axioms AFPBarrier.matrixAction_diagonalShift
+#print axioms AFPBarrier.shifted_source_minus_total_shift
+#print axioms AFPBarrier.shifted_conductance_action_recovers_jumpGenerator
+
+#print axioms AFPBarrier.conductanceRate_common_scale
+#print axioms AFPBarrier.jumpGenerator_conductance_common_scale
+#print axioms AFPBarrier.equilibrium_common_scale
+#print axioms AFPBarrier.geometric_pair_transfers_to_scaled_quadrature
+
+#print axioms AFPBarrier.conductance_eigen_iff_equilibrium
+#print axioms AFPBarrier.S2_coordinate_eigen_implies_minus_two_balance
+#print axioms AFPBarrier.minus_two_and_minus_four_balance_incompatible
+
 #print axioms AFPBarrier.no_exact_S2_degree_two_at_peak
 #print axioms AFPBarrier.S2_four_le_rate_mul_defect
