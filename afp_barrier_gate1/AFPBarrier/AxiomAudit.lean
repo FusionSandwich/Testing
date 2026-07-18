@@ -29,5 +29,26 @@ import AFPBarrier
 #print axioms AFPBarrier.jumpGenerator_weightedAdjointRate_eigen
 #print axioms AFPBarrier.no_exact_forward_linear_and_square_at_peak
 
+#print axioms AFPBarrier.conductanceRate_nonneg
+#print axioms AFPBarrier.conductanceRate_detailedBalance
+#print axioms AFPBarrier.weightedAdjointRate_conductanceRate_eq
+#print axioms AFPBarrier.weight_mul_jumpGenerator_conductanceRate
+#print axioms AFPBarrier.weighted_sum_jumpGenerator_conductanceRate_eq_zero
+#print axioms AFPBarrier.conductance_eigen_implies_weightedMean_zero
+#print axioms AFPBarrier.no_exact_conductance_linear_and_square_at_peak
+
+#print axioms AFPBarrier.completeConductance_symm
+#print axioms AFPBarrier.conductanceRate_completeConductance_eq_completeRate
+#print axioms AFPBarrier.completeRate_eigen_of_weightedMean_zero
+#print axioms AFPBarrier.completeRate_pos
+#print axioms AFPBarrier.completeConductance_pos
+#print axioms AFPBarrier.completeRate_preserves_centered_coordinates
+#print axioms AFPBarrier.reversible_coordinate_exactness_implies_centered
+
+#print axioms AFPBarrier.finiteMatrix_bilinear_identity
+#print axioms AFPBarrier.nonnegative_solution_forces_dualWork_nonneg
+#print axioms AFPBarrier.negative_dualWork_certifies_infeasible
+#print axioms AFPBarrier.positiveLP_weak_duality
+
 #print axioms AFPBarrier.no_exact_S2_degree_two_at_peak
 #print axioms AFPBarrier.S2_four_le_rate_mul_defect
