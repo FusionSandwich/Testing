@@ -102,7 +102,22 @@ jobs:
             echo "timestamp_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           } > gate2-report.txt
 
-      - name: Upload verification logs
+      - name: Pack exact source snapshot
+        if: always()
+        working-directory: .
+        shell: bash
+        run: |
+          set -euo pipefail
+          tar \
+            --exclude='afp_barrier_gate1/.lake' \
+            --exclude='afp_barrier_gate1/*.log' \
+            --exclude='afp_barrier_gate1/gate2-report.txt' \
+            -czf afp-barrier-gate2-source-${GITHUB_SHA}.tar.gz \
+            afp_barrier_gate1 \
+            .github/workflows/afp-barrier-gate2.yml \
+            .github/workflows/afp-barrier-radiant-audit.yml
+
+      - name: Upload verification logs and source snapshot
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -116,4 +131,5 @@ jobs:
             afp_barrier_gate1/gate2-axiom-audit.log
             afp_barrier_gate1/gate2-source-audit.log
             afp_barrier_gate1/lake-manifest.json
+            afp-barrier-gate2-source-*.tar.gz
           if-no-files-found: warn
