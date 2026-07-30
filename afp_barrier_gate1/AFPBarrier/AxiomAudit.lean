@@ -108,5 +108,13 @@ import AFPBarrier
 #print axioms AFPBarrier.equalAngleGrid_meridionalPlus_pos
 #print axioms AFPBarrier.equalAngleGrid_azimuthConductance_pos
 
+#print axioms AFPBarrier.squareRingDefect_between_sin_bounds
+#print axioms AFPBarrier.squareRingDefect_trig_bounds
+#print axioms AFPBarrier.equalAngleGrid_jordanScale
+#print axioms AFPBarrier.squareRingDefect_grid_bounds
+#print axioms AFPBarrier.squarePolarRate_lower_step
+#print axioms AFPBarrier.squarePolarRate_upper_jordan
+#print axioms AFPBarrier.squarePolarRate_grid_bounds
+
 #print axioms AFPBarrier.no_exact_S2_degree_two_at_peak
 #print axioms AFPBarrier.S2_four_le_rate_mul_defect
