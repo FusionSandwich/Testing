@@ -78,5 +78,18 @@ import AFPBarrier
 #print axioms AFPBarrier.squarePolar_peakDefect_formula
 #print axioms AFPBarrier.equalAngle_defect_pos
 
+#print axioms AFPBarrier.equalAngleTrigWeight_pos
+#print axioms AFPBarrier.equalAngleMeridionalMinus_pos
+#print axioms AFPBarrier.equalAngleMeridionalPlus_pos
+#print axioms AFPBarrier.equalAngleTrigAzimuthConductance_pos
+#print axioms AFPBarrier.equalAngle_meridional_sum_trig
+#print axioms AFPBarrier.equalAngle_axial_balance_trig
+#print axioms AFPBarrier.equalAngle_transverse_meridional_balance_trig
+#print axioms AFPBarrier.equalAngle_azimuth_cos_balance_trig
+#print axioms AFPBarrier.equalAngle_azimuth_sin_balance_trig
+#print axioms AFPBarrier.equalAngle_productNodeAction_cos_eq
+#print axioms AFPBarrier.equalAngle_productNodeAction_sin_cos_eq
+#print axioms AFPBarrier.equalAngle_productNodeAction_sin_sin_eq
+
 #print axioms AFPBarrier.no_exact_S2_degree_two_at_peak
 #print axioms AFPBarrier.S2_four_le_rate_mul_defect
