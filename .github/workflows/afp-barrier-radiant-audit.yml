@@ -1,19 +1,12 @@
 name: AFP Radiant finite-instance audit
 
-# This is a slow, source-pinned integration audit.  It should not run for every
-# Lean theorem or documentation edit.  It runs only when the audit inputs or its
-# workflow change, plus explicit manual dispatches.
+# Radiant integration is deliberately deferred until the Gate 3 mathematics is
+# complete. Keep the source-pinned audit reproducible by explicit dispatch only.
 on:
-  pull_request:
-    branches:
-      - testing
-    paths:
-      - 'afp_barrier_gate1/radiant_audit/**'
-      - '.github/workflows/afp-barrier-radiant-audit.yml'
   workflow_dispatch:
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 permissions:
