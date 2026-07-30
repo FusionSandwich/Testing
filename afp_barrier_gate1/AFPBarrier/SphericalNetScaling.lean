@@ -68,9 +68,9 @@ theorem sphericalLoss_lower_quadratic
 theorem sphericalLoss_two_mul_upper (h : ℝ) :
     sphericalLoss (2 * h) ≤ 2 * h ^ 2 := by
   rw [sphericalLoss_eq_two_sin_sq_half]
+  rw [show (2 * h) / 2 = h by ring]
   have hs : Real.sin h ^ 2 ≤ h ^ 2 := Real.sin_sq_le_sq
-  norm_num
-  exact mul_le_mul_of_nonneg_left hs (by norm_num)
+  nlinarith
 
 /-- Every angle in `[h,2h]`, for `h <= pi/4`, has a uniformly quadratic loss. -/
 theorem sphericalLoss_between_of_angle_window
