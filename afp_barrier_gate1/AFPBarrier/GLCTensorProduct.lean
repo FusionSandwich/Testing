@@ -96,6 +96,7 @@ theorem glc_transverse_coordinate_exact
         + glcAzimuthRate r c d * (r * uMinus - r * u)
         + glcAzimuthRate r c d * (r * uPlus - r * u)
       = -2 * r * u := by
+  rw [← add_assoc]
   rw [azimuth_pair_action_factor]
   rw [hfourier]
   unfold glcAzimuthRate glcK
@@ -117,7 +118,8 @@ theorem glcK_eq_two_sub_latitude_chordLoss
         (aMinus * (1 - (r * rMinus + x * xMinus))
           + aPlus * (1 - (r * rPlus + x * xPlus))) := by
   unfold glcK latitudePairAction
-  nlinarith
+  unfold latitudePairAction at hcoord
+  nlinarith [hcoord, hunit]
 
 /-- Nonnegative latitude rates and nonnegative chord deficits imply `K ≤ 2`. -/
 theorem glcK_le_two
@@ -146,7 +148,6 @@ theorem glcPeakDefect_decomposition
         + glcK r c * r ^ 2 * d := by
   unfold glcPeakDefect glcAzimuthRate
   field_simp [hr, hd]
-  ring
 
 /-- Exact total outgoing row rate of the four-neighbour tensor-product row. -/
 theorem glc_rowRate_formula
@@ -156,7 +157,6 @@ theorem glc_rowRate_formula
       = aMinus + aPlus + glcK r c / (r ^ 2 * d) := by
   unfold glcAzimuthRate
   field_simp [hr, hd]
-  ring
 
 /-- At the first polar ring, the interface recurrence cancels the first
 Gauss--Legendre weight.  This is the algebraic starting point for the Bessel
@@ -167,7 +167,6 @@ theorem outer_latitude_action_formula
     ((-2 * w * x) / (w * (xPlus - x))) * (rPlus - r)
       = (-2 * x) * (rPlus - r) / (xPlus - x) := by
   field_simp [hw, hgap]
-  ring
 
 /-- Corresponding exact outer-ring formula for `K`. -/
 theorem outer_glcK_formula
