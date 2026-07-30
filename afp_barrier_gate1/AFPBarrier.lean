@@ -12,4 +12,5 @@ import AFPBarrier.NormalizationAudit
 import AFPBarrier.EqualAngleProduct
 import AFPBarrier.EqualAngleGeometry
 import AFPBarrier.EqualAngleGrid
+import AFPBarrier.EqualAngleEdges
 import AFPBarrier.SphereSpecialization
