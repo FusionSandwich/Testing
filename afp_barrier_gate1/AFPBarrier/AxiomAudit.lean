@@ -24,6 +24,13 @@ import AFPBarrier
 #print axioms AFPBarrier.peakDefect_pos
 #print axioms AFPBarrier.peakDefect_lower_bound
 
+#print axioms AFPBarrier.lossMoment_eq_eigenvalue
+#print axioms AFPBarrier.lossMin_mul_rate_le_eigenvalue
+#print axioms AFPBarrier.eigenvalue_le_lossMax_mul_rate
+#print axioms AFPBarrier.lossMin_mul_eigenvalue_le_peakDefect
+#print axioms AFPBarrier.peakDefect_le_lossMax_mul_eigenvalue
+#print axioms AFPBarrier.quasiUniform_loss_rate_defect_bounds
+
 #print axioms AFPBarrier.weightedAdjointRate_nonneg
 #print axioms AFPBarrier.jumpGenerator_weightedAdjointRate_eq
 #print axioms AFPBarrier.jumpGenerator_weightedAdjointRate_eigen
