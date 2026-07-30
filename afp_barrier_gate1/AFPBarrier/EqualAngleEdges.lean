@@ -41,6 +41,14 @@ noncomputable section
   rw [hangle, Real.sin_pi]
   simp
 
+/-- The exact grid half-step satisfies `2*n*h = π`. -/
+theorem equalAngleGrid_two_mul_order_mul_halfStep
+    (n : ℝ) (hn : n ≠ 0) :
+    2 * n * equalAngleGridHalfStep n = Real.pi := by
+  unfold equalAngleGridHalfStep
+  field_simp [hn]
+  ring
+
 /-- Every actual lower meridional edge has strictly positive conductance. -/
 theorem equalAngleGrid_meridionalMinus_pos
     (n m i : ℝ)
@@ -55,17 +63,24 @@ theorem equalAngleGrid_meridionalMinus_pos
   have hh0 := equalAngleGridHalfStep_pos n hn0
   have hhhalf := equalAngleGridHalfStep_lt_pi_div_two n hn
   have halpha := equalAngleGridAzimuthStep_pos m hm0
+  have hscale := equalAngleGrid_two_mul_order_mul_halfStep n hn0.ne'
+  have hlower_identity :
+      equalAngleGridTheta n i - equalAngleGridHalfStep n
+        = 2 * i * equalAngleGridHalfStep n := by
+    unfold equalAngleGridTheta
+    ring
   have hlower0 :
       0 < equalAngleGridTheta n i - equalAngleGridHalfStep n := by
-    unfold equalAngleGridTheta
-    nlinarith
+    rw [hlower_identity]
+    positivity
+  have hi_lt_n : i < n := by linarith
+  have hgap :
+      0 < 2 * (n - i) * equalAngleGridHalfStep n := by
+    positivity
   have hlowerpi :
       equalAngleGridTheta n i - equalAngleGridHalfStep n < Real.pi := by
-    unfold equalAngleGridTheta equalAngleGridHalfStep
-    have hden : 0 < 2 * n := by positivity
-    rw [← sub_div]
-    apply (div_lt_iff₀ hden).2
-    nlinarith [Real.pi_pos]
+    rw [hlower_identity]
+    nlinarith
   apply equalAngleMeridionalMinus_pos
   · exact halpha
   · exact hlower0
@@ -87,17 +102,25 @@ theorem equalAngleGrid_meridionalPlus_pos
   have hh0 := equalAngleGridHalfStep_pos n hn0
   have hhhalf := equalAngleGridHalfStep_lt_pi_div_two n hn
   have halpha := equalAngleGridAzimuthStep_pos m hm0
+  have hscale := equalAngleGrid_two_mul_order_mul_halfStep n hn0.ne'
+  have hupper_identity :
+      equalAngleGridTheta n i + equalAngleGridHalfStep n
+        = 2 * (i + 1) * equalAngleGridHalfStep n := by
+    unfold equalAngleGridTheta
+    ring
   have hupper0 :
       0 < equalAngleGridTheta n i + equalAngleGridHalfStep n := by
-    unfold equalAngleGridTheta
-    nlinarith
+    rw [hupper_identity]
+    have hi1 : 0 < i + 1 := by linarith
+    positivity
+  have hi1_lt_n : i + 1 < n := by linarith
+  have hgap :
+      0 < 2 * (n - (i + 1)) * equalAngleGridHalfStep n := by
+    positivity
   have hupperpi :
       equalAngleGridTheta n i + equalAngleGridHalfStep n < Real.pi := by
-    unfold equalAngleGridTheta equalAngleGridHalfStep
-    have hden : 0 < 2 * n := by positivity
-    rw [← add_div]
-    apply (div_lt_iff₀ hden).2
-    nlinarith [Real.pi_pos]
+    rw [hupper_identity]
+    nlinarith
   apply equalAngleMeridionalPlus_pos
   · exact halpha
   · exact hupper0
