@@ -6,7 +6,7 @@ import Mathlib.Tactic
 # Polar-ring maximum of the square-grid jump rate
 
 The deterministic audit observed that the largest rate occurs on the two polar
-rings.  This file proves that statement for every order.  The key geometric
+rings. This file proves that statement for every order. The key geometric
 fact is that every cell-centred latitude lies in `[h, π-h]`, so its sine is at
 least `sin h`.
 -/
@@ -43,7 +43,6 @@ theorem equalAngleGridTheta_mem_symmetric_interval
       2 * n * equalAngleGridHalfStep n = Real.pi := by
     unfold equalAngleGridHalfStep
     field_simp [hn0.ne']
-    ring
   have hleftcoef : 1 ≤ 2 * i + 1 := by nlinarith
   have hrightcoef : 2 * i + 2 ≤ 2 * n := by nlinarith
   have hleftmul := mul_le_mul_of_nonneg_right hleftcoef hh0.le
@@ -93,7 +92,7 @@ theorem squareRingRate_le_polar_of_sin_sq
   linarith
 
 /-- At every ring of every square equal-angle grid, the total rate is bounded
-above by the polar-ring rate.  Equality holds on the polar rings themselves. -/
+above by the polar-ring rate. Equality holds on the polar rings themselves. -/
 theorem equalAngleGrid_squareRingRate_le_polar
     (n i : ℝ) (hn : 2 ≤ n) (hi0 : 0 ≤ i) (hiN : i ≤ n - 1) :
     squareRingRate (equalAngleGridHalfStep n)
