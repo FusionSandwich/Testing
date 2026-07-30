@@ -13,5 +13,6 @@ import AFPBarrier.EqualAngleProduct
 import AFPBarrier.EqualAngleGeometry
 import AFPBarrier.EqualAngleGrid
 import AFPBarrier.EqualAngleEdges
+import AFPBarrier.EqualAngleConnectivity
 import AFPBarrier.EqualAngleAsymptotics
 import AFPBarrier.SphereSpecialization
