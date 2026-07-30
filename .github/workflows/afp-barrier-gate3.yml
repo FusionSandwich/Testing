@@ -1,0 +1,198 @@
+name: AFP Gate 3 GLC theorem and deterministic audits
+
+on:
+  push:
+    branches:
+      - codex-afp-gate3-glc
+    paths:
+      - 'afp_barrier_gate1/**'
+      - '.github/workflows/afp-barrier-gate3.yml'
+  pull_request:
+    paths:
+      - 'afp_barrier_gate1/**'
+      - '.github/workflows/afp-barrier-gate3.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  RADIANT_COMMIT: 205e07faa105854b0f27e95a02f01ebed08f84c1
+
+jobs:
+  lean-and-python:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    defaults:
+      run:
+        working-directory: afp_barrier_gate1
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Elan and pinned Lean toolchain
+        working-directory: .
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
+            | sh -s -- -y --default-toolchain "$(cat afp_barrier_gate1/lean-toolchain)"
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+
+      - name: Resolve Mathlib and obtain compiled cache
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake update 2>&1 | tee gate3-lake-update.log
+          lake exe cache get 2>&1 | tee gate3-mathlib-cache.log
+
+      - name: Lean kernel build
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake build 2>&1 | tee gate3-lean-build.log
+
+      - name: Axiom and source audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake env lean AFPBarrier/AxiomAudit.lean 2>&1 | tee gate3-axiom-audit.log
+          if grep -q 'sorryAx' gate3-axiom-audit.log; then
+            echo "A theorem depends on Lean's sorry axiom." >&2
+            exit 1
+          fi
+          if grep -RInE --include='*.lean' '(^|[^[:alnum:]_])(sorry|admit)([^[:alnum:]_]|$)' AFPBarrier AFPBarrier.lean; then
+            echo "Proof placeholder found." >&2
+            exit 1
+          fi
+          if grep -RInE --include='*.lean' '^[[:space:]]*axiom([[:space:]]|$)' AFPBarrier AFPBarrier.lean; then
+            echo "User axiom declaration found." >&2
+            exit 1
+          fi
+          echo "No proof placeholders or user axiom declarations found." | tee gate3-source-audit.log
+
+      - name: Install pinned Python dependencies
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: pip
+          cache-dependency-path: afp_barrier_gate1/gate3/requirements-gate3.txt
+
+      - name: Exact symbolic GLC case
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install -r gate3/requirements-gate3.txt
+          python gate3/glc_exact_n2.py 2>&1 | tee gate3-exact-n2.log
+
+      - name: Deterministic GLC family audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf gate3-output
+          python gate3/glc_deterministic_audit.py --output-dir gate3-output \
+            2>&1 | tee gate3-family-audit.log
+
+      - name: Write Lean/Python provenance
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "source_commit=${GITHUB_SHA}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "toolchain=$(cat lean-toolchain)"
+            lean --version || true
+            lake --version || true
+            python --version || true
+            echo "timestamp_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } > gate3-lean-python-provenance.txt
+
+      - name: Pack exact source snapshot
+        if: always()
+        working-directory: .
+        shell: bash
+        run: |
+          set -euo pipefail
+          tar \
+            --exclude='afp_barrier_gate1/.lake' \
+            --exclude='afp_barrier_gate1/*.log' \
+            --exclude='afp_barrier_gate1/gate3-output' \
+            -czf afp-barrier-gate3-source-${GITHUB_SHA}.tar.gz \
+            afp_barrier_gate1 \
+            .github/workflows/afp-barrier-gate3.yml
+
+      - name: Upload Lean and Python records
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: afp-gate3-lean-python-${{ github.run_id }}
+          path: |
+            afp_barrier_gate1/GATE3.md
+            afp_barrier_gate1/gate3-output/glc_audit.md
+            afp_barrier_gate1/gate3-output/glc_audit.csv
+            afp_barrier_gate1/gate3-exact-n2.log
+            afp_barrier_gate1/gate3-family-audit.log
+            afp_barrier_gate1/gate3-lean-build.log
+            afp_barrier_gate1/gate3-axiom-audit.log
+            afp_barrier_gate1/gate3-source-audit.log
+            afp_barrier_gate1/gate3-lean-python-provenance.txt
+            afp-barrier-gate3-source-*.tar.gz
+          if-no-files-found: warn
+
+  radiant-direct-comparison:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: afp_barrier_gate1/gate3
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Julia
+        uses: julia-actions/setup-julia@v2
+        with:
+          version: '1.10'
+
+      - name: Resolve pinned Radiant source
+        shell: bash
+        run: |
+          set -euo pipefail
+          julia --project=. -e 'using Pkg; Pkg.add(PackageSpec(url="https://github.com/CBienvenue/Radiant.jl", rev=ENV["RADIANT_COMMIT"])); Pkg.instantiate(); Pkg.status()' \
+            2>&1 | tee gate3-radiant-resolve.log
+
+      - name: Compare directly with Radiant GLC matrix
+        shell: bash
+        run: |
+          set -euo pipefail
+          julia --project=. radiant_glc_direct_audit.jl \
+            2>&1 | tee gate3-radiant-direct.log
+
+      - name: Write Radiant provenance
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "source_commit=${GITHUB_SHA}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "radiant_commit=${RADIANT_COMMIT}"
+            julia --version || true
+            echo "timestamp_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } > gate3-radiant-provenance.txt
+
+      - name: Upload direct Radiant comparison
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: afp-gate3-radiant-${{ github.run_id }}
+          path: |
+            afp_barrier_gate1/gate3/radiant_glc_direct_audit.md
+            afp_barrier_gate1/gate3/radiant_glc_direct_audit.csv
+            afp_barrier_gate1/gate3/gate3-radiant-resolve.log
+            afp_barrier_gate1/gate3/gate3-radiant-direct.log
+            afp_barrier_gate1/gate3/gate3-radiant-provenance.txt
+            afp_barrier_gate1/gate3/Manifest.toml
+          if-no-files-found: warn
