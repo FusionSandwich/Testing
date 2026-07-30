@@ -4,7 +4,7 @@ import Mathlib.Tactic
 /-!
 # Spherical neighbour dot products for the equal-angle grid
 
-The degree-two defect is expressed in terms of `1 - Ωᵢ·Ωⱼ`.  This file proves
+The degree-two defect is expressed in terms of `1 - Ωᵢ·Ωⱼ`. This file proves
 the two geometric loss formulas directly from the spherical-coordinate node
 map, closing the gap between the explicit grid and the algebraic defect theorem.
 -/
@@ -28,13 +28,11 @@ theorem sphericalCoordinateDot_meridional
     sphericalCoordinateDot theta phi (theta + 2 * h) phi
       = Real.cos (2 * h) := by
   unfold sphericalCoordinateDot
-  have hp := Real.sin_sq_add_cos_sq phi
-  have hcos := Real.cos_sub theta (theta + 2 * h)
+  have hp : Real.cos phi * Real.cos phi + Real.sin phi * Real.sin phi = 1 := by
+    nlinarith [Real.sin_sq_add_cos_sq phi]
+  rw [hp, mul_one, ← Real.cos_sub]
   rw [show theta - (theta + 2 * h) = -(2 * h) by ring,
-    Real.cos_neg] at hcos
-  ring_nf at hp hcos ⊢
-  linear_combination
-    Real.sin theta * Real.sin (theta + 2 * h) * hp + hcos
+    Real.cos_neg]
 
 /-- Two azimuthal neighbours on the same ring have dot product
 `cos²(theta) + sin²(theta) cos(beta)`. -/
@@ -43,10 +41,14 @@ theorem sphericalCoordinateDot_azimuthal
     sphericalCoordinateDot theta phi theta (phi + beta)
       = Real.cos theta ^ 2 + Real.sin theta ^ 2 * Real.cos beta := by
   unfold sphericalCoordinateDot
-  have hcos := Real.cos_sub phi (phi + beta)
-  rw [show phi - (phi + beta) = -beta by ring, Real.cos_neg] at hcos
-  ring_nf at hcos ⊢
-  linear_combination Real.sin theta ^ 2 * hcos
+  have hphi :
+      Real.cos phi * Real.cos (phi + beta)
+          + Real.sin phi * Real.sin (phi + beta)
+        = Real.cos beta := by
+    rw [← Real.cos_sub]
+    rw [show phi - (phi + beta) = -beta by ring, Real.cos_neg]
+  rw [hphi]
+  ring
 
 /-- The meridional dot-product loss is exactly `2 sin²(h)`. -/
 theorem meridionalDotLoss_eq_two_sin_sq
