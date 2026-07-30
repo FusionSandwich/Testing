@@ -114,6 +114,12 @@ import AFPBarrier
 #print axioms AFPBarrier.equalAngleGrid_weight_reflect
 #print axioms AFPBarrier.equalAngleGrid_cos_reflect
 
+#print axioms AFPBarrier.sphericalCoordinateDot_meridional
+#print axioms AFPBarrier.sphericalCoordinateDot_azimuthal
+#print axioms AFPBarrier.meridionalDotLoss_eq_two_sin_sq
+#print axioms AFPBarrier.azimuthalDotLoss_eq_sin_sq_mul
+#print axioms AFPBarrier.equalAngle_actual_peakDefect_formula
+
 #print axioms AFPBarrier.squareRingDefect_between_sin_bounds
 #print axioms AFPBarrier.squareRingDefect_trig_bounds
 #print axioms AFPBarrier.equalAngleGrid_jordanScale
