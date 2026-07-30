@@ -6,9 +6,9 @@ import Mathlib.Tactic
 # All-order parameter theorem for the equal-angle grid
 
 The local trigonometric identities are now instantiated with the actual grid
-parameters.  We use real-valued order and index parameters; every integer grid
+parameters. We use real-valued order and index parameters; every integer grid
 with `N ≥ 2`, `M ≥ 3`, and ring index `i = 0, …, N-1` is an immediate
-special case.  This avoids hiding any analytic step behind a numerical test.
+special case. This avoids hiding any analytic step behind a numerical test.
 -/
 
 namespace AFPBarrier
@@ -59,7 +59,7 @@ theorem equalAngleGridTheta_lt_pi
     equalAngleGridTheta n i < Real.pi := by
   have hden : 0 < 2 * n := mul_pos (by norm_num) hn
   unfold equalAngleGridTheta equalAngleGridHalfStep
-  rw [mul_div_assoc]
+  rw [← mul_div_assoc]
   apply (div_lt_iff₀ hden).2
   nlinarith [Real.pi_pos]
 
@@ -88,10 +88,11 @@ theorem one_sub_cos_pos_of_pos_of_lt_two_pi
   have hhalfpi : beta / 2 < Real.pi := by linarith
   have hs : 0 < Real.sin (beta / 2) :=
     Real.sin_pos_of_pos_of_lt_pi hhalf0 hhalfpi
+  have hs2 : 0 < Real.sin (beta / 2) ^ 2 := sq_pos_of_pos hs
   have htrig := Real.sin_sq_add_cos_sq (beta / 2)
   rw [show beta = 2 * (beta / 2) by ring, Real.cos_two_mul]
-  ring_nf at htrig ⊢
-  nlinarith [sq_pos_of_pos hs]
+  ring_nf at htrig hs2 ⊢
+  nlinarith
 
 /-- The grid assumptions imply all nonvanishing denominator facts required by
 the end-to-end coordinate proofs. -/
@@ -147,7 +148,7 @@ theorem equalAngleGrid_weight_pos
   · exact hh0
   · linarith [hhhalf, Real.pi_pos]
 
-/-- Complete degree-one exactness at every admissible grid node.  This theorem
+/-- Complete degree-one exactness at every admissible grid node. This theorem
 contains no externally supplied balance equation: all balances are supplied by
 the trigonometric theorems in `EqualAngleGeometry`. -/
 theorem equalAngleGrid_coordinate_exact
