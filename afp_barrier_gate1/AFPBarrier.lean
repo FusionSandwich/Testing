@@ -14,6 +14,7 @@ import AFPBarrier.EqualAngleGeometry
 import AFPBarrier.EqualAngleGrid
 import AFPBarrier.EqualAngleEdges
 import AFPBarrier.EqualAngleConnectivity
+import AFPBarrier.EqualAngleDotProducts
 import AFPBarrier.EqualAngleAsymptotics
 import AFPBarrier.EqualAngleRateMaximum
 import AFPBarrier.SphereSpecialization
