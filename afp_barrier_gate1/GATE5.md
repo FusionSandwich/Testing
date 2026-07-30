@@ -4,6 +4,8 @@
 **Depends on:** closed Gates 1–4  
 **Scope:** mathematical sharpness, positive-row optimization, low-mode spectrum, and rotational bias
 
+**Final verification:** branch `0e1c4cc19f8d033f6994b27900ea7c7c3012a420`, workflow run `30566683599`, artifact `8769176963`, SHA-256 `a02ffb65b4c8d98a68c504c4a56c330164fd28a1ebc6d91c5fcf4619b2c607ce`.
+
 ---
 
 ## 1. Gate result
@@ -318,29 +320,16 @@ as a regression check.
 
 ## 10. Formal verification
 
-The Gate 5 Lean package includes:
+The final workflow passed:
 
-- the centered variance identity;
-- the exact gap identity;
-- zero-variance/constant-active-loss equivalence;
-- the full equality characterization;
-- weighted and per-edge near-equality bounds;
-- tangent dual lower bounds;
-- the fixed-rate/fixed-moment optimal value;
-- the `S²` asymptotic optimality theorem;
-- the exact product-grid inefficiency formula.
+- deterministic sharpness and weighted-variance audit;
+- deterministic degree-1 through degree-4 spectral and rotational-bias audit;
+- Lean/Mathlib `v4.30.0` kernel build with 3,085 jobs;
+- main and Gate-5-specific axiom audits with 150 explicit theorem entries;
+- proof-placeholder and user-axiom scan;
+- exact source and generated-record packaging.
 
-`Gate5AxiomAudit.lean` independently prints the axiom dependencies of the new
-sharpness theorems.
-
-The deterministic workflow runs:
-
-1. the all-vertex sharpness audit;
-2. the degree-1 through degree-4 spectral and rotational-bias audit;
-3. the pinned Lean/Mathlib build;
-4. the main and Gate-5-specific axiom audits;
-5. the source-placeholder and user-axiom scan;
-6. exact source and generated-record packaging.
+No `sorry`, `admit`, `sorryAx`, or user-declared axiom is present.
 
 ---
 
