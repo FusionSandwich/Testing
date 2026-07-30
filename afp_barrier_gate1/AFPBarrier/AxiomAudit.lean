@@ -91,5 +91,16 @@ import AFPBarrier
 #print axioms AFPBarrier.equalAngle_productNodeAction_sin_cos_eq
 #print axioms AFPBarrier.equalAngle_productNodeAction_sin_sin_eq
 
+#print axioms AFPBarrier.equalAngleGridHalfStep_pos
+#print axioms AFPBarrier.equalAngleGridHalfStep_lt_pi_div_two
+#print axioms AFPBarrier.equalAngleGridTheta_pos
+#print axioms AFPBarrier.equalAngleGridTheta_lt_pi
+#print axioms AFPBarrier.equalAngleGridAzimuthStep_pos
+#print axioms AFPBarrier.equalAngleGridAzimuthStep_lt_two_pi
+#print axioms AFPBarrier.one_sub_cos_pos_of_pos_of_lt_two_pi
+#print axioms AFPBarrier.equalAngleGrid_parameter_facts
+#print axioms AFPBarrier.equalAngleGrid_weight_pos
+#print axioms AFPBarrier.equalAngleGrid_coordinate_exact
+
 #print axioms AFPBarrier.no_exact_S2_degree_two_at_peak
 #print axioms AFPBarrier.S2_four_le_rate_mul_defect
