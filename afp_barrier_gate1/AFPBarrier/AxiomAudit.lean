@@ -34,6 +34,13 @@ import AFPBarrier
 #print axioms AFPBarrier.rate_le_eigenvalue_div_lossMin
 #print axioms AFPBarrier.quadraticLoss_rate_defect_bounds
 
+#print axioms AFPBarrier.sphericalLoss_eq_two_sin_sq_half
+#print axioms AFPBarrier.sphericalLoss_lower_quadratic
+#print axioms AFPBarrier.sphericalLoss_two_mul_upper
+#print axioms AFPBarrier.sphericalLoss_between_of_angle_window
+#print axioms AFPBarrier.sphericalNet_peak_rate_defect_bounds
+#print axioms AFPBarrier.sphericalNet_peak_rate_defect_bounds_mul
+
 #print axioms AFPBarrier.weightedAdjointRate_nonneg
 #print axioms AFPBarrier.jumpGenerator_weightedAdjointRate_eq
 #print axioms AFPBarrier.jumpGenerator_weightedAdjointRate_eigen
