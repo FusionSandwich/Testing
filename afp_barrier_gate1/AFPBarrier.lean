@@ -9,4 +9,5 @@ import AFPBarrier.DualCertificate
 import AFPBarrier.ImplementationConvention
 import AFPBarrier.ScalingCompatibility
 import AFPBarrier.NormalizationAudit
+import AFPBarrier.EqualAngleProduct
 import AFPBarrier.SphereSpecialization
