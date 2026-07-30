@@ -102,5 +102,11 @@ import AFPBarrier
 #print axioms AFPBarrier.equalAngleGrid_weight_pos
 #print axioms AFPBarrier.equalAngleGrid_coordinate_exact
 
+#print axioms AFPBarrier.equalAngleGrid_meridionalMinus_zero_north
+#print axioms AFPBarrier.equalAngleGrid_meridionalPlus_zero_south
+#print axioms AFPBarrier.equalAngleGrid_meridionalMinus_pos
+#print axioms AFPBarrier.equalAngleGrid_meridionalPlus_pos
+#print axioms AFPBarrier.equalAngleGrid_azimuthConductance_pos
+
 #print axioms AFPBarrier.no_exact_S2_degree_two_at_peak
 #print axioms AFPBarrier.S2_four_le_rate_mul_defect
