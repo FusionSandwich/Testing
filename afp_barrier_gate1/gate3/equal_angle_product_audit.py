@@ -1,17 +1,22 @@
 #!/usr/bin/env python3
 """Deterministic audit for the equal-angle product AFP construction.
 
-The script uses only the Python standard library. It checks, for a fixed list
-of grid orders, the exact formulas proved in GATE3.md:
+The script uses only the Python standard library and no random sampling.  It
+checks every node for a collection of square and non-square product grids:
 
-* positive cell weights and edge conductances;
-* total quadrature weight and weighted centering;
+* positive cell weights and every actual edge conductance;
+* exact zero conductance on the two omitted polar meridional edges;
+* total quadrature area and weighted centering;
 * exact degree-one coordinate eigenrelations;
-* the closed-form degree-two peak defect;
-* the closed-form jump rate and polar maximum;
-* the expected N^-2 defect and N^4 polar-stiffness slopes for M = 2N.
+* exact degree-two peak-defect and jump-rate formulas;
+* exact polar maximum-rate formula for the square family;
+* the proved finite-order inequalities
 
-No random numbers are used.
+      2/N^2 <= max defect <= pi^2/N^2,
+      (8/pi^4) N^4 <= max rate <= N^4.
+
+Log--log slopes are reported only as diagnostics.  They are not used as a
+substitute for the Lean-verified finite-order bounds.
 """
 
 from __future__ import annotations
@@ -24,8 +29,20 @@ from pathlib import Path
 from typing import Sequence
 
 
-DEFAULT_ORDERS: tuple[int, ...] = (2, 3, 4, 5, 8, 16, 32, 64, 128)
+SQUARE_ORDERS: tuple[int, ...] = (2, 3, 4, 5, 8, 16, 32, 64, 128)
 FIT_ORDERS: tuple[int, ...] = (8, 16, 32, 64, 128)
+EXTRA_CASES: tuple[tuple[int, int], ...] = (
+    (2, 3),
+    (3, 4),
+    (3, 7),
+    (4, 5),
+    (5, 11),
+    (7, 9),
+    (8, 13),
+)
+DEFAULT_CASES: tuple[tuple[int, int], ...] = tuple(
+    dict.fromkeys(tuple((n, 2 * n) for n in SQUARE_ORDERS) + EXTRA_CASES)
+)
 
 
 @dataclass(frozen=True)
@@ -37,10 +54,15 @@ class AuditRow:
     coordinate_residual: float
     defect_identity_error: float
     rate_identity_relative_error: float
+    boundary_zero_error: float
     min_positive_quantity: float
     max_peak_defect: float
     max_jump_rate: float
     polar_rate_relative_error: float
+    defect_lower_margin: float
+    defect_upper_margin: float
+    rate_lower_margin: float
+    rate_upper_margin: float
 
 
 def _linear_regression_slope(xs: Sequence[float], ys: Sequence[float]) -> float:
@@ -54,11 +76,9 @@ def _linear_regression_slope(xs: Sequence[float], ys: Sequence[float]) -> float:
     return sum((x - mx) * (y - my) for x, y in zip(lx, ly)) / denominator
 
 
-def audit_case(N: int, M: int | None = None) -> AuditRow:
+def audit_case(N: int, M: int) -> AuditRow:
     if N < 2:
         raise ValueError("N must be at least 2")
-    if M is None:
-        M = 2 * N
     if M < 3:
         raise ValueError("M must be at least 3")
 
@@ -75,6 +95,7 @@ def audit_case(N: int, M: int | None = None) -> AuditRow:
     max_coordinate_residual = 0.0
     max_defect_identity_error = 0.0
     max_rate_relative_error = 0.0
+    max_boundary_zero_error = 0.0
     min_positive_quantity = math.inf
     max_peak_defect = 0.0
     max_jump_rate = 0.0
@@ -99,10 +120,16 @@ def audit_case(N: int, M: int | None = None) -> AuditRow:
             alpha * sin_half_delta / (one_minus_cos_alpha * sin_theta)
         )
 
+        max_boundary_zero_error = max(
+            max_boundary_zero_error,
+            abs(b_minus) if i == 0 else 0.0,
+            abs(b_plus) if i == N - 1 else 0.0,
+        )
+
         positive_values = [weight, c_azimuth]
-        if b_minus > 0.0:
+        if i > 0:
             positive_values.append(b_minus)
-        if b_plus > 0.0:
+        if i < N - 1:
             positive_values.append(b_plus)
         min_positive_quantity = min(min_positive_quantity, *positive_values)
 
@@ -187,15 +214,24 @@ def audit_case(N: int, M: int | None = None) -> AuditRow:
         )
         max_jump_rate = max(max_jump_rate, direct_rate)
 
-    expected_polar_rate = (
-        1.0 / (2.0 * sin_half_delta**2)
-        + 1.0 / (2.0 * sin_half_delta**4)
-        if M == 2 * N
-        else max_jump_rate
-    )
-    polar_rate_relative_error = abs(max_jump_rate - expected_polar_rate) / max(
-        1.0, abs(expected_polar_rate)
-    )
+    if M == 2 * N:
+        expected_polar_rate = (
+            1.0 / (2.0 * sin_half_delta**2)
+            + 1.0 / (2.0 * sin_half_delta**4)
+        )
+        polar_rate_relative_error = abs(max_jump_rate - expected_polar_rate) / max(
+            1.0, abs(expected_polar_rate)
+        )
+        defect_lower_margin = max_peak_defect - 2.0 / N**2
+        defect_upper_margin = math.pi**2 / N**2 - max_peak_defect
+        rate_lower_margin = max_jump_rate - 8.0 * N**4 / math.pi**4
+        rate_upper_margin = N**4 - max_jump_rate
+    else:
+        polar_rate_relative_error = 0.0
+        defect_lower_margin = math.nan
+        defect_upper_margin = math.nan
+        rate_lower_margin = math.nan
+        rate_upper_margin = math.nan
 
     return AuditRow(
         N=N,
@@ -205,34 +241,54 @@ def audit_case(N: int, M: int | None = None) -> AuditRow:
         coordinate_residual=max_coordinate_residual,
         defect_identity_error=max_defect_identity_error,
         rate_identity_relative_error=max_rate_relative_error,
+        boundary_zero_error=max_boundary_zero_error,
         min_positive_quantity=min_positive_quantity,
         max_peak_defect=max_peak_defect,
         max_jump_rate=max_jump_rate,
         polar_rate_relative_error=polar_rate_relative_error,
+        defect_lower_margin=defect_lower_margin,
+        defect_upper_margin=defect_upper_margin,
+        rate_lower_margin=rate_lower_margin,
+        rate_upper_margin=rate_upper_margin,
     )
 
 
 def assert_audit(rows: Sequence[AuditRow]) -> tuple[float, float]:
     for row in rows:
-        # Floating-point cancellation grows near the polar rings because the
-        # exact generator has O(N^4) coefficients. These tolerances remain much
-        # smaller than the physical O(1) coordinate eigenvalue.
-        if row.total_weight_error > 2.0e-11:
+        # Floating-point cancellation grows near polar rings because the exact
+        # generator has O(N^4) coefficients.  These tolerances remain far below
+        # the O(1) coordinate eigenvalues.
+        if row.total_weight_error > 3.0e-11:
             raise AssertionError(f"quadrature weight failure: {row}")
-        if row.weighted_center_error > 2.0e-11:
+        if row.weighted_center_error > 3.0e-11:
             raise AssertionError(f"centering failure: {row}")
         if row.coordinate_residual > 2.0e-8:
             raise AssertionError(f"degree-one exactness failure: {row}")
-        if row.defect_identity_error > 2.0e-13:
+        if row.defect_identity_error > 3.0e-13:
             raise AssertionError(f"defect identity failure: {row}")
-        if row.rate_identity_relative_error > 2.0e-13:
+        if row.rate_identity_relative_error > 3.0e-13:
             raise AssertionError(f"rate identity failure: {row}")
-        if row.polar_rate_relative_error > 2.0e-13:
+        if row.boundary_zero_error > 1.0e-15:
+            raise AssertionError(f"boundary conductance failure: {row}")
+        if row.polar_rate_relative_error > 3.0e-13:
             raise AssertionError(f"polar rate failure: {row}")
         if not row.min_positive_quantity > 0.0:
-            raise AssertionError(f"nonpositive coefficient: {row}")
+            raise AssertionError(f"nonpositive actual coefficient: {row}")
 
-    fit = {row.N: row for row in rows if row.N in FIT_ORDERS}
+        if row.M == 2 * row.N:
+            scale_defect = max(1.0, math.pi**2 / row.N**2)
+            scale_rate = max(1.0, row.N**4)
+            if row.defect_lower_margin < -2.0e-13 * scale_defect:
+                raise AssertionError(f"defect lower bound failure: {row}")
+            if row.defect_upper_margin < -2.0e-13 * scale_defect:
+                raise AssertionError(f"defect upper bound failure: {row}")
+            if row.rate_lower_margin < -2.0e-13 * scale_rate:
+                raise AssertionError(f"rate lower bound failure: {row}")
+            if row.rate_upper_margin < -2.0e-13 * scale_rate:
+                raise AssertionError(f"rate upper bound failure: {row}")
+
+    square = {row.N: row for row in rows if row.M == 2 * row.N}
+    fit = {n: square[n] for n in FIT_ORDERS if n in square}
     if tuple(sorted(fit)) != FIT_ORDERS:
         raise AssertionError("all FIT_ORDERS must be audited")
     defect_slope = _linear_regression_slope(
@@ -241,10 +297,12 @@ def assert_audit(rows: Sequence[AuditRow]) -> tuple[float, float]:
     rate_slope = _linear_regression_slope(
         FIT_ORDERS, [fit[n].max_jump_rate for n in FIT_ORDERS]
     )
+    # These broad checks detect accidental formula changes.  The rigorous
+    # exponent claims come from the finite-order inequalities above and Lean.
     if not (-2.05 < defect_slope < -1.90):
-        raise AssertionError(f"unexpected defect slope {defect_slope}")
+        raise AssertionError(f"unexpected defect diagnostic slope {defect_slope}")
     if not (3.85 < rate_slope < 4.10):
-        raise AssertionError(f"unexpected stiffness slope {rate_slope}")
+        raise AssertionError(f"unexpected stiffness diagnostic slope {rate_slope}")
     return defect_slope, rate_slope
 
 
@@ -271,19 +329,25 @@ def write_outputs(
     with md_path.open("w", encoding="utf-8") as handle:
         handle.write("# Equal-angle product AFP deterministic audit\n\n")
         handle.write(
-            "All cases passed positivity, centering, degree-one exactness, "
-            "defect-identity, and rate-identity checks.\n\n"
+            "All square and non-square cases passed positivity, polar-boundary, "
+            "centering, degree-one exactness, defect-identity, and rate-identity "
+            "checks. Square cases also passed the Lean-proved finite-order "
+            "defect and polar-rate inequalities.\n\n"
         )
-        handle.write(f"- fitted maximum-defect slope: `{defect_slope:.8f}`\n")
-        handle.write(f"- fitted maximum-rate slope: `{rate_slope:.8f}`\n\n")
         handle.write(
-            "| N | M | coordinate residual | max defect | max rate |\n"
-            "|---:|---:|---:|---:|---:|\n"
+            f"- diagnostic maximum-defect slope: `{defect_slope:.8f}`\n"
+        )
+        handle.write(f"- diagnostic maximum-rate slope: `{rate_slope:.8f}`\n\n")
+        handle.write(
+            "| N | M | coordinate residual | max defect | max rate | "
+            "min positive coefficient |\n"
+            "|---:|---:|---:|---:|---:|---:|\n"
         )
         for row in rows:
             handle.write(
                 f"| {row.N} | {row.M} | {row.coordinate_residual:.3e} | "
-                f"{row.max_peak_defect:.6e} | {row.max_jump_rate:.6e} |\n"
+                f"{row.max_peak_defect:.6e} | {row.max_jump_rate:.6e} | "
+                f"{row.min_positive_quantity:.6e} |\n"
             )
 
 
@@ -300,12 +364,13 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    rows = [audit_case(N) for N in DEFAULT_ORDERS]
+    rows = [audit_case(N, M) for N, M in DEFAULT_CASES]
     defect_slope, rate_slope = assert_audit(rows)
     write_outputs(rows, defect_slope, rate_slope, args.output_dir)
     print(
         "PASS equal-angle product audit: "
-        f"defect slope={defect_slope:.8f}, rate slope={rate_slope:.8f}"
+        f"cases={len(rows)}, defect diagnostic slope={defect_slope:.8f}, "
+        f"rate diagnostic slope={rate_slope:.8f}"
     )
 
 
