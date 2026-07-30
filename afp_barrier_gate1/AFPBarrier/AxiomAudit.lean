@@ -1,0 +1,168 @@
+import AFPBarrier
+
+/-! Print the axiom dependencies of every public theorem in the AFPBarrier library. -/
+
+#print axioms AFPBarrier.jumpGenerator_const
+#print axioms AFPBarrier.jumpGenerator_add_const
+#print axioms AFPBarrier.jumpGenerator_sub_const
+#print axioms AFPBarrier.jumpGenerator_square_identity
+#print axioms AFPBarrier.jumpRate_nonneg
+#print axioms AFPBarrier.carreDuChamp_nonneg
+#print axioms AFPBarrier.jumpGenerator_sq_le_rate_mul_carre
+#print axioms AFPBarrier.zero_carreDuChamp_forces_generator_zero
+
+#print axioms AFPBarrier.jumpGenerator_chain_rule_defect
+#print axioms AFPBarrier.strict_tangent_chain_rule_forces_generator_zero
+#print axioms AFPBarrier.square_chain_rule_forces_generator_zero
+
+#print axioms AFPBarrier.no_exact_linear_and_square_at_peak
+#print axioms AFPBarrier.no_exact_shifted_quadratic_at_peak
+
+#print axioms AFPBarrier.peakDefect_eq_carreDuChamp
+#print axioms AFPBarrier.peakDefect_nonneg
+#print axioms AFPBarrier.eigenvalue_sq_le_rate_mul_peakDefect
+#print axioms AFPBarrier.peakDefect_pos
+#print axioms AFPBarrier.peakDefect_lower_bound
+
+#print axioms AFPBarrier.lossMoment_eq_eigenvalue
+#print axioms AFPBarrier.lossMin_mul_rate_le_eigenvalue
+#print axioms AFPBarrier.eigenvalue_le_lossMax_mul_rate
+#print axioms AFPBarrier.lossMin_mul_eigenvalue_le_peakDefect
+#print axioms AFPBarrier.peakDefect_le_lossMax_mul_eigenvalue
+#print axioms AFPBarrier.quasiUniform_loss_rate_defect_bounds
+#print axioms AFPBarrier.eigenvalue_div_lossMax_le_rate
+#print axioms AFPBarrier.rate_le_eigenvalue_div_lossMin
+#print axioms AFPBarrier.quadraticLoss_rate_defect_bounds
+
+#print axioms AFPBarrier.sphericalLoss_eq_two_sin_sq_half
+#print axioms AFPBarrier.sphericalLoss_lower_quadratic
+#print axioms AFPBarrier.sphericalLoss_two_mul_upper
+#print axioms AFPBarrier.sphericalLoss_between_of_angle_window
+#print axioms AFPBarrier.sphericalNet_peak_rate_defect_bounds
+#print axioms AFPBarrier.sphericalNet_peak_rate_defect_bounds_mul
+
+#print axioms AFPBarrier.lossVarianceAt_nonneg
+#print axioms AFPBarrier.carreDuChamp_centered_loss_identity
+#print axioms AFPBarrier.peakDefect_centered_loss_identity
+#print axioms AFPBarrier.rate_mul_peakDefect_sub_eigenvalue_sq_eq_rate_mul_lossVariance
+#print axioms AFPBarrier.squareRing_rate_mul_defect_sub_four
+#print axioms AFPBarrier.four_le_squareRing_rate_mul_defect
+
+#print axioms AFPBarrier.weightedAdjointRate_nonneg
+#print axioms AFPBarrier.jumpGenerator_weightedAdjointRate_eq
+#print axioms AFPBarrier.jumpGenerator_weightedAdjointRate_eigen
+#print axioms AFPBarrier.no_exact_forward_linear_and_square_at_peak
+
+#print axioms AFPBarrier.conductanceRate_nonneg
+#print axioms AFPBarrier.conductanceRate_detailedBalance
+#print axioms AFPBarrier.weightedAdjointRate_conductanceRate_eq
+#print axioms AFPBarrier.weight_mul_jumpGenerator_conductanceRate
+#print axioms AFPBarrier.weighted_sum_jumpGenerator_conductanceRate_eq_zero
+#print axioms AFPBarrier.conductance_eigen_implies_weightedMean_zero
+#print axioms AFPBarrier.no_exact_conductance_linear_and_square_at_peak
+
+#print axioms AFPBarrier.completeConductance_symm
+#print axioms AFPBarrier.conductanceRate_completeConductance_eq_completeRate
+#print axioms AFPBarrier.completeRate_eigen_of_weightedMean_zero
+#print axioms AFPBarrier.completeRate_pos
+#print axioms AFPBarrier.completeConductance_pos
+#print axioms AFPBarrier.completeRate_preserves_centered_coordinates
+#print axioms AFPBarrier.reversible_coordinate_exactness_implies_centered
+
+#print axioms AFPBarrier.finiteMatrix_bilinear_identity
+#print axioms AFPBarrier.nonnegative_solution_forces_dualWork_nonneg
+#print axioms AFPBarrier.negative_dualWork_certifies_infeasible
+#print axioms AFPBarrier.positiveLP_weak_duality
+
+#print axioms AFPBarrier.matrixAction_conductanceMatrix_eq_jumpGenerator
+#print axioms AFPBarrier.matrixAction_diagonalShift
+#print axioms AFPBarrier.shifted_source_minus_total_shift
+#print axioms AFPBarrier.shifted_conductance_action_recovers_jumpGenerator
+
+#print axioms AFPBarrier.conductanceRate_common_scale
+#print axioms AFPBarrier.jumpGenerator_conductance_common_scale
+#print axioms AFPBarrier.equilibrium_common_scale
+#print axioms AFPBarrier.geometric_pair_transfers_to_scaled_quadrature
+
+#print axioms AFPBarrier.conductance_eigen_iff_equilibrium
+#print axioms AFPBarrier.S2_coordinate_eigen_implies_minus_two_balance
+#print axioms AFPBarrier.minus_two_and_minus_four_balance_incompatible
+
+#print axioms AFPBarrier.productNodeAction_const
+#print axioms AFPBarrier.productNodeAction_eq_of_balance
+#print axioms AFPBarrier.productNodeAction_axial
+#print axioms AFPBarrier.equalAngleWeight_pos
+#print axioms AFPBarrier.equalAngleMeridionalTotal_pos
+#print axioms AFPBarrier.equalAngleAzimuthConductance_pos
+#print axioms AFPBarrier.equalAngle_meridional_rate
+#print axioms AFPBarrier.equalAngle_azimuth_rate
+#print axioms AFPBarrier.equalAngle_peakDefect_formula
+#print axioms AFPBarrier.equalAngle_rate_formula
+#print axioms AFPBarrier.squarePolar_rate_formula
+#print axioms AFPBarrier.squarePolar_peakDefect_formula
+#print axioms AFPBarrier.equalAngle_defect_pos
+
+#print axioms AFPBarrier.equalAngleTrigWeight_pos
+#print axioms AFPBarrier.equalAngleMeridionalMinus_pos
+#print axioms AFPBarrier.equalAngleMeridionalPlus_pos
+#print axioms AFPBarrier.equalAngleTrigAzimuthConductance_pos
+#print axioms AFPBarrier.equalAngle_meridional_sum_trig
+#print axioms AFPBarrier.equalAngle_axial_balance_trig
+#print axioms AFPBarrier.equalAngle_transverse_meridional_balance_trig
+#print axioms AFPBarrier.equalAngle_azimuth_cos_balance_trig
+#print axioms AFPBarrier.equalAngle_azimuth_sin_balance_trig
+#print axioms AFPBarrier.equalAngle_productNodeAction_cos_eq
+#print axioms AFPBarrier.equalAngle_productNodeAction_sin_cos_eq
+#print axioms AFPBarrier.equalAngle_productNodeAction_sin_sin_eq
+
+#print axioms AFPBarrier.equalAngleGridHalfStep_pos
+#print axioms AFPBarrier.equalAngleGridHalfStep_lt_pi_div_two
+#print axioms AFPBarrier.equalAngleGridTheta_pos
+#print axioms AFPBarrier.equalAngleGridTheta_lt_pi
+#print axioms AFPBarrier.equalAngleGridAzimuthStep_pos
+#print axioms AFPBarrier.equalAngleGridAzimuthStep_lt_two_pi
+#print axioms AFPBarrier.one_sub_cos_pos_of_pos_of_lt_two_pi
+#print axioms AFPBarrier.equalAngleGrid_parameter_facts
+#print axioms AFPBarrier.equalAngleGrid_weight_pos
+#print axioms AFPBarrier.equalAngleGrid_coordinate_exact
+
+#print axioms AFPBarrier.equalAngleGrid_meridionalMinus_zero_north
+#print axioms AFPBarrier.equalAngleGrid_meridionalPlus_zero_south
+#print axioms AFPBarrier.equalAngleGrid_meridionalMinus_pos
+#print axioms AFPBarrier.equalAngleGrid_meridionalPlus_pos
+#print axioms AFPBarrier.equalAngleGrid_azimuthConductance_pos
+
+#print axioms AFPBarrier.equalAngleGridTheta_add_one
+#print axioms AFPBarrier.equalAngleGrid_meridional_shared
+#print axioms AFPBarrier.equalAngleGridTheta_reflect
+#print axioms AFPBarrier.equalAngleGrid_weight_reflect
+#print axioms AFPBarrier.equalAngleGrid_cos_reflect
+
+#print axioms AFPBarrier.sphericalCoordinateDot_meridional
+#print axioms AFPBarrier.sphericalCoordinateDot_azimuthal
+#print axioms AFPBarrier.meridionalDotLoss_eq_two_sin_sq
+#print axioms AFPBarrier.azimuthalDotLoss_eq_sin_sq_mul
+#print axioms AFPBarrier.equalAngle_actual_peakDefect_formula
+
+#print axioms AFPBarrier.sum_range_sub_succ_real
+#print axioms AFPBarrier.equalAngleTrigWeight_eq_cos_difference
+#print axioms AFPBarrier.equalAngleGrid_weight_telescope
+#print axioms AFPBarrier.sum_equalAngleGrid_ringWeights
+#print axioms AFPBarrier.sum_equalAngleGrid_allWeights
+
+#print axioms AFPBarrier.squareRingDefect_between_sin_bounds
+#print axioms AFPBarrier.squareRingDefect_trig_bounds
+#print axioms AFPBarrier.equalAngleGrid_jordanScale
+#print axioms AFPBarrier.squareRingDefect_grid_bounds
+#print axioms AFPBarrier.squarePolarRate_lower_step
+#print axioms AFPBarrier.squarePolarRate_upper_jordan
+#print axioms AFPBarrier.squarePolarRate_grid_bounds
+
+#print axioms AFPBarrier.sin_halfStep_le_of_mem_symmetric_interval
+#print axioms AFPBarrier.equalAngleGridTheta_mem_symmetric_interval
+#print axioms AFPBarrier.equalAngleGrid_sin_halfStep_le_sin_theta
+#print axioms AFPBarrier.squareRingRate_le_polar_of_sin_sq
+#print axioms AFPBarrier.equalAngleGrid_squareRingRate_le_polar
+
+#print axioms AFPBarrier.no_exact_S2_degree_two_at_peak
+#print axioms AFPBarrier.S2_four_le_rate_mul_defect

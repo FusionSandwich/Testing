@@ -1,0 +1,171 @@
+name: AFP Lean Gate 4
+
+# Gate 4 is closed and frozen. It remains reproducible on its original branch
+# and by manual dispatch, while Gate 5 uses the superset workflow.
+on:
+  push:
+    branches:
+      - agent/afp-gate4-quasiuniform
+    paths:
+      - 'afp_barrier_gate1/AFPBarrier/**'
+      - 'afp_barrier_gate1/AFPBarrier.lean'
+      - 'afp_barrier_gate1/GATE4.md'
+      - 'afp_barrier_gate1/gate4/**'
+      - 'afp_barrier_gate1/lakefile.lean'
+      - 'afp_barrier_gate1/lean-toolchain'
+      - 'afp_barrier_gate1/lake-manifest.json'
+      - '.github/workflows/afp-barrier-gate4.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  mathematics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    defaults:
+      run:
+        working-directory: afp_barrier_gate1
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up deterministic Python runtime
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Deterministic icosphere spherical-Laplacian audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python gate4/icosphere_spherical_laplacian_audit.py \
+            --max-level 5 --output-dir gate4/generated \
+            2>&1 | tee gate4-deterministic-audit.log
+
+      - name: Node-matched product-grid comparison
+        shell: bash
+        run: |
+          set -euo pipefail
+          python gate4/compare_product_and_icosphere.py \
+            --input gate4/generated/icosphere_spherical_laplacian_audit.csv \
+            --output-dir gate4/generated \
+            2>&1 | tee gate4-grid-comparison.log
+
+      - name: Install Elan and pinned Lean toolchain
+        working-directory: .
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
+            | sh -s -- -y --default-toolchain "$(cat afp_barrier_gate1/lean-toolchain)"
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+
+      - name: Record toolchain versions
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "commit=${GITHUB_SHA}"
+            python --version
+            lean --version
+            lake --version
+          } | tee gate4-toolchain.log
+
+      - name: Resolve pinned dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake update 2>&1 | tee gate4-lake-update.log
+
+      - name: Download Mathlib compiled cache
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake exe cache get 2>&1 | tee gate4-mathlib-cache.log
+
+      - name: Lean kernel build
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake build 2>&1 | tee gate4-lean-build.log
+
+      - name: Axiom audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake env lean AFPBarrier/AxiomAudit.lean 2>&1 | tee gate4-axiom-audit.log
+          if grep -q 'sorryAx' gate4-axiom-audit.log; then
+            echo "A theorem depends on Lean's sorry axiom." >&2
+            exit 1
+          fi
+
+      - name: Source placeholder audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -RInE --include='*.lean' '(^|[^[:alnum:]_])(sorry|admit)([^[:alnum:]_]|$)' AFPBarrier AFPBarrier.lean; then
+            echo "Proof placeholder found." >&2
+            exit 1
+          fi
+          if grep -RInE --include='*.lean' '^[[:space:]]*axiom([[:space:]]|$)' AFPBarrier AFPBarrier.lean; then
+            echo "User axiom declaration found." >&2
+            exit 1
+          fi
+          echo "No proof placeholders or user axiom declarations found." | tee gate4-source-audit.log
+
+      - name: Write Gate 4 report
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "AFP Barrier Gate 4 quasi-uniform mathematics validation"
+            echo "commit=${GITHUB_SHA}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "run_attempt=${GITHUB_RUN_ATTEMPT}"
+            echo "toolchain=$(cat lean-toolchain)"
+            echo "timestamp_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } > gate4-report.txt
+
+      - name: Pack exact source snapshot
+        if: always()
+        working-directory: .
+        shell: bash
+        run: |
+          set -euo pipefail
+          tar \
+            --exclude='afp_barrier_gate1/.lake' \
+            --exclude='afp_barrier_gate1/*.log' \
+            --exclude='afp_barrier_gate1/gate4-report.txt' \
+            -czf afp-barrier-gate4-source-${GITHUB_SHA}.tar.gz \
+            afp_barrier_gate1 \
+            .github/workflows/afp-barrier-gate4.yml
+
+      - name: Upload Gate 4 records
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: afp-lean-gate4-${{ github.run_id }}
+          path: |
+            afp_barrier_gate1/gate4-report.txt
+            afp_barrier_gate1/gate4-toolchain.log
+            afp_barrier_gate1/gate4-deterministic-audit.log
+            afp_barrier_gate1/gate4-grid-comparison.log
+            afp_barrier_gate1/gate4/generated/icosphere_spherical_laplacian_audit.md
+            afp_barrier_gate1/gate4/generated/icosphere_spherical_laplacian_audit.csv
+            afp_barrier_gate1/gate4/generated/product_vs_icosphere_comparison.md
+            afp_barrier_gate1/gate4/generated/product_vs_icosphere_comparison.csv
+            afp_barrier_gate1/gate4-lake-update.log
+            afp_barrier_gate1/gate4-mathlib-cache.log
+            afp_barrier_gate1/gate4-lean-build.log
+            afp_barrier_gate1/gate4-axiom-audit.log
+            afp_barrier_gate1/gate4-source-audit.log
+            afp_barrier_gate1/lake-manifest.json
+            afp-barrier-gate4-source-*.tar.gz
+          if-no-files-found: warn
