@@ -27,7 +27,7 @@ namespace AFPBarrier
 
 /-- Four-neighbour local product-grid action. `bm` and `bp` are the two
 meridional conductances and `c` is the conductance of each azimuthal edge. -/
-def productNodeAction
+noncomputable def productNodeAction
     (q bm bp c f0 fm fp fl fr : ℝ) : ℝ :=
   (bm * (fm - f0) + bp * (fp - f0)
     + c * (fl - f0) + c * (fr - f0)) / q
@@ -66,12 +66,12 @@ theorem productNodeAction_axial
   simpa using hbalance
 
 /-- Total outgoing rate of the four-neighbour product stencil. -/
-def productLocalRate (q bm bp c : ℝ) : ℝ :=
+noncomputable def productLocalRate (q bm bp c : ℝ) : ℝ :=
   (bm + bp + 2 * c) / q
 
 /-- Peak defect for two meridional neighbours with common dot-product loss
 `dmer` and two azimuthal neighbours with common loss `dazi`. -/
-def productLocalPeakDefect
+noncomputable def productLocalPeakDefect
     (q bm bp c dmer dazi : ℝ) : ℝ :=
   ((bm + bp) * dmer ^ 2 + 2 * c * dazi ^ 2) / q
 
@@ -80,11 +80,11 @@ def equalAngleWeight (alpha st sh : ℝ) : ℝ :=
   2 * alpha * st * sh
 
 /-- Sum of the two meridional conductances incident to one node. -/
-def equalAngleMeridionalTotal (alpha st sh : ℝ) : ℝ :=
+noncomputable def equalAngleMeridionalTotal (alpha st sh : ℝ) : ℝ :=
   alpha * st / sh
 
 /-- Conductance of each of the two azimuthal edges. -/
-def equalAngleAzimuthConductance
+noncomputable def equalAngleAzimuthConductance
     (alpha sh v st : ℝ) : ℝ :=
   alpha * sh / (v * st)
 
@@ -122,7 +122,6 @@ theorem equalAngle_meridional_rate
       = 1 / (2 * sh ^ 2) := by
   unfold equalAngleMeridionalTotal equalAngleWeight
   field_simp [halpha, hst, hsh]
-  ring
 
 /-- The rate of each azimuthal edge is exactly
 `1 / (2 * v * st^2)`. -/
@@ -135,7 +134,6 @@ theorem equalAngle_azimuth_rate
       = 1 / (2 * v * st ^ 2) := by
   unfold equalAngleAzimuthConductance equalAngleWeight
   field_simp [halpha, hst, hsh, hv]
-  ring
 
 /-- Closed-form peak defect of the equal-angle stencil:
 
@@ -158,7 +156,6 @@ theorem equalAngle_peakDefect_formula
   unfold equalAngleMeridionalTotal equalAngleAzimuthConductance
     equalAngleWeight
   field_simp [halpha, hst, hsh, hv]
-  ring
 
 /-- Closed-form total jump rate of the equal-angle stencil. -/
 theorem equalAngle_rate_formula
@@ -175,7 +172,6 @@ theorem equalAngle_rate_formula
   unfold equalAngleMeridionalTotal equalAngleAzimuthConductance
     equalAngleWeight
   field_simp [halpha, hst, hsh, hv]
-  ring
 
 /-- On the polar ring of a square product grid, `st = sh` and
 `v = 2 sh^2`; the maximum jump rate therefore has an explicit quartic term. -/
@@ -194,7 +190,6 @@ theorem squarePolar_rate_formula
     (alpha := alpha) (st := sh) (sh := sh) (v := 2 * sh ^ 2)
     (bm := bm) (bp := bp) halpha hsh hsh hv hsum]
   field_simp [hsh]
-  ring
 
 /-- The polar peak defect on the same square product grid. -/
 theorem squarePolar_peakDefect_formula
