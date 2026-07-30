@@ -8,7 +8,8 @@ Laplacian of Izmestiev and Lam (JLMS 2025, arXiv:2408.04877).
 For every refinement level it checks:
 
 * manifold topology and positive spherical-Delaunay edge conductances;
-* positive vertex masses;
+* positive vertex masses and normalized quadrature weights;
+* weighted centering and detailed balance;
 * the three exact coordinate eigenrelations L x_k = -2 x_k;
 * the exact zonal peak-defect identity;
 * the general loss-window rate and defect bounds formalized in Lean;
@@ -130,6 +131,9 @@ class AuditRow:
     max_conductance: float
     min_mass: float
     max_mass: float
+    total_weight_error: float
+    weighted_center_norm: float
+    max_detailed_balance_error: float
     min_edge: float
     max_edge: float
     edge_ratio: float
@@ -196,6 +200,28 @@ def assemble_and_audit(level: int, vertices: Sequence[Vec3], faces: Sequence[Fac
     if delaunay_margin <= 0.0:
         raise AssertionError("local spherical Delaunay condition failed")
 
+    # A common positive scaling of masses and conductances leaves the operator
+    # unchanged. Normalize the geometric masses into angular quadrature weights
+    # summing to 4*pi and verify weighted centering and detailed balance.
+    mass_sum = sum(masses)
+    quadrature_scale = 4.0 * math.pi / mass_sum
+    weights = [quadrature_scale * mass for mass in masses]
+    total_weight_error = abs(sum(weights) - 4.0 * math.pi)
+    weighted_center = tuple(
+        sum(weights[i] * vertices[i][component] for i in range(len(vertices)))
+        for component in range(3)
+    )
+    weighted_center_norm = norm(weighted_center)
+    detailed_balance_error = 0.0
+    for (i, j), cij in conductance.items():
+        gamma = quadrature_scale * cij
+        rate_ij = gamma / weights[i]
+        rate_ji = gamma / weights[j]
+        detailed_balance_error = max(
+            detailed_balance_error,
+            abs(weights[i] * rate_ij - weights[j] * rate_ji),
+        )
+
     coordinate_residual = 0.0
     rates: List[float] = []
     defects: List[float] = []
@@ -233,6 +259,12 @@ def assemble_and_audit(level: int, vertices: Sequence[Vec3], faces: Sequence[Fac
 
     # Floating-point tolerances are intentionally much tighter than transport
     # tolerances and are checked at every vertex, not by sampling.
+    if total_weight_error > 5.0e-13:
+        raise AssertionError(f"quadrature normalization error: {total_weight_error:.3e}")
+    if weighted_center_norm > 5.0e-11:
+        raise AssertionError(f"weighted centering error: {weighted_center_norm:.3e}")
+    if detailed_balance_error > 5.0e-14:
+        raise AssertionError(f"detailed-balance error: {detailed_balance_error:.3e}")
     if coordinate_residual > 2.0e-8:
         raise AssertionError(f"coordinate residual too large: {coordinate_residual:.3e}")
     if defect_identity_error > 2.0e-11:
@@ -251,6 +283,9 @@ def assemble_and_audit(level: int, vertices: Sequence[Vec3], faces: Sequence[Fac
         max_conductance=max(conductance.values()),
         min_mass=min(masses),
         max_mass=max(masses),
+        total_weight_error=total_weight_error,
+        weighted_center_norm=weighted_center_norm,
+        max_detailed_balance_error=detailed_balance_error,
         min_edge=min_edge,
         max_edge=max_edge,
         edge_ratio=max_edge / min_edge,
@@ -310,18 +345,20 @@ def write_outputs(rows: Sequence[AuditRow], output_dir: Path) -> None:
         f"- fitted maximum-defect slope versus `2^level`: `{defect_slope:.8f}`",
         f"- fitted maximum-edge slope versus `2^level`: `{edge_slope:.8f}`",
         "",
-        "| level | vertices | edge ratio | min conductance | max coordinate residual | max defect | max rate |",
-        "|---:|---:|---:|---:|---:|---:|---:|",
+        "| level | vertices | edge ratio | min conductance | weighted center | max coordinate residual | max defect | max rate |",
+        "|---:|---:|---:|---:|---:|---:|---:|---:|",
     ]
     for row in rows:
         lines.append(
             f"| {row.level} | {row.vertices} | {row.edge_ratio:.8f} | "
-            f"{row.min_conductance:.8e} | {row.max_coordinate_residual:.3e} | "
-            f"{row.max_defect:.8e} | {row.max_rate:.8e} |")
+            f"{row.min_conductance:.8e} | {row.weighted_center_norm:.3e} | "
+            f"{row.max_coordinate_residual:.3e} | {row.max_defect:.8e} | "
+            f"{row.max_rate:.8e} |")
     lines.extend([
         "",
-        "All conductances, masses, Delaunay margins, coordinate eigenrelations,",
-        "defect identities, and loss-window bounds passed.",
+        "All conductances, normalized quadrature weights, detailed-balance checks,",
+        "Delaunay margins, coordinate eigenrelations, defect identities, and",
+        "loss-window bounds passed.",
     ])
     md_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
