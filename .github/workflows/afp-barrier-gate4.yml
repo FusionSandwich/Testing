@@ -7,6 +7,7 @@ on:
     paths:
       - 'afp_barrier_gate1/AFPBarrier/**'
       - 'afp_barrier_gate1/AFPBarrier.lean'
+      - 'afp_barrier_gate1/GATE4.md'
       - 'afp_barrier_gate1/gate4/**'
       - 'afp_barrier_gate1/lakefile.lean'
       - 'afp_barrier_gate1/lean-toolchain'
