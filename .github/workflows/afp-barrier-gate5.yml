@@ -1,11 +1,12 @@
 name: AFP Lean Gate 5
 
-# Gate 5 is closed. Keep exact reproduction on its frozen development branch
-# and by manual dispatch without re-running it on later Gate 6 pull requests.
+# Gate 5 is closed. The workflow remains attached to its original PR for an
+# independently visible final check; later PRs may parse the workflow but the
+# job is skipped unless the head branch is the frozen Gate 5 branch.
 on:
-  push:
+  pull_request:
     branches:
-      - agent/afp-gate5-sharpness
+      - testing
     paths:
       - 'afp_barrier_gate1/AFPBarrier/**'
       - 'afp_barrier_gate1/AFPBarrier.lean'
@@ -19,7 +20,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 permissions:
@@ -27,6 +28,7 @@ permissions:
 
 jobs:
   mathematics:
+    if: github.event_name == 'workflow_dispatch' || github.head_ref == 'agent/afp-gate5-sharpness'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     defaults:
