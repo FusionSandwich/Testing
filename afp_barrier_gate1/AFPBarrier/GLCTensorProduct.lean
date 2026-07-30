@@ -96,7 +96,7 @@ theorem glc_transverse_coordinate_exact
         + glcAzimuthRate r c d * (r * uMinus - r * u)
         + glcAzimuthRate r c d * (r * uPlus - r * u)
       = -2 * r * u := by
-  rw [← add_assoc]
+  rw [add_assoc]
   rw [azimuth_pair_action_factor]
   rw [hfourier]
   unfold glcAzimuthRate glcK
@@ -119,7 +119,21 @@ theorem glcK_eq_two_sub_latitude_chordLoss
           + aPlus * (1 - (r * rPlus + x * xPlus))) := by
   unfold glcK latitudePairAction
   unfold latitudePairAction at hcoord
-  nlinarith [hcoord, hunit]
+  have hunit' : r ^ 2 = 1 - x ^ 2 := by
+    linarith [hunit]
+  calc
+    2 * r ^ 2 + r * (aMinus * (rMinus - r) + aPlus * (rPlus - r))
+        = 2 -
+            (aMinus * (1 - (r * rMinus + x * xMinus))
+              + aPlus * (1 - (r * rPlus + x * xPlus)))
+          - x * (aMinus * (xMinus - x) + aPlus * (xPlus - x) + 2 * x) := by
+            rw [hunit']
+            ring
+    _ = 2 -
+          (aMinus * (1 - (r * rMinus + x * xMinus))
+            + aPlus * (1 - (r * rPlus + x * xPlus))) := by
+          rw [hcoord]
+          ring
 
 /-- Nonnegative latitude rates and nonnegative chord deficits imply `K ≤ 2`. -/
 theorem glcK_le_two
