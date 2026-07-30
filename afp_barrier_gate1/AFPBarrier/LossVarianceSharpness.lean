@@ -106,11 +106,13 @@ theorem active_weight_mul_loss_deviation_sq_le_variance
   unfold lossVarianceAt
   have hjmem : j ∈ offdiag i := by
     exact Finset.mem_erase.mpr ⟨hji, Finset.mem_univ j⟩
-  apply Finset.single_le_sum
-  · intro k hk
-    have hki : k ≠ i := (Finset.mem_erase.mp hk).1
-    exact mul_nonneg (ha k hki) (sq_nonneg _)
-  · exact hjmem
+  exact Finset.single_le_sum
+    (s := offdiag i)
+    (f := fun k => a i k * ((f i - f k) - m) ^ 2)
+    (fun k hk => by
+      have hki : k ≠ i := (Finset.mem_erase.mp hk).1
+      exact mul_nonneg (ha k hki) (sq_nonneg _))
+    hjmem
 
 /-- Exact quantitative stability: if the Cauchy--Schwarz gap is at most `eta`,
 then the weighted loss variance about the mean-loss center is at most
@@ -127,8 +129,11 @@ theorem lossVarianceAt_le_gap_div_rate
   apply (le_div_iff₀ hrate).2
   have hid := rate_mul_peakDefect_sub_eigenvalue_sq_eq_rate_mul_lossVariance
     a f i lam m hfi hlinear hm
-  rw [← hid]
-  simpa [mul_comm] using hgap
+  calc
+    lossVarianceAt a f i m * jumpRate a i
+        = jumpRate a i * lossVarianceAt a f i m := by ring
+    _ = jumpRate a i * peakDefect a f i lam - lam ^ 2 := hid.symm
+    _ ≤ eta := hgap
 
 /-- Per-edge near-equality stability under a positive lower bound on the active
 rate. -/
@@ -138,7 +143,6 @@ theorem minActiveRate_mul_loss_deviation_sq_le_gap_div_rate
     (ha : ∀ k, k ≠ i → 0 ≤ a i k)
     (hji : j ≠ i)
     (hamin : amin ≤ a i j)
-    (hamin0 : 0 ≤ amin)
     (hfi : f i = 1)
     (hlinear : jumpGenerator a f i = -lam)
     (hrate : 0 < jumpRate a i)
