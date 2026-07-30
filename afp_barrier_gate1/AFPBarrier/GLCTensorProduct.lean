@@ -127,7 +127,7 @@ theorem glcK_eq_two_sub_latitude_chordLoss
             (aMinus * (1 - (r * rMinus + x * xMinus))
               + aPlus * (1 - (r * rPlus + x * xPlus)))
           - x * (aMinus * (xMinus - x) + aPlus * (xPlus - x) + 2 * x) := by
-            rw [hunit']
+            simp_rw [hunit']
             ring
     _ = 2 -
           (aMinus * (1 - (r * rMinus + x * xMinus))
