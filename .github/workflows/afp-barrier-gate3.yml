@@ -95,6 +95,14 @@ jobs:
           python gate3/glc_deterministic_audit.py --output-dir gate3-output \
             2>&1 | tee gate3-family-audit.log
 
+      - name: Odd-order central-ring audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf gate3-central-output
+          python gate3/glc_central_audit.py --output-dir gate3-central-output \
+            2>&1 | tee gate3-central-audit.log
+
       - name: Write Lean/Python provenance
         if: always()
         shell: bash
@@ -119,6 +127,7 @@ jobs:
             --exclude='afp_barrier_gate1/.lake' \
             --exclude='afp_barrier_gate1/*.log' \
             --exclude='afp_barrier_gate1/gate3-output' \
+            --exclude='afp_barrier_gate1/gate3-central-output' \
             -czf afp-barrier-gate3-source-${GITHUB_SHA}.tar.gz \
             afp_barrier_gate1 \
             .github/workflows/afp-barrier-gate3.yml
@@ -130,10 +139,14 @@ jobs:
           name: afp-gate3-lean-python-${{ github.run_id }}
           path: |
             afp_barrier_gate1/GATE3.md
+            afp_barrier_gate1/gate3/CENTRAL_RING_THEOREM.md
             afp_barrier_gate1/gate3-output/glc_audit.md
             afp_barrier_gate1/gate3-output/glc_audit.csv
+            afp_barrier_gate1/gate3-central-output/glc_central_audit.md
+            afp_barrier_gate1/gate3-central-output/glc_central_audit.csv
             afp_barrier_gate1/gate3-exact-n2.log
             afp_barrier_gate1/gate3-family-audit.log
+            afp_barrier_gate1/gate3-central-audit.log
             afp_barrier_gate1/gate3-lean-build.log
             afp_barrier_gate1/gate3-axiom-audit.log
             afp_barrier_gate1/gate3-source-audit.log
