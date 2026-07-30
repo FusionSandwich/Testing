@@ -5,6 +5,7 @@ import AFPBarrier.Quantitative
 import AFPBarrier.QuasiUniformLossBounds
 import AFPBarrier.SphericalNetScaling
 import AFPBarrier.LossVariance
+import AFPBarrier.LossVarianceSharpness
 import AFPBarrier.ForwardAdjoint
 import AFPBarrier.ReversibleConductance
 import AFPBarrier.CompleteGraph
