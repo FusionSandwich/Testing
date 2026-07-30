@@ -10,7 +10,7 @@ geodesic angle `theta` is
 
   `1 - cos theta`.
 
-A maximal `h`-separated spherical set has covering radius at most `h`.  Every
+A maximal `h`-separated spherical set has covering radius at most `h`. Every
 edge of its spherical Delaunay graph therefore has angle in `[h, 2h]`: the
 lower bound is separation, while a shared Voronoi point gives the upper bound.
 
@@ -61,7 +61,6 @@ theorem sphericalLoss_lower_quadratic
       2 * (2 / Real.pi * (h / 2)) ^ 2
         = (2 / Real.pi ^ 2) * h ^ 2 := by
     field_simp [Real.pi_ne_zero]
-    ring
   rw [← hform]
   nlinarith
 
@@ -69,8 +68,9 @@ theorem sphericalLoss_lower_quadratic
 theorem sphericalLoss_two_mul_upper (h : ℝ) :
     sphericalLoss (2 * h) ≤ 2 * h ^ 2 := by
   rw [sphericalLoss_eq_two_sin_sq_half]
-  have hs := Real.sin_sq_le_sq h
-  convert (mul_le_mul_of_nonneg_left hs (by norm_num : (0 : ℝ) ≤ 2)) using 1 <;> ring
+  have hs : Real.sin h ^ 2 ≤ h ^ 2 := Real.sin_sq_le_sq
+  norm_num
+  exact mul_le_mul_of_nonneg_left hs (by norm_num)
 
 /-- Every angle in `[h,2h]`, for `h <= pi/4`, has a uniformly quadratic loss. -/
 theorem sphericalLoss_between_of_angle_window
@@ -118,7 +118,7 @@ theorem sphericalNet_peak_rate_defect_bounds
     rcases hangle j hji with ⟨theta, htlo, hthi, hloss⟩
     rw [hloss]
     exact (sphericalLoss_between_of_angle_window h theta hh0.le hhquarter htlo hthi).2
-  exact quadraticLoss_window_implies_rate_defect_bounds
+  exact quadraticLoss_rate_defect_bounds
     a f i 2 (2 / Real.pi ^ 2) 2 h ha
     (by positivity) (by norm_num) hh0 hlower hupper hfi hlinear
 
@@ -142,19 +142,19 @@ theorem sphericalNet_peak_rate_defect_bounds_mul
   have hb := sphericalNet_peak_rate_defect_bounds
     a f i h hh0 hhquarter ha hfi hlinear hangle
   have hh2 : 0 < h ^ 2 := sq_pos_of_pos hh0
-  have hpi2 : 0 < Real.pi ^ 2 := sq_pos_of_pos Real.pi_pos
   constructor
-  · apply (le_div_iff₀ hh2).mp
-    simpa [div_eq_mul_inv, mul_assoc, mul_left_comm, mul_comm] using hb.1
+  · have hm := mul_le_mul_of_nonneg_left hb.1 hh2.le
+    have hleft : h ^ 2 * (2 / (2 * h ^ 2)) = 1 := by
+      field_simp [hh0.ne']
+    rw [hleft] at hm
+    simpa [mul_comm] using hm
   constructor
-  · have hu := hb.2.1
-    apply (div_le_iff₀ hh2).mp
-    have hform :
-        2 / ((2 / Real.pi ^ 2) * h ^ 2) = Real.pi ^ 2 / h ^ 2 := by
+  · have hm := mul_le_mul_of_nonneg_left hb.2.1 hh2.le
+    have hright :
+        h ^ 2 * (2 / ((2 / Real.pi ^ 2) * h ^ 2)) = Real.pi ^ 2 := by
       field_simp [Real.pi_ne_zero, hh0.ne']
-      ring
-    rw [hform] at hu
-    exact hu
+    rw [hright] at hm
+    simpa [mul_comm] using hm
   constructor
   · have hd := hb.2.2.1
     convert hd using 1 <;> ring
