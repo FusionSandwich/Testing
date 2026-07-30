@@ -120,6 +120,12 @@ import AFPBarrier
 #print axioms AFPBarrier.azimuthalDotLoss_eq_sin_sq_mul
 #print axioms AFPBarrier.equalAngle_actual_peakDefect_formula
 
+#print axioms AFPBarrier.sum_range_sub_succ_real
+#print axioms AFPBarrier.equalAngleTrigWeight_eq_cos_difference
+#print axioms AFPBarrier.equalAngleGrid_weight_telescope
+#print axioms AFPBarrier.sum_equalAngleGrid_ringWeights
+#print axioms AFPBarrier.sum_equalAngleGrid_allWeights
+
 #print axioms AFPBarrier.squareRingDefect_between_sin_bounds
 #print axioms AFPBarrier.squareRingDefect_trig_bounds
 #print axioms AFPBarrier.equalAngleGrid_jordanScale
