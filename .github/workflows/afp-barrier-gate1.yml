@@ -1,5 +1,7 @@
 name: AFP Lean Gate 1
 
+# Gate 1 is frozen. It can still be run manually or on its original branch,
+# but later Gate 2/3 pull requests use the superset Lean workflow instead.
 on:
   push:
     branches:
@@ -7,11 +9,11 @@ on:
     paths:
       - 'afp_barrier_gate1/**'
       - '.github/workflows/afp-barrier-gate1.yml'
-  pull_request:
-    paths:
-      - 'afp_barrier_gate1/**'
-      - '.github/workflows/afp-barrier-gate1.yml'
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
