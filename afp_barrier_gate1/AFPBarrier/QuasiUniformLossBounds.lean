@@ -147,4 +147,56 @@ theorem quasiUniform_loss_rate_defect_bounds
     peakDefect_le_lossMax_mul_eigenvalue a f i lam ellMin ellMax
       ha hellMin hlower hupper hfi hlinear⟩
 
+/-- Positive maximum loss gives the explicit lower rate bound `lam / ellMax`. -/
+theorem eigenvalue_div_lossMax_le_rate
+    (a : ι → ι → ℝ) (f : ι → ℝ) (i : ι) (lam ellMax : ℝ)
+    (ha : ∀ j, j ≠ i → 0 ≤ a i j)
+    (hellMax : 0 < ellMax)
+    (hupper : ∀ j, j ≠ i → f i - f j ≤ ellMax)
+    (hlinear : jumpGenerator a f i = -lam) :
+    lam / ellMax ≤ jumpRate a i := by
+  apply (div_le_iff₀ hellMax).2
+  simpa [mul_comm] using
+    eigenvalue_le_lossMax_mul_rate a f i lam ellMax ha hupper hlinear
+
+/-- Positive minimum loss gives the explicit upper rate bound `lam / ellMin`. -/
+theorem rate_le_eigenvalue_div_lossMin
+    (a : ι → ι → ℝ) (f : ι → ℝ) (i : ι) (lam ellMin : ℝ)
+    (ha : ∀ j, j ≠ i → 0 ≤ a i j)
+    (hellMin : 0 < ellMin)
+    (hlower : ∀ j, j ≠ i → ellMin ≤ f i - f j)
+    (hlinear : jumpGenerator a f i = -lam) :
+    jumpRate a i ≤ lam / ellMin := by
+  apply (le_div_iff₀ hellMin).2
+  simpa [mul_comm] using
+    lossMin_mul_rate_le_eigenvalue a f i lam ellMin ha hlower hlinear
+
+/-- If every active loss lies between positive multiples of `h^2`, then the
+rate and peak defect obey the corresponding inverse-quadratic and quadratic
+bounds with explicit constants. -/
+theorem quadraticLoss_rate_defect_bounds
+    (a : ι → ι → ℝ) (f : ι → ℝ) (i : ι)
+    (lam c C h : ℝ)
+    (ha : ∀ j, j ≠ i → 0 ≤ a i j)
+    (hc : 0 < c) (hC : 0 < C) (hh : 0 < h)
+    (hlower : ∀ j, j ≠ i → c * h ^ 2 ≤ f i - f j)
+    (hupper : ∀ j, j ≠ i → f i - f j ≤ C * h ^ 2)
+    (hfi : f i = 1)
+    (hlinear : jumpGenerator a f i = -lam) :
+    lam / (C * h ^ 2) ≤ jumpRate a i
+      ∧ jumpRate a i ≤ lam / (c * h ^ 2)
+      ∧ (c * h ^ 2) * lam ≤ peakDefect a f i lam
+      ∧ peakDefect a f i lam ≤ (C * h ^ 2) * lam := by
+  have hcscale : 0 < c * h ^ 2 := mul_pos hc (sq_pos_of_pos hh)
+  have hCscale : 0 < C * h ^ 2 := mul_pos hC (sq_pos_of_pos hh)
+  exact ⟨
+    eigenvalue_div_lossMax_le_rate a f i lam (C * h ^ 2)
+      ha hCscale hupper hlinear,
+    rate_le_eigenvalue_div_lossMin a f i lam (c * h ^ 2)
+      ha hcscale hlower hlinear,
+    lossMin_mul_eigenvalue_le_peakDefect a f i lam (c * h ^ 2)
+      ha hcscale.le hlower hfi hlinear,
+    peakDefect_le_lossMax_mul_eigenvalue a f i lam (c * h ^ 2) (C * h ^ 2)
+      ha hcscale.le hlower hupper hfi hlinear⟩
+
 end AFPBarrier
