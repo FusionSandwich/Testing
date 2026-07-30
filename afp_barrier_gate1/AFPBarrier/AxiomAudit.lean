@@ -64,5 +64,19 @@ import AFPBarrier
 #print axioms AFPBarrier.S2_coordinate_eigen_implies_minus_two_balance
 #print axioms AFPBarrier.minus_two_and_minus_four_balance_incompatible
 
+#print axioms AFPBarrier.productNodeAction_const
+#print axioms AFPBarrier.productNodeAction_eq_of_balance
+#print axioms AFPBarrier.productNodeAction_axial
+#print axioms AFPBarrier.equalAngleWeight_pos
+#print axioms AFPBarrier.equalAngleMeridionalTotal_pos
+#print axioms AFPBarrier.equalAngleAzimuthConductance_pos
+#print axioms AFPBarrier.equalAngle_meridional_rate
+#print axioms AFPBarrier.equalAngle_azimuth_rate
+#print axioms AFPBarrier.equalAngle_peakDefect_formula
+#print axioms AFPBarrier.equalAngle_rate_formula
+#print axioms AFPBarrier.squarePolar_rate_formula
+#print axioms AFPBarrier.squarePolar_peakDefect_formula
+#print axioms AFPBarrier.equalAngle_defect_pos
+
 #print axioms AFPBarrier.no_exact_S2_degree_two_at_peak
 #print axioms AFPBarrier.S2_four_le_rate_mul_defect
