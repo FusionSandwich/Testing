@@ -122,5 +122,11 @@ import AFPBarrier
 #print axioms AFPBarrier.squarePolarRate_upper_jordan
 #print axioms AFPBarrier.squarePolarRate_grid_bounds
 
+#print axioms AFPBarrier.sin_halfStep_le_of_mem_symmetric_interval
+#print axioms AFPBarrier.equalAngleGridTheta_mem_symmetric_interval
+#print axioms AFPBarrier.equalAngleGrid_sin_halfStep_le_sin_theta
+#print axioms AFPBarrier.squareRingRate_le_polar_of_sin_sq
+#print axioms AFPBarrier.equalAngleGrid_squareRingRate_le_polar
+
 #print axioms AFPBarrier.no_exact_S2_degree_two_at_peak
 #print axioms AFPBarrier.S2_four_le_rate_mul_defect
