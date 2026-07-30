@@ -78,5 +78,10 @@ import AFPBarrier
 #print axioms AFPBarrier.outer_glcK_pos
 #print axioms AFPBarrier.glcK_N2_of_radius_sq
 
+#print axioms AFPBarrier.central_glcK_formula
+#print axioms AFPBarrier.central_glcPeakDefect_formula
+#print axioms AFPBarrier.central_glcRowRate_formula
+#print axioms AFPBarrier.central_glcPeakDefect_lower_bound
+
 #print axioms AFPBarrier.no_exact_S2_degree_two_at_peak
 #print axioms AFPBarrier.S2_four_le_rate_mul_defect
