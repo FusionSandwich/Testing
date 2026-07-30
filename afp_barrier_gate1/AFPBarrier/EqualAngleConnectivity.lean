@@ -5,9 +5,9 @@ import Mathlib.Tactic
 # Shared-edge compatibility of the equal-angle grid
 
 A reversible graph operator requires the two endpoints of an undirected edge
-to assign the same conductance.  The explicit construction has this property
+to assign the same conductance. The explicit construction has this property
 identically: the upper conductance of ring `i` is the lower conductance of ring
-`i+1`.  This file proves that statement directly from the grid formulas.
+`i+1`. This file proves that statement directly from the grid formulas.
 -/
 
 namespace AFPBarrier
@@ -33,7 +33,7 @@ theorem equalAngleGrid_meridional_shared
   unfold equalAngleMeridionalPlus equalAngleMeridionalMinus
   rw [equalAngleGridTheta_add_one]
   congr 2
-  ring
+  ring_nf
 
 /-- Reflection of a ring index across the equator reflects its latitude across
 `π/2`. -/
@@ -57,7 +57,9 @@ theorem equalAngleGrid_weight_reflect
         (equalAngleGridAzimuthStep m)
         (equalAngleGridTheta n i)
         (equalAngleGridHalfStep n) := by
-  rw [equalAngleGridTheta_reflect n i hn, Real.sin_pi_sub]
+  rw [equalAngleGridTheta_reflect n i hn]
+  unfold equalAngleTrigWeight equalAngleWeight
+  rw [Real.sin_pi_sub]
 
 /-- Reflected axial coordinates have opposite signs. -/
 theorem equalAngleGrid_cos_reflect
