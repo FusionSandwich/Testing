@@ -1,17 +1,26 @@
 name: AFP Lean Gate 2
 
+# Run the current superset Lean verification once per PR state.  We deliberately
+# avoid a separate push trigger: with an open PR that produced duplicate builds,
+# and connector-authored multi-file changes briefly exposed incomplete commits.
 on:
-  push:
-    branches:
-      - codex-afp-lean-gate2
-    paths:
-      - 'afp_barrier_gate1/**'
-      - '.github/workflows/afp-barrier-gate2.yml'
   pull_request:
+    branches:
+      - testing
     paths:
-      - 'afp_barrier_gate1/**'
+      - 'afp_barrier_gate1/AFPBarrier/**'
+      - 'afp_barrier_gate1/AFPBarrier.lean'
+      - 'afp_barrier_gate1/lakefile.lean'
+      - 'afp_barrier_gate1/lean-toolchain'
+      - 'afp_barrier_gate1/lake-manifest.json'
       - '.github/workflows/afp-barrier-gate2.yml'
   workflow_dispatch:
+
+# New commits supersede older in-progress verification for the same PR/ref.
+# This prevents transient intermediate commits from accumulating red runs.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
