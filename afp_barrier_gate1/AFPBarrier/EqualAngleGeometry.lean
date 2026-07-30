@@ -6,44 +6,39 @@ import Mathlib.Tactic
 # End-to-end trigonometric identities for the equal-angle AFP family
 
 This file removes the main abstraction boundary left in the first Gate 3
-formalization.  The current latitude is `theta`, the half meridional step is
-`h`, and the azimuthal step is `beta`.  Thus the full polar step is `2*h`.
+formalization. The current latitude is `theta`, the half meridional step is
+`h`, and the azimuthal step is `beta`, so the full polar step is `2*h`.
 
 The definitions below are the actual trigonometric weights and shared-edge
-conductances.  The theorems prove the axial and both transverse coordinate
-balances directly from the sine and cosine addition laws.  Combined with the
-algebraic normalization theorem in `EqualAngleProduct`, this proves exact
-preservation of the complete degree-one eigenspace without taking the local
-balance equation as an external hypothesis.
+conductances. The theorems prove the axial and both transverse coordinate
+balances directly from the sine and cosine addition laws. Combined with the
+normalization theorem in `EqualAngleProduct`, this proves exact preservation
+of the complete degree-one eigenspace without assuming the local balance.
 -/
 
 namespace AFPBarrier
 
 noncomputable section
 
-/-- Exact spherical-cell weight at latitude `theta` for azimuthal step `alpha`
-and polar half-step `h`. -/
+/-- Exact spherical-cell weight at latitude `theta`. -/
 def equalAngleTrigWeight (alpha theta h : ℝ) : ℝ :=
   equalAngleWeight alpha (Real.sin theta) (Real.sin h)
 
-/-- Shared conductance to the ring at `theta - 2*h`.  At the north boundary
-`theta = h`, this is zero because its numerator is `sin 0`. -/
+/-- Shared conductance to the ring at `theta - 2*h`. -/
 def equalAngleMeridionalMinus (alpha theta h : ℝ) : ℝ :=
   alpha * Real.sin (theta - h) / Real.sin (2 * h)
 
-/-- Shared conductance to the ring at `theta + 2*h`.  At the south boundary
-`theta = π - h`, this is zero because its numerator is `sin π`. -/
+/-- Shared conductance to the ring at `theta + 2*h`. -/
 def equalAngleMeridionalPlus (alpha theta h : ℝ) : ℝ :=
   alpha * Real.sin (theta + h) / Real.sin (2 * h)
 
-/-- Conductance of either azimuthal edge for azimuthal step `beta`. -/
+/-- Conductance of either azimuthal edge. -/
 def equalAngleTrigAzimuthConductance
     (alpha theta h beta : ℝ) : ℝ :=
   equalAngleAzimuthConductance alpha (Real.sin h)
     (1 - Real.cos beta) (Real.sin theta)
 
-/-- The exact cell weight is positive for a positive azimuthal step and
-interior polar angles. -/
+/-- The exact cell weight is positive for positive angular factors. -/
 theorem equalAngleTrigWeight_pos
     (alpha theta h : ℝ)
     (halpha : 0 < alpha)
@@ -79,8 +74,8 @@ theorem equalAngleMeridionalPlus_pos
     (mul_pos halpha (Real.sin_pos_of_pos_of_lt_pi hupper0 hupperpi))
     (Real.sin_pos_of_pos_of_lt_pi hstep0 hsteppi)
 
-/-- The trigonometric azimuthal conductance is positive whenever the two
-geometric denominator factors are positive. -/
+/-- The azimuthal conductance is positive under the exact denominator
+conditions used by the product grid. -/
 theorem equalAngleTrigAzimuthConductance_pos
     (alpha theta h beta : ℝ)
     (halpha : 0 < alpha)
@@ -124,7 +119,8 @@ theorem equalAngle_axial_balance_trig
   field_simp [hs, hc]
   have hh := Real.sin_sq_add_cos_sq h
   ring_nf at hh ⊢
-  nlinarith
+  linear_combination
+    (4 * Real.cos h * alpha * Real.sin theta * Real.cos theta) * hh
 
 /-- Direct trigonometric proof of the meridional part of either transverse
 coordinate balance. -/
@@ -143,7 +139,9 @@ theorem equalAngle_transverse_meridional_balance_trig
   have hh := Real.sin_sq_add_cos_sq h
   have ht := Real.sin_sq_add_cos_sq theta
   ring_nf at hh ht ⊢
-  nlinarith
+  linear_combination
+    (4 * alpha * Real.cos h * Real.sin theta ^ 2) * hh
+      - (4 * alpha * Real.cos h * Real.sin h ^ 2) * ht
 
 /-- The azimuthal second difference of the cosine transverse coordinate has
 an exact closed form after multiplication by the shared conductance. -/
@@ -238,25 +236,47 @@ theorem equalAngle_productNodeAction_sin_cos_eq
     (fl := Real.sin theta * Real.cos (phi - beta))
     (fr := Real.sin theta * Real.cos (phi + beta))
     (lam := 2) hq
-  rw [show
-    equalAngleMeridionalMinus alpha theta h
-          * (Real.sin (theta - 2 * h) * Real.cos phi
-            - Real.sin theta * Real.cos phi)
-      + equalAngleMeridionalPlus alpha theta h
-          * (Real.sin (theta + 2 * h) * Real.cos phi
-            - Real.sin theta * Real.cos phi)
-      = (equalAngleMeridionalMinus alpha theta h
-          * (Real.sin (theta - 2 * h) - Real.sin theta)
+  have hmer :
+      equalAngleMeridionalMinus alpha theta h
+            * (Real.sin (theta - 2 * h) * Real.cos phi
+              - Real.sin theta * Real.cos phi)
         + equalAngleMeridionalPlus alpha theta h
-          * (Real.sin (theta + 2 * h) - Real.sin theta))
-          * Real.cos phi by ring]
-  rw [equalAngle_transverse_meridional_balance_trig alpha theta h hs hc]
-  rw [equalAngle_azimuth_cos_balance_trig alpha theta h beta phi hst hv]
-  unfold equalAngleTrigWeight equalAngleWeight
-  rw [Real.cos_two_mul]
-  have ht := Real.sin_sq_add_cos_sq theta
-  ring_nf at ht ⊢
-  nlinarith
+            * (Real.sin (theta + 2 * h) * Real.cos phi
+              - Real.sin theta * Real.cos phi)
+        = 2 * alpha * Real.sin h * Real.cos (2 * theta) * Real.cos phi := by
+    calc
+      _ = (equalAngleMeridionalMinus alpha theta h
+              * (Real.sin (theta - 2 * h) - Real.sin theta)
+            + equalAngleMeridionalPlus alpha theta h
+              * (Real.sin (theta + 2 * h) - Real.sin theta))
+            * Real.cos phi := by ring
+      _ = _ := by
+        rw [equalAngle_transverse_meridional_balance_trig alpha theta h hs hc]
+  have hazi := equalAngle_azimuth_cos_balance_trig
+    alpha theta h beta phi hst hv
+  calc
+    _ = (equalAngleMeridionalMinus alpha theta h
+            * (Real.sin (theta - 2 * h) * Real.cos phi
+              - Real.sin theta * Real.cos phi)
+          + equalAngleMeridionalPlus alpha theta h
+            * (Real.sin (theta + 2 * h) * Real.cos phi
+              - Real.sin theta * Real.cos phi))
+        + (equalAngleTrigAzimuthConductance alpha theta h beta
+            * (Real.sin theta * Real.cos (phi - beta)
+              - Real.sin theta * Real.cos phi)
+          + equalAngleTrigAzimuthConductance alpha theta h beta
+            * (Real.sin theta * Real.cos (phi + beta)
+              - Real.sin theta * Real.cos phi)) := by ring
+    _ = 2 * alpha * Real.sin h * Real.cos (2 * theta) * Real.cos phi
+          + (-2 * alpha * Real.sin h * Real.cos phi) := by rw [hmer, hazi]
+    _ = -2 * equalAngleTrigWeight alpha theta h
+          * (Real.sin theta * Real.cos phi) := by
+      unfold equalAngleTrigWeight equalAngleWeight
+      rw [Real.cos_two_mul]
+      have ht := Real.sin_sq_add_cos_sq theta
+      ring_nf at ht ⊢
+      linear_combination
+        (4 * alpha * Real.cos phi * Real.sin h) * ht
 
 /-- The actual trigonometric stencil preserves the sine transverse coordinate
 with eigenvalue `-2`. -/
@@ -288,25 +308,47 @@ theorem equalAngle_productNodeAction_sin_sin_eq
     (fl := Real.sin theta * Real.sin (phi - beta))
     (fr := Real.sin theta * Real.sin (phi + beta))
     (lam := 2) hq
-  rw [show
-    equalAngleMeridionalMinus alpha theta h
-          * (Real.sin (theta - 2 * h) * Real.sin phi
-            - Real.sin theta * Real.sin phi)
-      + equalAngleMeridionalPlus alpha theta h
-          * (Real.sin (theta + 2 * h) * Real.sin phi
-            - Real.sin theta * Real.sin phi)
-      = (equalAngleMeridionalMinus alpha theta h
-          * (Real.sin (theta - 2 * h) - Real.sin theta)
+  have hmer :
+      equalAngleMeridionalMinus alpha theta h
+            * (Real.sin (theta - 2 * h) * Real.sin phi
+              - Real.sin theta * Real.sin phi)
         + equalAngleMeridionalPlus alpha theta h
-          * (Real.sin (theta + 2 * h) - Real.sin theta))
-          * Real.sin phi by ring]
-  rw [equalAngle_transverse_meridional_balance_trig alpha theta h hs hc]
-  rw [equalAngle_azimuth_sin_balance_trig alpha theta h beta phi hst hv]
-  unfold equalAngleTrigWeight equalAngleWeight
-  rw [Real.cos_two_mul]
-  have ht := Real.sin_sq_add_cos_sq theta
-  ring_nf at ht ⊢
-  nlinarith
+            * (Real.sin (theta + 2 * h) * Real.sin phi
+              - Real.sin theta * Real.sin phi)
+        = 2 * alpha * Real.sin h * Real.cos (2 * theta) * Real.sin phi := by
+    calc
+      _ = (equalAngleMeridionalMinus alpha theta h
+              * (Real.sin (theta - 2 * h) - Real.sin theta)
+            + equalAngleMeridionalPlus alpha theta h
+              * (Real.sin (theta + 2 * h) - Real.sin theta))
+            * Real.sin phi := by ring
+      _ = _ := by
+        rw [equalAngle_transverse_meridional_balance_trig alpha theta h hs hc]
+  have hazi := equalAngle_azimuth_sin_balance_trig
+    alpha theta h beta phi hst hv
+  calc
+    _ = (equalAngleMeridionalMinus alpha theta h
+            * (Real.sin (theta - 2 * h) * Real.sin phi
+              - Real.sin theta * Real.sin phi)
+          + equalAngleMeridionalPlus alpha theta h
+            * (Real.sin (theta + 2 * h) * Real.sin phi
+              - Real.sin theta * Real.sin phi))
+        + (equalAngleTrigAzimuthConductance alpha theta h beta
+            * (Real.sin theta * Real.sin (phi - beta)
+              - Real.sin theta * Real.sin phi)
+          + equalAngleTrigAzimuthConductance alpha theta h beta
+            * (Real.sin theta * Real.sin (phi + beta)
+              - Real.sin theta * Real.sin phi)) := by ring
+    _ = 2 * alpha * Real.sin h * Real.cos (2 * theta) * Real.sin phi
+          + (-2 * alpha * Real.sin h * Real.sin phi) := by rw [hmer, hazi]
+    _ = -2 * equalAngleTrigWeight alpha theta h
+          * (Real.sin theta * Real.sin phi) := by
+      unfold equalAngleTrigWeight equalAngleWeight
+      rw [Real.cos_two_mul]
+      have ht := Real.sin_sq_add_cos_sq theta
+      ring_nf at ht ⊢
+      linear_combination
+        (4 * alpha * Real.sin phi * Real.sin h) * ht
 
 end
 
