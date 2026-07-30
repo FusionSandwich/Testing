@@ -85,9 +85,9 @@ theorem lossMin_mul_eigenvalue_le_peakDefect
     (hfi : f i = 1)
     (hlinear : jumpGenerator a f i = -lam) :
     ellMin * lam ≤ peakDefect a f i lam := by
-  rw [← lossMoment_eq_eigenvalue (a := a) (f := f) (i := i) (lam := lam) hlinear]
   rw [peakDefect_eq_carreDuChamp
     (a := a) (f := f) (i := i) (lam := lam) hfi hlinear]
+  rw [← lossMoment_eq_eigenvalue (a := a) (f := f) (i := i) (lam := lam) hlinear]
   unfold carreDuChamp
   rw [Finset.mul_sum]
   apply Finset.sum_le_sum
@@ -111,9 +111,9 @@ theorem peakDefect_le_lossMax_mul_eigenvalue
     (hfi : f i = 1)
     (hlinear : jumpGenerator a f i = -lam) :
     peakDefect a f i lam ≤ ellMax * lam := by
-  rw [← lossMoment_eq_eigenvalue (a := a) (f := f) (i := i) (lam := lam) hlinear]
   rw [peakDefect_eq_carreDuChamp
     (a := a) (f := f) (i := i) (lam := lam) hfi hlinear]
+  rw [← lossMoment_eq_eigenvalue (a := a) (f := f) (i := i) (lam := lam) hlinear]
   unfold carreDuChamp
   rw [Finset.mul_sum]
   apply Finset.sum_le_sum
