@@ -4,8 +4,8 @@ import AFPBarrier.Quantitative
 # Algebraic structure of the Gauss--Legendre--Chebyshev AFP stencil
 
 This module isolates the exact finite-dimensional identities used by the
-three-dimensional product-quadrature AFP stencil.  It does not formalize the
-analytic construction of Gauss--Legendre nodes.  Instead it proves that:
+three-dimensional product-quadrature AFP stencil. It does not formalize the
+analytic construction of Gauss--Legendre nodes. Instead it proves that:
 
 * the Morel interface-flux recurrence gives the exact `-2` coordinate balance;
 * the azimuthal correction `K` gives exact transverse coordinate balance;
@@ -107,7 +107,7 @@ theorem glc_transverse_coordinate_exact
 
 If `(r,x)` and its two latitude neighbours lie on the unit circle and the
 latitude row is exact on `x`, then `K` is two minus the weighted latitude chord
-loss.  This immediately gives `K ≤ 2` for nonnegative rates.
+loss. This immediately gives `K ≤ 2` for nonnegative rates.
 -/
 theorem glcK_eq_two_sub_latitude_chordLoss
     (aMinus aPlus rMinus r rPlus xMinus x xPlus : ℝ)
@@ -119,21 +119,8 @@ theorem glcK_eq_two_sub_latitude_chordLoss
           + aPlus * (1 - (r * rPlus + x * xPlus))) := by
   unfold glcK latitudePairAction
   unfold latitudePairAction at hcoord
-  have hunit' : r ^ 2 = 1 - x ^ 2 := by
-    linarith [hunit]
-  calc
-    2 * r ^ 2 + r * (aMinus * (rMinus - r) + aPlus * (rPlus - r))
-        = 2 -
-            (aMinus * (1 - (r * rMinus + x * xMinus))
-              + aPlus * (1 - (r * rPlus + x * xPlus)))
-          - x * (aMinus * (xMinus - x) + aPlus * (xPlus - x) + 2 * x) := by
-            simp_rw [hunit']
-            ring
-    _ = 2 -
-          (aMinus * (1 - (r * rMinus + x * xMinus))
-            + aPlus * (1 - (r * rPlus + x * xPlus))) := by
-          rw [hcoord]
-          ring
+  rw [hcoord]
+  linear_combination (2 - aMinus - aPlus) * hunit
 
 /-- Nonnegative latitude rates and nonnegative chord deficits imply `K ≤ 2`. -/
 theorem glcK_le_two
@@ -173,7 +160,7 @@ theorem glc_rowRate_formula
   field_simp [hr, hd]
 
 /-- At the first polar ring, the interface recurrence cancels the first
-Gauss--Legendre weight.  This is the algebraic starting point for the Bessel
+Gauss--Legendre weight. This is the algebraic starting point for the Bessel
 zero asymptotic of the polar stiffness. -/
 theorem outer_latitude_action_formula
     (w x xPlus r rPlus : ℝ)
@@ -193,7 +180,7 @@ theorem outer_glcK_formula
   ring
 
 /-- The outer-ring correction is strictly positive whenever the first
-latitude ring moves inward toward a nondecreasing transverse radius.  This
+latitude ring moves inward toward a nondecreasing transverse radius. This
 covers the southern and northern extreme Gauss--Legendre rings after the
 obvious reflection. -/
 theorem outer_glcK_pos
