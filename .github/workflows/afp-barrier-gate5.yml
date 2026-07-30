@@ -26,7 +26,7 @@ permissions:
 jobs:
   mathematics:
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 45
     defaults:
       run:
         working-directory: afp_barrier_gate1
@@ -47,6 +47,14 @@ jobs:
           python gate5/sharpness_audit.py \
             --max-level 5 --output-dir gate5/generated \
             2>&1 | tee gate5-deterministic-audit.log
+
+      - name: Deterministic low-mode and rotational-bias audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python gate5/spectral_bias_audit.py \
+            --max-level 5 --output-dir gate5/generated \
+            2>&1 | tee gate5-spectral-bias-audit.log
 
       - name: Install Elan and pinned Lean toolchain
         working-directory: .
@@ -91,7 +99,8 @@ jobs:
         run: |
           set -euo pipefail
           lake env lean AFPBarrier/AxiomAudit.lean 2>&1 | tee gate5-axiom-audit.log
-          if grep -q 'sorryAx' gate5-axiom-audit.log; then
+          lake env lean AFPBarrier/Gate5AxiomAudit.lean 2>&1 | tee gate5-sharpness-axiom-audit.log
+          if grep -q 'sorryAx' gate5-axiom-audit.log gate5-sharpness-axiom-audit.log; then
             echo "A theorem depends on Lean's sorry axiom." >&2
             exit 1
           fi
@@ -146,12 +155,16 @@ jobs:
             afp_barrier_gate1/gate5-report.txt
             afp_barrier_gate1/gate5-toolchain.log
             afp_barrier_gate1/gate5-deterministic-audit.log
+            afp_barrier_gate1/gate5-spectral-bias-audit.log
             afp_barrier_gate1/gate5/generated/sharpness_audit.md
             afp_barrier_gate1/gate5/generated/sharpness_audit.csv
+            afp_barrier_gate1/gate5/generated/spectral_bias_audit.md
+            afp_barrier_gate1/gate5/generated/spectral_bias_audit.csv
             afp_barrier_gate1/gate5-lake-update.log
             afp_barrier_gate1/gate5-mathlib-cache.log
             afp_barrier_gate1/gate5-lean-build.log
             afp_barrier_gate1/gate5-axiom-audit.log
+            afp_barrier_gate1/gate5-sharpness-axiom-audit.log
             afp_barrier_gate1/gate5-source-audit.log
             afp_barrier_gate1/lake-manifest.json
             afp-barrier-gate5-source-*.tar.gz
