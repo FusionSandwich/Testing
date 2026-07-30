@@ -1,0 +1,78 @@
+name: AFP Radiant finite-instance audit
+
+# This is a slow, source-pinned integration audit.  It should not run for every
+# Lean theorem or documentation edit.  It runs only when the audit inputs or its
+# workflow change, plus explicit manual dispatches.
+on:
+  pull_request:
+    branches:
+      - testing
+    paths:
+      - 'afp_barrier_gate1/radiant_audit/**'
+      - '.github/workflows/afp-barrier-radiant-audit.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      RADIANT_COMMIT: 205e07faa105854b0f27e95a02f01ebed08f84c1
+    defaults:
+      run:
+        working-directory: afp_barrier_gate1/radiant_audit
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Julia
+        uses: julia-actions/setup-julia@v2
+        with:
+          version: '1.10'
+
+      - name: Resolve Radiant at the audited commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          julia --project=. -e 'using Pkg; Pkg.add(PackageSpec(url="https://github.com/CBienvenue/Radiant.jl", rev=ENV["RADIANT_COMMIT"])); Pkg.instantiate(); Pkg.status()' \
+            2>&1 | tee radiant-resolve.log
+
+      - name: Run finite-instance compatibility audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          julia --project=. audit.jl 2>&1 | tee radiant-audit.log
+
+      - name: Write audit provenance
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "source_commit=${GITHUB_SHA}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "radiant_commit=${RADIANT_COMMIT}"
+            echo "timestamp_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            julia --version || true
+          } > radiant-audit-provenance.txt
+
+      - name: Upload audit records
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: radiant-afp-audit-${{ github.run_id }}
+          path: |
+            afp_barrier_gate1/radiant_audit/radiant_afp_audit.md
+            afp_barrier_gate1/radiant_audit/radiant_afp_audit.csv
+            afp_barrier_gate1/radiant_audit/radiant-resolve.log
+            afp_barrier_gate1/radiant_audit/radiant-audit.log
+            afp_barrier_gate1/radiant_audit/radiant-audit-provenance.txt
+            afp_barrier_gate1/radiant_audit/Manifest.toml
+          if-no-files-found: warn

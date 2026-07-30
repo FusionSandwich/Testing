@@ -1,0 +1,144 @@
+name: AFP Lean Gate 2
+
+# Run the current superset Lean verification once per PR state.  We deliberately
+# avoid a separate push trigger: with an open PR that produced duplicate builds,
+# and connector-authored multi-file changes briefly exposed incomplete commits.
+on:
+  pull_request:
+    branches:
+      - testing
+    paths:
+      - 'afp_barrier_gate1/AFPBarrier/**'
+      - 'afp_barrier_gate1/AFPBarrier.lean'
+      - 'afp_barrier_gate1/lakefile.lean'
+      - 'afp_barrier_gate1/lean-toolchain'
+      - 'afp_barrier_gate1/lake-manifest.json'
+      - '.github/workflows/afp-barrier-gate2.yml'
+  workflow_dispatch:
+
+# New commits supersede older in-progress verification for the same PR/ref.
+# This prevents transient intermediate commits from accumulating red runs.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  kernel-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: afp_barrier_gate1
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Elan and pinned Lean toolchain
+        working-directory: .
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
+            | sh -s -- -y --default-toolchain "$(cat afp_barrier_gate1/lean-toolchain)"
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+
+      - name: Record toolchain versions
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "commit=${GITHUB_SHA}"
+            lean --version
+            lake --version
+          } | tee gate2-toolchain.log
+
+      - name: Resolve pinned dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake update 2>&1 | tee gate2-lake-update.log
+
+      - name: Download Mathlib compiled cache
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake exe cache get 2>&1 | tee gate2-mathlib-cache.log
+
+      - name: Lean kernel build
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake build 2>&1 | tee gate2-lean-build.log
+
+      - name: Axiom audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake env lean AFPBarrier/AxiomAudit.lean 2>&1 | tee gate2-axiom-audit.log
+          if grep -q 'sorryAx' gate2-axiom-audit.log; then
+            echo "A theorem depends on Lean's sorry axiom." >&2
+            exit 1
+          fi
+
+      - name: Source placeholder audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -RInE --include='*.lean' '(^|[^[:alnum:]_])(sorry|admit)([^[:alnum:]_]|$)' AFPBarrier AFPBarrier.lean; then
+            echo "Proof placeholder found." >&2
+            exit 1
+          fi
+          if grep -RInE --include='*.lean' '^[[:space:]]*axiom([[:space:]]|$)' AFPBarrier AFPBarrier.lean; then
+            echo "User axiom declaration found." >&2
+            exit 1
+          fi
+          echo "No proof placeholders or user axiom declarations found." | tee gate2-source-audit.log
+
+      - name: Write Gate 2 report
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "AFP Barrier Gate 2 Lean validation"
+            echo "commit=${GITHUB_SHA}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "run_attempt=${GITHUB_RUN_ATTEMPT}"
+            echo "toolchain=$(cat lean-toolchain)"
+            echo "timestamp_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } > gate2-report.txt
+
+      - name: Pack exact source snapshot
+        if: always()
+        working-directory: .
+        shell: bash
+        run: |
+          set -euo pipefail
+          tar \
+            --exclude='afp_barrier_gate1/.lake' \
+            --exclude='afp_barrier_gate1/*.log' \
+            --exclude='afp_barrier_gate1/gate2-report.txt' \
+            -czf afp-barrier-gate2-source-${GITHUB_SHA}.tar.gz \
+            afp_barrier_gate1 \
+            .github/workflows/afp-barrier-gate2.yml \
+            .github/workflows/afp-barrier-radiant-audit.yml
+
+      - name: Upload verification logs and source snapshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: afp-lean-gate2-${{ github.run_id }}
+          path: |
+            afp_barrier_gate1/gate2-report.txt
+            afp_barrier_gate1/gate2-toolchain.log
+            afp_barrier_gate1/gate2-lake-update.log
+            afp_barrier_gate1/gate2-mathlib-cache.log
+            afp_barrier_gate1/gate2-lean-build.log
+            afp_barrier_gate1/gate2-axiom-audit.log
+            afp_barrier_gate1/gate2-source-audit.log
+            afp_barrier_gate1/lake-manifest.json
+            afp-barrier-gate2-source-*.tar.gz
+          if-no-files-found: warn

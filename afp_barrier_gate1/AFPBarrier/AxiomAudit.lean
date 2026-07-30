@@ -1,0 +1,68 @@
+import AFPBarrier
+
+/-! Print the axiom dependencies of every public theorem in the AFPBarrier library. -/
+
+#print axioms AFPBarrier.jumpGenerator_const
+#print axioms AFPBarrier.jumpGenerator_add_const
+#print axioms AFPBarrier.jumpGenerator_sub_const
+#print axioms AFPBarrier.jumpGenerator_square_identity
+#print axioms AFPBarrier.jumpRate_nonneg
+#print axioms AFPBarrier.carreDuChamp_nonneg
+#print axioms AFPBarrier.jumpGenerator_sq_le_rate_mul_carre
+#print axioms AFPBarrier.zero_carreDuChamp_forces_generator_zero
+
+#print axioms AFPBarrier.jumpGenerator_chain_rule_defect
+#print axioms AFPBarrier.strict_tangent_chain_rule_forces_generator_zero
+#print axioms AFPBarrier.square_chain_rule_forces_generator_zero
+
+#print axioms AFPBarrier.no_exact_linear_and_square_at_peak
+#print axioms AFPBarrier.no_exact_shifted_quadratic_at_peak
+
+#print axioms AFPBarrier.peakDefect_eq_carreDuChamp
+#print axioms AFPBarrier.peakDefect_nonneg
+#print axioms AFPBarrier.eigenvalue_sq_le_rate_mul_peakDefect
+#print axioms AFPBarrier.peakDefect_pos
+#print axioms AFPBarrier.peakDefect_lower_bound
+
+#print axioms AFPBarrier.weightedAdjointRate_nonneg
+#print axioms AFPBarrier.jumpGenerator_weightedAdjointRate_eq
+#print axioms AFPBarrier.jumpGenerator_weightedAdjointRate_eigen
+#print axioms AFPBarrier.no_exact_forward_linear_and_square_at_peak
+
+#print axioms AFPBarrier.conductanceRate_nonneg
+#print axioms AFPBarrier.conductanceRate_detailedBalance
+#print axioms AFPBarrier.weightedAdjointRate_conductanceRate_eq
+#print axioms AFPBarrier.weight_mul_jumpGenerator_conductanceRate
+#print axioms AFPBarrier.weighted_sum_jumpGenerator_conductanceRate_eq_zero
+#print axioms AFPBarrier.conductance_eigen_implies_weightedMean_zero
+#print axioms AFPBarrier.no_exact_conductance_linear_and_square_at_peak
+
+#print axioms AFPBarrier.completeConductance_symm
+#print axioms AFPBarrier.conductanceRate_completeConductance_eq_completeRate
+#print axioms AFPBarrier.completeRate_eigen_of_weightedMean_zero
+#print axioms AFPBarrier.completeRate_pos
+#print axioms AFPBarrier.completeConductance_pos
+#print axioms AFPBarrier.completeRate_preserves_centered_coordinates
+#print axioms AFPBarrier.reversible_coordinate_exactness_implies_centered
+
+#print axioms AFPBarrier.finiteMatrix_bilinear_identity
+#print axioms AFPBarrier.nonnegative_solution_forces_dualWork_nonneg
+#print axioms AFPBarrier.negative_dualWork_certifies_infeasible
+#print axioms AFPBarrier.positiveLP_weak_duality
+
+#print axioms AFPBarrier.matrixAction_conductanceMatrix_eq_jumpGenerator
+#print axioms AFPBarrier.matrixAction_diagonalShift
+#print axioms AFPBarrier.shifted_source_minus_total_shift
+#print axioms AFPBarrier.shifted_conductance_action_recovers_jumpGenerator
+
+#print axioms AFPBarrier.conductanceRate_common_scale
+#print axioms AFPBarrier.jumpGenerator_conductance_common_scale
+#print axioms AFPBarrier.equilibrium_common_scale
+#print axioms AFPBarrier.geometric_pair_transfers_to_scaled_quadrature
+
+#print axioms AFPBarrier.conductance_eigen_iff_equilibrium
+#print axioms AFPBarrier.S2_coordinate_eigen_implies_minus_two_balance
+#print axioms AFPBarrier.minus_two_and_minus_four_balance_incompatible
+
+#print axioms AFPBarrier.no_exact_S2_degree_two_at_peak
+#print axioms AFPBarrier.S2_four_le_rate_mul_defect
