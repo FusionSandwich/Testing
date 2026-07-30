@@ -5,8 +5,8 @@ import Mathlib.Tactic
 /-!
 # Explicit finite-order error and stiffness bounds
 
-The first Gate 3 audit fitted numerical slopes.  This file replaces those fits
-with explicit inequalities, valid at every order.  For the square product
+The first Gate 3 audit fitted numerical slopes. This file replaces those fits
+with explicit inequalities, valid at every order. For the square product
 family the half polar step is `h = π/(2n)`.
 
 * every ring defect lies between `2/n²` and `π²/n²`;
@@ -79,7 +79,6 @@ theorem equalAngleGrid_jordanScale
     2 / Real.pi * equalAngleGridHalfStep n = 1 / n := by
   unfold equalAngleGridHalfStep
   field_simp [Real.pi_ne_zero, hn]
-  ring
 
 /-- Exact finite-order defect bounds for every ring of the square product
 family. -/
@@ -99,7 +98,6 @@ theorem squareRingDefect_grid_bounds
         = 2 / n ^ 2 := by
     rw [hscale]
     field_simp [hn0.ne']
-    ring
   have hupper :
       4 * equalAngleGridHalfStep n ^ 2
         = Real.pi ^ 2 / n ^ 2 := by
@@ -201,7 +199,6 @@ theorem squarePolarRate_grid_bounds
         = (n ^ 2 + n ^ 4) / 2 := by
     rw [hscale]
     field_simp [hn0.ne']
-    ring
   have hn2ge1 : 1 ≤ n ^ 2 := by nlinarith
   have hn2le4 : n ^ 2 ≤ n ^ 4 := by
     calc
