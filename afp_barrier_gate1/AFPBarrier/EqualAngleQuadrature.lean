@@ -4,7 +4,7 @@ import Mathlib.Tactic
 /-!
 # Exact normalization of the equal-angle quadrature
 
-The cell weights are exact spherical-zone areas.  A product-to-sum identity
+The cell weights are exact spherical-zone areas. A product-to-sum identity
 turns each ring weight into a cosine difference, so the polar sum telescopes.
 This proves exact total weight `4π` for every finite `N × M` grid.
 -/
@@ -45,11 +45,10 @@ theorem equalAngleGrid_weight_telescope
   rw [equalAngleTrigWeight_eq_cos_difference]
   congr 2
   · unfold equalAngleGridTheta
-    push_cast
-    ring
+    ring_nf
   · unfold equalAngleGridTheta
-    push_cast
-    ring
+    norm_num
+    ring_nf
 
 /-- The sum of the per-direction ring weights is exactly `2*alpha`. -/
 theorem sum_equalAngleGrid_ringWeights
@@ -81,7 +80,6 @@ theorem sum_equalAngleGrid_ringWeights
           2 * (N : ℝ) * equalAngleGridHalfStep (N : ℝ) = Real.pi := by
         unfold equalAngleGridHalfStep
         field_simp [hNc]
-        ring
       simp [f, hangle]
       ring
 
