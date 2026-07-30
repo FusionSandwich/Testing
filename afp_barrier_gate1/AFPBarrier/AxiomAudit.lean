@@ -108,6 +108,12 @@ import AFPBarrier
 #print axioms AFPBarrier.equalAngleGrid_meridionalPlus_pos
 #print axioms AFPBarrier.equalAngleGrid_azimuthConductance_pos
 
+#print axioms AFPBarrier.equalAngleGridTheta_add_one
+#print axioms AFPBarrier.equalAngleGrid_meridional_shared
+#print axioms AFPBarrier.equalAngleGridTheta_reflect
+#print axioms AFPBarrier.equalAngleGrid_weight_reflect
+#print axioms AFPBarrier.equalAngleGrid_cos_reflect
+
 #print axioms AFPBarrier.squareRingDefect_between_sin_bounds
 #print axioms AFPBarrier.squareRingDefect_trig_bounds
 #print axioms AFPBarrier.equalAngleGrid_jordanScale
