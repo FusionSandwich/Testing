@@ -1,11 +1,11 @@
 name: AFP Lean Gate 3
 
-# Gate 3 is the current superset mathematics check. It runs once per coherent
-# pull-request state and cancels obsolete runs when the branch advances.
+# Gate 3 is closed and frozen. It remains reproducible on its original branch
+# and by manual dispatch, while Gate 4 uses the superset mathematics workflow.
 on:
-  pull_request:
+  push:
     branches:
-      - testing
+      - agent/afp-gate3-stable-ci
     paths:
       - 'afp_barrier_gate1/AFPBarrier/**'
       - 'afp_barrier_gate1/AFPBarrier.lean'
@@ -19,7 +19,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 permissions:
