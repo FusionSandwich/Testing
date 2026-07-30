@@ -4,8 +4,8 @@ import AFPBarrier.Quantitative
 # Algebraic structure of the Gauss--Legendre--Chebyshev AFP stencil
 
 This module isolates the exact finite-dimensional identities used by the
-three-dimensional product-quadrature AFP stencil. It does not formalize the
-analytic construction of Gauss--Legendre nodes. Instead it proves that:
+three-dimensional product-quadrature AFP stencil.  It does not formalize the
+analytic construction of Gauss--Legendre nodes.  Instead it proves that:
 
 * the Morel interface-flux recurrence gives the exact `-2` coordinate balance;
 * the azimuthal correction `K` gives exact transverse coordinate balance;
@@ -106,7 +106,7 @@ theorem glc_transverse_coordinate_exact
 
 If `(r,x)` and its two latitude neighbours lie on the unit circle and the
 latitude row is exact on `x`, then `K` is two minus the weighted latitude chord
-loss. This immediately gives `K ≤ 2` for nonnegative rates.
+loss.  This immediately gives `K ≤ 2` for nonnegative rates.
 -/
 theorem glcK_eq_two_sub_latitude_chordLoss
     (aMinus aPlus rMinus r rPlus xMinus x xPlus : ℝ)
@@ -159,7 +159,7 @@ theorem glc_rowRate_formula
   ring
 
 /-- At the first polar ring, the interface recurrence cancels the first
-Gauss--Legendre weight. This is the algebraic starting point for the Bessel
+Gauss--Legendre weight.  This is the algebraic starting point for the Bessel
 zero asymptotic of the polar stiffness. -/
 theorem outer_latitude_action_formula
     (w x xPlus r rPlus : ℝ)
@@ -180,7 +180,7 @@ theorem outer_glcK_formula
   ring
 
 /-- The outer-ring correction is strictly positive whenever the first
-latitude ring moves inward toward a nondecreasing transverse radius. This
+latitude ring moves inward toward a nondecreasing transverse radius.  This
 covers the southern and northern extreme Gauss--Legendre rings after the
 obvious reflection. -/
 theorem outer_glcK_pos
@@ -205,6 +205,11 @@ theorem outer_glcK_pos
   have hden : 0 ≤ xPlus - x := le_of_lt (sub_pos.mpr hxgap)
   have hsecond : 0 ≤ (-2 * x * r * (rPlus - r)) / (xPlus - x) :=
     div_nonneg hnum hden
+  have hre :
+      2 * r ^ 2 - 2 * x * r * (rPlus - r) / (xPlus - x)
+        = 2 * r ^ 2 + (-2 * x * r * (rPlus - r)) / (xPlus - x) := by
+    ring
+  rw [hre]
   exact add_pos_of_pos_of_nonneg hfirst hsecond
 
 /-- Exact rational value of `K` for the two-ring GLC case, expressed without
