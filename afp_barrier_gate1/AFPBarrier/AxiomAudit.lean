@@ -64,5 +64,24 @@ import AFPBarrier
 #print axioms AFPBarrier.S2_coordinate_eigen_implies_minus_two_balance
 #print axioms AFPBarrier.minus_two_and_minus_four_balance_incompatible
 
+#print axioms AFPBarrier.latitude_minus_flux_cancellation
+#print axioms AFPBarrier.latitude_plus_flux_cancellation
+#print axioms AFPBarrier.latitude_coordinate_exact_of_flux_recurrence
+#print axioms AFPBarrier.azimuth_pair_action_factor
+#print axioms AFPBarrier.glc_transverse_coordinate_exact
+#print axioms AFPBarrier.glcK_eq_two_sub_latitude_chordLoss
+#print axioms AFPBarrier.glcK_le_two
+#print axioms AFPBarrier.glcPeakDefect_decomposition
+#print axioms AFPBarrier.glc_rowRate_formula
+#print axioms AFPBarrier.outer_latitude_action_formula
+#print axioms AFPBarrier.outer_glcK_formula
+#print axioms AFPBarrier.outer_glcK_pos
+#print axioms AFPBarrier.glcK_N2_of_radius_sq
+
+#print axioms AFPBarrier.central_glcK_formula
+#print axioms AFPBarrier.central_glcPeakDefect_formula
+#print axioms AFPBarrier.central_glcRowRate_formula
+#print axioms AFPBarrier.central_glcPeakDefect_lower_bound
+
 #print axioms AFPBarrier.no_exact_S2_degree_two_at_peak
 #print axioms AFPBarrier.S2_four_le_rate_mul_defect

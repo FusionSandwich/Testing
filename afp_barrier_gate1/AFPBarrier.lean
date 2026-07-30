@@ -9,4 +9,6 @@ import AFPBarrier.DualCertificate
 import AFPBarrier.ImplementationConvention
 import AFPBarrier.ScalingCompatibility
 import AFPBarrier.NormalizationAudit
+import AFPBarrier.GLCTensorProduct
+import AFPBarrier.GLCCentral
 import AFPBarrier.SphereSpecialization

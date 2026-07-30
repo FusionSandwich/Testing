@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - codex-afp-lean-gate2
+      - codex-afp-gate3-glc
     paths:
       - 'afp_barrier_gate1/**'
       - '.github/workflows/afp-barrier-gate2.yml'
