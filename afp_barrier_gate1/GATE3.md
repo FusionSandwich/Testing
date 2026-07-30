@@ -1,64 +1,73 @@
-# Gate 3: an all-orders positive product-grid theorem and a polar stiffness barrier
+# Gate 3 closure: an all-orders positive product-grid AFP theorem and a polar stiffness barrier
 
-**Status:** implementation draft for Lean and deterministic verification  
-**Scope:** mathematics only; integration with `Radiant.jl` is deliberately deferred
+**Status:** mathematically complete and independently verified  
+**Scope:** angular Fokker–Planck mathematics; `Radiant.jl` integration is deliberately deferred  
+**Reference family:** cell-centred equal-angle latitude–longitude quadratures
 
-## 1. Gate decision
+## 1. Result
 
-Gate 3 establishes a complete all-orders theorem for a cell-centred equal-angle
-latitude--longitude quadrature on the unit sphere. The construction is:
-
-- local: every node has at most four neighbours;
-- reversible with respect to the quadrature weights;
-- monotone: every off-diagonal conductance is positive;
-- conservative;
-- exactly preserves all three degree-one spherical harmonics with eigenvalue
-  `-2`;
-- accompanied by exact formulas for the unavoidable degree-two peak defect and
-  the total jump rate.
-
-The same calculation also exposes a structural limitation of unreduced product
-grids: when the polar and azimuthal resolutions are comparable, the largest
-jump rate grows as `Theta(N^4)`, even though the degree-two defect decays as
-`Theta(N^-2)`.
-
-This is a deterministic mathematical reference family. It is not yet a claim
-about every Gauss--Legendre--Chebyshev order used by Radiant. A direct all-order
-proof for that family requires uniform inequalities between Gauss--Legendre
-nodes, weights, and cumulative first moments. Recent mathematical analyses
-still describe several of the needed uniform relations as conjectural or as
-supported by strong asymptotic evidence:
-
-- O. López Pouso and J. Segura, *Analysis of difference schemes for the
-  Fokker--Planck angular diffusion operator*, Computers & Mathematics with
-  Applications 181 (2025), 84--110, DOI:
-  <https://doi.org/10.1016/j.camwa.2025.01.005>.
-- O. López Pouso and J. Segura, *Uniform relations between the
-  Gauss--Legendre nodes and weights*, Journal of Inequalities and Applications
-  2025:40, DOI: <https://doi.org/10.1186/s13660-025-03283-w>.
-
-The equal-angle theorem avoids building Gate 3 on an unproved
-Gauss--Legendre inequality. It also gives a benchmark against which a future
-GLC theorem or optimization can be tested.
-
----
-
-## 2. Grid and quadrature
-
-Choose integers
+Gate 3 proves an explicit all-orders construction for a local angular
+Fokker–Planck operator on the unit sphere. For every pair of integers
 
 \[
 N\ge 2,\qquad M\ge 3,
 \]
 
-and define
+the construction is:
+
+- local, with at most four neighbours per direction;
+- conservative;
+- weighted reversible;
+- monotone, with strictly positive conductances on every actual edge;
+- exactly preserving all three degree-one spherical-harmonic coordinate modes
+  with eigenvalue `-2`;
+- equipped with exact formulas for its unavoidable degree-two peak defect and
+  total outgoing jump rate.
+
+For the square family `M=2N`, Gate 3 additionally proves explicit finite-order
+bounds
 
 \[
-\delta=\frac{\pi}{N},\qquad
-\alpha=\frac{2\pi}{M}.
+\boxed{
+\frac{2}{N^2}
+\le \varepsilon_i
+\le \frac{\pi^2}{N^2}
+}
 \]
 
-The latitude and azimuth nodes are
+on every ring, and
+
+\[
+\boxed{
+\frac{8}{\pi^4}N^4
+\le r_{\max}
+\le N^4.
+}
+\]
+
+The maximum rate occurs on the first and last latitude rings. Therefore
+
+\[
+\varepsilon_{\max}=\Theta(N^{-2}),
+\qquad
+r_{\max}=\Theta(N^4).
+\]
+
+This is a useful positive result and a useful negative design result at the
+same time: the product family provides a constructive all-orders monotone AFP
+operator, but its unreduced polar rings create a quartic stiffness barrier.
+
+## 2. Grid and weights
+
+Define
+
+\[
+\delta=\frac{\pi}{N},
+\qquad
+\alpha=\frac{2\pi}{M},
+\]
+
+and the cell-centred directions
 
 \[
 \theta_i=\left(i+\frac12\right)\delta,
@@ -82,35 +91,24 @@ The corresponding unit vector is
 \right).
 \]
 
-Use the exact area of the spherical cell centred at `Omega_ij` as its weight:
+Use the exact spherical-cell area
 
 \[
 q_i
 =
-\int_{\phi_j-\alpha/2}^{\phi_j+\alpha/2}
-\int_{\theta_i-\delta/2}^{\theta_i+\delta/2}
-\sin\theta\,d\theta\,d\phi
-=
 2\alpha\sin\theta_i\sin\frac{\delta}{2}.
 \]
 
-Consequently,
+The weights are strictly positive and satisfy
 
 \[
-q_i>0,
-\qquad
 \sum_{i,j}q_i=4\pi.
 \]
 
-By the reflection and cyclic symmetries,
+The Lean proof rewrites each ring weight as a cosine difference and telescopes
+the polar sum exactly.
 
-\[
-\sum_{i,j}q_i\Omega_{ij}=0.
-\]
-
----
-
-## 3. Explicit positive conductances
+## 3. Explicit shared-edge conductances
 
 For the meridional edge joining rings `i` and `i+1`, define
 
@@ -121,7 +119,7 @@ B_{i+1/2}
 \qquad i=0,\ldots,N-2.
 \]
 
-Set the boundary values
+Set
 
 \[
 B_{-1/2}=B_{N-1/2}=0.
@@ -132,24 +130,19 @@ For each of the two azimuthal edges incident to a node on ring `i`, define
 \[
 C_i
 =
-\frac{
-\alpha\sin(\delta/2)
-}{
-(1-\cos\alpha)\sin\theta_i
-}.
+\frac{\alpha\sin(\delta/2)}
+{(1-\cos\alpha)\sin\theta_i}.
 \]
 
-All conductances attached to actual edges are strictly positive because
+Every conductance on an actual edge is strictly positive. The two missing
+polar meridional conductances are exactly zero. The two endpoints of each
+meridional edge assign the same conductance:
 
 \[
-0<\delta<\pi,
-\qquad
-0<\theta_i<\pi,
-\qquad
-0<\alpha<2\pi.
+B^{+}_i=B^{-}_{i+1}.
 \]
 
-The discrete operator is
+The operator is
 
 \[
 \begin{aligned}
@@ -162,184 +155,83 @@ B_{i+1/2}(f_{i+1,j}-f_{ij})
 \end{aligned}
 \]
 
-where azimuthal indices are periodic and absent meridional boundary terms are
-omitted.
+with periodic azimuthal indices and omitted boundary terms.
 
-Because every edge uses one shared conductance, the operator satisfies detailed
-balance:
+Because one conductance is shared by both endpoints of every undirected edge,
 
 \[
-q_i L_{(i,j),(k,l)}
+q_iL_{(i,j),(k,l)}
 =
-q_k L_{(k,l),(i,j)}.
+q_kL_{(k,l),(i,j)}.
 \]
 
-It is therefore self-adjoint in the weighted inner product and conserves every
-weighted integral of the form `sum q_i f_ij`.
+Thus the operator belongs to the weighted-reversible graph-Laplacian class
+formalized in Gate 2.
 
----
-
-## 4. Exact degree-one eigenmodes
-
-### 4.1 Axial coordinate
+## 4. Exact complete degree-one eigenspace
 
 Let
 
 \[
-x_{ij}=\cos\theta_i.
+x_{ij}=\cos\theta_i,
+\qquad
+y_{ij}=\sin\theta_i\cos\phi_j,
+\qquad
+z_{ij}=\sin\theta_i\sin\phi_j.
 \]
 
-The azimuthal part vanishes. The identities
+Gate 3 proves directly from the sine and cosine addition laws that
 
 \[
-\cos(\theta_i+\delta)-\cos\theta_i
-=-2\sin\left(\theta_i+\frac\delta2\right)
-  \sin\frac\delta2,
-\]
-
-\[
-\cos(\theta_i-\delta)-\cos\theta_i
-=2\sin\left(\theta_i-\frac\delta2\right)
- \sin\frac\delta2
-\]
-
-give
-
-\[
-\begin{aligned}
-&B_{i+1/2}(x_{i+1,j}-x_{ij})
-+B_{i-1/2}(x_{i-1,j}-x_{ij})\\
-&=-2q_i\cos\theta_i.
-\end{aligned}
-\]
-
-Hence
-
-\[
-Lx=-2x.
-\]
-
-The same formula remains valid on the first and last rings because the missing
-boundary conductance is zero.
-
-### 4.2 Transverse coordinates
-
-Set
-
-\[
-s_i=\sin\theta_i.
-\]
-
-A direct trigonometric reduction gives the meridional identity
-
-\[
-B_{i+1/2}(s_{i+1}-s_i)
-+B_{i-1/2}(s_{i-1}-s_i)
-=
-2\alpha\sin\frac\delta2\cos(2\theta_i).
-\]
-
-For
-
-\[
-y_{ij}=s_i\cos\phi_j,
-\]
-
-the two azimuthal neighbours satisfy
-
-\[
-y_{i,j+1}+y_{i,j-1}-2y_{ij}
-=
-2(\cos\alpha-1)y_{ij}.
-\]
-
-The azimuthal numerator is therefore
-
-\[
--2\alpha\sin\frac\delta2\cos\phi_j.
-\]
-
-Adding the meridional and azimuthal contributions yields
-
-\[
-2\alpha\sin\frac\delta2
-(\cos 2\theta_i-1)\cos\phi_j
-=-2q_i y_{ij}.
-\]
-
-Thus
-
-\[
-Ly=-2y.
-\]
-
-Replacing cosine by sine gives, identically,
-
-\[
+Lx=-2x,
+\qquad
+Ly=-2y,
+\qquad
 Lz=-2z.
 \]
 
-Therefore the complete degree-one spherical-harmonic eigenspace is preserved
-exactly at every `N` and `M`.
+No local balance equation is left as an assumption in the final theorem.
+The proof includes the first and last rings because the missing polar
+conductances are proved to vanish exactly.
 
----
-
-## 5. Exact degree-two peak defect
-
-Fix a node and define the sampled zonal degree-one function
+The result is formalized for real parameters satisfying
 
 \[
-g_{ij}(k,l)=\Omega_{ij}\cdot\Omega_{kl}.
+n\ge2,
+\qquad m\ge3,
+\qquad 0\le i\le n-1.
 \]
 
-At its peak,
+Integer quadrature orders and ring indices are immediate special cases.
+
+## 5. Actual spherical neighbour losses
+
+For two sphere points written in polar coordinates, Gate 3 formalizes the
+Euclidean dot product and proves the actual neighbour identities.
+
+For a meridional neighbour,
 
 \[
-g_{ij}(i,j)=1,
-\qquad
-Lg_{ij}(i,j)=-2.
+1-\Omega_{ij}\cdot\Omega_{i+1,j}
+=1-\cos\delta
+=2\sin^2\frac\delta2.
 \]
 
-The Gate 1 carré-du-champ theorem gives the degree-two defect
+For an azimuthal neighbour,
 
 \[
-\varepsilon_i
-=
-\sum_{(k,l)\sim(i,j)}
- a_{(i,j),(k,l)}
- \left(1-\Omega_{ij}\cdot\Omega_{kl}\right)^2.
-\]
-
-For either meridional neighbour,
-
-\[
-1-\Omega_{ij}\cdot\Omega_{i\pm1,j}
-=1-\cos\delta.
-\]
-
-For either azimuthal neighbour,
-
-\[
-1-\Omega_{ij}\cdot\Omega_{i,j\pm1}
+1-\Omega_{ij}\cdot\Omega_{i,j+1}
 =
 \sin^2\theta_i(1-\cos\alpha).
 \]
 
-The conductance identities
+These identities are connected directly to the Gate 1 carré-du-champ defect
+theorem, rather than supplied as abstract loss parameters.
 
-\[
-\frac{B_{i-1/2}+B_{i+1/2}}{q_i}
-=
-\frac{1}{1-\cos\delta},
-\]
+## 6. Exact degree-two peak defect
 
-\[
-\frac{C_i}{q_i}
-=
-\frac{1}{2(1-\cos\alpha)\sin^2\theta_i}
-\]
-
-then give the exact formula
+For the sampled zonal coordinate function peaked at `Omega_ij`, the exact
+unavoidable degree-two defect is
 
 \[
 \boxed{
@@ -351,30 +243,27 @@ then give the exact formula
 }
 \]
 
-This quantity is strictly positive at every finite resolution, in agreement
-with the no-go theorem.
+It is strictly positive for every finite `N` and `M`, consistent with the
+Gate 1 no-go theorem: a finite monotone jump generator cannot reproduce both
+the complete degree-one and complete degree-two eigenspaces exactly.
 
-For the square product family `M=2N`, so that `alpha=delta`,
-
-\[
-1-\cos\delta
-\le
-\max_i\varepsilon_i
-\le
-2(1-\cos\delta).
-\]
-
-Consequently,
+For `M=2N`, so that `alpha=delta`, Jordan's sine inequality gives the explicit
+finite-order bounds
 
 \[
-\max_i\varepsilon_i=\Theta(N^{-2}).
+\boxed{
+\frac{2}{N^2}
+\le \varepsilon_i
+\le \frac{\pi^2}{N^2}
+}
 \]
 
----
+for every ring. The `Theta(N^-2)` result therefore does not depend on a fitted
+slope or an asymptotic expansion.
 
-## 6. Exact jump rate and polar stiffness
+## 7. Exact rate and the polar stiffness barrier
 
-The total outgoing rate at ring `i` is
+The total outgoing jump rate is
 
 \[
 \boxed{
@@ -386,113 +275,149 @@ r_i
 }
 \]
 
-For `M=2N`, the maximum occurs on the first and last rings, where
+For the square family, the latitude sine is minimized on the first and last
+rings. Gate 3 proves
 
 \[
-\theta_0=\frac\delta2,
-\qquad
-1-\cos\delta=2\sin^2\frac\delta2.
+r_i\le r_{\mathrm{polar}}
 \]
 
-Hence
+for every ring, where
 
 \[
 \boxed{
-r_{\max}
+r_{\mathrm{polar}}
 =
-\frac{1}{2\sin^2(\delta/2)}
+\frac{1}{2\sin^2(\pi/(2N))}
 +
-\frac{1}{2\sin^4(\delta/2)}.
+\frac{1}{2\sin^4(\pi/(2N))}.
 }
 \]
 
-With `delta=pi/N`,
-
-\[
-r_{\max}
-\sim
-\frac{8}{\pi^4}N^4
-+
-\frac{2}{\pi^2}N^2.
-\]
-
-Thus the all-orders local positive construction has
+The finite-order bounds
 
 \[
 \boxed{
-\varepsilon_{\max}=\Theta(N^{-2}),
-\qquad
-r_{\max}=\Theta(N^4).
+\frac{8}{\pi^4}N^4
+\le r_{\mathrm{polar}}
+\le N^4
 }
 \]
 
-The quartic stiffness is caused by combining a fixed number of azimuthal nodes
-on every ring with rings whose radius is only `Theta(N^-1)` near the poles.
-It is a geometric product-grid effect, not a failure of the degree-one balance.
+are Lean-verified. Hence the quartic rate growth is a theorem, not a
+regression result.
 
----
+The cause is geometric. A fixed number of azimuthal directions is retained on
+every ring while the physical radius of the polar rings is `Theta(N^-1)`.
+The azimuthal edge length therefore collapses too quickly, forcing rates of
+order `N^4`.
 
-## 7. Verification strategy
+## 8. Formal verification map
 
-### Lean
+The final proof is divided into small Lean modules so each claim has an
+explicit verification boundary.
 
-`AFPBarrier/EqualAngleProduct.lean` verifies:
+| Module | Verified content |
+|---|---|
+| `EqualAngleProduct.lean` | local action, algebraic rate and defect formulas, positivity implications |
+| `EqualAngleGeometry.lean` | direct axial and transverse trigonometric balances; local `x`, `y`, `z` eigenrelations |
+| `EqualAngleGrid.lean` | all-order parameter ranges and complete degree-one exactness for every admissible node |
+| `EqualAngleEdges.lean` | zero polar boundary edges and strict positivity of every actual edge |
+| `EqualAngleConnectivity.lean` | shared meridional conductance and reflection identities |
+| `EqualAngleDotProducts.lean` | actual spherical dot products and end-to-end defect formula |
+| `EqualAngleQuadrature.lean` | exact telescoping weight normalization `sum q = 4*pi` |
+| `EqualAngleAsymptotics.lean` | explicit finite-`N` defect and polar-rate bounds |
+| `EqualAngleRateMaximum.lean` | proof that the polar rings maximize the square-family rate |
+| Gate 1/2 modules | general no-go theorem, defect identity, stiffness inequality, reversibility, adjoint conventions |
 
-1. the four-neighbour local action and its balance-to-eigenvalue implication;
-2. positivity of the algebraic weight and conductance formulas;
-3. the exact meridional and azimuthal rate identities;
-4. the closed-form degree-two defect;
-5. the closed-form total rate;
-6. the square-grid polar rate and defect formulas.
+The axiom audit enumerates every public theorem. The CI rejects `sorry`,
+`admit`, `sorryAx`, and user-declared axioms.
 
-The Lean layer intentionally separates the algebraic theorem from the
-trigonometric mesh derivation. The latter is independently checked by the
-fully deterministic audit below.
-
-### Deterministic coded audit
+## 9. Deterministic global audit
 
 `gate3/equal_angle_product_audit.py` uses only the Python standard library and
-contains no random sampling. For
+contains no random sampling. It assembles the full global grid and checks every
+node for square and non-square cases.
+
+The square cases are
 
 \[
 N=2,3,4,5,8,16,32,64,128,
-\qquad M=2N,
+\qquad M=2N.
 \]
 
-it checks every node for:
-
-- positive weights and edge conductances;
-- total area `4*pi` and weighted centering;
-- `Lx=-2x`, `Ly=-2y`, and `Lz=-2z`;
-- the exact peak-defect formula;
-- the exact jump-rate formula;
-- the exact polar maximum-rate formula.
-
-It also fits the deterministic log--log slopes over
-`N=8,16,32,64,128`. The reference run gives
+Additional non-square cases include
 
 \[
-\text{defect slope}=-1.98969363,
-\qquad
-\text{rate slope}=3.97970684.
+(N,M)=(2,3),(3,4),(3,7),(4,5),(5,11),(7,9),(8,13).
 \]
 
-These numerical slopes are evidence for the already-derived exact asymptotic
-formulas; they are not used as substitutes for the proof.
+For each case it checks:
 
----
+- positive cell weights and every actual edge conductance;
+- exact zero boundary conductances;
+- total area `4*pi` and weighted centering to roundoff;
+- all three coordinate eigenrelations at every node;
+- the exact peak-defect identity;
+- the exact jump-rate identity;
+- the polar maximum-rate formula in square cases;
+- the explicit finite-order defect and rate bounds.
 
-## 8. Gate 3 conclusion
+Log--log slopes remain in the report only as regression diagnostics. They are
+not used to establish the exponents.
 
-Gate 3 is complete when:
+## 10. What is new and what is not
 
-1. the Lean package builds without proof placeholders or user axioms;
-2. the deterministic audit passes all listed orders;
-3. the exact source snapshot and audit outputs are archived by CI;
-4. the claim wording remains limited to the equal-angle reference family.
+The following ingredients are standard and are not claimed as new:
 
-The next mathematical target is a **reduced-ring or quasi-uniform spherical
-family** that retains positivity and degree-one exactness while improving the
-worst-case stiffness from `Theta(N^4)` to `Theta(N^2)`. A separate route is to
-prove the missing all-order Gauss--Legendre inequalities needed to place the
-GLC family under a theorem of the same type.
+- finite Markov jump generators and carré-du-champ identities;
+- weighted graph Laplacians;
+- elementary trigonometric identities;
+- Jordan's inequality.
+
+The candidate publication contribution is the AFP-specific combination:
+
+1. the complete-degree-two monotonicity obstruction;
+2. the exact unavoidable defect and stiffness tradeoff;
+3. an explicit all-orders positive local spherical AFP family;
+4. a complete degree-one exactness theorem;
+5. explicit finite-order `N^-2` defect bounds;
+6. the proved `N^4` polar stiffness barrier.
+
+Priority wording must remain cautious until Charles Bienvenue or another AFP
+specialist completes a final literature review.
+
+## 11. Gate decision
+
+Gate 3 is closed when one CI run verifies, from the same exact source commit:
+
+1. the deterministic global audit;
+2. the complete pinned Lean/Mathlib build;
+3. the public-theorem axiom audit;
+4. the source placeholder audit;
+5. exact source and generated-record packaging.
+
+All five conditions have been met on the Gate 3 branch. The final run and
+artifact identifiers are recorded in the pull-request description and the
+workflow-generated `gate3-report.txt`.
+
+## 12. Next research question
+
+The most valuable continuation is a reduced-ring or quasi-uniform spherical
+family that retains positivity and exact degree-one modes while reducing the
+worst-case rate from
+
+\[
+\Theta(N^4)
+\]
+
+toward
+
+\[
+\Theta(N^2).
+\]
+
+A separate route is an all-order theorem for Radiant's
+Gauss--Legendre--Chebyshev family. That extension should not rely on unproved
+uniform inequalities between Gauss--Legendre nodes, weights, and cumulative
+moments.
