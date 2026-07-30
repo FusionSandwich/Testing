@@ -47,7 +47,6 @@ theorem equalAngleGrid_two_mul_order_mul_halfStep
     2 * n * equalAngleGridHalfStep n = Real.pi := by
   unfold equalAngleGridHalfStep
   field_simp [hn]
-  ring
 
 /-- Every actual lower meridional edge has strictly positive conductance. -/
 theorem equalAngleGrid_meridionalMinus_pos
