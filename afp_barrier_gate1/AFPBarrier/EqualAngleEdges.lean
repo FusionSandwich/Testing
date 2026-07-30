@@ -5,8 +5,8 @@ import Mathlib.Tactic
 # Edge positivity and polar boundary closure for the equal-angle grid
 
 The local geometry file proves positivity when its angular hypotheses are
-supplied.  This file discharges those hypotheses from the actual all-order grid
-indices.  It therefore proves that every edge which is present has a strictly
+supplied. This file discharges those hypotheses from the actual all-order grid
+indices. It therefore proves that every edge which is present has a strictly
 positive shared conductance, while the two omitted polar meridional edges have
 exactly zero conductance.
 -/
@@ -63,7 +63,7 @@ theorem equalAngleGrid_meridionalMinus_pos
       equalAngleGridTheta n i - equalAngleGridHalfStep n < Real.pi := by
     unfold equalAngleGridTheta equalAngleGridHalfStep
     have hden : 0 < 2 * n := by positivity
-    rw [← mul_div_assoc]
+    rw [← sub_div]
     apply (div_lt_iff₀ hden).2
     nlinarith [Real.pi_pos]
   apply equalAngleMeridionalMinus_pos
@@ -95,7 +95,7 @@ theorem equalAngleGrid_meridionalPlus_pos
       equalAngleGridTheta n i + equalAngleGridHalfStep n < Real.pi := by
     unfold equalAngleGridTheta equalAngleGridHalfStep
     have hden : 0 < 2 * n := by positivity
-    rw [← mul_div_assoc]
+    rw [← add_div]
     apply (div_lt_iff₀ hden).2
     nlinarith [Real.pi_pos]
   apply equalAngleMeridionalPlus_pos
