@@ -1,9 +1,11 @@
 name: AFP Lean Gate 5
 
+# Gate 5 is closed. Keep exact reproduction on its frozen development branch
+# and by manual dispatch without re-running it on later Gate 6 pull requests.
 on:
-  pull_request:
+  push:
     branches:
-      - testing
+      - agent/afp-gate5-sharpness
     paths:
       - 'afp_barrier_gate1/AFPBarrier/**'
       - 'afp_barrier_gate1/AFPBarrier.lean'
@@ -17,7 +19,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 permissions:
