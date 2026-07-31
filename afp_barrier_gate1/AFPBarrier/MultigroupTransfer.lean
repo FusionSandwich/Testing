@@ -6,7 +6,7 @@ import Mathlib.Tactic
 # Conservative multigroup transfer
 
 `T g h` is the nonnegative transfer rate from source group `g` to destination
-group `h`.  The continuous group-transfer operator is
+group `h`.  The continuous group-transfer operator
 
   incoming(g) - outgoing(g) * f(g).
 
@@ -59,6 +59,7 @@ theorem sum_multigroupTransfer_eq_zero
               intro h hh
               rw [Finset.sum_mul]
   rw [hincoming]
+  simp
 
 /-- Explicit Euler written as a nonnegative incoming combination plus its
 remaining diagonal coefficient. -/
@@ -144,7 +145,7 @@ def groupTransferEnergyDeposition
       (fun h => T g h * f g * (energy g - energy h)))
 
 /-- The energy-weighted transfer balance is the negative of the deposited
-energy.  This is an algebraic identity and does not require ordering the group
+energy. This is an algebraic identity and does not require ordering the group
 energies. -/
 theorem weighted_sum_multigroupTransfer_eq_neg_deposition
     (T : ι → ι → ℝ) (energy f : ι → ℝ) :
@@ -152,40 +153,70 @@ theorem weighted_sum_multigroupTransfer_eq_neg_deposition
       = -groupTransferEnergyDeposition T energy f := by
   classical
   unfold multigroupTransfer groupTransferOutRate groupTransferEnergyDeposition
-  calc
-    Finset.univ.sum
-        (fun g => energy g *
-          (Finset.univ.sum (fun h => T h g * f h)
-            - Finset.univ.sum (fun h => T g h) * f g))
+  have hincoming :
+      Finset.univ.sum
+          (fun g => energy g * Finset.univ.sum (fun h => T h g * f h))
         = Finset.univ.sum
-            (fun g => Finset.univ.sum
-              (fun h => energy g * (T h g * f h)))
-          - Finset.univ.sum
-            (fun g => Finset.univ.sum
-              (fun h => energy g * (T g h * f g))) := by
-                rw [Finset.sum_sub_distrib]
-                congr 1
-                · apply Finset.sum_congr rfl
+          (fun g => Finset.univ.sum
+            (fun h => energy h * (T g h * f g))) := by
+    calc
+      Finset.univ.sum
+          (fun g => energy g * Finset.univ.sum (fun h => T h g * f h))
+          = Finset.univ.sum
+              (fun g => Finset.univ.sum
+                (fun h => energy g * (T h g * f h))) := by
+                  apply Finset.sum_congr rfl
                   intro g hg
                   rw [Finset.mul_sum]
-                · apply Finset.sum_congr rfl
-                  intro g hg
-                  rw [Finset.sum_mul]
-                  apply Finset.sum_congr rfl
-                  intro h hh
-                  ring
-    _ = Finset.univ.sum
-          (fun g => Finset.univ.sum
-            (fun h => energy h * (T g h * f g)))
-        - Finset.univ.sum
+      _ = Finset.univ.sum
+            (fun h => Finset.univ.sum
+              (fun g => energy g * (T h g * f h))) := by
+                rw [Finset.sum_comm]
+      _ = Finset.univ.sum
+            (fun g => Finset.univ.sum
+              (fun h => energy h * (T g h * f g))) := by rfl
+  have houtgoing :
+      Finset.univ.sum
+          (fun g => energy g * (Finset.univ.sum (fun h => T g h) * f g))
+        = Finset.univ.sum
           (fun g => Finset.univ.sum
             (fun h => energy g * (T g h * f g))) := by
-              congr 1
-              rw [Finset.sum_comm]
-    _ = -Finset.univ.sum
-          (fun g => Finset.univ.sum
-            (fun h => T g h * f g * (energy g - energy h))) := by
-              simp only [Finset.sum_sub_distrib, Finset.sum_neg_distrib]
-              ring
+    apply Finset.sum_congr rfl
+    intro g hg
+    rw [Finset.sum_mul, Finset.mul_sum]
+  have hsplit :
+      Finset.univ.sum
+          (fun g => energy g *
+            (Finset.univ.sum (fun h => T h g * f h)
+              - Finset.univ.sum (fun h => T g h) * f g))
+        = Finset.univ.sum
+            (fun g => energy g * Finset.univ.sum (fun h => T h g * f h))
+          - Finset.univ.sum
+            (fun g => energy g * (Finset.univ.sum (fun h => T g h) * f g)) := by
+    calc
+      Finset.univ.sum
+          (fun g => energy g *
+            (Finset.univ.sum (fun h => T h g * f h)
+              - Finset.univ.sum (fun h => T g h) * f g))
+          = Finset.univ.sum
+              (fun g =>
+                energy g * Finset.univ.sum (fun h => T h g * f h)
+                  - energy g * (Finset.univ.sum (fun h => T g h) * f g)) := by
+                    apply Finset.sum_congr rfl
+                    intro g hg
+                    ring
+      _ = Finset.univ.sum
+            (fun g => energy g * Finset.univ.sum (fun h => T h g * f h))
+          - Finset.univ.sum
+            (fun g => energy g * (Finset.univ.sum (fun h => T g h) * f g)) := by
+              rw [Finset.sum_sub_distrib]
+  rw [hsplit, hincoming, houtgoing]
+  rw [← Finset.sum_sub_distrib, ← Finset.sum_neg_distrib]
+  apply Finset.sum_congr rfl
+  intro g hg
+  rw [← Finset.sum_sub_distrib, ← Finset.sum_neg_distrib]
+  apply Finset.sum_congr rfl
+  intro h hh
+  ring
 
 end AFPBarrier
