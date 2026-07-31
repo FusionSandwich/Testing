@@ -8,6 +8,7 @@ import AFPBarrier.LossVariance
 import AFPBarrier.LossVarianceSharpness
 import AFPBarrier.ExplicitEulerTransport
 import AFPBarrier.ForwardPeakedHeatKernel
+import AFPBarrier.EnergyLossAngularDiffusion
 import AFPBarrier.ForwardAdjoint
 import AFPBarrier.ReversibleConductance
 import AFPBarrier.CompleteGraph
