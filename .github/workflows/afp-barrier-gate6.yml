@@ -87,6 +87,23 @@ jobs:
             --output-dir gate6/generated \
             2>&1 | tee gate6-layered-charged-particle-audit.log
 
+      - name: Spatial slab and thin-interface audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python gate6/spatial_slab_transport_audit.py \
+            --max-level 2 --output-dir gate6/generated \
+            2>&1 | tee gate6-spatial-slab-audit.log
+
+      - name: Conservative multigroup HTS-like slab audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python gate6/multigroup_hts_transport_audit.py \
+            --max-level 2 --cells 60 --final-time 1.6 \
+            --output-dir gate6/generated \
+            2>&1 | tee gate6-multigroup-hts-audit.log
+
       - name: Install Elan and pinned Lean toolchain
         working-directory: .
         shell: bash
@@ -156,7 +173,7 @@ jobs:
         shell: bash
         run: |
           {
-            echo "AFP Barrier Gate 6 angular-transport validation"
+            echo "AFP Barrier Gate 6 spatial and multigroup transport validation"
             echo "commit=${GITHUB_SHA}"
             echo "run_id=${GITHUB_RUN_ID}"
             echo "run_attempt=${GITHUB_RUN_ATTEMPT}"
@@ -192,6 +209,13 @@ jobs:
             afp_barrier_gate1/gate6-angular-diffusion-audit.log
             afp_barrier_gate1/gate6-forward-peaked-audit.log
             afp_barrier_gate1/gate6-layered-charged-particle-audit.log
+            afp_barrier_gate1/gate6-spatial-slab-audit.log
+            afp_barrier_gate1/gate6-multigroup-hts-audit.log
+            afp_barrier_gate1/gate6/generated/multigroup_hts_transport_audit.md
+            afp_barrier_gate1/gate6/generated/multigroup_hts_transport_audit.csv
+            afp_barrier_gate1/gate6/generated/spatial_slab_transport_audit.md
+            afp_barrier_gate1/gate6/generated/spatial_manufactured_audit.csv
+            afp_barrier_gate1/gate6/generated/spatial_interface_audit.csv
             afp_barrier_gate1/gate6/generated/angular_diffusion_transport_audit.md
             afp_barrier_gate1/gate6/generated/angular_diffusion_transport_audit.csv
             afp_barrier_gate1/gate6/generated/forward_peaked_heat_scattering_audit.md
