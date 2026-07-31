@@ -32,6 +32,8 @@ The sharper small-`tau` error rate is evaluated deterministically in Gate 6.
 
 namespace AFPBarrier
 
+noncomputable section
+
 /-- Eigenvalue of one spherical heat-kernel scattering step. -/
 def heatKernelScatterMoment (tau lam : ℝ) : ℝ :=
   Real.exp (-tau * lam)
@@ -45,7 +47,8 @@ theorem heatKernelScatterMoment_le_one
     (tau lam : ℝ) (htau : 0 ≤ tau) (hlam : 0 ≤ lam) :
     heatKernelScatterMoment tau lam ≤ 1 := by
   unfold heatKernelScatterMoment
-  have harg : -tau * lam ≤ 0 := by positivity
+  have hprod : 0 ≤ tau * lam := mul_nonneg htau hlam
+  have harg : -tau * lam ≤ 0 := by linarith
   have h := (Real.exp_le_exp).2 harg
   simpa using h
 
@@ -82,15 +85,17 @@ theorem heatKernelBoltzmannDecay_le_fp
   have h := one_sub_tau_mul_le_heatKernelScatterMoment tau lam
   linarith
 
-/-- For nonnegative mode decay and time, the Fokker--Planck modal amplitude is
-no larger than the finite-width Boltzmann modal amplitude. -/
+/-- For nonnegative time, the Fokker--Planck modal amplitude is no larger than
+the finite-width Boltzmann modal amplitude. -/
 theorem fp_amplitude_le_heatKernelBoltzmann_amplitude
     (tau lam time : ℝ)
-    (htau : 0 < tau) (hlam : 0 ≤ lam) (htime : 0 ≤ time) :
+    (htau : 0 < tau) (htime : 0 ≤ time) :
     Real.exp (-time * lam)
       ≤ Real.exp (-time * heatKernelBoltzmannDecay tau lam) := by
   apply (Real.exp_le_exp).2
   have hdecay := heatKernelBoltzmannDecay_le_fp tau lam htau
   nlinarith
+
+end
 
 end AFPBarrier
