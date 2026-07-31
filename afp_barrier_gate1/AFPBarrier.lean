@@ -7,6 +7,8 @@ import AFPBarrier.SphericalNetScaling
 import AFPBarrier.LossVariance
 import AFPBarrier.LossVarianceSharpness
 import AFPBarrier.ExplicitEulerTransport
+import AFPBarrier.SpatialUpwindTransport
+import AFPBarrier.MultigroupTransfer
 import AFPBarrier.ForwardPeakedHeatKernel
 import AFPBarrier.EnergyLossAngularDiffusion
 import AFPBarrier.ForwardAdjoint
