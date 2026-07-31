@@ -210,8 +210,9 @@ def audit_case(level: int, operator, tau: float, time: float, axes: np.ndarray) 
         )
     if not np.all(boltzmann_modes <= 5.0e-12):
         raise AssertionError("Boltzmann generator has a positive modal eigenvalue")
-    if np.max(boltzmann_modes - eigenvalues) > 5.0e-11:
-        raise AssertionError("finite-width Boltzmann decay exceeded the FP decay")
+    # The finite-width generator is less negative than L_h: -beta >= -lambda.
+    if np.min(boltzmann_modes - eigenvalues) < -5.0e-11:
+        raise AssertionError("finite-width Boltzmann mode decayed faster than FP")
 
     return AuditRow(
         level=level,
@@ -311,7 +312,6 @@ def main() -> None:
                     f"steps={row.boltzmann_euler_steps}/{row.fp_euler_steps}"
                 )
             model_errors = [r.continuum_model_error_max for r in family_rows]
-            increasing_tau = list(reversed(taus))
             increasing_errors = list(reversed(model_errors))
             if any(increasing_errors[k + 1] <= increasing_errors[k]
                    for k in range(len(increasing_errors) - 1)):
