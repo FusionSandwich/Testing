@@ -1,4 +1,6 @@
 import AFPBarrier.ExplicitEulerTransport
+import AFPBarrier.SpatialUpwindTransport
+import AFPBarrier.MultigroupTransfer
 import AFPBarrier.ForwardPeakedHeatKernel
 import AFPBarrier.EnergyLossAngularDiffusion
 
@@ -26,3 +28,16 @@ import AFPBarrier.EnergyLossAngularDiffusion
 #print axioms AFPBarrier.twoLayerAngularDepth_order_difference
 #print axioms AFPBarrier.twoLayerAngularDepth12_le_21
 #print axioms AFPBarrier.layeredAngularAmplitude_mul
+
+#print axioms AFPBarrier.spatialUpwindEulerCell_eq_positive_form
+#print axioms AFPBarrier.spatialUpwindEulerCell_nonneg
+#print axioms AFPBarrier.spatialUpwindEulerCell_unitAt
+#print axioms AFPBarrier.spatialUpwindEulerCell_unitAt_neg_of_cfl_violation
+
+#print axioms AFPBarrier.sum_multigroupTransfer_eq_zero
+#print axioms AFPBarrier.multigroupEulerStep_eq_positive_form
+#print axioms AFPBarrier.multigroupEulerStep_nonneg
+#print axioms AFPBarrier.sum_multigroupEulerStep_eq_sum
+#print axioms AFPBarrier.multigroupEulerStep_unitAt
+#print axioms AFPBarrier.multigroupEulerStep_unitAt_neg_of_cfl_violation
+#print axioms AFPBarrier.weighted_sum_multigroupTransfer_eq_neg_deposition
