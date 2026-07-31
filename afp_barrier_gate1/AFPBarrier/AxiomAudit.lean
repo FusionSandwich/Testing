@@ -48,6 +48,25 @@ import AFPBarrier
 #print axioms AFPBarrier.squareRing_rate_mul_defect_sub_four
 #print axioms AFPBarrier.four_le_squareRing_rate_mul_defect
 
+#print axioms AFPBarrier.lossVarianceAt_eq_zero_iff_active_losses_eq
+#print axioms AFPBarrier.rate_mul_peakDefect_eq_eigenvalue_sq_iff_active_losses_eq
+#print axioms AFPBarrier.rate_mul_peakDefect_eq_eigenvalue_sq_iff_active_losses_eq_mean
+#print axioms AFPBarrier.active_weight_mul_loss_deviation_sq_le_variance
+#print axioms AFPBarrier.lossVarianceAt_le_gap_div_rate
+#print axioms AFPBarrier.minActiveRate_mul_loss_deviation_sq_le_gap_div_rate
+#print axioms AFPBarrier.peakDefect_dual_tangent_lower_bound
+#print axioms AFPBarrier.peakDefect_ge_eigenvalue_sq_div_rate_via_dual
+#print axioms AFPBarrier.S2_rate_lower_of_peakDefect_upper
+
+#print axioms AFPBarrier.explicitEulerStep_eq_self_weight_add_neighbors
+#print axioms AFPBarrier.explicitEulerStep_eigenmode
+#print axioms AFPBarrier.explicitEulerStep_nonneg
+#print axioms AFPBarrier.unitAt_self
+#print axioms AFPBarrier.unitAt_of_ne
+#print axioms AFPBarrier.explicitEulerStep_unitAt
+#print axioms AFPBarrier.explicitEulerStep_unitAt_neg_of_cfl_violation
+#print axioms AFPBarrier.weighted_sum_explicitEuler_conductanceRate
+
 #print axioms AFPBarrier.weightedAdjointRate_nonneg
 #print axioms AFPBarrier.jumpGenerator_weightedAdjointRate_eq
 #print axioms AFPBarrier.jumpGenerator_weightedAdjointRate_eigen
