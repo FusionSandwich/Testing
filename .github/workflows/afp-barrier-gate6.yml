@@ -47,6 +47,19 @@ jobs:
           python -m pip install --disable-pip-version-check --no-input 'numpy==2.3.2' \
             2>&1 | tee gate6-python-dependencies.log
 
+      - name: Python syntax and import audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m compileall -q gate6 2>&1 | tee gate6-python-compile.log
+
+      - name: Gate 6 implementation unit tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s gate6/tests -p 'test_*.py' -v \
+            2>&1 | tee gate6-unit-tests.log
+
       - name: Angular-diffusion transport audit
         shell: bash
         run: |
@@ -174,6 +187,8 @@ jobs:
             afp_barrier_gate1/gate6-report.txt
             afp_barrier_gate1/gate6-toolchain.log
             afp_barrier_gate1/gate6-python-dependencies.log
+            afp_barrier_gate1/gate6-python-compile.log
+            afp_barrier_gate1/gate6-unit-tests.log
             afp_barrier_gate1/gate6-angular-diffusion-audit.log
             afp_barrier_gate1/gate6-forward-peaked-audit.log
             afp_barrier_gate1/gate6-layered-charged-particle-audit.log
