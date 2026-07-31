@@ -49,7 +49,7 @@ For each family and orientation, the benchmark computes:
 - orientation spread;
 - positivity-limited step count.
 
-## 3. New Lean theorem
+## 3. Explicit time-step theorem
 
 `AFPBarrier/ExplicitEulerTransport.lean` proves:
 
@@ -77,5 +77,128 @@ Gate 6 is complete when all of the following are verified:
    solver work, and rotational bias;
 8. Lean and deterministic CI with exact source artifacts.
 
-The initial checkpoint deliberately precedes Radiant integration. It validates
-the mathematical predictions with an independent deterministic solver first.
+## 5. Reusable space--angle transport core
+
+The implementation has been refactored into `gate6/core/`:
+
+- `angular.py`: shared-edge angular operators, sparse generator application,
+  exact semigroup evolution, and reference quadrature builders;
+- `materials.py`: validated material and layer definitions;
+- `slab.py`: first-order upwind finite-volume streaming, inflow/vacuum
+  boundaries, absorption, angular diffusion, Euler and SSPRK2 stepping, and
+  exact discrete balance diagnostics;
+- `manufactured.py`: a positive degree-one manufactured solution whose angular
+  action is exact for every degree-one-preserving AFP operator;
+- `tallies.py`: boundary currents, inventory, scalar flux, and regional
+  absorption responses.
+
+Characterization tests require the refactored angular builders to reproduce the
+frozen audit implementation coefficient-for-coefficient.
+
+## 6. Spatial manufactured solution
+
+The slab equation is
+
+\[
+\partial_t\psi+\mu\partial_x\psi
+=\kappa(x)L_\Omega\psi-\Sigma_a(x)\psi+q.
+\]
+
+The manufactured solution
+
+\[
+\psi(x,\mu,t)
+=1+A e^{-\omega t}\sin(\pi x/L)\mu
+\]
+
+uses the exact coordinate relation `L mu = -2 mu`, so its measured error
+isolates spatial streaming and time integration. On 20, 40, and 80 cells, both
+reference angular families show monotone first-order spatial convergence while
+remaining strictly positive and satisfying the finite-volume balance identity.
+
+## 7. Thin-interface response benchmark
+
+A three-layer beam problem contains a thin functional layer occupying 10% of
+the slab. The film has larger absorption and angular diffusion than the
+substrate control. The implementation reports transmitted and reflected
+currents, inventory, total absorption, and layer-resolved absorption.
+
+At level 2, the film reduces transmitted current to about 83% of the control and
+increases thin-region integrated absorption by about a factor of 9.25. The
+quasi-uniform and product families agree closely on the physical response, but
+the product family requires over four times as many positivity-limited steps in
+the spatial benchmark.
+
+## 8. Combined space--angle positivity theorem
+
+`AFPBarrier/SpatialUpwindTransport.lean` states the local update as
+
+\[
+\begin{aligned}
+\psi^{n+1}_{c,i}={}&
+\left[1-\Delta t\left(
+ |\mu_i|/\Delta x+\kappa_c r_i+\Sigma_{a,c}
+\right)\right]\psi^n_{c,i}\\
+&+\text{nonnegative upwind, angular-neighbour, and source terms}.
+\end{aligned}
+\]
+
+It proves positivity when the bracketed removal coefficient is nonnegative and
+uses a concentrated unit state to show the same local CFL is necessary for
+unconditional row positivity.
+
+## 9. Conservative multigroup and HTS-like multilayer transport
+
+The reusable core solves
+
+\[
+\partial_t \psi_g
++ v_g\mu\partial_x\psi_g
+=
+\kappa_g(x)L_\Omega\psi_g
+-\Sigma_{a,g}(x)\psi_g
+-\sum_h T_{g\to h}(x)\psi_g
++\sum_h T_{h\to g}(x)\psi_h
++q_g.
+\]
+
+The transfer matrix is nonnegative, has zero diagonal, and is restricted to
+energy-degrading transitions. The implementation tracks both particle and
+energy balance. Group transfer conserves particle number exactly and deposits
+
+\[
+\sum_{g,h}(E_g-E_h)T_{g\to h}\psi_g
+\]
+
+as local energy. Absorption deposits the removed group energy separately.
+
+A dimensionless coated-conductor surrogate contains Hastelloy, buffer/MgO,
+REBCO, Ag, and Cu regions. The coefficients are verification parameters, not
+evaluated nuclear data. The benchmark reports group-resolved transmission,
+particle inventory, energy inventory, absorption heating, transfer heating,
+and region-resolved deposition.
+
+At the level-2 matched comparison, the fully explicit product-grid case uses
+696 steps versus 124 for the quasi-uniform operator. Exact angular-collision
+Strang splitting reduces the counts to 120 and 122, respectively, while the
+predicted transmitted energy and heating remain close. This demonstrates two
+separate benefits:
+
+1. the quasi-uniform operator reduces the fully explicit angular stiffness;
+2. an exact collision substep can remove that stiffness for either angular
+   family without changing the conservative multigroup physics.
+
+## 10. Multigroup formalization and tests
+
+`AFPBarrier/MultigroupTransfer.lean` formalizes:
+
+- conservative transfer between finite energy groups;
+- positivity of explicit Euler under the outgoing-group CFL condition;
+- necessity of the same condition for unconditional group-row positivity;
+- conservation of total group population;
+- the exact energy-weighted transfer/deposition identity.
+
+The deterministic test suite contains 40 tests. New tests cover the three-group
+analytic cascade, particle and energy transfer balance, exact collision
+semigroup conservation, HTS-like layer response, and removal of the product-grid
+angular CFL penalty by collision splitting.
