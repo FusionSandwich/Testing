@@ -51,10 +51,10 @@ theorem inverseSquareAngularDepth_eq_reciprocal_difference
         = stopping * thickness /
             (energy * (energy - stopping * thickness)) := by
     field_simp [henergy, hout']
+    ring
   unfold inverseSquareAngularDepth energyAfterLayer
   rw [hrecip]
   field_simp [hstop, henergy, hout']
-  ring
 
 /-- Positive input coefficient, thickness, and endpoint energies give a
 nonnegative accumulated angular depth. -/
