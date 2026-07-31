@@ -44,7 +44,8 @@ theorem inverseSquareAngularDepth_eq_reciprocal_difference
     inverseSquareAngularDepth coeff energy stopping thickness
       = coeff / stopping *
           (1 / energyAfterLayer energy stopping thickness - 1 / energy) := by
-  unfold inverseSquareAngularDepth energyAfterLayer
+  unfold inverseSquareAngularDepth
+  unfold energyAfterLayer at hout ⊢
   field_simp [hstop, henergy, hout]
   ring
 
