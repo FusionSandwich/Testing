@@ -1,5 +1,6 @@
 import AFPBarrier.ExplicitEulerTransport
 import AFPBarrier.ForwardPeakedHeatKernel
+import AFPBarrier.EnergyLossAngularDiffusion
 
 /-! Focused axiom audit for Gate 6 transport consequences. -/
 
@@ -18,3 +19,10 @@ import AFPBarrier.ForwardPeakedHeatKernel
 #print axioms AFPBarrier.heatKernelBoltzmannDecay_nonneg
 #print axioms AFPBarrier.heatKernelBoltzmannDecay_le_fp
 #print axioms AFPBarrier.fp_amplitude_le_heatKernelBoltzmann_amplitude
+
+#print axioms AFPBarrier.inverseSquareAngularDepth_eq_reciprocal_difference
+#print axioms AFPBarrier.inverseSquareAngularDepth_nonneg
+#print axioms AFPBarrier.twoLayer_energy_order_invariant
+#print axioms AFPBarrier.twoLayerAngularDepth_order_difference
+#print axioms AFPBarrier.twoLayerAngularDepth12_le_21
+#print axioms AFPBarrier.layeredAngularAmplitude_mul
