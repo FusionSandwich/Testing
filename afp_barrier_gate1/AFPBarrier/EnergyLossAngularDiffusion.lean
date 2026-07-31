@@ -44,10 +44,16 @@ theorem inverseSquareAngularDepth_eq_reciprocal_difference
     inverseSquareAngularDepth coeff energy stopping thickness
       = coeff / stopping *
           (1 / energyAfterLayer energy stopping thickness - 1 / energy) := by
-  have hout' : -(thickness * stopping) + energy ≠ 0 := by
-    unfold energyAfterLayer at hout
-    convert hout using 1 <;> ring
+  have hout' : energy - stopping * thickness ≠ 0 := by
+    simpa [energyAfterLayer] using hout
+  have hrecip :
+      1 / (energy - stopping * thickness) - 1 / energy
+        = stopping * thickness /
+            (energy * (energy - stopping * thickness)) := by
+    field_simp [henergy, hout']
+    ring
   unfold inverseSquareAngularDepth energyAfterLayer
+  rw [hrecip]
   field_simp [hstop, henergy, hout']
   ring
 
@@ -114,7 +120,6 @@ theorem twoLayerAngularDepth_order_difference
 placing it first produces no more total angular depth than placing it second. -/
 theorem twoLayerAngularDepth12_le_21
     (energy amount₁ drop₁ amount₂ drop₂ : ℝ)
-    (ha₁ : 0 ≤ amount₁) (ha₂ : 0 ≤ amount₂)
     (hd₁ : 0 ≤ drop₁) (hd₂ : 0 ≤ drop₂)
     (hremain : drop₁ + drop₂ < energy)
     (hratio : amount₂ * drop₁ ≤ amount₁ * drop₂) :
