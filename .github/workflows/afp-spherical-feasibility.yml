@@ -62,14 +62,15 @@ jobs:
           cd afp_barrier_gate1
           lake build
 
-      - name: Independently type-check AFPBarrier with nanoda
+      - name: Independently type-check spherical stage roots with nanoda
         shell: bash
         run: |
           set -euo pipefail
           cd afp_barrier_gate1
 
           cleanup() {
-            rm -rf _lean4export _nanoda_lib _nanoda_export.txt _nanoda_config.json
+            rm -rf _lean4export _nanoda_lib
+            rm -f _nanoda_export_*.txt _nanoda_config_*.json
           }
           trap cleanup EXIT
           cleanup
@@ -94,13 +95,25 @@ jobs:
             cargo build --release
           )
 
-          lake env _lean4export/.lake/build/bin/lean4export AFPBarrier \
-            > _nanoda_export.txt
-          test -s _nanoda_export.txt
+          modules=(
+            AFPBarrier.QuantitativeSphericalFeasibility
+            AFPBarrier.GlobalSharedEdgeDuality
+          )
 
-          cat > _nanoda_config.json <<'EOF'
+          for module in "${modules[@]}"; do
+            safe_name="${module//./_}"
+            export_file="_nanoda_export_${safe_name}.txt"
+            config_file="_nanoda_config_${safe_name}.json"
+
+            echo "Exporting ${module} for independent checking"
+            lake env _lean4export/.lake/build/bin/lean4export "$module" \
+              > "$export_file"
+            test -s "$export_file"
+            echo "Exported $(wc -l < "$export_file") lines for ${module}"
+
+            cat > "$config_file" <<EOF
           {
-            "export_file_path": "_nanoda_export.txt",
+            "export_file_path": "$export_file",
             "use_stdin": false,
             "permitted_axioms": [
               "propext",
@@ -115,4 +128,6 @@ jobs:
           }
           EOF
 
-          _nanoda_lib/target/release/nanoda_bin _nanoda_config.json
+            RUST_BACKTRACE=1 \
+              _nanoda_lib/target/release/nanoda_bin "$config_file"
+          done
