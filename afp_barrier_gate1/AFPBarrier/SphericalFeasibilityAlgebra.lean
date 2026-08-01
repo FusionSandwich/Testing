@@ -67,11 +67,10 @@ theorem scaledSphericalRowRate_eq_commonScale
       = (2 / normalScale) * (b j / sinTheta j) := by
   unfold scaledSphericalRowRate
   field_simp [hsin j, hscale]
-  ring
 
 /-- Total antipodal rate left after a non-antipodal block spends `D` units of
 normal loss.  Antipodes themselves are never divided by a sine. -/
-def antipodalTotalRate (D : ℝ) : ℝ :=
+noncomputable def antipodalTotalRate (D : ℝ) : ℝ :=
   1 - D / 2
 
 /-- The mixed normal budget is identically reconstructed from the remaining
@@ -108,7 +107,7 @@ theorem antipodalOnly_normalBalance_iff
     (a : ι → ℝ) :
     Finset.univ.sum (fun j => 2 * a j) = 2 ↔
       Finset.univ.sum a = 1 := by
-  rw [Finset.mul_sum]
+  rw [← Finset.mul_sum]
   constructor <;> intro h <;> linarith
 
 end AFPBarrier
