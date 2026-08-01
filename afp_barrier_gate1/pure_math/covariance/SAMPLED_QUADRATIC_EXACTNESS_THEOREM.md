@@ -10,21 +10,21 @@ Let
 
 be a finite conservative jump generator and let
 \(\Phi:I\to\mathbb R^d\) satisfy \(L\Phi=-\lambda\Phi\)
-coordinatewise.  This note proves the exact covariance identity for sampled
+coordinatewise. This note proves the exact covariance identity for sampled
 quadratic forms, separates algebraic form exactness from genuine sampled
-exactness, and gives the corrected dimension and rank formulas.  Its main
+exactness, and gives the corrected dimension and rank formulas. Its main
 rigidity theorem is not a rank tautology: when every local jump covariance is
 axially isotropic about the embedded node, every algebraically exact
-trace-free quadratic form lies in the sampling kernel.  Hence the genuinely
-sampled exact quadratic space is zero.  The theorem applies in every dimension
+trace-free quadratic form lies in the sampling kernel. Hence the genuinely
+sampled exact quadratic space is zero. The theorem applies in every dimension
 to regular simplices and in dimension three to all five Platonic
-shortest-edge generators.  Exact symbolic calculations determine all form and
-sampling dimensions.  A four-point signed generator shows that one negative
+shortest-edge generators. Exact symbolic calculations determine all form and
+sampling dimensions. A four-point signed generator shows that one negative
 antipodal rate, necessarily of size \(1/2\), restores a nonzero sampled
-quadratic mode.  Two independent product-obstruction proofs are also given.
-A bounded spherical-harmonic product search does not produce a new hierarchy
-beyond the one-function square mechanism and is therefore rejected under its
-stated kill criterion.
+quadratic mode. Two independent product-obstruction proofs are also given.
+A parity, equality-set, aliasing, and resonance audit does not produce a new
+spectral-product dimension hierarchy beyond the one-function square mechanism,
+so that branch is rejected under its stated kill criterion.
 
 All spaces and index sets below are finite-dimensional over \(\mathbb R\).
 Repeated embedded nodes are permitted unless a distinct-neighbor hypothesis is
@@ -34,10 +34,10 @@ stated explicitly.
 
 ## 1. Finite covariance identity
 
-Let \(I\) be a finite state set.  No reversibility is needed in this section.
-For each state \(i\), let \(a_{ij}\in\mathbb R\).  Positivity is not needed for
+Let \(I\) be a finite state set. No reversibility is needed in this section.
+For each state \(i\), let \(a_{ij}\in\mathbb R\). Positivity is not needed for
 the algebraic identity, although it is essential for the later rigidity and
-product obstructions.  Put
+product obstructions. Put
 
 \[
  \Delta_{ij}=\Phi_j-\Phi_i,
@@ -73,8 +73,8 @@ Then, at every state \(i\),
 
 If \(A\) is symmetric, the contraction is \(\operatorname{tr}(AC_i)\).
 
-**Proof.**  For fixed coordinates \(r,s\), write
-\(\phi_r(i)=\Phi_i^{(r)}\).  One jump satisfies
+**Proof.** For fixed coordinates \(r,s\), write
+\(\phi_r(i)=\Phi_i^{(r)}\). One jump satisfies
 
 \[
  \phi_r(j)\phi_s(j)-\phi_r(i)\phi_s(i)
@@ -91,8 +91,8 @@ terms are
  =-2\lambda\phi_r(i)\phi_s(i),                                  \tag{1.6}
 \]
 
-and the last term is \((C_i)_{rs}\).  Multiply by \(A_{rs}\) and sum over
-\(r,s\).  This gives (1.4).  ∎
+and the last term is \((C_i)_{rs}\). Multiply by \(A_{rs}\) and sum over
+\(r,s\). This gives (1.4). ∎
 
 ### Theorem 1.2 — target eigenvalue and constant shift
 
@@ -126,7 +126,7 @@ When \(\mu\ne0\), a constant \(c\) exists for a given \(A\) exactly when
  \operatorname{tr}(A^T C_i)+(\mu-2\lambda)Q_A(i)                \tag{1.10}
 \]
 
-is constant; then \(c\) is that constant divided by \(\mu\).  If \(L\) has an
+is constant; then \(c\) is that constant divided by \(\mu\). If \(L\) has an
 invariant probability \(\pi\), \(\mu>0\), and (1.8) holds, then necessarily
 
 \[
@@ -198,7 +198,7 @@ The form space requested in this stage is the **zero-centered** form space
  }                                                               \tag{2.8}
 \]
 
-This statement concerns matrices.  It does not yet assert that a nonzero
+This statement concerns matrices. It does not yet assert that a nonzero
 matrix produces a nonzero function on the sampled nodes.
 
 For shifted exactness, define
@@ -211,7 +211,7 @@ For shifted exactness, define
 \]
 
 For \(A\) in this space, the admissible shift is the common value divided by
-\(2d\).  Equation (2.9) must not be confused with (2.8).
+\(2d\). Equation (2.9) must not be confused with (2.8).
 
 ---
 
@@ -250,7 +250,7 @@ The zero-centered genuinely sampled exact space is
 \]
 
 The restriction of \(S_X\) to \(E_{\mathrm{form}}\) has kernel
-\(E_{\mathrm{form}}\cap K_X\).  Rank-nullity gives
+\(E_{\mathrm{form}}\cap K_X\). Rank-nullity gives
 
 \[
  \boxed{
@@ -272,7 +272,7 @@ Let
  D=\dim\operatorname{Sym}_0(d)=\frac{d(d+1)}2-1                 \tag{3.5}
 \]
 
-and choose a basis \(B_1,\ldots,B_D\).  Define the covariance-constraint and
+and choose a basis \(B_1,\ldots,B_D\). Define the covariance-constraint and
 sampling matrices
 
 \[
@@ -316,7 +316,7 @@ explicitly labeled as a form-space assertion.
 ## 4. Sharp axial-covariance rigidity
 
 A rank identity alone does not explain why the sampled space vanishes in the
-symmetric examples.  The following local-to-global theorem does.
+symmetric examples. The following local-to-global theorem does.
 
 For \(x\in S^{d-1}\), write
 
@@ -332,7 +332,7 @@ A covariance tensor is **axially isotropic at** \(x\) if
  C=\tau P_x^{\mathrm{tan}}+\beta P_x^{\mathrm{rad}}             \tag{4.2}
 \]
 
-for some scalars \(\tau,\beta\).  Here
+for some scalars \(\tau,\beta\). Here
 
 \[
  \beta=x^TCx.                                                    \tag{4.3}
@@ -370,7 +370,7 @@ to a distinct embedded point.
 ### Theorem 4.2 — local axial constraint equals sampled value
 
 Assume \(d\ge2\), (2.1), nonnegative rates, axial isotropy (4.2) at a state
-\(i\), and \(\beta_i>0\).  Then
+\(i\), and \(\beta_i>0\). Then
 
 \[
  \boxed{
@@ -391,8 +391,8 @@ Consequently, for every \(A\in\operatorname{Sym}_0(d)\),
 Thus exactness at this one vertex is equivalent to vanishing of the sampled
 quadratic at this vertex.
 
-**Proof.**  Write
-\(C_i=\tau_i(I-xx^T)+\beta_i xx^T\), \(x=\Phi_i\).  Equation (4.4) gives
+**Proof.** Write
+\(C_i=\tau_i(I-xx^T)+\beta_i xx^T\), \(x=\Phi_i\). Equation (4.4) gives
 
 \[
  (d-1)\tau_i+\beta_i=2(d-1),
@@ -414,14 +414,14 @@ and
 \]
 
 The trace-free projection of \(\tau I+\kappa xx^T\) is
-\(\kappa(xx^T-I/d)\), proving (4.7).  Pairing with trace-free \(A\) gives
-(4.8).  ∎
+\(\kappa(xx^T-I/d)\), proving (4.7). Pairing with trace-free \(A\) gives
+(4.8). ∎
 
 ### Theorem 4.3 — sharp global sampled rigidity
 
-Assume the hypotheses of Theorem 4.2 at every state.  Then the constraint
+Assume the hypotheses of Theorem 4.2 at every state. Then the constraint
 matrix is obtained from the sampling matrix by multiplying row \(i\) by the
-strictly positive scalar \(d\beta_i/(d-1)\).  Hence
+strictly positive scalar \(d\beta_i/(d-1)\). Hence
 
 \[
  \boxed{E_{\mathrm{form}}=K_X,}                                 \tag{4.11}
@@ -437,14 +437,14 @@ and
  \boxed{E_{\mathrm{sample}}=\{0\}.}                             \tag{4.13}
 \]
 
-This is a structural rigidity theorem, not the tautological rank formula.  It
+This is a structural rigidity theorem, not the tautological rank formula. It
 also distinguishes local and global exactness: axial isotropy at only a subset
 \(J\subset I\) forces an exact sampled mode to vanish on \(J\), but not
 necessarily outside \(J\).
 
 If the coefficients \(d\beta_i/(d-1)\) are all the same and the finite sample
 has zero mean for every trace-free quadratic, then the same conclusion holds
-for shifted exactness.  In that case (2.6) forces the quadratic sample to be
+for shifted exactness. In that case (2.6) forces the quadratic sample to be
 constant, and zero mean forces that constant to be zero.
 
 ### Corollary 4.4 — regular simplex family in every dimension
@@ -469,7 +469,7 @@ Then \(Lx=-(d-1)x\), every covariance is axially isotropic, and
  M_i=(d+1)\left(x_ix_i^T-\frac1dI\right).                       \tag{4.16}
 \]
 
-The sampling map has rank exactly \(d\).  Indeed, its image lies in the
+The sampling map has rank exactly \(d\). Indeed, its image lies in the
 zero-sum subspace because
 
 \[
@@ -482,7 +482,7 @@ Conversely, for any \(y\in\mathbb R^{d+1}\) with \(\sum_i y_i=0\),
  A_y=\frac{d^2}{d^2-1}\sum_i y_i x_ix_i^T                       \tag{4.18}
 \]
 
-is trace-free and satisfies \(x_k^TA_yx_k=y_k\).  Hence
+is trace-free and satisfies \(x_k^TA_yx_k=y_k\). Hence
 
 \[
  \operatorname{rank}S_X=d,                                      \tag{4.19}
@@ -494,13 +494,13 @@ is trace-free and satisfies \(x_k^TA_yx_k=y_k\).  Hence
  =\frac{d(d+1)}2-1-d,                                           \tag{4.20}
 \]
 
-while \(\dim E_{\mathrm{sample}}=0\).  This all-dimensional family attains
+while \(\dim E_{\mathrm{sample}}=0\). This all-dimensional family attains
 the axial theorem sharply and exhibits a large algebraic exact space composed
 entirely of sampling aliases.
 
 ### Theorem 4.5 — equivariant irreducibility rigidity
 
-There is a second structural mechanism.  Let a finite group \(G\) act
+There is a second structural mechanism. Let a finite group \(G\) act
 transitively on \(I\), let \(\rho:G\to O(d)\), and assume
 
 \[
@@ -510,7 +510,7 @@ transitively on \(I\), let \(\rho:G\to O(d)\), and assume
 \]
 
 Then \(E_{\mathrm{form}}\subset\operatorname{Sym}_0(d)\) is a
-\(G\)-submodule under \(A\mapsto\rho(g)A\rho(g)^T\).  If
+\(G\)-submodule under \(A\mapsto\rho(g)A\rho(g)^T\). If
 \(\operatorname{Sym}_0(d)\) is irreducible as a real \(G\)-module and at
 least one positive jump joins distinct embedded points, then
 
@@ -519,14 +519,14 @@ least one positive jump joins distinct embedded points, then
 \]
 
 Indeed, irreducibility makes \(E_{\mathrm{form}}\) either zero or the full
-module.  The full alternative would force every \(M_i=0\).  Then
-\(C_i+2\Phi_i\Phi_i^T\) would be scalar.  Its trace is \(2d\), so
+module. The full alternative would force every \(M_i=0\). Then
+\(C_i+2\Phi_i\Phi_i^T\) would be scalar. Its trace is \(2d\), so
 
 \[
  C_i=2(I-\Phi_i\Phi_i^T),                                       \tag{4.23}
 \]
 
-whose radial covariance is zero, contradicting (4.6).  This theorem explains
+whose radial covariance is zero, contradicting (4.6). This theorem explains
 the full-rank icosahedral cases independently of an evaluation determinant.
 
 ---
@@ -540,7 +540,7 @@ and one common rate on every edge, normalized so that
  L\Phi=-2\Phi.                                                   \tag{5.1}
 \]
 
-Let \(k\) be the degree and \(\alpha\) the adjacent inner product.  The rate
+Let \(k\) be the degree and \(\alpha\) the adjacent inner product. The rate
 is
 
 \[
@@ -548,7 +548,7 @@ is
 \]
 
 The vertex stabilizer contains a rotation of order at least three about the
-radial axis.  Therefore \(C_i\) is axially isotropic.  Equations (4.4) and
+radial axis. Therefore \(C_i\) is axially isotropic. Equations (4.4) and
 (4.6) determine it exactly:
 
 \[
@@ -582,15 +582,15 @@ Represent a trace-free symmetric matrix by coefficients in
  x^2-z^2,\quad y^2-z^2,\quad 2xy,\quad 2xz,\quad 2yz.             \tag{5.5}
 \]
 
-- **Tetrahedron and cube.**  Every vertex has
+- **Tetrahedron and cube.** Every vertex has
   \(x^2=y^2=z^2=1/3\), so the two-dimensional diagonal trace-free subspace is
-  in \(K_X\).  The sign vectors of \((xy,xz,yz)\) span \(\mathbb R^3\), so
-  the sampling rank is three.  Hence \(\dim K_X=2\).
-- **Octahedron.**  Sampling at \(\pm e_1,\pm e_2,\pm e_3\) detects the
+  in \(K_X\). The sign vectors of \((xy,xz,yz)\) span \(\mathbb R^3\), so
+  the sampling rank is three. Hence \(\dim K_X=2\).
+- **Octahedron.** Sampling at \(\pm e_1,\pm e_2,\pm e_3\) detects the
   two-dimensional diagonal trace-free subspace and kills all three
-  off-diagonal forms.  Hence the sampling rank is two and
+  off-diagonal forms. Hence the sampling rank is two and
   \(\dim K_X=3\).
-- **Icosahedron.**  Let \(\varphi=(1+\sqrt5)/2\).  On the five raw vertices
+- **Icosahedron.** Let \(\varphi=(1+\sqrt5)/2\). On the five raw vertices
 
   \[
   (0,1,\varphi),\ (0,-1,\varphi),\ (1,\varphi,0),\
@@ -605,7 +605,7 @@ Represent a trace-free symmetric matrix by coefficients in
 
   Common normalization of the vertices only rescales rows, so the full
   sampling rank is five.
-- **Dodecahedron.**  On the five raw vertices
+- **Dodecahedron.** On the five raw vertices
 
   \[
   (-1,-1,-1),\ (-1,-1,1),\ (-1,1,-1),\
@@ -637,29 +637,35 @@ For the first three graphs,
  E_{\mathrm{form}}=K_X\ne\{0\};                                \tag{5.10}
 \]
 
-all apparent exact forms vanish on every sampled vertex.  For the last two,
-there are no nonzero exact forms at all.  Consequently none of the five
+all apparent exact forms vanish on every sampled vertex. For the last two,
+there are no nonzero exact forms at all. Consequently none of the five
 positive generators has a nonzero sampled degree-two mode with eigenvalue
 \(-6\).
 
-The equal-weight Platonic vertex sets are spherical 2-designs.  Since the
+For each Platonic vertex set, direct second-moment isotropy gives
+
+\[
+ \frac1{|I|}\sum_i\Phi_i\Phi_i^T=\frac13I.                     \tag{5.11}
+\]
+
+Hence every trace-free quadratic sample has zero uniform mean. Since the
 coefficient in (5.4) is constant on each graph, the shifted condition (2.6)
-forces a trace-free quadratic sample to be constant; its zero mean then forces
-it to vanish.  Thus allowing \(c\) does not restore a genuine sampled mode in
-these examples.
+forces a trace-free quadratic sample to be constant; (5.11) then forces that
+constant to be zero. Thus allowing \(c\) does not restore a genuine sampled
+mode in these examples.
 
 ---
 
 ## 6. Signed-conductance restoration and minimal negativity
 
-Positivity is essential.  Consider the four points on \(S^1\)
+Positivity is essential. Consider the four points on \(S^1\)
 
 \[
  x_0=(1,0),\quad x_1=(0,1),\quad x_2=(-1,0),\quad x_3=(0,-1).    \tag{6.1}
 \]
 
 In cyclic order, assign rate \(1\) to each adjacent point and rate
-\(-1/2\) to the antipodal point.  The generator matrix is
+\(-1/2\) to the antipodal point. The generator matrix is
 
 \[
  L=
@@ -671,7 +677,7 @@ In cyclic order, assign rate \(1\) to each adjacent point and rate
  \end{pmatrix}.                                                  \tag{6.2}
 \]
 
-It is symmetric and conservative.  For the coordinate samples
+It is symmetric and conservative. For the coordinate samples
 
 \[
  X=(1,0,-1,0)^T,
@@ -696,8 +702,8 @@ Thus the signed generator reproduces the coordinate eigenvalue
 The second trace-free quadratic \(2XY\) lies in the sampling kernel of these
 four nodes, so the restored sampled quadratic space is one-dimensional.
 
-The negative rate is forced, not an arbitrary unconstrained solve.  At
-\(x_0\), write the rates to \(x_1,x_2,x_3\) as \(u,b,v\).  The two coordinate
+The negative rate is forced, not an arbitrary unconstrained solve. At
+\(x_0\), write the rates to \(x_1,x_2,x_3\) as \(u,b,v\). The two coordinate
 equations and the quadratic equation are
 
 \[
@@ -710,9 +716,9 @@ Therefore
  \boxed{u=v=1,\qquad b=-\frac12.}                                \tag{6.7}
 \]
 
-The same argument applies at every vertex.  Hence every generator on this
+The same argument applies at every vertex. Hence every generator on this
 fixed four-point support satisfying the three exactness requirements has one
-negative antipodal rate of magnitude \(1/2\) per row.  With equal reversible
+negative antipodal rate of magnitude \(1/2\) per row. With equal reversible
 masses, there are exactly two negative undirected conductances, each
 \(-1/2\), and total negative undirected mass one.
 
@@ -751,9 +757,9 @@ then
 at every state.
 
 At a state where \(f\) and \(g\) have aligned extrema, every summand in
-(7.1) is nonnegative.  If at least one positive outgoing edge changes both
+(7.1) is nonnegative. If at least one positive outgoing edge changes both
 values strictly in the same direction, then \(\Gamma(f,g)>0\), contradicting
-(7.4).  This is the strict-extremum product obstruction.
+(7.4). This is the strict-extremum product obstruction.
 
 For \(g=f\),
 
@@ -767,18 +773,18 @@ Thus exact additive square propagation
  L(f^2)=-2\lambda f^2                                           \tag{7.6}
 \]
 
-forces \(f(j)=f(i)\) on every positive active edge.  On every directed
-reachable component \(f\) is constant.  If the chain is irreducible and
+forces \(f(j)=f(i)\) on every positive active edge. On every directed
+reachable component \(f\) is constant. If the chain is irreducible and
 \(\lambda>0\), the only possibility is \(f=0\).
 
-This theorem concerns the sampled square itself.  It does not automatically
+This theorem concerns the sampled square itself. It does not automatically
 apply to one algebraic harmonic component of a square when other components
 remain present or are aliased by sampling.
 
 ### 7.2 Semigroup/Jensen proof
 
-Let \(P_t=e^{tL}\).  For nonnegative conservative rates, \(P_t\) is a Markov
-operator.  If \(Lf=-\lambda f\), then
+Let \(P_t=e^{tL}\). For nonnegative conservative rates, \(P_t\) is a Markov
+operator. If \(Lf=-\lambda f\), then
 
 \[
  P_tf=e^{-\lambda t}f.                                          \tag{7.7}
@@ -798,7 +804,7 @@ If also (7.6) holds, then
 
 so equality holds in Jensen at every state.
 
-Write \(p_t(i,j)\) for the transition kernel.  Equality in the strictly
+Write \(p_t(i,j)\) for the transition kernel. Equality in the strictly
 convex square inequality is equivalent to
 
 \[
@@ -808,12 +814,12 @@ convex square inequality is equivalent to
 
 For a finite continuous-time chain and \(t>0\), uniformization shows that
 \(p_t(i,j)>0\) exactly when \(j\) is reachable from \(i\) along positive-rate
-edges.  Hence equality characterizes constancy on every reachable set.  An
+edges. Hence equality characterizes constancy on every reachable set. An
 irreducible positive chain again forces \(f\) constant and, for
 \(\lambda>0\), zero.
 
-The carré-du-champ proof is infinitesimal and edgewise.  The semigroup proof is
-global in time and identifies equality on the entire reachable set.  Neither
+The carré-du-champ proof is infinitesimal and edgewise. The semigroup proof is
+global in time and identifies equality on the entire reachable set. Neither
 proof assumes reversibility.
 
 ---
@@ -830,7 +836,7 @@ with eigenvalue
 ### 8.1 Parity and multiplication image
 
 A degree-\(\ell\) harmonic has antipodal parity \((-1)^\ell\), so a product
-of two degree-\(\ell\) harmonics is always even.  For \(d\ge3\), the scalar
+of two degree-\(\ell\) harmonics is always even. For \(d\ge3\), the scalar
 harmonic part of the pointwise multiplication image is
 
 \[
@@ -839,7 +845,7 @@ harmonic part of the pointwise multiplication image is
 \]
 
 For \(d=2\), the product image is only
-\(\mathcal H_{2\ell}\oplus\mathcal H_0\).  Statement (8.2) concerns the
+\(\mathcal H_{2\ell}\oplus\mathcal H_0\). Statement (8.2) concerns the
 pointwise multiplication image; the abstract representation
 \(\operatorname{Sym}^2(\mathcal H_\ell)\) can contain additional tensor
 components that multiplication kills.
@@ -847,12 +853,12 @@ components that multiplication kills.
 ### 8.2 Odd and even zonal extrema
 
 For a normalized zonal harmonic \(Z_\ell(x\cdot p)\), equality in the global
-bound occurs at both antipodes.  If \(\ell\) is odd, the values at \(p\) and
-\(-p\) have opposite signs; if \(\ell\) is even, both are equal maxima.
-The square has the same value at both antipodes in either case.  Therefore a
-single-point strict-maximum argument must assume an active edge leaving the
-entire equality set.  Non-singleton maximizing sets cannot be silently treated
-as one point.
+absolute-value bound occurs at both antipodes. If \(\ell\) is odd, the values
+at \(p\) and \(-p\) have opposite signs; if \(\ell\) is even, both are equal
+maxima. The square has the same value at both antipodes in either case.
+Therefore a single-point strict-maximum argument must assume an active edge
+leaving the entire equality set. Non-singleton maximizing sets cannot be
+silently treated as one point.
 
 ### 8.3 Sampling aliases
 
@@ -862,15 +868,15 @@ For every harmonic degree \(k\), let
  S_{X,k}:\mathcal H_k\to\mathbb R^I                             \tag{8.3}
 \]
 
-be the sampling map.  An algebraically nonzero product component can lie in
+be the sampling map. An algebraically nonzero product component can lie in
 \(\ker S_{X,k}\), and two different degrees can have identical sampled
-vectors.  Exactness of one algebraic component is therefore not a claim about
-a nonzero sampled function unless its sampling class is identified.  Exactness
+vectors. Exactness of one algebraic component is therefore not a claim about
+a nonzero sampled function unless its sampling class is identified. Exactness
 of one sampled combination also does not imply exactness of a complete
 irreducible component unless an equivariance and irreducibility argument is
 supplied.
 
-### 8.4 Additive resonance does not create a hierarchy
+### 8.4 Additive resonance is Pell-type but still not a hierarchy theorem
 
 The square/Jensen obstruction directly applies to a product component only if
 its sampled eigenvalue equals the additive value \(2\lambda_\ell\) **and** all
@@ -882,24 +888,53 @@ The arithmetic condition is
  \qquad k\in\{0,2,\ldots,2\ell\}.                               \tag{8.4}
 \]
 
-It is not satisfied by a uniform choice such as \(k=2\ell\).  An exact bounded
-search over
+Put
 
 \[
- 2\le d\le12,\qquad1\le\ell\le12                                \tag{8.5}
+ n=d-2,\qquad X=2k+n,\qquad Y=2\ell+n.                           \tag{8.5}
 \]
 
-finds only
+Then (8.4) is equivalent to the generalized negative Pell equation
 
 \[
- (d,\ell,k)=(4,4,6),(6,8,12),(8,12,18),(9,5,8).                 \tag{8.6}
+ \boxed{X^2-2Y^2=-n^2,}                                         \tag{8.6}
 \]
 
-These sparse arithmetic coincidences do not produce an \(\ell\)-indexed
-family, dimension tradeoff, or global rigidity consequence.  Even at a hit,
-the basic Jensen proof applies only after the other sampled product components
-are shown to vanish or alias, reducing the argument to the same one-function
-square identity.
+with the parity conditions \(X\equiv Y\equiv n\pmod2\), together with even
+\(k\) and \(0\le k\le2\ell\). Thus additive resonances need not be finite.
+For example, in \(d=4\), equation (8.6) reduces to
+
+\[
+ (k+1)^2-2(\ell+1)^2=-1.                                       \tag{8.7}
+\]
+
+Multiplication of a solution by the Pell unit \(3+2\sqrt2\) generates the
+infinite sequence
+
+\[
+ (\ell,k)=(4,6),(28,40),(168,238),\ldots.                       \tag{8.8}
+\]
+
+An exact bounded search over
+
+\[
+ 2\le d\le12,\qquad1\le\ell\le12                                \tag{8.9}
+\]
+
+finds
+
+\[
+ (d,\ell,k)=(4,4,6),(6,8,12),(8,12,18),(9,5,8).                 \tag{8.10}
+\]
+
+The existence of arithmetic families such as (8.8) is not a sampled spectral
+hierarchy. At a resonance, the square decomposes into several harmonic
+components. To invoke the additive square obstruction for the degree-\(k\)
+component, one must still prove that this component has a nonzero identifiable
+sample and that every other sampled component has vanished or been separated.
+When those hypotheses hold, the conclusion is exactly the same one-function
+square/Jensen obstruction from Section 7. No new dimension tradeoff or global
+rigidity statement is obtained from the Pell arithmetic alone.
 
 ### Conclusion of the hierarchy branch
 
@@ -907,22 +942,24 @@ Under the stated kill criterion, the proposed general spectral-product
 hierarchy is
 
 \[
- \boxed{\text{REJECTED for this stage}.}                         \tag{8.7}
+ \boxed{\text{REJECTED for this stage}.}                         \tag{8.11}
 \]
 
-The bounded investigation produced no theorem beyond the additive sampled
-square obstruction.  This does not claim that no stronger hierarchy can ever
-exist under additional representation-theoretic or design hypotheses; it
-prevents the current calculations from being inflated into such a theorem.
-The mandatory stage result is the sampled covariance theorem and axial
-rigidity above.
+This verdict does **not** rest on the false claim that resonances are finite;
+(8.8) explicitly shows otherwise. It rests on the fact that the current
+product calculations provide neither sampled identifiability, a complete
+irreducible-component restriction, a dimension tradeoff, nor a new global
+consequence beyond the one-function square identity. This does not claim that
+no stronger hierarchy can emerge under additional association-scheme,
+design, or representation-theoretic hypotheses. The mandatory stage result is
+the sampled covariance theorem and axial rigidity above.
 
 ---
 
 ## 9. Verification boundary
 
 `quadratic_covariance_audit.py` performs exact symbolic checks over
-\(\mathbb Q(\sqrt5)\).  It verifies:
+\(\mathbb Q(\sqrt5)\) and integer Pell arithmetic. It verifies:
 
 - the covariance identity against direct generator action;
 - every covariance tensor and scalar in the Platonic table;
@@ -930,10 +967,11 @@ rigidity above.
 - equality of form space and sampling kernel in the axial examples;
 - the correct stacked-rank formula, including a negative test for the naive
   dimension subtraction;
-- the signed four-point construction and the forced rate \(-1/2\); and
-- the bounded resonance list (8.6).
+- the signed four-point construction and the forced rate \(-1/2\);
+- the bounded resonance list (8.10); and
+- the first nontrivial terms of the infinite \(d=4\) Pell family (8.8).
 
-These calculations are deterministic regression and falsification tools.  The
-proofs of the general statements are the arguments above.  The finite
+These calculations are deterministic regression and falsification tools. The
+proofs of the general statements are the arguments above. The finite
 covariance algebra, trace-free projection consequence, and scaled
 constraint-to-sampling implication are formalized separately in Lean.
