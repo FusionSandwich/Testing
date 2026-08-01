@@ -25,7 +25,7 @@ namespace AFPBarrier
 variable {ι κ : Type*} [Fintype ι] [Fintype κ]
 
 /-- Rescale a nonnegative tangent dependence into spherical row rates. -/
-def scaledSphericalRowRate
+noncomputable def scaledSphericalRowRate
     (b sinTheta : ι → ℝ) (normalScale : ℝ) (j : ι) : ℝ :=
   2 * b j / (sinTheta j * normalScale)
 
@@ -78,7 +78,6 @@ theorem scaledSphericalRowRate_tangent_balance
     intro j
     unfold scaledSphericalRowRate
     field_simp [ne_of_gt (hsin j), ne_of_gt hscale]
-    ring
   calc
     Finset.univ.sum
         (fun j => scaledSphericalRowRate b sinTheta normalScale j
@@ -111,7 +110,6 @@ theorem scaledSphericalRowRate_normal_balance
     intro j
     unfold scaledSphericalRowRate
     field_simp [ne_of_gt (hsin j), ne_of_gt hscale]
-    ring
   calc
     Finset.univ.sum
         (fun j => scaledSphericalRowRate b sinTheta normalScale j * loss j)
