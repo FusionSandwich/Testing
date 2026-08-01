@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - agent/afp-spherical-feasibility-validation
+      - agent/afp-pure-math-p0-m1
   pull_request:
     branches:
       - agent/afp-pure-math-p0-m1
