@@ -40,7 +40,6 @@ jobs:
         uses: leanprover/lean-action@v1
         with:
           lake-package-directory: afp_barrier_gate1
-          auto-config: false
           build: false
           test: false
           lint: false
