@@ -1,0 +1,1 @@
+Pure-mathematics development will proceed from the verified transport source commit `515f1aae6c20bd85711c90b5c1c21b4905252d01` on a separate branch. The transport branch is retained for future Radiant, evaluated-data, and physical HTS work.
