@@ -1,5 +1,6 @@
 import AFPBarrier.LocalSphericalFeasibility
 import AFPBarrier.GlobalLossRigidity
+import AFPBarrier.QuadraticCovariance
 
 /-! Focused axiom audit for the pure-mathematics branch. -/
 
@@ -14,3 +15,10 @@ import AFPBarrier.GlobalLossRigidity
 #print axioms AFPBarrier.rate_eq_of_symmetric_active_loss
 #print axioms AFPBarrier.rate_eq_of_active_reflTransGen
 #print axioms AFPBarrier.connected_active_loss_rigidity
+
+#print axioms AFPBarrier.jumpGenerator_product_identity
+#print axioms AFPBarrier.jumpGenerator_quadratic_covariance_identity
+#print axioms AFPBarrier.quadratic_target_eigen_iff
+#print axioms AFPBarrier.finiteMatrixContraction_tracelessProjection
+#print axioms AFPBarrier.zero_constraints_iff_zero_samples_of_row_scaling
+#print axioms AFPBarrier.axialCovariance_projectionCoefficient
