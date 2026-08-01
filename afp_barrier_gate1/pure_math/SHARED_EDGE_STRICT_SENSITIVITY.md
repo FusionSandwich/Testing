@@ -45,8 +45,8 @@ are nonzero, the feasible set is compact and this supremum is attained.
 
 ## Fixed-matrix target or mass perturbations
 
-Suppose `A gamma^0=b` and `gamma^0_e>=alpha>0`. Let
-`r=b'-b in range A`, and let `sigma_+(A)` be the smallest nonzero singular
+Suppose `A gamma^0=b`, `gamma^0_e>=alpha>0`, and `A` has positive rank. Let
+`r=b'-b in range A`, and let `sigma_+(A)` be the smallest positive singular
 value. The Moore-Penrose correction `d=A^+r` obeys
 
 ```text
@@ -60,6 +60,8 @@ Therefore
 => exists gamma'>0 with A gamma'=b'.                         (4)
 ```
 
+If `A=0`, compatibility forces `b=b'=0`; then any existing strictly positive
+coefficient vector remains feasible and no singular-value quotient is needed.
 The range condition is essential: weighted centering need not describe the
 whole range for a sparse graph. For fixed nodes and perturbed masses,
 
@@ -102,8 +104,8 @@ w'_i Omega'_i-w_i Omega_i
 proves (7).
 
 Assume the perturbed signed equation is compatible,
-`b'-A'gamma^0 in range A'`, and let `sigma'_+=sigma_+(A')`. A positive exact
-solution persists whenever
+`b'-A'gamma^0 in range A'`, and that `A'` has positive rank. Let
+`sigma'_+=sigma_+(A')`. A positive exact solution persists whenever
 
 ```text
 2 sqrt(n)(eta_w+w_max eta_Omega+eta_w eta_Omega)
@@ -112,7 +114,9 @@ solution persists whenever
 ```
 
 The pseudoinverse correction has 2-norm less than `alpha`, hence every
-coefficient stays positive. In a fixed full-row-rank reduction, Weyl's bound
+coefficient stays positive. If `A'=0`, compatibility instead requires
+`b'=0`, and the original positive coefficient vector is already feasible for
+the perturbed equation. In a fixed full-row-rank reduction, Weyl's bound
 allows `sigma'_+` to be replaced by
 `sigma-||A'-A||_2` when this is positive.
 
@@ -125,8 +129,9 @@ c'·gamma'-c·gamma^0
  +||c'||_2[||b'-b||_2+||A'-A||_2||gamma^0||_2]/sigma'_+.     (9)
 ```
 
-Applying the argument in reverse gives a two-sided optimal-value bound when
-both problems have the stated strict slack and compatibility.
+Equation (9) is used only in the positive-rank case. Applying the argument in
+reverse gives a two-sided optimal-value bound when both problems have the
+stated strict slack and compatibility.
 
 ## Complete-graph sensitivity
 
