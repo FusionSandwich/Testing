@@ -125,10 +125,11 @@ theorem jumpGenerator_quadratic_covariance_identity
               (fun j => A k l * (Φ j k * Φ j l)) i)) := by
                 apply Finset.sum_congr rfl
                 intro k hk
-                exact jumpGenerator_fintype_sum
-                  (a := a)
-                  (F := fun l j => A k l * (Φ j k * Φ j l))
-                  (i := i)
+                simpa [mul_assoc] using
+                  (jumpGenerator_fintype_sum
+                    (a := a)
+                    (F := fun l j => A k l * (Φ j k * Φ j l))
+                    (i := i))
     _ = Finset.univ.sum (fun k =>
           Finset.univ.sum (fun l =>
             A k l * jumpGenerator a
