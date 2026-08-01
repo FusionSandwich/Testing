@@ -6,6 +6,8 @@ import AFPBarrier.QuasiUniformLossBounds
 import AFPBarrier.SphericalNetScaling
 import AFPBarrier.LossVariance
 import AFPBarrier.LossVarianceSharpness
+import AFPBarrier.LocalSphericalFeasibility
+import AFPBarrier.GlobalLossRigidity
 import AFPBarrier.ExplicitEulerTransport
 import AFPBarrier.SpatialUpwindTransport
 import AFPBarrier.MultigroupTransfer
