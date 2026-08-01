@@ -30,7 +30,12 @@ def sharedEdgeDualWork
 block unchanged. -/
 theorem sharedEdgeDualWork_swap
     (p q : ε → ι) (Ω y : ι → κ → ℝ) (e : ε) :
-    sharedEdgeDualWork q p Ω y e = sharedEdgeDualWork p q Ω y e := by
+    sharedEdgeDualWork
+        (ι := ι) (ε := ε) (κ := κ)
+        (p := q) (q := p) (Ω := Ω) (y := y) e
+      = sharedEdgeDualWork
+        (ι := ι) (ε := ε) (κ := κ)
+        (p := p) (q := q) (Ω := Ω) (y := y) e := by
   unfold sharedEdgeDualWork
   apply Finset.sum_congr rfl
   intro k hk
@@ -39,7 +44,10 @@ theorem sharedEdgeDualWork_swap
 /-- A constant nodal displacement has zero work on every shared edge. -/
 @[simp] theorem sharedEdgeDualWork_constant
     (p q : ε → ι) (Ω : ι → κ → ℝ) (v : κ → ℝ) (e : ε) :
-    sharedEdgeDualWork p q Ω (fun _ => v) e = 0 := by
+    sharedEdgeDualWork
+        (ι := ι) (ε := ε) (κ := κ)
+        (p := p) (q := q) (Ω := Ω) (y := fun _ => v) e
+      = 0 := by
   simp [sharedEdgeDualWork]
 
 /-- For the radial displacement `y_i=-c Ω_i`, the transpose block is `c`
@@ -47,7 +55,9 @@ times the squared chord length.  This fixes the sign convention used by the
 LP dual throughout the stage report. -/
 theorem sharedEdgeDualWork_radial
     (p q : ε → ι) (Ω : ι → κ → ℝ) (c : ℝ) (e : ε) :
-    sharedEdgeDualWork p q Ω (fun i k => -c * Ω i k) e
+    sharedEdgeDualWork
+        (ι := ι) (ε := ε) (κ := κ)
+        (p := p) (q := q) (Ω := Ω) (y := fun i k => -c * Ω i k) e
       = c * Finset.univ.sum (fun k => (Ω (q e) k - Ω (p e) k) ^ 2) := by
   unfold sharedEdgeDualWork
   calc
@@ -67,8 +77,11 @@ theorem sharedEdgeDualWork_radial
 theorem sharedEdgeDualWork_radial_nonneg
     (p q : ε → ι) (Ω : ι → κ → ℝ) (c : ℝ) (e : ε)
     (hc : 0 ≤ c) :
-    0 ≤ sharedEdgeDualWork p q Ω (fun i k => -c * Ω i k) e := by
-  rw [sharedEdgeDualWork_radial]
+    0 ≤ sharedEdgeDualWork
+      (ι := ι) (ε := ε) (κ := κ)
+      (p := p) (q := q) (Ω := Ω) (y := fun i k => -c * Ω i k) e := by
+  rw [sharedEdgeDualWork_radial
+    (p := p) (q := q) (Ω := Ω) (c := c) (e := e)]
   exact mul_nonneg hc (Finset.sum_nonneg (fun k hk => sq_nonneg _))
 
 variable {σ : Type*} [Fintype σ]
@@ -135,12 +148,13 @@ theorem positiveLP_complementarySlackness
   have hsum := positiveLP_complementaritySum_eq_zero
     (A := A) (b := b) (y := y) (c := c) (x := x) hAx hobjective
   unfold finiteDot at hsum
-  have hall :
-      ∀ q, x q * positiveLPDualSlack A c y q = 0 :=
+  have hfun :
+      (fun q => x q * positiveLPDualSlack A c y q) = 0 :=
     (Fintype.sum_eq_zero_iff_of_nonneg
       (fun q => mul_nonneg (hx q)
         (positiveLPDualSlack_nonneg A c y hdual q))).1 hsum
-  exact hall
+  intro q
+  simpa using congr_fun hfun q
 
 /-- Every edge carrying positive primal conductance saturates its dual edge
 constraint. -/
