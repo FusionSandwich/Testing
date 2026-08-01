@@ -9,6 +9,7 @@ import AFPBarrier.LossVarianceSharpness
 import AFPBarrier.LocalSphericalFeasibility
 import AFPBarrier.SphericalFeasibilityAlgebra
 import AFPBarrier.QuantitativeSphericalFeasibility
+import AFPBarrier.QuadraticCovariance
 import AFPBarrier.GlobalLossRigidity
 import AFPBarrier.ExplicitEulerTransport
 import AFPBarrier.SpatialUpwindTransport
