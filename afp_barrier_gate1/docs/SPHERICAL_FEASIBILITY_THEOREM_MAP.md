@@ -39,7 +39,7 @@ from a robust feasible row to the actual perturbed optimum.
 | Locally feasible, centered, globally incompatible example | Section 5.4 | Farkas soundness formalized generically | exact cube field with `A^T y=0`, `b.y=-4` | PROVED / exact certificate |
 | Globally strict symmetric example | Section 5.5 | generic complementarity formalized | exact cube primal/dual value 24 | PROVED / exact certificate |
 | Sparse reconciliation mechanism | Centered-clique Theorem 4.5 | Ordinary finite sum proof; complete-clique block already formalized in `CompleteGraph.lean` | block construction examples | PROVED |
-| Placeholder / axiom policy | Workflow `.github/workflows/afp-spherical-feasibility.yml` | Full Lean build; explicit `AFPBarrier` export to independent `nanoda`; permitted-axiom list omits `sorryAx`; source grep rejects `sorry`, `admit`, `sorryAx`, and user axioms in stage modules | exact Python suite in the same workflow | ENFORCED |
+| Placeholder / axiom policy | Workflow `.github/workflows/afp-spherical-feasibility.yml` | Full Lean build; explicit nanoda exports of `AFPBarrier.QuantitativeSphericalFeasibility` and `AFPBarrier.GlobalSharedEdgeDuality`, which jointly cover the four stage modules; permitted-axiom list omits `sorryAx`; source grep rejects `sorry`, `admit`, `sorryAx`, and user axioms in stage modules | exact Python suite in the same workflow | ENFORCED |
 
 ## External theorem boundary
 
