@@ -45,7 +45,7 @@ theorem normalBalance_lossUpper_crossBound
       Finset.univ.sum (fun j => a j * Lmax)
         = Lmax * sphericalOutgoingRate a := by
     unfold sphericalOutgoingRate
-    rw [Finset.sum_mul]
+    rw [Finset.mul_sum]
     ring
   rw [hbalance, hfactor] at hsum
   exact hsum
@@ -68,7 +68,7 @@ theorem normalBalance_lossLower_crossBound
       Finset.univ.sum (fun j => a j * Lmin)
         = Lmin * sphericalOutgoingRate a := by
     unfold sphericalOutgoingRate
-    rw [Finset.sum_mul]
+    rw [Finset.mul_sum]
     ring
   rw [hfactor, hbalance] at hsum
   exact hsum
