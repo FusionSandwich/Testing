@@ -89,6 +89,17 @@ jobs:
           git -C _lean4export fetch --depth 1 origin \
             66be65dab1fcaabddde91a76e82e63beab180846
           git -C _lean4export checkout --detach FETCH_HEAD
+
+          # Lean 4.30 added a `nondep` argument to `Expr.updateLet!` and exposes
+          # `updateLetE!` for callers that need to preserve the existing flag.
+          grep -qF 'e.updateLet! d v b' _lean4export/Export.lean
+          sed -i 's/e\.updateLet! d v b/e.updateLetE! d v b/' \
+            _lean4export/Export.lean
+          if grep -qF 'e.updateLet! d v b' _lean4export/Export.lean; then
+            echo 'Lean 4.30 exporter compatibility patch was not applied.' >&2
+            exit 1
+          fi
+
           cp lean-toolchain _lean4export/
           (
             cd _lean4export
