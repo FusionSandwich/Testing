@@ -1,7 +1,8 @@
 # AFP mathematical claim matrix
 
 This document controls publication wording for the pure-mathematics track.
-Statuses are deliberately conservative.
+Statuses distinguish ordinary proof, Lean verification, external theorem use,
+and computational regression.
 
 | Claim | Status | Current support | Publication treatment |
 |---|---|---|---|
@@ -9,16 +10,28 @@ Statuses are deliberately conservative.
 | `lambda^2 <= rate * peakDefect` | PROVED / standard | Lean modules `Quantitative.lean` and `LossVariance*.lean` | Foundational weighted Cauchy–Schwarz lemma |
 | The gap equals a weighted edge-loss variance | PROVED | Lean module `LossVariance.lean` | Foundational sharpness identity |
 | A finite positive conservative generator cannot reproduce the complete degree-one and complete degree-two spherical eigenspaces exactly | PROVED in the stated AFP formulation | Lean algebraic core plus spherical specialization | Candidate AFP-specific corollary; priority still requires specialist review |
-| A centered positive quadrature admits a dense positive reversible degree-one-exact operator | PROVED | `CompleteGraph.lean` | Supporting construction |
-| Positive spherical Delaunay families attain the natural `h^-2` rate scale | EXTERNAL specialization | Uses published spherical Delaunay Laplacian theory plus project loss bounds | Cite as achievability input, not as an original construction |
+| A centered positive quadrature admits a dense positive reversible degree-one-exact operator | PROVED | `CompleteGraph.lean`; Theorem 4.2 in `SPHERICAL_FEASIBILITY_SHARED_EDGE_THEOREM.md` | Supporting construction |
+| Positive spherical Delaunay families attain the natural `h^-2` rate scale | EXTERNAL specialization | Published spherical Delaunay Laplacian theory plus project loss bounds | Cite as achievability input, not as an original construction |
 | The project’s quasi-uniform family is globally minimax or spectrally optimal | CONJECTURE / unsupported | No global minimax theorem | Do not claim |
 | Only `K in {4,6,12}` can have global `Q=1` | REJECTED | Cube (`K=8`) and dodecahedron (`K=20`) are counterexamples | Never state without new restrictive assumptions |
-| Connected reversible `Q=1` graphs have one common active-edge loss and one common row rate | CONJECTURE with complete proof target | Follows from local equality plus shared-edge propagation; formalization active | Intended first global rigidity lemma |
+| Connected reversible `Q=1` graphs have one common active-edge loss and one common row rate | CONJECTURE with complete proof target | Local equality plus shared-edge propagation; separate M2 work | Not part of the completed P0/M1 package |
 | Only tetrahedral, octahedral, and icosahedral spherical triangulations can satisfy global `Q=1` under strict equal-edge hypotheses | CONJECTURE | Plausible only after explicit triangulation, positivity, and embedding assumptions | Counterexample search before proof |
-| Local degree-one feasibility is equivalent to a nonnegative tangent dependence and a positive normal scale | PROVED mathematically; formalization active | Rowwise tangent/normal decomposition | Central M1 theorem after novelty review |
-| Strict positivity on every candidate edge is equivalent to a relative-interior condition | CONJECTURE / expected convex-geometry corollary | Not yet formalized or fully written | M1 theorem target |
-| Local row feasibility implies global reversible shared-edge feasibility | REJECTED as a general implication | Global coupling can add constraints | Search for explicit counterexamples and characterize compatibility |
-| Existing Lean dual-certificate theorem is the full Farkas alternative | REJECTED wording | Current theorem proves certificate soundness and weak duality only | State narrowly; full alternative is external or future formalization |
+| A nonnegative non-antipodal degree-one row exists iff `0` lies in the tangent convex hull | PROVED | Theorem 1.2; constructive Lean checkpoint and `SphericalFeasibilityAlgebra.lean` | Standard finite-convex core; not standalone novelty |
+| A row positive on every indexed non-antipodal edge exists iff `0` lies in the relative interior of the indexed tangent hull | PROVED | Lemma 1.1 and Theorem 1.2; repeats and redundancies included | State with `relative interior`, never ambient interior |
+| A chosen nonzero tangent dependence determines exactly one positive normal scale and the explicit rate formula | PROVED / Lean-supported | Equations (1.2)–(1.4); `LocalSphericalFeasibility.lean`; `SphericalFeasibilityAlgebra.lean` | Sphere-specific scaling component |
+| Tangent dependence and row uniqueness are characterized by affine independence in the minimal face containing zero | PROVED | Theorem 1.4 | Include indexed repetitions/redundancies explicitly |
+| Antipodal-only and mixed antipodal rows admit the division-free budget classification | PROVED / Lean-supported | Theorem 2.1 and Corollary 2.2; antipodal scalar lemmas in `SphericalFeasibilityAlgebra.lean` | Never assign an antipodal tangent direction or divide by `sin(theta)` |
+| The relative cone margin has the support-function dual formula and yields `lambda_j >= rho/[m(1+rho)]` | PROVED | Section 3 and Lemma 3.1 | Quantitative local contribution |
+| The angular window gives explicit inverse-quadratic outgoing and coefficient bounds | PROVED / Lean-supported | Equations (3.7)–(3.12); `QuantitativeSphericalFeasibility.lean` formalizes the loss-window inequalities | Distinguish loss-only outgoing bounds from margin-dependent coefficient lower bounds |
+| The local balance matrix has the explicit conditioning bound (3.17) | PROVED | Section 3.3 | State relative-span/full-rank hypotheses |
+| Strict local feasibility persists under the explicit perturbation radius (3.21), with objective degradation (3.25) | PROVED | Section 3.4 | Arbitrary ambient perturbations are restricted to full 2-D span; lower-dimensional robustness is span-preserving only |
+| Global reversible feasibility is exactly `b` membership in the shared-edge cone and has the compact-polytope characterization after zero columns are removed | PROVED | Theorem 4.1 | Include coincident-node exception |
+| Weighted centering is necessary for any reversible degree-one-exact solution | PROVED / Lean-supported | `ReversibleConductance.lean`, `CompleteGraph.lean`, Theorem 4.2 | Necessary globally; not sufficient on a sparse graph |
+| The full shared-edge Farkas alternative, strong LP duality, and complementary slackness hold with the AFP signs and edge blocks | PROVED using standard external finite-dimensional theorems; spherical consequences Lean-supported | Sections 4.3–4.5; `DualCertificate.lean`; `GlobalSharedEdgeDuality.lean` | Do not claim the general Farkas or LP theorem as new |
+| Strict all-edge global feasibility is equivalent to `b in ri(cone{z_e})` | PROVED | Theorem 4.4 | Global analogue of positive indexed coefficients |
+| Local row feasibility implies global reversible shared-edge feasibility | REJECTED | Weighted-centered cube counterexample with exact Farkas certificate, Section 5.4 | Never use an unproved compatibility lemma |
+| Weighted centering alone is sufficient on an arbitrary sparse permitted graph | REJECTED | Same cube counterexample | Complete graph and additional gluing hypotheses are required |
+| A centered-clique submass decomposition reconciles local centered blocks into a sparse global shared-edge solution | PROVED | Theorem 4.5 | Nontrivial constructive sufficient mechanism |
 | Constant-stopping layered final energy is order independent | PROVED for that model only | Additive energy decrement | Manufactured benchmark, not a general material theorem |
 | Layered final energy is generally order independent | REJECTED | Nonproportional stopping flows need not commute | Replace by flow-commutator theory |
 | No finite positive graph can satisfy positive Bakry–Émery curvature or `CD(1,2)` | REJECTED | Positive-curvature finite graphs are known | Study only AFP-specific curvature defects |
@@ -30,6 +43,8 @@ Statuses are deliberately conservative.
 
 1. Never use gate counts, Lean job counts, or CI hashes as evidence of novelty.
 2. Separate `PROVED`, `EXTERNAL`, `COMPUTATIONAL`, and `CONJECTURE` in every draft.
-3. State graph class, positivity, reversibility, embedding, and connectivity assumptions explicitly.
-4. A finite audit is not an all-orders theorem.
-5. A standard identity can support a new theorem but cannot be sold as the central contribution.
+3. State graph class, positivity, reversibility, embedding, masses, connectivity, and relative-span hypotheses explicitly.
+4. Never hide antipodes inside a formula containing division by `sin(theta)`.
+5. A finite audit is not an all-orders theorem.
+6. A standard convex-hull, Farkas, or LP theorem can support the spherical package but is not itself the publication contribution.
+7. Local positive rows, weighted centering, and global shared-edge compatibility are three distinct logical levels.
