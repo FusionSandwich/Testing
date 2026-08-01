@@ -1,0 +1,211 @@
+name: AFP Lean Gate 6
+
+on:
+  pull_request:
+    branches:
+      - testing
+    paths:
+      - 'afp_barrier_gate1/AFPBarrier/**'
+      - 'afp_barrier_gate1/AFPBarrier.lean'
+      - 'afp_barrier_gate1/README.md'
+      - 'afp_barrier_gate1/HANDOFF.md'
+      - 'afp_barrier_gate1/GATE6.md'
+      - 'afp_barrier_gate1/gate6/**'
+      - 'afp_barrier_gate1/gate4/icosphere_spherical_laplacian_audit.py'
+      - 'afp_barrier_gate1/lakefile.lean'
+      - 'afp_barrier_gate1/lean-toolchain'
+      - 'afp_barrier_gate1/lake-manifest.json'
+      - '.github/workflows/afp-barrier-gate6.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  transport:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    defaults:
+      run:
+        working-directory: afp_barrier_gate1
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up deterministic Python runtime
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install deterministic numerical dependency
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check --no-input 'numpy==2.3.2' \
+            2>&1 | tee gate6-python-dependencies.log
+
+      - name: Python syntax and import audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m compileall -q gate6 2>&1 | tee gate6-python-compile.log
+
+      - name: Gate 6 implementation unit tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s gate6/tests -p 'test_*.py' -v \
+            2>&1 | tee gate6-unit-tests.log
+
+      - name: Angular-diffusion transport audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python gate6/angular_diffusion_transport_audit.py \
+            --max-level 3 --time 0.1 --output-dir gate6/generated \
+            2>&1 | tee gate6-angular-diffusion-audit.log
+
+      - name: Forward-peaked heat-scattering audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python gate6/forward_peaked_heat_scattering_audit.py \
+            --max-level 3 --time 0.1 \
+            --tau 0.02 0.005 0.001 0.0002 \
+            --output-dir gate6/generated \
+            2>&1 | tee gate6-forward-peaked-audit.log
+
+      - name: Layered charged-particle energy-loss audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python gate6/layered_charged_particle_audit.py \
+            --max-level 3 --initial-energy 5.0 \
+            --output-dir gate6/generated \
+            2>&1 | tee gate6-layered-charged-particle-audit.log
+
+      - name: Install Elan and pinned Lean toolchain
+        working-directory: .
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
+            | sh -s -- -y --default-toolchain "$(cat afp_barrier_gate1/lean-toolchain)"
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+
+      - name: Record toolchain versions
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "commit=${GITHUB_SHA}"
+            python --version
+            python -c 'import numpy; print("numpy", numpy.__version__)'
+            lean --version
+            lake --version
+          } | tee gate6-toolchain.log
+
+      - name: Resolve pinned dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake update 2>&1 | tee gate6-lake-update.log
+
+      - name: Download Mathlib compiled cache
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake exe cache get 2>&1 | tee gate6-mathlib-cache.log
+
+      - name: Lean kernel build
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake build 2>&1 | tee gate6-lean-build.log
+
+      - name: Axiom audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake env lean AFPBarrier/AxiomAudit.lean 2>&1 | tee gate6-axiom-audit.log
+          lake env lean AFPBarrier/Gate6AxiomAudit.lean 2>&1 | tee gate6-transport-axiom-audit.log
+          if grep -q 'sorryAx' gate6-axiom-audit.log gate6-transport-axiom-audit.log; then
+            echo "A theorem depends on Lean's sorry axiom." >&2
+            exit 1
+          fi
+
+      - name: Source placeholder audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -RInE --include='*.lean' '(^|[^[:alnum:]_])(sorry|admit)([^[:alnum:]_]|$)' AFPBarrier AFPBarrier.lean; then
+            echo "Proof placeholder found." >&2
+            exit 1
+          fi
+          if grep -RInE --include='*.lean' '^[[:space:]]*axiom([[:space:]]|$)' AFPBarrier AFPBarrier.lean; then
+            echo "User axiom declaration found." >&2
+            exit 1
+          fi
+          echo "No proof placeholders or user axiom declarations found." | tee gate6-source-audit.log
+
+      - name: Write Gate 6 report
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "AFP Barrier Gate 6 angular-transport validation"
+            echo "commit=${GITHUB_SHA}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "run_attempt=${GITHUB_RUN_ATTEMPT}"
+            echo "toolchain=$(cat lean-toolchain)"
+            echo "timestamp_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } > gate6-report.txt
+
+      - name: Pack exact source snapshot
+        if: always()
+        working-directory: .
+        shell: bash
+        run: |
+          set -euo pipefail
+          tar \
+            --exclude='afp_barrier_gate1/.lake' \
+            --exclude='afp_barrier_gate1/*.log' \
+            --exclude='afp_barrier_gate1/gate6-report.txt' \
+            -czf afp-barrier-gate6-source-${GITHUB_SHA}.tar.gz \
+            afp_barrier_gate1 \
+            .github/workflows/afp-barrier-gate6.yml
+
+      - name: Upload Gate 6 records
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: afp-lean-gate6-${{ github.run_id }}
+          path: |
+            afp_barrier_gate1/gate6-report.txt
+            afp_barrier_gate1/gate6-toolchain.log
+            afp_barrier_gate1/gate6-python-dependencies.log
+            afp_barrier_gate1/gate6-python-compile.log
+            afp_barrier_gate1/gate6-unit-tests.log
+            afp_barrier_gate1/gate6-angular-diffusion-audit.log
+            afp_barrier_gate1/gate6-forward-peaked-audit.log
+            afp_barrier_gate1/gate6-layered-charged-particle-audit.log
+            afp_barrier_gate1/gate6/generated/angular_diffusion_transport_audit.md
+            afp_barrier_gate1/gate6/generated/angular_diffusion_transport_audit.csv
+            afp_barrier_gate1/gate6/generated/forward_peaked_heat_scattering_audit.md
+            afp_barrier_gate1/gate6/generated/forward_peaked_heat_scattering_audit.csv
+            afp_barrier_gate1/gate6/generated/layered_charged_particle_audit.md
+            afp_barrier_gate1/gate6/generated/layered_charged_particle_audit.csv
+            afp_barrier_gate1/gate6-lake-update.log
+            afp_barrier_gate1/gate6-mathlib-cache.log
+            afp_barrier_gate1/gate6-lean-build.log
+            afp_barrier_gate1/gate6-axiom-audit.log
+            afp_barrier_gate1/gate6-transport-axiom-audit.log
+            afp_barrier_gate1/gate6-source-audit.log
+            afp_barrier_gate1/lake-manifest.json
+            afp-barrier-gate6-source-*.tar.gz
+          if-no-files-found: warn
