@@ -81,7 +81,14 @@ jobs:
             source "$HOME/.cargo/env"
           fi
 
-          git clone --depth 1 https://github.com/leanprover/lean4export.git _lean4export
+          # nanoda documents this format2024 exporter as its expected format.
+          # Pin the exact exporter commit for reproducible kernel validation.
+          git init _lean4export
+          git -C _lean4export remote add origin \
+            https://github.com/ammkrn/lean4export.git
+          git -C _lean4export fetch --depth 1 origin \
+            66be65dab1fcaabddde91a76e82e63beab180846
+          git -C _lean4export checkout --detach FETCH_HEAD
           cp lean-toolchain _lean4export/
           (
             cd _lean4export
