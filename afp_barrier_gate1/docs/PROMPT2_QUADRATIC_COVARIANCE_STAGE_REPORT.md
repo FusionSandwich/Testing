@@ -174,7 +174,14 @@ and
 -192,
 ```
 
-respectively.
+respectively. The exact audit also verifies zero first moments and
+
+```text
+sum_i Phi_i Phi_i^T = |I| I/3
+```
+
+for all five embeddings, so the shifted trace-free constant case is checked
+without numerical design recognition.
 
 ### 2.6 Signed restoration
 
@@ -249,7 +256,7 @@ under all future design or association-scheme hypotheses.
 | Bounded resonance enumeration | Retained as falsification only |
 | Arithmetic resonance as a hierarchy | Rejected; resonance alone gives no sampled component or dimension theorem |
 | Immediate full representation formalization in Lean | Deferred to avoid replacing a transparent finite proof by a large library project |
-| Narrow finite Lean core | Adopted for covariance algebra, target residual, projection, and row-scaling consequences |
+| Narrow finite Lean core | Adopted for covariance algebra, target residual, projection, restricted-map rank-nullity, and row-scaling consequences |
 
 ## 4. Adversarial audit
 
@@ -323,14 +330,14 @@ Lean formalizes:
 - finite matrix trace and contraction;
 - invariance of trace-free contraction under scalar-diagonal subtraction;
 - the trace-free projection consequence;
+- rank-nullity for the sampling map restricted to an exact-form subspace;
 - equivalence of zero constraints and zero samples under nonzero row scaling;
   and
 - the scalar coefficient forced by axial trace balance.
 
-The general finite-dimensional restriction-rank theorem, semigroup/Jensen
-equality theorem, and abstract real representation theory remain precisely
-stated ordinary inputs. No `sorry`, `admit`, `sorryAx`, or user-declared axioms
-are permitted.
+The semigroup/Jensen equality theorem and abstract real representation theory
+remain precisely stated ordinary inputs. No `sorry`, `admit`, `sorryAx`, or
+user-declared axioms are permitted.
 
 ## 8. Acceptance rule
 
@@ -340,8 +347,8 @@ Prompt 2 is accepted only after the exact implementation head passes:
 2. source rejection of proof placeholders and user axioms;
 3. the full Lean 4.30 / Mathlib 4.30 build;
 4. the focused axiom audit; and
-5. independent kernel checking of the Prompt 2 Lean declarations where the
-   checker/exporter stack supports the selected environment.
+5. independent nanoda kernel checking of all selected Prompt 2 Lean
+   declarations.
 
 Concrete workflow, job, accepted-head, merge, and post-integration identifiers
 are recorded in the pull request and final provenance record rather than
