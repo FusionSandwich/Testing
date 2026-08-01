@@ -1,0 +1,1 @@
+The immutable verified transport source commit is `515f1aae6c20bd85711c90b5c1c21b4905252d01`. Documentation-only commits after that point do not alter the verified implementation. A dedicated archive branch is created from the immutable commit before pure-mathematics development begins.
