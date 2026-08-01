@@ -40,7 +40,7 @@ theorem normalizedAngularScale_pos
     0 < normalizedAngularScale beta halfTan := by
   have hex : ∃ j, 0 < beta j := by
     by_contra h
-    push_neg at h
+    push Not at h
     have hzero : ∀ j, beta j = 0 := by
       intro j
       exact le_antisymm (h j) (hbeta j)
@@ -142,7 +142,7 @@ theorem tangentMass_pos_of_normal_balance
     0 < tangentMass a sinTheta := by
   have hex : ∃ j, 0 < a j := by
     by_contra h
-    push_neg at h
+    push Not at h
     have hzero : ∀ j, a j = 0 := by
       intro j
       exact le_antisymm (h j) (ha j)
@@ -173,13 +173,24 @@ theorem normalizedTangentWeight_sum
     (a sinTheta : ι → ℝ)
     (hmass : tangentMass a sinTheta ≠ 0) :
     Finset.univ.sum (normalizedTangentWeight a sinTheta) = 1 := by
-  unfold normalizedTangentWeight tangentMass
-  rw [Finset.sum_div]
-  exact div_self hmass
+  unfold normalizedTangentWeight
+  calc
+    Finset.univ.sum
+        (fun j => a j * sinTheta j / tangentMass a sinTheta) =
+        Finset.univ.sum
+          (fun j => (a j * sinTheta j) * (tangentMass a sinTheta)⁻¹) := by
+            apply Finset.sum_congr rfl
+            intro j hj
+            rw [div_eq_mul_inv]
+    _ = (Finset.univ.sum (fun j => a j * sinTheta j)) *
+          (tangentMass a sinTheta)⁻¹ := by
+            rw [Finset.sum_mul]
+    _ = (Finset.univ.sum (fun j => a j * sinTheta j)) /
+          tangentMass a sinTheta := by rw [div_eq_mul_inv]
+    _ = 1 := div_self hmass
 
 theorem normalizedTangentWeight_balance
     (a sinTheta : ι → ℝ) (u : ι → κ → ℝ)
-    (hmass : tangentMass a sinTheta ≠ 0)
     (htangent : ∀ k,
       Finset.univ.sum (fun j => a j * sinTheta j * u j k) = 0) :
     ∀ k,
@@ -192,15 +203,14 @@ theorem normalizedTangentWeight_balance
         (fun j => a j * sinTheta j / tangentMass a sinTheta * u j k) =
         (Finset.univ.sum (fun j => a j * sinTheta j * u j k)) /
           tangentMass a sinTheta := by
-            rw [Finset.sum_div]
+            rw [div_eq_mul_inv, Finset.sum_mul]
             apply Finset.sum_congr rfl
             intro j hj
             ring
-    _ = 0 := by rw [htangent k]; simp [hmass]
+    _ = 0 := by rw [htangent k]; simp
 
 theorem normalizedAngularScale_normalizedTangentWeight
     (a sinTheta halfTan : ι → ℝ)
-    (hmass : tangentMass a sinTheta ≠ 0)
     (hnormal : Finset.univ.sum
       (fun j => a j * (sinTheta j * halfTan j)) = 2) :
     normalizedAngularScale
@@ -213,7 +223,7 @@ theorem normalizedAngularScale_normalizedTangentWeight
         (Finset.univ.sum
           (fun j => a j * (sinTheta j * halfTan j))) /
             tangentMass a sinTheta := by
-              rw [Finset.sum_div]
+              rw [div_eq_mul_inv, Finset.sum_mul]
               apply Finset.sum_congr rfl
               intro j hj
               ring
@@ -231,7 +241,7 @@ theorem exactLocalRowRate_recover
   intro j
   unfold exactLocalRowRate scaledSphericalRowRate
   rw [normalizedAngularScale_normalizedTangentWeight
-    a sinTheta halfTan hmass hnormal]
+    a sinTheta halfTan hnormal]
   unfold normalizedTangentWeight
   field_simp [ne_of_gt (hsin j), hmass]
 

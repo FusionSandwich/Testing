@@ -1,7 +1,8 @@
 # AFP pure-math conjecture register
 
 Every conjecture requires a precise hypothesis set, deterministic falsification
-search, literature status, and explicit kill criterion.
+search, literature status, and explicit kill criterion. Resolved entries are
+retained so earlier claim changes remain auditable.
 
 ## C-M1. Strict local spherical feasibility — resolved
 
@@ -13,8 +14,9 @@ normal-loss equation fixes one positive scale.
 
 **Status:** PROVED, including repetitions, redundant points, lower-dimensional
 span, exact scaling/rate/uniqueness, antipodes, quantitative margins, and
-fixed-span perturbation stability.  See
-`pure_math/EXACT_LOCAL_GLOBAL_THEOREM_PACKAGE.md`.
+explicitly identified-span perturbation stability. See
+`pure_math/EXACT_LOCAL_GLOBAL_THEOREM_PACKAGE.md` and the independent
+`SPHERICAL_FEASIBILITY_SHARED_EDGE_THEOREM.md` development.
 
 **Resolved deliverables:**
 
@@ -26,13 +28,19 @@ fixed-span perturbation stability.  See
 
 **Regression warnings:** lower-dimensional perturbations require a fixed or
 explicitly identified intrinsic span; uniqueness means existence and uniqueness.
+Exact repeated-direction and boundary-crossing regressions are retained in both
+`pure_math/examples/exact_local_global_audit.py` and
+`pure_math/tests/test_spherical_feasibility.py`.
 
 ## C-M1G. Global local-to-shared compatibility — resolved negatively and conditionally
 
-The unrestricted implication is REJECTED by the centered unequal-mass
-equatorial four-cycle with an exact Farkas certificate.  Complete-graph
-sufficiency and equivariant orbit averaging are PROVED reconciliation results.
-Further sparse classifications must survive this regression example.
+The unrestricted implication is REJECTED by two independent exact examples:
+the centered unequal-mass equatorial four-cycle, and the weighted-centered
+cube with a heavy antipodal pair. The cube certificate
+`y_x=(x_2,x_3,x_1)/sqrt(3)` has zero edge work and `b dot y=-4`.
+Complete-graph sufficiency, equivariant orbit averaging, and centered-clique
+submass decomposition are PROVED reconciliation results. Further sparse
+classifications must survive both regression examples.
 
 ## C-M2. Global equality propagation
 
@@ -119,6 +127,8 @@ without a dimension tradeoff or new global consequence.
 
 ## Rejected conjectures retained as regression warnings
 
+- local row feasibility plus weighted centering implies sparse shared-edge
+  feasibility;
 - unrestricted `Q=1` classification by `K in {4,6,12}`;
 - global `Q>1` for every finite spherical graph;
 - blanket finite-graph Bakry–Émery curvature collapse;

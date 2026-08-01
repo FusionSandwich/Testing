@@ -1,22 +1,23 @@
-# Pure-math prior-art map — initial, not submission complete
+# Pure-math prior-art map — P0/M1 update
 
-The main publication risk is that an AFP statement may already exist under a
-different vocabulary.  This map records the adjacent fields that must be
-searched before a priority claim is made.
+The main publication risk is that an AFP statement already exists under a
+different vocabulary. This map separates standard inputs from the
+sphere-specific package. It is a working priority audit, not a claim of an
+exhaustive MathSciNet or zbMATH search.
 
 ## 1. Markov generators and carré-du-champ calculus
 
-Known background includes the product identity
+Known background includes
 
 ```text
 Gamma(f,g) = 1/2 [L(fg) - f Lg - g Lf]
 ```
 
-and Jensen positivity for Markov semigroups.  Therefore the square identity,
-weighted Cauchy–Schwarz inequality, and variance remainder are not treated as
-central novelty.
+and Jensen positivity for Markov semigroups. Therefore the square identity,
+weighted Cauchy–Schwarz inequality, and variance remainder are foundational,
+not central novelty.
 
-Search targets:
+Remaining search targets:
 
 - finite-state Markov generators with prescribed eigenfunctions;
 - equality cases in Jensen or carré-du-champ identities;
@@ -26,62 +27,108 @@ Search targets:
 
 ## 2. Positive and minimal stencils
 
-Core comparator:
+### Principal comparator
 
-- Benjamin Seibold, *Minimal positive stencils in meshfree finite difference
-  methods for the Poisson equation*.
+Benjamin Seibold, *Minimal positive stencils in meshfree finite difference
+methods for the Poisson equation*, Computer Methods in Applied Mechanics and
+Engineering 198 (2008), 592–601, DOI `10.1016/j.cma.2008.09.001`, arXiv
+`0802.2674`.
 
-Search targets:
+Seibold explicitly uses a finite Farkas alternative and geometric half-space /
+cone criteria for local positive Poisson stencils. Consequently, the following
+items are standard or close to standard and cannot be sold as the AFP result:
 
-- geometric conditions for positive stencil existence;
-- strict positivity and convex-hull interiors;
-- coefficient bounds from cone margins;
-- perturbation stability;
-- M-matrix consistency and order barriers.
+- local nonnegative consistency as a finite conic-feasibility problem;
+- separation certificates for local infeasibility;
+- geometric surrounding conditions for positive stencils;
+- sparse/minimal positive selections from a larger candidate set.
 
-The AFP contribution must add spherical tangent/normal decomposition, exact
-coordinate eigenmaps, positive quadrature masses, and shared-edge
-reversibility.  A rowwise restatement of Euclidean stencil theory is
-insufficient.
+The P0/M1 theorem proves the exact indexed convex-hull and relative-interior
+statements directly, including repeated and redundant directions, but that
+finite-convex lemma is supporting mathematics rather than the standalone
+publication contribution.
 
-## 3. Discrete spherical Laplacians and eigenmaps
+### Added spherical structure not supplied by a Euclidean rowwise restatement
 
-Core comparator:
+The completed theorem package adds all of the following simultaneously:
 
-- Ivan Izmestiev and Wai Yeung Lam, *Discrete Laplacians — Spherical and
-  Hyperbolic*.
+1. the exact decomposition
+   `Omega_j = cos(theta_j) Omega_i + sin(theta_j) u_j`;
+2. the fixed degree-one eigenvalue `-2` and the separate normal budget;
+3. the angular renormalization
+   `(1-cos(theta_j))/sin(theta_j) = tan(theta_j/2)`;
+4. proof that a chosen tangent dependence has exactly one positive normal
+   scale;
+5. a complete division-free antipodal classification;
+6. a relative cone margin with explicit minimum-coefficient, rate,
+   conditioning, perturbation, and objective constants;
+7. positive quadrature masses and one shared conductance per undirected edge;
+8. the global cone, Farkas, LP, and complementary-slackness geometry;
+9. a weighted-centered example that is locally strictly feasible but globally
+   incompatible; and
+10. a centered-clique mechanism that reconciles local blocks globally.
 
-Search targets:
+The publication argument must use this package, not the phrase “positive span.”
 
-- exact `-2` coordinate modes;
-- convex-polyhedral and infinitesimal-rigidity interpretations;
-- spherical Delaunay positivity;
-- eigenmap rigidity;
-- equal-edge spherical frameworks;
-- quadratic products of coordinate eigenfunctions.
+## 3. Finite convex geometry, oriented matroids, and LP duality
 
-The current quadratic covariance characterization must be compared directly
-with this literature.
+The following inputs are standard finite-dimensional results:
+
+- convex-hull membership and barycentric coordinates;
+- positive indexed barycentric coordinates and relative interior;
+- minimal faces and affine-dependence descriptions of nonuniqueness;
+- conic relative interior;
+- Farkas alternatives;
+- strong linear-programming duality and complementary slackness;
+- singular-value and pseudoinverse perturbation estimates.
 
 The shared-edge matrix is, up to sign, the transpose of a Euclidean
-bar-framework rigidity matrix.  Its left kernel contains translations and
+bar-framework rigidity matrix. Its left kernel contains translations and
 rotations, so global perturbation bounds use a rigidity singular-value margin
 and explicit compatibility rather than a false full-row-rank assumption.
 
-## 4. Graph curvature
+For P0/M1, the barycentric and relative-interior equivalences are proved
+explicitly rather than hidden behind a generic citation. The full Farkas and
+strong-duality theorems are cited as standard external results, but the actual
+AFP matrix, signs, edge blocks, objective coefficients, residual variables,
+and every complementary-slackness condition are derived in
+`SPHERICAL_FEASIBILITY_SHARED_EDGE_THEOREM.md`.
 
-Core comparators include work on Bakry–Émery curvature matrices and curvature
-functions of graphs.
+Oriented-matroid/circuit language is useful for minimal support and uniqueness,
+but it does not remove the spherical normal equation or solve shared-edge
+global compatibility. No novelty claim is made for general circuit theory.
 
-Search targets:
+## 4. Discrete spherical Laplacians and eigenmaps
 
-- `Gamma_2` on eigenfunction subspaces;
-- curvature equality and rigidity;
-- positive-curvature finite graphs;
-- spectral-gap equality cases;
-- curvature of embedded or distance-regular graphs.
+### Principal comparator
 
-No blanket curvature-collapse conjecture is permitted.
+Ivan Izmestiev and Wai Yeung Lam, *Discrete Laplacians — Spherical and
+Hyperbolic*, Journal of the London Mathematical Society 112 (2025), article
+e70235, DOI `10.1112/jlms.70235`, arXiv `2408.04877`.
+
+This is a direct comparator because it develops nonnegative spherical and
+hyperbolic discrete Laplacians on triangulated surfaces, relates positivity to
+Delaunay structure, and proves `-2k` eigenfunction statements for discrete
+conformal factors. It also connects the eigenfunctions with infinitesimal
+polyhedral deformations.
+
+The AFP package must therefore avoid broad claims such as “the first positive
+spherical Laplacian with an exact `-2` mode.” The defensible distinction is the
+specific arbitrary-node, arbitrary-permitted-graph feasibility theory with
+positive masses, exact coordinate-vector balance, antipodal handling,
+quantitative cone margins, shared-edge conductances, sparse global
+compatibility, and LP dual geometry.
+
+Remaining direct-comparison work before submission:
+
+- compare the AFP edge column with the spherical cotangent/Delaunay weights;
+- identify whether their infinitesimal deformation dual can be mapped to the
+  AFP edge-strain certificate;
+- determine overlap between centered-clique decompositions and polyhedral
+  stress decompositions;
+- compare strict positivity hypotheses and degeneracies at antipodes;
+- review citation chains on spherical stresses and Colin-de-Verdière-type
+  eigenmaps.
 
 ## 5. Spherical designs, distance-regular graphs, and association schemes
 
@@ -95,13 +142,23 @@ Search targets:
 - harmonic-index designs;
 - products of low-degree spherical harmonics on finite point sets.
 
-This area is particularly relevant to global `Q=1` examples and attainable
-quadratic exactness.
+This area supplies exact examples and is central to later `Q=1` and quadratic
+exactness work. It also provides adversarial examples: cube and dodecahedron
+embeddings invalidate unrestricted Platonic-only classifications.
 
-## 6. Graph-Laplacian and manifold convergence
+## 6. Graph curvature
 
-Core comparators include spectral convergence of graph Laplacians to
-Laplace–Beltrami operators and meshfree maximum-principle convergence.
+Search targets:
+
+- `Gamma_2` on eigenfunction subspaces;
+- curvature equality and rigidity;
+- positive-curvature finite graphs;
+- spectral-gap equality cases;
+- curvature of embedded or distance-regular graphs.
+
+No blanket finite-graph curvature-collapse conjecture is permitted.
+
+## 7. Graph-Laplacian and manifold convergence
 
 Search targets:
 
@@ -109,10 +166,12 @@ Search targets:
 - deterministic quasi-uniform point sets;
 - tangent-moment consistency;
 - spectral and semigroup convergence;
-- monotonicity versus order.
+- monotonicity versus order;
+- conditioning and perturbation estimates for positive stencils.
 
-These topics primarily support the numerical-analysis paper, but may contain
-pure-math rigidity or impossibility results.
+These topics primarily support the numerical-analysis track. The P0/M1
+inverse-quadratic rate bounds are exact finite inequalities, not a continuum
+convergence theorem.
 
 ## 7. Convex and linear-programming duality inputs
 
@@ -127,18 +186,22 @@ antipodal budget split, angle-explicit constants, shared-edge sign convention,
 geometric interpretations of every dual block, and exact obstruction and
 reconciliation results.
 
-## 8. Current priority conclusion
+## 8. P0/M1 priority conclusion
 
-As of this initial map:
+Current defensible conclusions are:
 
 - the local square and variance identities are standard;
-- positive stencil feasibility has substantial prior art;
-- positive spherical Laplacians with exact coordinate modes have prior art;
-- the spherical rescaling/antipodal and local-versus-shared packages are proved,
-  but priority claims remain restricted pending specialist review;
-- no priority claim is made yet for the quadratic covariance dimension formula,
-  global equal-loss rigidity, or a spectral-product hierarchy.
+- the local convex-hull/Farkas core has substantial prior art;
+- the relative-interior use is standard convex geometry, though the indexed
+  repeated/redundant proof is now complete;
+- positive spherical Laplacians and exact low eigenmodes have direct prior art;
+- the sphere-specific tangent/normal scale, division-free antipodal theorem,
+  explicit quantitative margin, positive masses, shared-edge cone duality,
+  weighted-centered incompatibility example, and centered-clique gluing form
+  the potentially publishable combined contribution;
+- no priority claim is made yet for the quadratic covariance dimension theorem,
+  global equal-loss rigidity, or spectral-product hierarchy.
 
-Before submission, the search must include MathSciNet, zbMATH, citation chains,
-and direct review by specialists in finite Markov generators, discrete
-geometry, and spherical designs.
+Before submission, complete MathSciNet/zbMATH and citation-chain review and seek
+direct specialist review in positive stencils, discrete spherical geometry,
+finite convexity, and reversible Markov generators.

@@ -29,7 +29,7 @@ For \(k\in A\), the tangent component is zero and the normal loss is exactly
 two. No tangent direction, angle denominator, or value of \(\sin\pi\) is ever
 assigned to an antipodal index.
 
-Let
+For the non-antipodal constructions below, assume \(J\ne\varnothing\), and let
 
 \[
  P=\operatorname{conv}\{u_j:j\in J\},\qquad
@@ -65,15 +65,16 @@ and \(\beta_*=0\) when \(\mathcal B=\varnothing\); otherwise
 \]
 
 Here \(B_U\) is the closed Euclidean unit ball of \(U\). These conventions
-make the equivalences below meaningful for \(J=\varnothing\) and for
-\(0\notin P\). “The row is unique” and “\(\mathcal B\) is a singleton” mean
+make the equivalences below meaningful when \(0\notin P\). The case
+\(J=\varnothing\) is reserved for the pure-antipodal statement in Theorem
+2.1. “The row is unique” and “\(\mathcal B\) is a singleton” mean
 existence and uniqueness, not merely subsingletonness of a possibly empty set.
 
 ---
 
 ## 1. Exact non-antipodal local theorem
 
-Assume \(A=\varnothing\). A row is feasible precisely when
+Assume \(J\ne\varnothing\) and \(A=\varnothing\). A row is feasible precisely when
 
 \[
  a_j\ge0,\qquad
@@ -196,8 +197,7 @@ exactly one point.
 #### Proof
 
 Equation (1.6) is the sum of (1.5). The uniqueness statement follows from the
-bijection in Theorem 1.2, including the empty case under the existence-and-
-uniqueness convention. \(\square\)
+bijection in Theorem 1.2. \(\square\)
 
 ---
 
@@ -243,6 +243,8 @@ every strict-support index. Therefore no row can be positive on all
 non-antipodal edges. \(\square\)
 
 ### Theorem 2.2 — exact mixed parameterization
+
+Assume \(J\ne\varnothing\) and \(A\ne\varnothing\).
 
 Define the nonnegative tangent cone and its normal expenditure by
 
@@ -291,7 +293,8 @@ quantity by \(\sin\pi\). \(\square\)
 
 ## 3. Quantitative strict feasibility and stability
 
-In this section every \(u_j\) is unit length and \(m=|J|\).
+In this section \(J\ne\varnothing\), every \(u_j\) is unit length, and
+\(m=|J|\ge1\).
 
 ### Theorem 3.1 — equivalence of margins and constructive coefficients
 
@@ -342,7 +345,7 @@ belongs to \(P\). Choose \(\lambda\ge0\), \(\sum_j\lambda_j=1\), with
 \]
 
 The two terms in the tangent sum cancel, so \(\beta\in\mathcal B\), and
-\(\beta_j\ge\tau/m\), proving (3.3). Since
+\(\beta_j\ge\tau/m\), proving (3.3). Here \(m\ge1\) and \(\rho>0\); since
 \(\|\bar u\|\le m^{-1}\sum_j\|u_j\|=1\), (3.2) follows. Thus \(\rho>0\)
 implies \(\beta_*>0\). Conversely, the independently proved
 supporting-hyperplane argument in Theorem 1.1 shows that an all-positive
@@ -350,16 +353,13 @@ dependence places zero in the relative interior. \(\square\)
 
 ### Theorem 3.2 — exact dual/LP formulas
 
-For \(J\ne\varnothing\),
-
 \[
  \rho=\max\left\{0,
  \min_{\substack{q\in U\\\|q\|=1}}
  \max_{j\in J}q\cdot u_j\right\}. \tag{3.5}
 \]
 
-When \(0\in P\), the outer maximum with zero is unnecessary. For
-\(J=\varnothing\), \(\rho=0\) by convention.
+When \(0\in P\), the outer maximum with zero is unnecessary.
 
 When \(\mathcal B\ne\varnothing\), \(\beta_*\) is the attained optimum of
 
@@ -480,21 +480,33 @@ above gives the sharper upper constant \(\pi^2/[2L^2]\), hence the stated
 
 ### Theorem 3.4 — support-function and angular perturbations
 
-Let \(P,P'\) be convex hulls in the same Euclidean space \(U\), or identify
-their spans by a specified isometry before comparing them. If
+Let \(U'=\operatorname{span}\{u'_j:j\in J\}\), let
+\(Q:U\to U'\) be a specified linear isometry, and define the transported
+directions and pulled-back hull
 
 \[
- \sup_{\|q\|=1}|h_{P'}(q)-h_P(q)|\le\delta_u<\rho, \tag{3.13}
+ \widetilde u'_j=Q^{-1}u'_j,\qquad
+ \widetilde P'=Q^{-1}(P')=\operatorname{conv}\{\widetilde u'_j:j\in J\}
+ \subseteq U.
+\]
+
+When \(U'=U\), the intended default is \(Q=I\). If
+
+\[
+ \sup_{\substack{q\in U\\\|q\|=1}}
+ |h_{\widetilde P'}(q)-h_P(q)|\le\delta_u<\rho, \tag{3.13}
 \]
 
 then
 
 \[
- (\rho-\delta_u)B_U\subseteq P'. \tag{3.14}
+ (\rho-\delta_u)B_U\subseteq\widetilde P',
+ \qquad
+ (\rho-\delta_u)B_{U'}\subseteq P'. \tag{3.14}
 \]
 
 In particular, indexed pointwise bounds
-\(\max_j\|u'_j-u_j\|\le\delta_u\) imply (3.13). Thus strict feasibility is
+\(\max_j\|\widetilde u'_j-u_j\|\le\delta_u\) imply (3.13). Thus strict feasibility is
 preserved, and one may choose
 
 \[
@@ -523,8 +535,9 @@ Then Theorem 3.3 applies with
 inverse-quadratic rate bounds with completely explicit constants.
 
 For a fixed center \(\Omega_i\), suppose each neighbouring node moves by
-geodesic distance at most \(\zeta\), and retain the same-span or specified
-isometric-span identification used in (3.13). If \(\zeta\le L/2\), then
+geodesic distance at most \(\zeta\), and suppose \(U'=U\) with the identity
+comparison (for example, both spans equal the full fixed tangent plane). If
+\(\zeta\le L/2\), then
 
 \[
  |\theta'_j-\theta_j|\le\zeta,\qquad
@@ -568,13 +581,15 @@ and
 
 #### Proof
 
-For compact convex sets,
-\(d_H(P,P')=\sup_{\|q\|=1}|h_P(q)-h_{P'}(q)|\). Hence
-\(h_{P'}(q)\ge(\rho-\delta_u)\|q\|\). The supporting-halfspace
-representation of \(P'\) proves (3.14). Matching equal convex coefficients
+For compact convex sets in \(U\),
+\(d_H(P,\widetilde P')=\sup_{\|q\|=1}|h_P(q)-h_{\widetilde P'}(q)|\). Hence
+\(h_{\widetilde P'}(q)\ge(\rho-\delta_u)\|q\|\). The supporting-halfspace
+representation of \(\widetilde P'\), followed by applying \(Q\), proves
+(3.14). Matching equal convex coefficients
 in the two indexed hulls proves the pointwise implication. Theorem 3.1 gives
-(3.15), while chord length on the unit sphere gives the direction bound used
-in (3.16).
+(3.15). Since unit directions imply \(P\subseteq B_U\), strict feasibility
+gives \(0<\rho\le1\), so the arcsine in (3.16) is defined; chord length on
+the unit sphere gives the direction bound used there.
 
 For (3.18), write \(u=v/\|v\|\) with
 \(v\) the tangent projection of the neighbour. Tangent projection is
@@ -585,15 +600,20 @@ distance gives the radial-angle bound. Since \(2\sin(\zeta/2)\le\zeta\) and
 \(\sin(L-\zeta)\ge\sin(L/2)\), the second inequality in (3.18) follows.
 Substitution in Theorems 3.1 and 3.3 proves (3.19)--(3.22). \(\square\)
 
-The common-span/isometry hypothesis is necessary in lower dimension. For
+The fixed-span or specified-isometry hypothesis is necessary in lower
+dimension. For
 \(u_1=e_1,u_2=-e_1\), \(\rho=1\) in \(U=\mathbb Re_1\). The arbitrarily
 small perturbation
 \(u'_1=(\cos\varepsilon,\sin\varepsilon)\),
 \(u'_2=(-\cos\varepsilon,\sin\varepsilon)\) has a hull that misses zero in
 the larger ambient plane. Thus “direction motion” must be measured in the
 support-function sense appropriate to a fixed or explicitly identified
-intrinsic span. A moving center similarly requires a stated parallel-
-transport or orthogonal identification of tangent planes.
+intrinsic span. If the span changes, (3.18)--(3.22) remain valid only when a
+specified \(Q\) gives the transported pointwise bound
+\(\max_j\|Q^{-1}u'_j-u_j\|\le2\zeta/\sin(L/2)\); endpoint motion alone does
+not imply that bound for an arbitrary \(Q\). A moving center similarly
+requires parallel transport between tangent planes followed, when necessary,
+by a specified isometry between the transported old span and the new span.
 
 ### Theorem 3.5 — local balance matrix and conditioning
 
@@ -648,9 +668,10 @@ solves \(L'a'=g+\Delta g\) and remains strictly positive if
  {\sigma-\varepsilon_L}<\alpha. \tag{3.29}
 \]
 
-If the antipodal columns are unchanged, the tangent spaces/spans are expressed
-in the same orthonormal coordinates, and
-\(\max_j\|u'_j-u_j\|\le\delta_u\),
+If the antipodal columns are unchanged, identify the old and new tangent
+spans by a specified isometry and express the transported new directions in
+the same orthonormal coordinates as the old ones. If
+\(\max_j\|\widetilde u'_j-u_j\|\le\delta_u\),
 \(\max_j|\theta'_j-\theta_j|\le\delta_\theta\), then
 
 \[
@@ -1157,7 +1178,7 @@ Take orthonormal tangent vectors \(e_1,e_2\).
 
 | Required position/feature | Exact data | Conclusion |
 |---|---|---|
-| empty/outside hull | \(J=\varnothing\), or \(J=(e_1,e_2)\) | no non-antipodal row |
+| outside hull | \(J=(e_1,e_2)\) | no non-antipodal row |
 | boundary | \(u=(e_1,-e_1,e_2)\), all \(\theta=\pi/3\) | \(\mathcal B=\{(1/2,1/2,0)\}\), \(a=(2,2,0)\), \(\rho=\beta_*=0\) |
 | lower-dimensional strict | \(u=(e_1,-e_1)\), \(\theta=\pi/3\) | \(U=\mathbb Re_1\), \(\rho=1\), \(\beta_*=1/2\), \(a=(2,2)\) |
 | full-dimensional strict | three directions at angles \(0,2\pi/3,4\pi/3\), \(\theta=\pi/3\) | \(\rho=1/2\), \(\beta_*=1/3\), \(a_j=4/3\), \(r=4\) |

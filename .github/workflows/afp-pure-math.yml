@@ -78,6 +78,13 @@ jobs:
           python pure_math/examples/exact_local_global_audit.py \
             2>&1 | tee pure-math-local-global-exact.log
 
+      - name: Independent exact rational spherical audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python pure_math/tests/test_spherical_feasibility.py \
+            2>&1 | tee pure-math-spherical-rational.log
+
       - name: Install Elan and pinned Lean toolchain
         working-directory: .
         shell: bash
@@ -132,11 +139,11 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if grep -RInE --include='*.lean' '(^|[^[:alnum:]_])(sorry|admit)([^[:alnum:]_]|$)' AFPBarrier AFPBarrier.lean; then
+          if grep -RInE --include='*.lean' '(^|[^[:alnum:]_])(sorry|admit|sorryAx)([^[:alnum:]_]|$)' AFPBarrier AFPBarrier.lean; then
             echo "Proof placeholder found." >&2
             exit 1
           fi
-          if grep -RInE --include='*.lean' '^[[:space:]]*axiom([[:space:]]|$)' AFPBarrier AFPBarrier.lean; then
+          if grep -RInE --include='*.lean' '^[[:space:]]*(axiom|axioms)([[:space:]]|$)' AFPBarrier AFPBarrier.lean; then
             echo "User axiom declaration found." >&2
             exit 1
           fi
@@ -182,6 +189,7 @@ jobs:
             afp_barrier_gate1/pure-math-falsification.log
             afp_barrier_gate1/pure-math-covariance.log
             afp_barrier_gate1/pure-math-local-global-exact.log
+            afp_barrier_gate1/pure-math-spherical-rational.log
             afp_barrier_gate1/pure-math-toolchain.log
             afp_barrier_gate1/pure-math-lake-update.log
             afp_barrier_gate1/pure-math-mathlib-cache.log

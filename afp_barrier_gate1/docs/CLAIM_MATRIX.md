@@ -1,7 +1,8 @@
 # AFP mathematical claim matrix
 
 This document controls publication wording for the pure-mathematics track.
-Statuses are deliberately conservative.
+Statuses distinguish ordinary proof, Lean verification, external theorem use,
+and computational regression.
 
 | Claim | Status | Current support | Publication treatment |
 |---|---|---|---|
@@ -9,21 +10,27 @@ Statuses are deliberately conservative.
 | `lambda^2 <= rate * peakDefect` | PROVED / standard | Lean modules `Quantitative.lean` and `LossVariance*.lean` | Foundational weighted Cauchy–Schwarz lemma |
 | The gap equals a weighted edge-loss variance | PROVED | Lean module `LossVariance.lean` | Foundational sharpness identity |
 | A finite positive conservative generator cannot reproduce the complete degree-one and complete degree-two spherical eigenspaces exactly | PROVED in the stated AFP formulation | Lean algebraic core plus spherical specialization | Candidate AFP-specific corollary; priority still requires specialist review |
-| A centered positive quadrature admits a dense positive reversible degree-one-exact operator | PROVED | `CompleteGraph.lean` | Supporting construction |
-| Positive spherical Delaunay families attain the natural `h^-2` rate scale | EXTERNAL specialization | Uses published spherical Delaunay Laplacian theory plus project loss bounds | Cite as achievability input, not as an original construction |
+| A centered positive quadrature admits a dense positive reversible degree-one-exact operator | PROVED | `CompleteGraph.lean`; Theorem 4.2 in `SPHERICAL_FEASIBILITY_SHARED_EDGE_THEOREM.md` | Supporting construction |
+| Positive spherical Delaunay families attain the natural `h^-2` rate scale | EXTERNAL specialization | Published spherical Delaunay Laplacian theory plus project loss bounds | Cite as achievability input, not as an original construction |
 | The project’s quasi-uniform family is globally minimax or spectrally optimal | CONJECTURE / unsupported | No global minimax theorem | Do not claim |
 | Only `K in {4,6,12}` can have global `Q=1` | REJECTED | Cube (`K=8`) and dodecahedron (`K=20`) are counterexamples | Never state without new restrictive assumptions |
-| Connected reversible `Q=1` graphs have one common active-edge loss and one common row rate | CONJECTURE with complete proof target | Follows from local equality plus shared-edge propagation; formalization active | Intended first global rigidity lemma |
+| Connected reversible `Q=1` graphs have one common active-edge loss and one common row rate | CONJECTURE with complete proof target | Local equality plus shared-edge propagation; separate M2 work | Not part of the completed P0/M1 package |
 | Only tetrahedral, octahedral, and icosahedral spherical triangulations can satisfy global `Q=1` under strict equal-edge hypotheses | CONJECTURE | Plausible only after explicit triangulation, positivity, and embedding assumptions | Counterexample search before proof |
 | Non-antipodal local feasibility is equivalent to `0` in the indexed tangent hull | PROVED | Exact bijection and proof in the M1 theorem package; finite scaling in Lean | Sphere-specific transfer of standard positive-stencil geometry |
 | Strict positivity on every non-antipodal edge is equivalent to tangent-hull relative interior | PROVED | Supporting separation plus constructive inball proof, including repetitions/lower dimension | M1 theorem with standard convex input identified |
+| Tangent-dependence and row uniqueness are equivalent to the normalized dependence polytope being a singleton | PROVED | Exact dependence/row bijection; equivalent minimal-face affine-independence criterion | Include indexed repetitions and redundancies explicitly |
 | Pure and mixed antipodal feasibility is a separate normal-budget simplex | PROVED | Exact no-division parameterization | Never assign a tangent direction at an antipode |
 | `rho>0`, `beta_*>0`, and strict local feasibility are equivalent, with `beta_j >= rho/[m(1+rho)]` | PROVED | Constructive barycentric proof and exact support/LP formulas | Quantitative M1 result |
 | Local exact rows have explicit inverse-quadratic rate and coefficient bounds under positive quasi-uniform angle constants | PROVED | Theorem 3.3 of the M1 package | State the positivity of `c1` explicitly |
+| The local balance matrix has explicit singular-value, right-inverse, and condition-number bounds | PROVED | Theorem 3.5 with relative-span hypotheses | Never call conditioning controlled without the displayed margin |
+| Strict local feasibility persists under the stated transported-span perturbation bound | PROVED | Theorem 3.4 with an explicit span isometry and angular constants | Endpoint motion alone does not identify changing lower-dimensional spans |
 | Local row feasibility implies global reversible shared-edge feasibility | REJECTED | Centered alternating-mass four-cycle has strict local rows and exact Farkas certificate | Retain as regression obstruction |
 | Weighted centering is sufficient on every permitted graph | REJECTED | Same centered four-cycle obstruction | Sufficient on the complete graph or under reconciliation hypotheses |
 | Centering is necessary on every graph and sufficient on the complete graph via `gamma_ij=2w_iw_j/sum w` | PROVED | Block-sum proof and `CompleteGraph.lean` | Supporting global theorem |
+| Global reversible feasibility is exactly shared-edge cone membership; its spherical feasible set is a compact polytope | PROVED | Theorem 4.1 and the positive edge-loss conductance bounds | Retain the noncoincident permitted-edge hypothesis |
+| Strict all-edge global feasibility is equivalent to relative-interior membership in the shared-edge cone | PROVED | Finite indexed conic relative-interior theorem | Global analogue of positive barycentric coordinates |
 | Equivariant averaging reconciles local rows when averaged edge orientations agree | PROVED | Precise action/embedding/mass hypotheses in Theorem 4.5 | Noncomplete-graph reconciliation theorem |
+| Centered-clique submass decompositions reconcile sparse local blocks | PROVED | Independent Theorem 4.5 in `SPHERICAL_FEASIBILITY_SHARED_EDGE_THEOREM.md` | Additional noncomplete-graph sufficient mechanism |
 | Existing Lean dual-certificate theorem is the full Farkas alternative | REJECTED wording | Lean proves soundness; the proof package separately transfers the full finite alternative and LP strong duality | Preserve formal/prose distinction |
 | Strict shared feasibility is stable under compatible perturbations controlled by an interior and singular-value margin | PROVED under stated compatibility/rigidity hypotheses | Explicit bounds in Theorem 4.6 | Never omit centering/range compatibility |
 | Constant-stopping layered final energy is order independent | PROVED for that model only | Additive energy decrement | Manufactured benchmark, not a general material theorem |
@@ -37,6 +44,8 @@ Statuses are deliberately conservative.
 
 1. Never use gate counts, Lean job counts, or CI hashes as evidence of novelty.
 2. Separate `PROVED`, `EXTERNAL`, `COMPUTATIONAL`, and `CONJECTURE` in every draft.
-3. State graph class, positivity, reversibility, embedding, and connectivity assumptions explicitly.
-4. A finite audit is not an all-orders theorem.
-5. A standard identity can support a new theorem but cannot be sold as the central contribution.
+3. State graph class, positivity, reversibility, embedding, masses, connectivity, and relative-span hypotheses explicitly.
+4. Never hide antipodes inside a formula containing division by `sin(theta)`.
+5. A finite audit is not an all-orders theorem.
+6. A standard convex-hull, Farkas, or LP theorem can support the spherical package but is not itself the publication contribution.
+7. Local positive rows, weighted centering, and global shared-edge compatibility are three distinct logical levels.

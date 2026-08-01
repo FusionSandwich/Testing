@@ -39,18 +39,18 @@ theorem antipodalOnlyFeasible_of_positive_simplex
   refine ⟨(antipodalOnlyFeasible_iff_simplex p).2 ?_, hp⟩
   exact ⟨fun k => le_of_lt (hp k), hpsum⟩
 
-noncomputable def uniformAntipodalRate (k : ν) : ℝ :=
+noncomputable def uniformAntipodalRate (_k : ν) : ℝ :=
   1 / (Fintype.card ν : ℝ)
 
 theorem uniformAntipodalRate_strictly_feasible [Nonempty ν] :
     antipodalOnlyFeasible (uniformAntipodalRate : ν → ℝ) ∧
-      ∀ k, 0 < uniformAntipodalRate k := by
+      ∀ k : ν, 0 < uniformAntipodalRate k := by
   have hcardNat : Fintype.card ν ≠ 0 := Fintype.card_ne_zero
   have hcardReal : (Fintype.card ν : ℝ) ≠ 0 := by
     exact_mod_cast hcardNat
   have hcardPos : (0 : ℝ) < Fintype.card ν := by
     exact_mod_cast Nat.pos_of_ne_zero hcardNat
-  have hpos : ∀ k, 0 < uniformAntipodalRate k := by
+  have hpos : ∀ k : ν, 0 < uniformAntipodalRate k := by
     intro k
     exact div_pos zero_lt_one hcardPos
   apply antipodalOnlyFeasible_of_positive_simplex
@@ -212,6 +212,67 @@ theorem mixedRow_tangentNormalBudget_bounds
   · exact hq
   · linarith
 
+/-- The complete algebraic mixed-row conditions, with antipodal entries kept
+as a separate scalar family. -/
+def mixedRowFeasible
+    (a : ι → ℝ) (z : ν → ℝ) (sinTheta halfTan : ι → ℝ)
+    (u : ι → κ → ℝ) : Prop :=
+  (∀ j, 0 ≤ a j) ∧
+  (∀ k, 0 ≤ z k) ∧
+  (∀ k, Finset.univ.sum
+    (fun j => a j * sinTheta j * u j k) = 0) ∧
+  Finset.univ.sum
+      (fun j => a j * (sinTheta j * halfTan j)) +
+    2 * Finset.univ.sum z = 2
+
+/-- Exact parameter conditions for a mixed row.  The two inequalities record
+the admissible interval for the non-antipodal normal expenditure. -/
+def mixedTangentParameterFeasible
+    (x : ι → ℝ) (z : ν → ℝ) (halfTan : ι → ℝ)
+    (u : ι → κ → ℝ) : Prop :=
+  (∀ j, 0 ≤ x j) ∧
+  (∀ k, 0 ≤ z k) ∧
+  (∀ k, Finset.univ.sum (fun j => x j * u j k) = 0) ∧
+  0 ≤ tangentNormalBudget x halfTan ∧
+  tangentNormalBudget x halfTan ≤ 2 ∧
+  mixedNormalBudgetFeasible x halfTan z
+
+/-- Exact mixed parameterization in both directions.  A physical mixed row is
+feasible exactly when it is recovered coefficientwise from an admissible
+non-antipodal tangent weight, while the antipodal family receives the scalar
+remainder. -/
+theorem mixedRowFeasible_iff_exists_tangentParameter
+    (a : ι → ℝ) (z : ν → ℝ) (sinTheta halfTan : ι → ℝ)
+    (u : ι → κ → ℝ)
+    (hsin : ∀ j, 0 < sinTheta j)
+    (hhalfTan : ∀ j, 0 < halfTan j) :
+    mixedRowFeasible a z sinTheta halfTan u ↔
+      ∃ x,
+        mixedTangentParameterFeasible x z halfTan u ∧
+        ∀ j, rowRateFromTangentWeight x sinTheta j = a j := by
+  constructor
+  · rintro ⟨ha, hz, htangent, hnormal⟩
+    let x := tangentDependenceWeight a sinTheta
+    have hsinNonneg : ∀ j, 0 ≤ sinTheta j := fun j => le_of_lt (hsin j)
+    have hforward := mixedRow_to_tangentBudget
+      a z sinTheta halfTan u ha hz hsinNonneg htangent hnormal
+    have hbounds := mixedRow_tangentNormalBudget_bounds
+      a z sinTheta halfTan ha hz hsinNonneg hhalfTan hnormal
+    refine ⟨x, ?_, ?_⟩
+    · exact ⟨hforward.1, hforward.2.2.2,
+        hforward.2.1, hbounds.1, hbounds.2, hforward.2.2.1⟩
+    · exact rowRateFromTangentDependenceWeight a sinTheta hsin
+  · rintro ⟨x, hx, hrecover⟩
+    rcases hx with ⟨hxnonneg, hz, hxtangent, hqnonneg, hqle, hbudget⟩
+    have hforward := mixedRow_from_tangentBudget
+      x sinTheta halfTan z u hxnonneg hz hsin hxtangent hbudget
+    refine ⟨?_, hz, ?_, ?_⟩
+    · intro j
+      rw [← hrecover j]
+      exact hforward.1 j
+    · simpa only [hrecover] using hforward.2.2.1
+    · simpa only [hrecover] using hforward.2.2.2
+
 theorem mixedNormalBudgetFeasible_iff_remaining
     (x halfTan : ι → ℝ) (z : ν → ℝ) :
     mixedNormalBudgetFeasible x halfTan z ↔
@@ -274,7 +335,7 @@ theorem mixedNormalBudgetFeasible_zero_tangent_uniform
     [Nonempty ν] (halfTan : ι → ℝ) :
     mixedNormalBudgetFeasible (fun _ => 0) halfTan
         (uniformAntipodalRate : ν → ℝ) ∧
-      ∀ k, 0 < uniformAntipodalRate k := by
+      ∀ k : ν, 0 < uniformAntipodalRate k := by
   have hu := (uniformAntipodalRate_strictly_feasible (ν := ν))
   refine ⟨mixedNormalBudgetFeasible_zero_tangent halfTan
     (uniformAntipodalRate : ν → ℝ) ?_, hu.2⟩
