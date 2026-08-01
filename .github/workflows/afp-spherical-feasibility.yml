@@ -82,7 +82,7 @@ jobs:
           fi
 
           # nanoda documents this format2024 exporter as its expected format.
-          # Pin the exact exporter commit for reproducible kernel validation.
+          # Pin both external checker components for reproducible validation.
           git init _lean4export
           git -C _lean4export remote add origin \
             https://github.com/ammkrn/lean4export.git
@@ -95,8 +95,12 @@ jobs:
             lake build
           )
 
-          git clone --depth 1 --branch debug \
-            https://github.com/ammkrn/nanoda_lib.git _nanoda_lib
+          git init _nanoda_lib
+          git -C _nanoda_lib remote add origin \
+            https://github.com/ammkrn/nanoda_lib.git
+          git -C _nanoda_lib fetch --depth 1 origin \
+            e5438ac0a85a036b6dfe093aa457bc3448498014
+          git -C _nanoda_lib checkout --detach FETCH_HEAD
           (
             cd _nanoda_lib
             cargo build --release
