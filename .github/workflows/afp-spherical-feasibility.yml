@@ -36,13 +36,25 @@ jobs:
             exit 1
           fi
 
-      - name: Build and independently type-check Lean package
+      - name: Build Lean package
         uses: leanprover/lean-action@v1
         with:
           lake-package-directory: afp_barrier_gate1
           build: true
           test: false
           lint: false
+          nanoda: false
+          use-github-cache: false
+
+      - name: Independently type-check environment with nanoda
+        uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: afp_barrier_gate1
+          auto-config: false
+          build: false
+          test: false
+          lint: false
           nanoda: true
           nanoda-allow-sorry: false
+          use-mathlib-cache: false
           use-github-cache: false
