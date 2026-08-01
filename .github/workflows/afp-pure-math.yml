@@ -62,6 +62,13 @@ jobs:
           python pure_math/falsification/claim_falsification_audit.py \
             2>&1 | tee pure-math-falsification.log
 
+      - name: Quadratic covariance audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python pure_math/covariance/quadratic_covariance_audit.py \
+            2>&1 | tee pure-math-covariance.log
+
       - name: Install Elan and pinned Lean toolchain
         working-directory: .
         shell: bash
@@ -164,6 +171,7 @@ jobs:
             afp_barrier_gate1/pure-math-python-dependencies.log
             afp_barrier_gate1/pure-math-python-compile.log
             afp_barrier_gate1/pure-math-falsification.log
+            afp_barrier_gate1/pure-math-covariance.log
             afp_barrier_gate1/pure-math-toolchain.log
             afp_barrier_gate1/pure-math-lake-update.log
             afp_barrier_gate1/pure-math-mathlib-cache.log
