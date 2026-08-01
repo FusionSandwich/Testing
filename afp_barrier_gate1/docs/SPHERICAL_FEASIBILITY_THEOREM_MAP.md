@@ -1,7 +1,10 @@
 # P0/M1 spherical feasibility theorem-to-file map
 
 The table distinguishes the complete ordinary proof, Lean-checked finite
-consequences, exact regression examples, and standard external inputs.
+consequences, exact regression examples, and standard external inputs. The
+main theorem document is supplemented by
+`SPHERICAL_FEASIBILITY_OPTIMAL_VALUE_SENSITIVITY.md` for the explicit transfer
+from a robust feasible row to the actual perturbed optimum.
 
 | Package item | Exact statement / location | Lean support | Exact regression | Status |
 |---|---|---|---|---|
@@ -16,10 +19,11 @@ consequences, exact regression examples, and standard external inputs.
 | Relative margin | Equations (3.1)–(3.3) | Ordinary proof | boundary-crossing family | PROVED |
 | Controlled minimum barycentric coefficient | Lemma 3.1, `delta=rho/[m(1+rho)]` | Ordinary proof | redundant all-positive examples | PROVED |
 | Loss-window outgoing bounds | Equations (3.9)–(3.10) | `QuantitativeSphericalFeasibility.lean` | exact normal balances | PROVED / Lean |
-| Margin-dependent coefficient bounds | Equations (3.11)–(3.12) | Ordinary proof plus Lean row formula | square rates | PROVED |
+| Margin-dependent coefficient bounds | Equations (3.11)–(3.12) and sensitivity note (2.2)–(2.3) | Ordinary proof plus Lean row formula | square rates | PROVED |
 | Local conditioning | Equations (3.13)–(3.17) | Ordinary singular-value proof | deterministic matrix checks are optional, not evidentiary | PROVED |
 | Local perturbation radius | Equations (3.18)–(3.22) | Ordinary proof | rational family crossing outside/boundary/interior | PROVED |
-| Rate/objective perturbation | Equations (3.23)–(3.25) | Ordinary proof | exact examples guard signs and denominators | PROVED |
+| Robust-row rate/objective perturbation | Equations (3.23)–(3.25) | Ordinary proof | exact examples guard signs and denominators | PROVED |
+| Actual optimal-value perturbation | `SPHERICAL_FEASIBILITY_OPTIMAL_VALUE_SENSITIVITY.md`, equations (4.1)–(5.7) | Ordinary compactness, convex robustification, and right-inverse proof | boundary-crossing example establishes zero-margin limitation | PROVED |
 | Shared-edge matrix and cone | Equations (4.1)–(4.4), Theorem 4.1 | `DualCertificate.lean`; edge block in `GlobalSharedEdgeDuality.lean` | cube matrix | PROVED |
 | Compact feasible polytope and conductance budget | Equations (4.5)–(4.7) | Ordinary proof | cube conductances | PROVED |
 | Weighted centering necessity | Equation (4.8), Theorem 4.2 | `ReversibleConductance.lean`, `CompleteGraph.lean` | centered and noncentered checks | PROVED / Lean |
