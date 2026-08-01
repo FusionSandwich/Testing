@@ -286,6 +286,24 @@ def spectral_product_resonance_search() -> list[tuple[int, int, int]]:
     return hits
 
 
+def pell_resonance_family_dimension_four() -> list[tuple[int, int]]:
+    # In d=4, the resonance equation becomes
+    #   (k+1)^2 - 2(l+1)^2 = -1.
+    # Multiplication by 3+2*sqrt(2) generates infinitely many solutions.
+    x, y = 1, 1
+    nontrivial: list[tuple[int, int]] = []
+    for _ in range(4):
+        x, y = 3 * x + 4 * y, 2 * x + 3 * y
+        k = x - 1
+        degree = y - 1
+        assert k % 2 == 0
+        assert k * (k + 2) == 2 * degree * (degree + 2)
+        assert 0 <= k <= 2 * degree
+        nontrivial.append((degree, k))
+    assert nontrivial[:3] == [(4, 6), (28, 40), (168, 238)]
+    return nontrivial
+
+
 def main() -> None:
     print("Exact quadratic covariance and sampled-space audit")
     for name, (raw, adjacent_dot) in platonic_data().items():
@@ -308,7 +326,9 @@ def main() -> None:
     print("signed square restoration: PASS (adjacent rates 1, antipodal rate -1/2)")
 
     hits = spectral_product_resonance_search()
+    pell_family = pell_resonance_family_dimension_four()
     print(f"bounded additive-resonance hits: {hits}")
+    print(f"d=4 Pell resonance family prefix: {pell_family}")
     print("Exact quadratic covariance audit: PASS")
 
 
