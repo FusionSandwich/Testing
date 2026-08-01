@@ -1,0 +1,175 @@
+name: AFP Pure Mathematics
+
+on:
+  pull_request:
+    branches:
+      - testing
+    paths:
+      - 'afp_barrier_gate1/AFPBarrier/**'
+      - 'afp_barrier_gate1/AFPBarrier.lean'
+      - 'afp_barrier_gate1/pure_math/**'
+      - 'afp_barrier_gate1/docs/CLAIM_MATRIX.md'
+      - 'afp_barrier_gate1/docs/CONJECTURE_REGISTER.md'
+      - 'afp_barrier_gate1/lakefile.lean'
+      - 'afp_barrier_gate1/lean-toolchain'
+      - 'afp_barrier_gate1/lake-manifest.json'
+      - '.github/workflows/afp-pure-math.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  theorem-checkpoint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    defaults:
+      run:
+        working-directory: afp_barrier_gate1
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up deterministic Python runtime
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install falsification dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check --no-input \
+            'numpy==2.3.2' 'sympy==1.14.0' \
+            2>&1 | tee pure-math-python-dependencies.log
+
+      - name: Python syntax audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m compileall -q pure_math \
+            2>&1 | tee pure-math-python-compile.log
+
+      - name: Deterministic claim-falsification audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python pure_math/falsification/claim_falsification_audit.py \
+            2>&1 | tee pure-math-falsification.log
+
+      - name: Install Elan and pinned Lean toolchain
+        working-directory: .
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
+            | sh -s -- -y --default-toolchain "$(cat afp_barrier_gate1/lean-toolchain)"
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+
+      - name: Record toolchain versions
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "commit=${GITHUB_SHA}"
+            python --version
+            python -c 'import numpy, sympy; print("numpy", numpy.__version__); print("sympy", sympy.__version__)'
+            lean --version
+            lake --version
+          } | tee pure-math-toolchain.log
+
+      - name: Resolve pinned dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake update 2>&1 | tee pure-math-lake-update.log
+
+      - name: Download Mathlib compiled cache
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake exe cache get 2>&1 | tee pure-math-mathlib-cache.log
+
+      - name: Lean kernel build
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake build 2>&1 | tee pure-math-lean-build.log
+
+      - name: Focused pure-math axiom audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake env lean AFPBarrier/PureMathAxiomAudit.lean \
+            2>&1 | tee pure-math-axiom-audit.log
+          if grep -q 'sorryAx' pure-math-axiom-audit.log; then
+            echo "A pure-math theorem depends on Lean's sorry axiom." >&2
+            exit 1
+          fi
+
+      - name: Source placeholder audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -RInE --include='*.lean' '(^|[^[:alnum:]_])(sorry|admit)([^[:alnum:]_]|$)' AFPBarrier AFPBarrier.lean; then
+            echo "Proof placeholder found." >&2
+            exit 1
+          fi
+          if grep -RInE --include='*.lean' '^[[:space:]]*axiom([[:space:]]|$)' AFPBarrier AFPBarrier.lean; then
+            echo "User axiom declaration found." >&2
+            exit 1
+          fi
+          echo "No proof placeholders or user axiom declarations found." \
+            | tee pure-math-source-audit.log
+
+      - name: Write checkpoint report
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "AFP pure-mathematics P0/M1 checkpoint"
+            echo "commit=${GITHUB_SHA}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "run_attempt=${GITHUB_RUN_ATTEMPT}"
+            echo "toolchain=$(cat lean-toolchain)"
+            echo "timestamp_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } > pure-math-report.txt
+
+      - name: Pack exact source snapshot
+        if: always()
+        working-directory: .
+        shell: bash
+        run: |
+          set -euo pipefail
+          tar \
+            --exclude='afp_barrier_gate1/.lake' \
+            --exclude='afp_barrier_gate1/*.log' \
+            --exclude='afp_barrier_gate1/pure-math-report.txt' \
+            -czf afp-pure-math-source-${GITHUB_SHA}.tar.gz \
+            afp_barrier_gate1 \
+            .github/workflows/afp-pure-math.yml
+
+      - name: Upload pure-math records
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: afp-pure-math-${{ github.run_id }}
+          path: |
+            afp_barrier_gate1/pure-math-report.txt
+            afp_barrier_gate1/pure-math-python-dependencies.log
+            afp_barrier_gate1/pure-math-python-compile.log
+            afp_barrier_gate1/pure-math-falsification.log
+            afp_barrier_gate1/pure-math-toolchain.log
+            afp_barrier_gate1/pure-math-lake-update.log
+            afp_barrier_gate1/pure-math-mathlib-cache.log
+            afp_barrier_gate1/pure-math-lean-build.log
+            afp_barrier_gate1/pure-math-axiom-audit.log
+            afp_barrier_gate1/pure-math-source-audit.log
+            afp_barrier_gate1/lake-manifest.json
+            afp-pure-math-source-*.tar.gz
+          if-no-files-found: warn
