@@ -46,7 +46,9 @@ theorem normalBalance_lossUpper_crossBound
         = Lmax * sphericalOutgoingRate a := by
     unfold sphericalOutgoingRate
     rw [Finset.mul_sum]
-    ring
+    apply Finset.sum_congr rfl
+    intro j hj
+    exact mul_comm (a j) Lmax
   rw [hbalance, hfactor] at hsum
   exact hsum
 
@@ -69,7 +71,9 @@ theorem normalBalance_lossLower_crossBound
         = Lmin * sphericalOutgoingRate a := by
     unfold sphericalOutgoingRate
     rw [Finset.mul_sum]
-    ring
+    apply Finset.sum_congr rfl
+    intro j hj
+    exact mul_comm (a j) Lmin
   rw [hfactor, hbalance] at hsum
   exact hsum
 
