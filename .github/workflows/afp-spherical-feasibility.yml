@@ -89,8 +89,10 @@ jobs:
           git init _nanoda_lib
           git -C _nanoda_lib remote add origin \
             https://github.com/ammkrn/nanoda_lib.git
+          # This is the immediate predecessor of the upstream 2.0.0 format
+          # migration and is the checker revision paired with exporter 0.1.2.
           git -C _nanoda_lib fetch --depth 1 origin \
-            e5438ac0a85a036b6dfe093aa457bc3448498014
+            4acb533a53f53ef7ebc99b2e43d9a5b99b0cc04f
           git -C _nanoda_lib checkout --detach FETCH_HEAD
           (
             cd _nanoda_lib
