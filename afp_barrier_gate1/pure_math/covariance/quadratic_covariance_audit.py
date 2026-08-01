@@ -126,6 +126,14 @@ def audit_platonic(
     edge_rate = sp.simplify(Q(2, 1) / (degree * (1 - alpha)))
 
     vertices = [sp.Matrix(v) / sp.sqrt(norm2) for v in raw]
+    center = sp.zeros(3, 1)
+    second_moment = sp.zeros(3)
+    for x in vertices:
+        center += x
+        second_moment += x * x.T
+    assert sp.simplify(center) == sp.zeros(3, 1)
+    assert sp.simplify(second_moment - Q(n, 3) * sp.eye(3)) == sp.zeros(3)
+
     generator = edge_rate * (graph - sp.diag(*degrees))
     vertex_matrix = sp.Matrix.hstack(*vertices).T
     assert sp.simplify(generator * vertex_matrix + 2 * vertex_matrix) == sp.zeros(
@@ -136,6 +144,7 @@ def audit_platonic(
     sampling = sp.Matrix(
         [[evaluate_form(matrix, x) for matrix in basis] for x in vertices]
     )
+    assert sp.simplify(sp.ones(1, n) * sampling) == sp.zeros(1, 5)
     direct_residual = generator * sampling + 6 * sampling
 
     constraint_rows: list[list[sp.Expr]] = []
