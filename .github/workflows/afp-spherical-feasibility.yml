@@ -61,24 +61,34 @@ jobs:
             source "$HOME/.cargo/env"
           fi
 
-          # nanoda documents this format2024 exporter as its expected format.
-          # Pin both external checker components for reproducible validation.
+          # Pin the paired 2.0.0 exporter/checker format for reproducible
+          # independent validation.
           git init _lean4export
           git -C _lean4export remote add origin \
             https://github.com/ammkrn/lean4export.git
           git -C _lean4export fetch --depth 1 origin \
-            66be65dab1fcaabddde91a76e82e63beab180846
+            f3cf6458a309d643dc586a80f9ab5a93c2304db9
           git -C _lean4export checkout --detach FETCH_HEAD
 
-          # Lean 4.30 added a `nondep` argument to `Expr.updateLet!` and exposes
-          # `updateLetE!` for callers that need to preserve the existing flag.
-          grep -qF 'e.updateLet! d v b' _lean4export/Export.lean
-          sed -i 's/e\.updateLet! d v b/e.updateLetE! d v b/' \
+          # Lean 4.30 let expressions contain a `nondep` bit, while export
+          # format 2.0.0 does not serialize that bit. Canonicalize it to false
+          # before hashing/export so semantically identical serialized nodes
+          # cannot receive two exporter indices.
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path("_lean4export/Export.lean")
+          source = path.read_text(encoding="utf-8")
+          old = "e.updateLet! (← removeMData d) (← removeMData v) (← removeMData b)"
+          new = old + " false"
+          if source.count(old) != 1:
+              raise SystemExit("Unexpected Lean exporter let-expression source")
+          path.write_text(source.replace(old, new), encoding="utf-8")
+          PY
+
+          grep -qF \
+            'e.updateLet! (← removeMData d) (← removeMData v) (← removeMData b) false' \
             _lean4export/Export.lean
-          if grep -qF 'e.updateLet! d v b' _lean4export/Export.lean; then
-            echo 'Lean 4.30 exporter compatibility patch was not applied.' >&2
-            exit 1
-          fi
 
           cp lean-toolchain _lean4export/
           (
@@ -89,10 +99,8 @@ jobs:
           git init _nanoda_lib
           git -C _nanoda_lib remote add origin \
             https://github.com/ammkrn/nanoda_lib.git
-          # This is the immediate predecessor of the upstream 2.0.0 format
-          # migration and is the checker revision paired with exporter 0.1.2.
           git -C _nanoda_lib fetch --depth 1 origin \
-            4acb533a53f53ef7ebc99b2e43d9a5b99b0cc04f
+            e5438ac0a85a036b6dfe093aa457bc3448498014
           git -C _nanoda_lib checkout --detach FETCH_HEAD
           (
             cd _nanoda_lib
