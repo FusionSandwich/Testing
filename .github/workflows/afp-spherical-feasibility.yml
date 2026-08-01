@@ -47,33 +47,13 @@ jobs:
           use-mathlib-cache: false
           use-github-cache: false
 
-      - name: Resolve dependencies and obtain Mathlib cache
+      - name: Prepare pinned external checker
         shell: bash
         run: |
           set -euo pipefail
           cd afp_barrier_gate1
-          lake update
-          lake exe cache get
-
-      - name: Build Lean package explicitly
-        shell: bash
-        run: |
-          set -euo pipefail
-          cd afp_barrier_gate1
-          lake build
-
-      - name: Independently type-check spherical stage roots with nanoda
-        shell: bash
-        run: |
-          set -euo pipefail
-          cd afp_barrier_gate1
-
-          cleanup() {
-            rm -rf _lean4export _nanoda_lib
-            rm -f _nanoda_export_*.txt _nanoda_config_*.json
-          }
-          trap cleanup EXIT
-          cleanup
+          rm -rf _lean4export _nanoda_lib
+          rm -f _nanoda_export.txt _nanoda_config.json
 
           if ! command -v cargo >/dev/null 2>&1; then
             curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
@@ -117,25 +97,88 @@ jobs:
             cargo build --release
           )
 
+      - name: Resolve dependencies and obtain Mathlib cache
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd afp_barrier_gate1
+          lake update
+          lake exe cache get
+
+      - name: Build Lean package explicitly
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd afp_barrier_gate1
+          lake build
+
+      - name: Independently type-check all spherical-stage declarations with nanoda
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd afp_barrier_gate1
+
+          cleanup() {
+            rm -rf _lean4export _nanoda_lib
+            rm -f _nanoda_export.txt _nanoda_config.json
+          }
+          trap cleanup EXIT
+
           modules=(
             AFPBarrier.QuantitativeSphericalFeasibility
             AFPBarrier.GlobalSharedEdgeDuality
           )
 
-          for module in "${modules[@]}"; do
-            safe_name="${module//./_}"
-            export_file="_nanoda_export_${safe_name}.txt"
-            config_file="_nanoda_config_${safe_name}.json"
+          declarations=(
+            AFPBarrier.scaledSphericalRowRate
+            AFPBarrier.tangentDependenceWeight
+            AFPBarrier.scaledSphericalRowRate_nonneg
+            AFPBarrier.scaledSphericalRowRate_pos
+            AFPBarrier.scaledSphericalRowRate_tangent_balance
+            AFPBarrier.scaledSphericalRowRate_normal_balance
+            AFPBarrier.tangentDependenceWeight_nonneg
+            AFPBarrier.tangentDependenceWeight_balance
+            AFPBarrier.tangentDependenceWeight_normal_scale
+            AFPBarrier.tangentNormalScale
+            AFPBarrier.tangentNormalScale_pos
+            AFPBarrier.commonScale_eq_two_div
+            AFPBarrier.commonScale_pos
+            AFPBarrier.scaledSphericalRowRate_eq_commonScale
+            AFPBarrier.antipodalTotalRate
+            AFPBarrier.mixedNormalBudget_identity
+            AFPBarrier.antipodalTotalRate_eq_of_mixedNormalBudget
+            AFPBarrier.antipodalTotalRate_nonneg_iff
+            AFPBarrier.antipodalTotalRate_pos_iff
+            AFPBarrier.antipodalOnly_normalBalance_iff
+            AFPBarrier.sphericalOutgoingRate
+            AFPBarrier.sphericalOutgoingRate_nonneg
+            AFPBarrier.normalBalance_lossUpper_crossBound
+            AFPBarrier.normalBalance_lossLower_crossBound
+            AFPBarrier.normalBalance_outgoingRate_lower
+            AFPBarrier.normalBalance_outgoingRate_upper
+            AFPBarrier.sharedEdgeDualWork
+            AFPBarrier.sharedEdgeDualWork_swap
+            AFPBarrier.sharedEdgeDualWork_constant
+            AFPBarrier.sharedEdgeDualWork_radial
+            AFPBarrier.sharedEdgeDualWork_radial_nonneg
+            AFPBarrier.positiveLPDualSlack
+            AFPBarrier.positiveLPDualSlack_nonneg
+            AFPBarrier.positiveLP_objectiveGap_eq_slackPairing
+            AFPBarrier.positiveLP_complementaritySum_eq_zero
+            AFPBarrier.positiveLP_complementarySlackness
+            AFPBarrier.positiveLP_active_forces_dualSaturation
+            AFPBarrier.positiveLP_strictDualSlack_forces_inactive
+          )
 
-            echo "Exporting ${module} for independent checking"
-            lake env _lean4export/.lake/build/bin/lean4export "$module" \
-              > "$export_file"
-            test -s "$export_file"
-            echo "Exported $(wc -l < "$export_file") lines for ${module}"
+          echo "Exporting ${#declarations[@]} spherical-stage declarations"
+          lake env _lean4export/.lake/build/bin/lean4export \
+            "${modules[@]}" -- "${declarations[@]}" > _nanoda_export.txt
+          test -s _nanoda_export.txt
+          echo "Exported $(wc -l < _nanoda_export.txt) lines"
 
-            cat > "$config_file" <<EOF
+          cat > _nanoda_config.json <<'EOF'
           {
-            "export_file_path": "$export_file",
+            "export_file_path": "_nanoda_export.txt",
             "use_stdin": false,
             "permitted_axioms": [
               "propext",
@@ -150,6 +193,5 @@ jobs:
           }
           EOF
 
-            RUST_BACKTRACE=1 \
-              _nanoda_lib/target/release/nanoda_bin "$config_file"
-          done
+          RUST_BACKTRACE=1 \
+            _nanoda_lib/target/release/nanoda_bin _nanoda_config.json
