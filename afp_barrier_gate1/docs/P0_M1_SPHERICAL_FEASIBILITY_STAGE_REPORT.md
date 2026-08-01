@@ -20,14 +20,16 @@ the frozen archive.
 ## 2. Stage outcome
 
 The stage proves the complete finite theorem package in
-`SPHERICAL_FEASIBILITY_SHARED_EDGE_THEOREM.md`:
+`SPHERICAL_FEASIBILITY_SHARED_EDGE_THEOREM.md`, supplemented by
+`SPHERICAL_FEASIBILITY_OPTIMAL_VALUE_SENSITIVITY.md`:
 
 1. exact non-antipodal convex-hull and relative-interior equivalences;
 2. indexed uniqueness, including repeated and redundant directions;
 3. unique positive angular rescaling and the explicit rate formula;
 4. a separate division-free antipodal-only and mixed-antipodal theorem;
 5. an explicit relative cone margin, coefficient bounds, inverse-quadratic
-   rates, conditioning, perturbation radius, and objective degradation;
+   rates, conditioning, perturbation radius, robust-row objective change, and
+   actual optimal-value degradation;
 6. global shared-edge cone and feasible-polytope characterization;
 7. weighted centering, dense complete-graph construction, full Farkas
    alternative, strong LP duality, and complementary slackness with the actual
@@ -70,6 +72,8 @@ same textbook convex-hull core.
 | A18 | Centered-clique submass decomposition | Sums complete-graph blocks on sparse permitted graphs | ADOPTED as a nontrivial global reconciliation mechanism |
 | A19 | Formalize all convex analysis and LP duality immediately in Lean | Would delay the ordinary proof and duplicate large standard libraries | BLOCKED by the stage rule; exact external statements and Lean spherical consequences used instead |
 | A20 | Narrow finite Lean algebra plus exact regressions | Verifies scale, antipodal budget, rate bounds, edge signs, objective gaps, and complementarity | ADOPTED |
+| A21 | Assume a linear-objective optimizer is itself strictly positive | False in general; a simple square-angle case has a boundary optimizer | BLOCKED |
+| A22 | Convexly robustify a boundary optimizer before correcting the perturbed balance | Gives an explicit optimum-value bound with no strict-optimizer assumption | ADOPTED |
 
 ## 4. Synthesis and redirection record
 
@@ -111,13 +115,21 @@ centered complete-graph blocks. Rate, linear defect, peak epigraph, and
 weighted residual LPs were transferred with their exact signs and
 complementarity blocks.
 
-### Round 5 — formalization and regression
+### Round 5 — formalization, objective sensitivity, and regression
 
 The formal work was narrowed to finite consequences that improve assurance
 without postponing the ordinary proof. Exact rational tests were written first
 to lock sign conventions and counterexamples; Lean modules then formalized the
 scale, antipodal budget, outgoing-rate inequalities, shared-edge transpose
 geometry, objective-gap identity, and componentwise complementary slackness.
+
+A final objective audit rejected the hidden assumption that an old optimizer
+must use every candidate. An optimal barycentric vector is instead mixed with
+the margin-controlled vector by
+`lambda_eta=(1-eta)lambda_star+eta lambda_0`. The explicit price of that
+robustification is combined with the tangent right-inverse correction and the
+angle Lipschitz bound, yielding the actual optimum-value estimate in the
+sensitivity addendum.
 
 ## 5. Adversarial theorem audit
 
@@ -138,6 +150,7 @@ geometry, objective-gap identity, and componentwise complementary slackness.
 | Unquantified `O(h^-2)` used in a claimed bound | PASS: all rate and coefficient constants are explicit |
 | Cone margin claimed to control coefficients without candidate count | PASS: the bound records `m` explicitly |
 | Perturbation theorem applied at zero margin | PASS: rational boundary-crossing family proves that no positive radius exists |
+| Objective degradation assumes a strictly positive optimizer | PASS: boundary optimizers are robustified explicitly before perturbation |
 | Feasible set called a polytope despite zero edge columns | PASS: coincident-node zero columns are identified; compactness follows only after deletion |
 | Generic LP citation without AFP transfer | PASS: every primal, dual, sign, edge block, residual block, and complementarity condition is written explicitly |
 
@@ -161,7 +174,7 @@ used for its core examples.
   target work `-4`.
 
 Computational checks are retained only as falsification and regression tools.
-The general theorems are proved independently in the ordinary proof document.
+The general theorems are proved independently in the ordinary proof documents.
 
 ## 7. Formalization boundary
 
@@ -217,6 +230,7 @@ centered local/global incompatibility; and centered-clique reconciliation.
 - `AFPBarrier/QuantitativeSphericalFeasibility.lean`
 - `AFPBarrier/GlobalSharedEdgeDuality.lean`
 - `docs/SPHERICAL_FEASIBILITY_SHARED_EDGE_THEOREM.md`
+- `docs/SPHERICAL_FEASIBILITY_OPTIMAL_VALUE_SENSITIVITY.md`
 - `docs/SPHERICAL_FEASIBILITY_THEOREM_MAP.md`
 - `docs/P0_M1_SPHERICAL_FEASIBILITY_STAGE_REPORT.md`
 - `pure_math/tests/test_spherical_feasibility.py`
@@ -233,7 +247,7 @@ centered local/global incompatibility; and centered-clique reconciliation.
 
 - Exact rational regression command:
   `python3 pure_math/tests/test_spherical_feasibility.py`
-- Expected deterministic output:
+- Deterministic output:
   `exact spherical feasibility regressions: PASS`
 - Lean toolchain: Lean `v4.30.0`, Mathlib `v4.30.0`
 - Workflow protections:
@@ -242,5 +256,19 @@ centered local/global incompatibility; and centered-clique reconciliation.
   - full `lake build`;
   - independent `nanoda` kernel check with sorry disallowed.
 
-The final workflow run identifier, commit, and result are appended after the
-validation branch is green.
+The theorem-code validation completed successfully on 2026-08-01:
+
+- GitHub Actions workflow run: `30714223520`
+- verification job: `91406932184`
+- validation-branch head: `1eefd609e1e5495d465528e06a7152535922c9ad`
+- pull-request merge ref checked by Actions:
+  `0bab8ec31d812813f4d01bf73f06afae057fd46c`
+- exact regressions: PASS
+- forbidden-placeholder / user-axiom check: PASS
+- `lake build`: PASS
+- `nanoda` independent kernel check: PASS
+- sorry declarations accepted: zero
+
+Subsequent changes before merge are documentation/control updates only; the
+workflow is configured to rerun on both the validation branch and the target
+branch.
