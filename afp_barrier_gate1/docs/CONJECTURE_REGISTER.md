@@ -96,47 +96,128 @@ graph diameter, and rate variation.
 **Kill condition:** families with `Q -> 1` but no controlled global edge-length
 concentration under the stated hypotheses.
 
-## C-M5. Attainable quadratic exactness
+## C-M5. Attainable quadratic exactness — RESOLVED
 
-**Statement under test.** For an eigenmap `Phi` and jump covariance tensors
-`C_i`, exactness of a quadratic form is equivalent to a linear contraction
-condition involving `C_i`, `Phi_i Phi_i^T`, and the target eigenvalue. The
-intersection of these local linear spaces gives the globally attainable
-quadratic subspace.
+**Corrected theorem package.** For a finite eigenmap generator,
 
-**Status:** CONJECTURE as a theorem package; core algebraic identity derived.
+```text
+L(Phi^T A Phi)(i)
+  = -2 lambda Phi_i^T A Phi_i + tr(A^T C_i).
+```
 
-**Deliverables:**
+For the coordinate eigenmap on `S^(d-1)`, zero-centered trace-free form
+exactness is the orthogonal complement of the covariance constraints
+`M_i=P_0(C_i+2 Phi_i Phi_i^T)`. Genuine sampled exactness is not the form
+space itself. With
 
-- exact local identity;
-- local rank/dimension bound;
-- global intersection bound;
-- symmetry examples and sharpness cases;
-- comparison with negative-conductance operators.
+```text
+S_X(A)_i = Phi_i^T A Phi_i,
+K_X = ker S_X,
+```
 
-**Kill condition:** only tautological rank bookkeeping remains and no useful
-sharp dimension or rigidity statement survives.
+one has
 
-## C-M6. Spectral-product hierarchy
+```text
+E_sample = S_X(E_form),
+dim E_sample
+  = dim E_form - dim(E_form intersect K_X).
+```
 
-**Statement under test.** Positivity constrains simultaneous exactness of an
-eigenspace and selected irreducible components of its symmetric square, with a
-nontrivial hierarchy on spheres or compact homogeneous spaces.
+In a chosen form basis, the correct rank formula is
 
-**Status:** HIGH-RISK CONJECTURE.
+```text
+dim E_sample = rank([R;S]) - rank(R),
+```
 
-**First tests:** Legendre and spherical-harmonic products for degrees 1--6;
-strict-extremum and antipodal-maximizer cases; computational linear algebra on
-Platonic and optimized graphs.
+not `dim E_form - dim K_X` without an intersection calculation.
 
-**Kill condition:** every case reduces to the same one-function square identity
-without a dimension tradeoff or new global consequence.
+**Sharp theorem.** If every positive local jump covariance is axially isotropic
+about the embedded node and has positive radial covariance, then every
+covariance constraint is a positive row scaling of its sampling functional.
+Consequently
+
+```text
+E_form = K_X,
+E_sample = {0}.
+```
+
+The regular simplex gives a sharp all-dimensional family with a large
+nonzero form space that is entirely sampling kernel. A separate equivariant
+irreducibility theorem forces `E_form={0}` under a transitive symmetry action
+when `Sym_0(d)` is irreducible.
+
+**Exact examples.** The tetrahedron, octahedron, cube, icosahedron, and
+dodecahedron have exact sampled dimension zero. For the first three, the
+apparent nonzero algebraic form spaces are precisely the sampling kernels.
+The icosahedral and dodecahedral sampling matrices have explicit nonzero
+five-by-five determinants.
+
+**Signed contrast.** On the four cardinal points of `S^1`, adjacent rates one
+and antipodal rate `-1/2` preserve the coordinate eigenvalue `-1` and restore
+the nonzero sampled quadratic `x^2-y^2` at eigenvalue `-4`. The three exactness
+equations force the negative rate `-1/2` on that support.
+
+**Status:** PROVED. See
+`pure_math/covariance/SAMPLED_QUADRATIC_EXACTNESS_THEOREM.md`, exact regression
+`pure_math/covariance/quadratic_covariance_audit.py`, and Lean module
+`AFPBarrier/QuadraticCovariance.lean`.
+
+**Publication warning:** the covariance expansion and rank-nullity identities
+are supporting linear algebra. The structural contribution is the
+sampling-kernel correction together with axial-covariance and equivariant
+rigidity, equality families, exact examples, and signed restoration.
+
+## C-M6. Spectral-product hierarchy — RESOLVED NEGATIVELY FOR THIS STAGE
+
+**Investigated statement.** Positivity constrains simultaneous exactness of an
+eigenspace and selected irreducible components of its symmetric square through
+a nontrivial degree-indexed hierarchy.
+
+**Audit outcome.** The carré-du-champ and semigroup/Jensen routes independently
+prove the additive sampled-square obstruction. The spherical-harmonic audit
+then accounted for:
+
+- even product parity for both odd and even source degree;
+- antipodal and non-singleton equality sets;
+- sampling kernels and cross-degree aliases;
+- the difference between one sampled combination and a complete irreducible
+  component; and
+- the additive resonance equation
+  `k(k+d-2)=2 l(l+d-2)`.
+
+The resonance equation is Pell-type after the substitution
+
+```text
+X=2k+d-2,
+Y=2l+d-2,
+X^2-2Y^2=-(d-2)^2.
+```
+
+It can therefore have sparse infinite arithmetic families, such as in
+`d=4`. These arithmetic coincidences do not identify a nonzero sampled product
+component and do not yield a dimension tradeoff or new global rigidity result.
+At every usable resonance, the obstruction still reduces to the same
+one-function sampled-square equality after all other sampled components have
+been eliminated or aliased.
+
+**Status:** REJECTED for Prompt 2 under its stated kill criterion. No general
+claim is made that stronger hierarchies cannot exist under additional design,
+association-scheme, or representation-theoretic hypotheses.
+
+**Replacement result:** the sampled covariance and axial-rigidity theorem in
+C-M5 is the mandatory stage theorem.
 
 ## Rejected conjectures retained as regression warnings
 
 - local row feasibility plus weighted centering implies sparse shared-edge
   feasibility;
 - unrestricted `Q=1` classification by `K in {4,6,12}`;
+- form-space dimension is the same as sampled exact dimension;
+- subtracting the full sampling-kernel dimension gives the sampled dimension
+  without computing the intersection;
+- algebraic nonzero harmonic components are automatically nonzero or
+  identifiable after sampling;
+- a bounded list of additive resonances is a spectral-product hierarchy;
 - global `Q>1` for every finite spherical graph;
 - blanket finite-graph Bakry–Émery curvature collapse;
 - standard continuum `W_2` contraction from positivity alone;
