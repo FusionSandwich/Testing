@@ -36,15 +36,32 @@ jobs:
             exit 1
           fi
 
-      - name: Build Lean package
+      - name: Install Lean toolchain
         uses: leanprover/lean-action@v1
         with:
           lake-package-directory: afp_barrier_gate1
-          build: true
+          auto-config: false
+          build: false
           test: false
           lint: false
           nanoda: false
+          use-mathlib-cache: false
           use-github-cache: false
+
+      - name: Resolve dependencies and obtain Mathlib cache
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd afp_barrier_gate1
+          lake update
+          lake exe cache get
+
+      - name: Build Lean package explicitly
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd afp_barrier_gate1
+          lake build
 
       - name: Independently type-check environment with nanoda
         uses: leanprover/lean-action@v1
