@@ -37,8 +37,6 @@ jobs:
           fi
 
       - name: Build and independently type-check Lean package
-        id: lean_check
-        continue-on-error: true
         uses: leanprover/lean-action@v1
         with:
           lake-package-directory: afp_barrier_gate1
@@ -48,13 +46,3 @@ jobs:
           nanoda: true
           nanoda-allow-sorry: false
           use-github-cache: false
-
-      - name: Require successful Lean and nanoda statuses
-        env:
-          BUILD_STATUS: ${{ steps.lean_check.outputs.build-status }}
-          NANODA_STATUS: ${{ steps.lean_check.outputs.nanoda-status }}
-        run: |
-          echo "Lean build status: ${BUILD_STATUS:-unset}"
-          echo "nanoda status: ${NANODA_STATUS:-unset}"
-          test "$BUILD_STATUS" = SUCCESS
-          test "$NANODA_STATUS" = SUCCESS
