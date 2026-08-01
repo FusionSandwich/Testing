@@ -139,6 +139,22 @@ jobs:
             AFPBarrier.GlobalSharedEdgeDuality
           )
 
+          # Nanoda's Nat/String literal extensions require these foundational
+          # declarations to be present even when the selected theorem slice
+          # reaches them only through literal nodes.
+          foundations=(
+            Nat
+            Nat.zero
+            Nat.succ
+            List
+            List.nil
+            List.cons
+            String
+            String.mk
+            Char
+            Char.ofNat
+          )
+
           declarations=(
             AFPBarrier.scaledSphericalRowRate
             AFPBarrier.tangentDependenceWeight
@@ -182,7 +198,8 @@ jobs:
 
           echo "Exporting ${#declarations[@]} spherical-stage declarations"
           lake env _lean4export/.lake/build/bin/lean4export \
-            "${modules[@]}" -- "${declarations[@]}" > _nanoda_export.txt
+            "${modules[@]}" -- "${foundations[@]}" "${declarations[@]}" \
+            > _nanoda_export.txt
           test -s _nanoda_export.txt
           echo "Exported $(wc -l < _nanoda_export.txt) lines"
 
