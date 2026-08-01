@@ -101,7 +101,9 @@ pure_math/covariance/quadratic_covariance_audit.py
 
 uses symbolic arithmetic over `Q(sqrt(5))`, not floating rank thresholds. It
 contains a negative regression against the incorrect formula
-`dim E_form-dim K_X` and verifies the correct stacked-rank formula.
+`dim E_form-dim K_X`, verifies the correct stacked-rank formula, checks exact
+Platonic centering and second moments, and records both the bounded resonance
+list and an infinite `d=4` Pell-family prefix.
 
 ## Lean verification boundary
 
@@ -117,11 +119,11 @@ Lean 4.30 / Mathlib 4.30 formalizes finite algebraic consequences in:
 - `AFPBarrier/CompleteGraph.lean`.
 
 For Prompt 2, Lean checks the finite product identity, covariance contraction,
-shifted residual equivalence, trace-free projection consequence, and the
-row-scaled constraint-to-sampling implication used by the axial theorem. The
-abstract finite-dimensional rank-nullity theorem and standard semigroup/Jensen
-facts are used as ordinary mathematics rather than redeclared as project
-axioms.
+shifted residual equivalence, trace-free projection consequence, rank-nullity
+for the sampling map restricted to an exact-form subspace, and the row-scaled
+constraint-to-sampling implication used by the axial theorem. Standard
+semigroup/Jensen facts remain ordinary external mathematics rather than
+project axioms.
 
 The complete finite-dimensional Farkas and strong-LP-duality theorems from
 P0/M1 remain standard external mathematics. No placeholder proofs or
