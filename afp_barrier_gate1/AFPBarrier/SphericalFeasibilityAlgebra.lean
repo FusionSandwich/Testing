@@ -67,7 +67,6 @@ theorem scaledSphericalRowRate_eq_commonScale
       = (2 / normalScale) * (b j / sinTheta j) := by
   unfold scaledSphericalRowRate
   field_simp [hsin j, hscale]
-  ring
 
 /-- Total antipodal rate left after a non-antipodal block spends `D` units of
 normal loss.  Antipodes themselves are never divided by a sine. -/
