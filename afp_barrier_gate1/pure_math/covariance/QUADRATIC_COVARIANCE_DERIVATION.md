@@ -1,191 +1,138 @@
-# Quadratic covariance characterization
+# Quadratic covariance derivation — Prompt 2 resolution
 
-This note records the next candidate theorem for the pure-mathematics paper.
-It is not yet promoted to `PROVED` until the complete proof and priority review
-are finished.
+## Status
 
-## Setting
+The candidate expansion in the original version of this note was correct, but
+its dimension conclusion was incomplete because it counted matrices rather
+than genuinely sampled functions. Prompt 2 is completed in
 
-Let
+```text
+pure_math/covariance/SAMPLED_QUADRATIC_EXACTNESS_THEOREM.md
+```
+
+The exact symbolic regression is
+
+```text
+pure_math/covariance/quadratic_covariance_audit.py
+```
+
+and the Lean finite algebra is in
+
+```text
+AFPBarrier/QuadraticCovariance.lean
+```
+
+## Corrected theorem summary
+
+For
 
 \[
-(Lf)(i)=\sum_j a_{ij}(f(j)-f(i))
+(Lf)(i)=\sum_j a_{ij}(f(j)-f(i)),
+\qquad L\Phi=-\lambda\Phi,
 \]
 
-be a finite generator, and let
-
-\[
-\Phi:X\to\mathbb R^d
-\]
-
-be an eigenmap satisfying, coordinatewise,
-
-\[
-L\Phi=-\lambda\Phi.
-\]
-
-For one vertex define
+put
 
 \[
 \Delta_{ij}=\Phi_j-\Phi_i,
 \qquad
-C_i=\sum_j a_{ij}\Delta_{ij}\Delta_{ij}^{T}.
+C_i=\sum_j a_{ij}\Delta_{ij}\Delta_{ij}^T,
+\qquad
+Q_A(i)=\Phi_i^TA\Phi_i.
 \]
 
-For a symmetric matrix `A`, set
+Then
 
 \[
-q_A(\Phi)=\Phi^T A\Phi.
+LQ_A(i)=-2\lambda Q_A(i)+\operatorname{tr}(A^TC_i).
 \]
 
-## Exact expansion
-
-Expanding one jump gives
+For a shifted target mode \(Q_A-c\) with eigenvalue \(-\mu\), the exact
+necessary-and-sufficient residual equation is
 
 \[
-q_A(\Phi_j)-q_A(\Phi_i)
-=
-2\Phi_i^T A\Delta_{ij}
-+
-\Delta_{ij}^T A\Delta_{ij}.
+\operatorname{tr}(A^TC_i)+(\mu-2\lambda)Q_A(i)-\mu c=0
+\quad\text{for every }i.
 \]
 
-Summing and using the eigenmap equation gives
+For the coordinate eigenmap on \(S^{d-1}\), with
+\(\lambda=d-1\), \(\mu=2d\), and \(A\in\operatorname{Sym}_0(d)\), define
 
 \[
-\boxed{
-Lq_A(i)
-=
--2\lambda q_A(\Phi_i)
-+
-\operatorname{tr}(A C_i).
-}
+M_i=P_0(C_i+2\Phi_i\Phi_i^T).
 \]
 
-If `q_A-c_A` is required to have target eigenvalue `-mu`, its residual is
+The zero-centered exact form space is
 
 \[
-\boxed{
-L(q_A-c_A)(i)+\mu(q_A(\Phi_i)-c_A)
-=
-\operatorname{tr}(A C_i)
-+(μ-2\lambda)\Phi_i^T A\Phi_i
--\mu c_A.
-}
+E_{\mathrm{form}}=
+\operatorname{span}\{M_i\}^{\perp}.
 \]
 
-This is the exact local linear characterization of attainable quadratic
-exactness.
-
-## Sphere specialization
-
-For the coordinate eigenmap on `S^{d-1}`,
+This is a matrix space, not yet a sampled-function space. The sampling map is
 
 \[
-\lambda=d-1.
+S_X(A)_i=\Phi_i^TA\Phi_i,
+\qquad K_X=\ker S_X,
 \]
 
-Degree-two spherical harmonics are represented by trace-free symmetric `A` and
-have eigenvalue
+and the genuinely sampled exact space is
 
 \[
-\mu=2d.
+E_{\mathrm{sample}}=S_X(E_{\mathrm{form}}),
 \]
 
-Hence the residual is
+with
 
 \[
-\boxed{
-\operatorname{tr}
-\left[
-A\left(C_i+2\Phi_i\Phi_i^T\right)
-\right].
-}
+\dim E_{\mathrm{sample}}
+=\dim E_{\mathrm{form}}
+ -\dim(E_{\mathrm{form}}\cap K_X).
 \]
 
-Let `P_0` denote traceless projection and define
+For basis matrices, if \(R\) is the covariance-constraint matrix and \(S\) is
+the sampling matrix, then
 
 \[
-M_i=P_0\left(C_i+2\Phi_i\Phi_i^T\right).
+\dim E_{\mathrm{sample}}
+=\operatorname{rank}\begin{bmatrix}R\\S\end{bmatrix}
+ -\operatorname{rank}R.
 \]
 
-Then the globally exact quadratic-form space is
+## Sharp structural theorem
+
+If every local covariance is axially isotropic about \(\Phi_i\),
 
 \[
-\boxed{
-\mathcal E_2
-=
-\left(
-\operatorname{span}\{M_i:i\in X\}
-\right)^\perp
-\subseteq \operatorname{Sym}_0(d).
-}
+C_i=\tau_i(I-\Phi_i\Phi_i^T)+\beta_i\Phi_i\Phi_i^T,
 \]
 
-Consequently,
+and \(\beta_i>0\), then
 
 \[
-\boxed{
-\dim\mathcal E_2
-=
-\frac{d(d+1)}2-1
--
-\operatorname{rank}\operatorname{span}\{M_i\}.
-}
+M_i=\frac{d\beta_i}{d-1}
+\left(\Phi_i\Phi_i^T-\frac1dI\right).
 \]
 
-This dimension identity is the central M3 target.  It is more informative than
-only proving that the complete degree-two space is impossible.
-
-## Covariance proof of the full no-go theorem
-
-If every trace-free quadratic form were exact, then every `M_i` would vanish,
-so
+Thus each covariance constraint is a positive scalar multiple of the
+corresponding sampling functional. Consequently
 
 \[
-C_i+2\Phi_i\Phi_i^T=c_i I.
+E_{\mathrm{form}}=K_X,
+\qquad
+E_{\mathrm{sample}}=\{0\}.
 \]
 
-For unit-sphere points and exact coordinate eigenvalue `d-1`,
+This theorem explains the exact Platonic table. The tetrahedron, octahedron,
+and cube possess nonzero algebraic form spaces, but those spaces are exactly
+their quadratic sampling kernels. The icosahedron and dodecahedron have full
+constraint and sampling rank.
 
-\[
-\operatorname{tr}C_i
-=
-\sum_j a_{ij}\|\Phi_j-\Phi_i\|^2
-=
-2(d-1).
-\]
+## Spectral-product branch
 
-Taking traces therefore gives `c_i=2`, and
-
-\[
-C_i=2(I-\Phi_i\Phi_i^T).
-\]
-
-The right side has zero radial component.  But
-
-\[
-\Phi_i^T C_i\Phi_i
-=
-\sum_j a_{ij}
-(\Phi_i\cdot\Phi_j-1)^2,
-\]
-
-which is strictly positive for any positive jump to a distinct point.  This is
-a contradiction.
-
-## Research questions
-
-1. Which dimensions of `E_2` are attainable under positivity, reversibility,
-   connectivity, and bounded degree?
-2. Which graph symmetries force the span of the `M_i` to be all of
-   `Sym_0(d)`?
-3. Can one bound `dim E_2` using active stencil size or covariance rank?
-4. How does global `Q=1` constrain the tensors `M_i`?
-5. Can negative conductances restore prescribed quadratic subspaces, and what
-   is the minimal sign violation required?
-6. Does the same construction extend to irreducible components of
-   `Sym^2(V_lambda)` for a general eigenspace?
-
-A publishable pure-math paper requires a sharp dimension, rigidity, or
-classification theorem beyond the displayed linear identity.
+The finite carré-du-champ and semigroup/Jensen arguments independently prove
+the additive sampled-square obstruction. After parity, antipodal-maximizer,
+sampling-alias, and bounded eigenvalue-resonance audits, no new
+\(\ell\)-indexed hierarchy or dimension tradeoff survived. The hierarchy
+conjecture is therefore rejected for this stage under its stated kill
+criterion. The sampled covariance theorem remains the publication theorem.
