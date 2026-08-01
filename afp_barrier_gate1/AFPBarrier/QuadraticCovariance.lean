@@ -1,5 +1,6 @@
 import AFPBarrier.JumpGenerator
 import Mathlib.Algebra.Order.BigOperators.Ring.Finset
+import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 import Mathlib.Tactic
 
 /-!
@@ -7,9 +8,9 @@ import Mathlib.Tactic
 
 This module formalizes the finite algebraic core of the sampled quadratic
 exactness theorem.  It proves the product/covariance identity, the exact target
-residual with a constant shift, the trace-free projection contraction, and the
-row-scaled constraint implication used by the axial-covariance rigidity
-theorem.
+residual with a constant shift, the trace-free projection contraction, the
+restricted sampling-map rank-nullity identity, and the row-scaled constraint
+implication used by the axial-covariance rigidity theorem.
 -/
 
 open scoped BigOperators
@@ -249,6 +250,25 @@ theorem finiteMatrixContraction_tracelessProjection
       = finiteMatrixContraction A T := by
   unfold finiteTracelessProjection
   exact finiteMatrixContraction_subtractScalarDiagonal A T _ htrace
+
+section SampledRestrictionDimension
+
+variable {V W : Type*}
+variable [AddCommGroup V] [Module ℝ V]
+variable [AddCommGroup W] [Module ℝ W]
+variable [FiniteDimensional ℝ V]
+
+/-- Rank-nullity for the sampling map restricted to the exact-form subspace.
+The range is the genuine sampled exact space and the kernel is the sampling
+kernel inside that exact-form subspace. -/
+theorem sampledRestriction_finrank
+    (S : V →ₗ[ℝ] W) (E : Submodule ℝ V) :
+    Module.finrank ℝ (LinearMap.range (S.domRestrict E))
+      + Module.finrank ℝ (LinearMap.ker (S.domRestrict E))
+      = Module.finrank ℝ E :=
+  LinearMap.finrank_range_add_finrank_ker (S.domRestrict E)
+
+end SampledRestrictionDimension
 
 /-- If every form constraint is a nonzero row scaling of the corresponding
 sampling functional, zero form residuals are equivalent to zero sampled
