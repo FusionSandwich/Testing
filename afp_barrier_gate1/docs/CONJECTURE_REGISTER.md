@@ -1,28 +1,60 @@
 # AFP pure-math conjecture register
 
-Every conjecture requires a precise hypothesis set, deterministic falsification
-search, literature status, and explicit kill criterion.
+Every unresolved conjecture requires a precise hypothesis set, deterministic
+falsification search, literature status, and explicit kill criterion. Resolved
+entries remain in the file so later drafts do not regress to weaker or false
+wording.
 
-## C-M1. Strict local spherical feasibility
+## Resolved entry C-M1. Strict local spherical feasibility
 
-**Statement under test.** For candidate neighbors with tangent directions
-`u_j` and angles `0 < theta_j < pi`, a degree-one-exact row with every rate
-strictly positive exists if and only if the origin lies in the relative
-interior of `conv{u_j}`. Once a positive tangent dependence is selected, the
-normal-loss equation fixes one positive scale.
+**Final statement.** For permitted non-antipodal neighbors with indexed unit
+tangent directions `u_j` and `0 < theta_j < pi`:
 
-**Status:** CONJECTURE / expected convex-geometry theorem.
+- a nonnegative degree-one-exact row exists iff `0 in conv{u_j}`;
+- an all-permitted-edge strictly positive row exists iff
+  `0 in ri conv{u_j}` in its affine span;
+- repeated and redundant indexed candidates are allowed;
+- uniqueness is exactly augmented affine independence in the minimal face
+  containing zero; and
+- the normal equation fixes the unique positive scale with the explicit angular
+  formula in `pure_math/SPHERICAL_LOCAL_EXACT.md`.
 
-**Work needed:**
+Antipodal neighbors have the separate complete classification in
+`pure_math/SPHERICAL_LOCAL_EXACT.md`. The relative cone margin and explicit
+constants are in `pure_math/SPHERICAL_LOCAL_QUANTITATIVE.md`.
 
-- prove the constructive scaling equivalence;
-- connect positive dependences to relative interior;
-- handle antipodal neighbors separately;
-- quantify a cone margin and coefficient sensitivity;
-- compare against Euclidean positive-stencil prior art.
+**Status:** RESOLVED / PROVED ordinary; constructive finite algebra formalized.
 
-**Kill condition:** the statement fails for a small finite tangent set or adds
-no sphere-specific content beyond a direct textbook corollary.
+**Evidence:**
+
+- `pure_math/SPHERICAL_LOCAL_EXACT.md`;
+- `pure_math/SPHERICAL_LOCAL_QUANTITATIVE.md`;
+- `AFPBarrier/LocalSphericalFeasibility.lean`;
+- `AFPBarrier/AntipodalSphericalFeasibility.lean`;
+- `AFPBarrier/LocalSphericalBounds.lean`; and
+- exact rational regression examples.
+
+**Publication caution:** the finite convex-hull/relative-interior lemmas are
+standard. Novelty can only be assessed for the combined spherical scaling,
+antipodal, quantitative, and globally reversible package.
+
+## Resolved entry C-G1. Global shared-edge compatibility package
+
+**Final statement.** For fixed spherical nodes, positive masses, and an
+undirected permitted graph, shared conductances solve `A gamma=b`, `gamma>=0`,
+with the edge columns and signs displayed in
+`pure_math/SHARED_EDGE_CONE_FARKAS.md`. Feasibility is exactly cone membership;
+finite Farkas is complete; the project LPs have the stated strong duals and
+complementary-slackness equations; strict feasibility is relative cone
+interior; and the stated compatible perturbation bounds hold.
+
+**Status:** RESOLVED / PROVED ordinary from standard finite Farkas and LP
+strong-duality theorems, with spherical consequences formalized.
+
+**Important falsification retained:** local strict feasibility does not imply
+shared-edge feasibility, even under weighted centering. The cube in
+`pure_math/SHARED_EDGE_RECONCILIATION_EXAMPLES.md` has an exact dual
+certificate.
 
 ## C-M2. Global equality propagation
 
@@ -110,7 +142,9 @@ without a dimension tradeoff or new global consequence.
 ## Rejected conjectures retained as regression warnings
 
 - unrestricted `Q=1` classification by `K in {4,6,12}`;
+- local positive rows imply a global reversible shared-edge solution;
+- weighted centering alone is sufficient on every sparse permitted graph;
 - global `Q>1` for every finite spherical graph;
 - blanket finite-graph Bakry–Émery curvature collapse;
-- standard continuum `W_2` contraction from positivity alone;
+- standard continuum `W_2` contraction from positivity alone; and
 - general order independence of layered stopping maps.

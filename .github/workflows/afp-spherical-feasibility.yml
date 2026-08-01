@@ -1,0 +1,41 @@
+name: AFP spherical feasibility
+
+on:
+  push:
+    branches:
+      - agent/afp-spherical-feasibility-stage
+      - agent/afp-pure-math-p0-m1
+  pull_request:
+    paths:
+      - "afp_barrier_gate1/**"
+      - ".github/workflows/afp-spherical-feasibility.yml"
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Lean package
+        uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: afp_barrier_gate1
+          auto-config: false
+          build: true
+          test: false
+          lint: false
+
+      - name: Run exact spherical regressions
+        working-directory: afp_barrier_gate1
+        run: python3 pure_math/examples/spherical_feasibility_examples.py
+
+      - name: Reject incomplete or user-axiomatized proofs
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -R -nE '(^|[^A-Za-z])(sorry|admit|sorryAx)([^A-Za-z]|$)|^[[:space:]]*axiom[[:space:]]' \
+              afp_barrier_gate1/AFPBarrier --include='*.lean'; then
+            echo "Forbidden proof placeholder or user-declared axiom found."
+            exit 1
+          fi
