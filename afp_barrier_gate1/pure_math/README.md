@@ -28,7 +28,7 @@ that remains interesting without AFP terminology:
 1. local positive feasibility on spherical eigenmap embeddings;
 2. quantitative robustness and conditioning of positive spherical rows;
 3. global reversible shared-edge compatibility and duality;
-4. attainable quadratic spectral-product exactness;
+4. genuine sampled quadratic exactness and covariance rigidity; and
 5. global equality propagation and geometric rigidity.
 
 ## Completed P0/M1 sphere-specific package
@@ -58,24 +58,74 @@ The full ordinary proof is in
 The exact examples are regression-checked by
 `pure_math/tests/test_spherical_feasibility.py` using rational arithmetic.
 
+## Completed Prompt 2 sampled-covariance package
+
+The paper-style theorem is
+
+```text
+pure_math/covariance/SAMPLED_QUADRATIC_EXACTNESS_THEOREM.md
+```
+
+It establishes:
+
+- the exact covariance identity
+  `L(Phi^T A Phi)=-2 lambda Phi^T A Phi+tr(A^T C_i)`;
+- the necessary-and-sufficient residual equation for a shifted target
+  eigenvalue;
+- the trace-free spherical form-space characterization
+  `E_form=span{M_i}^perp`;
+- the quadratic sampling map, its kernel, and the genuine sampled space
+  `E_sample=S_X(E_form)`;
+- the corrected intersection and stacked-rank dimension formulas;
+- a sharp axial-covariance theorem under which
+  `E_form=K_X` and `E_sample={0}`;
+- an all-dimensional regular-simplex equality family with a large algebraic
+  exact space that is entirely sampling kernel;
+- an independent transitive-equivariant irreducibility theorem;
+- exact covariance tensors, constraint ranks, sampling kernels, and sampled
+  dimensions for all five Platonic shortest-edge generators;
+- an explicit signed four-point generator restoring a nonzero sampled
+  quadratic mode, with the negative antipodal rate `-1/2` proved forced on the
+  fixed support;
+- independent carré-du-champ and semigroup/Jensen proofs of the additive
+  sampled-square obstruction; and
+- a bounded and structural spherical-product audit that rejects the proposed
+  general hierarchy under its kill criterion because no new sampled dimension
+  tradeoff or global consequence survives.
+
+The exact audit
+
+```text
+pure_math/covariance/quadratic_covariance_audit.py
+```
+
+uses symbolic arithmetic over `Q(sqrt(5))`, not floating rank thresholds. It
+contains a negative regression against the incorrect formula
+`dim E_form-dim K_X` and verifies the correct stacked-rank formula.
+
 ## Lean verification boundary
 
-Lean 4.30 / Mathlib 4.30 formalizes the finite algebraic consequences in:
+Lean 4.30 / Mathlib 4.30 formalizes finite algebraic consequences in:
 
 - `AFPBarrier/LocalSphericalFeasibility.lean`;
 - `AFPBarrier/SphericalFeasibilityAlgebra.lean`;
 - `AFPBarrier/QuantitativeSphericalFeasibility.lean`;
+- `AFPBarrier/QuadraticCovariance.lean`;
 - `AFPBarrier/DualCertificate.lean`;
 - `AFPBarrier/GlobalSharedEdgeDuality.lean`;
 - `AFPBarrier/ReversibleConductance.lean`; and
 - `AFPBarrier/CompleteGraph.lean`.
 
-The complete finite-dimensional Farkas and strong-LP-duality theorems are used
-as standard external mathematics and are stated with every hypothesis and AFP
-sign convention in the theorem document. Their spherical transpose blocks,
-weak-duality soundness, objective-gap identity, and complementary-slackness
-consequences are formalized. No placeholder proofs or user-declared axioms are
-permitted.
+For Prompt 2, Lean checks the finite product identity, covariance contraction,
+shifted residual equivalence, trace-free projection consequence, and the
+row-scaled constraint-to-sampling implication used by the axial theorem. The
+abstract finite-dimensional rank-nullity theorem and standard semigroup/Jensen
+facts are used as ordinary mathematics rather than redeclared as project
+axioms.
+
+The complete finite-dimensional Farkas and strong-LP-duality theorems from
+P0/M1 remain standard external mathematics. No placeholder proofs or
+user-declared axioms are permitted.
 
 ## Scientific gates
 
@@ -85,8 +135,8 @@ permitted.
 - claim matrix, conjecture register, and prior-art map are active controls;
 - exact deterministic counterexamples are retained;
 - unrestricted classifications contradicted by Platonic graphs remain
-  rejected;
-- novelty is separated from standard convexity and LP theory.
+  rejected; and
+- novelty is separated from standard convexity, rank algebra, and LP theory.
 
 ### M1 — local spherical feasibility and global compatibility
 
@@ -102,17 +152,12 @@ to propagate one common edge loss and one common row rate. Classification is
 attempted only under explicit geometric restrictions such as spherical
 triangulation.
 
-### M3 — quadratic covariance
+### M3 — sampled quadratic covariance
 
-For an eigenmap `Phi`, introduce the jump covariance
-
-```text
-C_i = sum_j a_ij (Phi_j - Phi_i)(Phi_j - Phi_i)^T.
-```
-
-The target is an exact characterization and dimension bound for the quadratic
-forms reproduced with a prescribed eigenvalue. Merely repeating the full
-quadratic no-go theorem is insufficient.
+**Status: complete for Prompt 2.** The covariance identity, sampling-kernel
+correction, sharp axial and equivariant rigidity theorems, exact Platonic
+examples, signed restoration, and independent product obstructions are proved.
+The generic spectral-product hierarchy is rejected for this stage.
 
 ## Claim discipline
 
@@ -121,9 +166,10 @@ Every statement is labeled one of:
 - `PROVED` — complete proof under stated assumptions;
 - `EXTERNAL` — direct use or specialization of a cited theorem;
 - `COMPUTATIONAL` — finite deterministic verification only;
-- `CONJECTURE` — survived current tests but is unproved;
-- `REJECTED` — false, ill posed, redundant, or strategically unsuitable.
+- `CONJECTURE` — survived current tests but is unproved; or
+- `REJECTED` — false, ill posed, redundant, killed by the stated criterion, or
+  strategically unsuitable.
 
-Lean and CI are verification infrastructure, not mathematical novelty. Local
-positive rows, weighted centering, and sparse global shared-edge compatibility
-must never be conflated.
+Lean and CI are verification infrastructure, not mathematical novelty. A
+nonzero quadratic matrix, a nonzero exact form, a nonzero sampled function,
+and a nonzero exact sampled function must never be conflated.
