@@ -13,13 +13,13 @@ namespace AFPBarrier
 
 /-- The non-antipodal contribution to the normal budget after setting
 `b_j = a_j sin(theta_j)`. -/
-def nonAntipodalNormalBudget {ι : Type*} [Fintype ι]
+noncomputable def nonAntipodalNormalBudget {ι : Type*} [Fintype ι]
     (b loss sinTheta : ι → ℝ) : ℝ :=
   Finset.univ.sum (fun j => b j * loss j / sinTheta j)
 
 /-- The antipodal total rate required after the non-antipodal part consumes
 normal budget `D`. -/
-def requiredAntipodalTotalRate (D : ℝ) : ℝ :=
+noncomputable def requiredAntipodalTotalRate (D : ℝ) : ℝ :=
   1 - D / 2
 
 /-- The mixed normal equation is exactly the remaining-budget formula. -/
