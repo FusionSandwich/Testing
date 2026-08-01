@@ -403,8 +403,14 @@ accepted only when all of the following pass on that exact head:
 2. source rejection of proof placeholders and user axioms in the stage
    modules;
 3. full Lean 4.30.0 / Mathlib 4.30.0 `lake build`; and
-4. independent `nanoda` checking of the explicitly exported Lean module
-   `AFPBarrier`.
+4. independent `nanoda` checking of the explicitly exported stage roots
+   `AFPBarrier.QuantitativeSphericalFeasibility` and
+   `AFPBarrier.GlobalSharedEdgeDuality`.
+
+The first stage root imports `SphericalFeasibilityAlgebra`, which imports
+`LocalSphericalFeasibility`; the second covers the global duality module. The
+two exports therefore cover all four stage modules without pulling unrelated
+transport-era modules into this pure-mathematics validation boundary.
 
 The nanoda permitted-axiom list contains only `propext`, `Classical.choice`,
 `Quot.sound`, and `Lean.trustCompiler`; it does not permit `sorryAx`. Nanoda is
