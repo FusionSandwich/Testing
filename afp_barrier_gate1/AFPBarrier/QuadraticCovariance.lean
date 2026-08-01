@@ -16,7 +16,8 @@ open scoped BigOperators
 
 namespace AFPBarrier
 
-variable {ι κ : Type*} [Fintype ι] [DecidableEq ι] [Fintype κ]
+variable {ι κ : Type*}
+variable [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ]
 
 /-- Bilinear jump variation.  It equals `2 Γ(f,g)` under the convention in the
 ordinary theorem document. -/
@@ -111,12 +112,12 @@ theorem jumpGenerator_quadratic_covariance_identity
       = Finset.univ.sum (fun k =>
           jumpGenerator a
             (fun j => Finset.univ.sum (fun l =>
-              A k l * (Φ j k * Φ j l))) i) := by
+              A k l * Φ j k * Φ j l)) i) := by
                 unfold finiteQuadraticSample
                 exact jumpGenerator_fintype_sum
                   (a := a)
                   (F := fun k j => Finset.univ.sum (fun l =>
-                    A k l * (Φ j k * Φ j l)))
+                    A k l * Φ j k * Φ j l))
                   (i := i)
     _ = Finset.univ.sum (fun k =>
           Finset.univ.sum (fun l =>
@@ -219,7 +220,7 @@ theorem finiteMatrixContraction_subtractScalarDiagonal
         = Finset.univ.sum (fun k => A k k * c) := by
             apply Finset.sum_congr rfl
             intro k hk
-            simp [eq_comm]
+            simp
       _ = c * Finset.univ.sum (fun k => A k k) := by
             rw [Finset.mul_sum]
             apply Finset.sum_congr rfl
