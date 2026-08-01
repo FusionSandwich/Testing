@@ -12,7 +12,7 @@ from a robust feasible row to the actual perturbed optimum.
 | Strict all-index feasibility | Lemma 1.1 and Theorem 1.2(2) | Spherical scaling consequences formalized; finite relative-interior theorem proved in ordinary text | square and boundary examples; repeated points | PROVED |
 | Repetitions and redundancies | Lemma 1.1; Theorem 1.4 | Indexed finite sums in all local Lean modules | duplicate-direction nonuniqueness certificates | PROVED |
 | Dependence/row bijection | Theorem 1.2(3), equations (1.2)–(1.4) | `LocalSphericalFeasibility.lean`; `scaledSphericalRowRate_eq_commonScale` | exact rational rates with `sin=4/5`, `loss=2/5` | PROVED |
-| Uniqueness | Theorem 1.4: affine independence in the minimal face | Ordinary proof; finite scaling injection formalized | duplicates demonstrate failure of uniqueness | PROVED |
+| Uniqueness | Theorem 1.4: affine independence in the minimal face | Ordinary proof; scalar formula and converse tangent-weight maps formalized | duplicates demonstrate failure of uniqueness | PROVED |
 | Unique positive common scale | Corollary 1.3 | `commonScale_eq_two_div`, `commonScale_pos` | direct exact rate reconstruction | PROVED / Lean |
 | Antipodal-only theorem | Theorem 2.1 and Corollary 2.2 | `antipodalOnly_normalBalance_iff` | three-antipode simplex point | PROVED / Lean |
 | Mixed antipodal theorem | Theorem 2.1, equations (2.1)–(2.4) | `antipodalTotalRate`, budget identity and strict/nonnegative iff lemmas | mixed boundary and mixed strict examples | PROVED / Lean |
