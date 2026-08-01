@@ -1,0 +1,67 @@
+name: AFP quadratic covariance
+
+on:
+  push:
+    branches:
+      - agent/afp-quadratic-covariance-p2
+  pull_request:
+    branches:
+      - agent/afp-pure-math-p0-m1
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install exact symbolic dependencies
+        run: python -m pip install --disable-pip-version-check --no-input 'sympy==1.14.0'
+
+      - name: Run exact covariance and sampled-space audit
+        run: python afp_barrier_gate1/pure_math/covariance/quadratic_covariance_audit.py
+
+      - name: Reject proof placeholders and user axioms
+        shell: bash
+        run: |
+          files=(
+            afp_barrier_gate1/AFPBarrier/QuadraticCovariance.lean
+          )
+          if grep -nE '(^|[^[:alnum:]_])(sorry|admit|sorryAx|axiom)([^[:alnum:]_]|$)' "${files[@]}"; then
+            echo 'Forbidden Lean placeholder or user axiom found.' >&2
+            exit 1
+          fi
+
+      - name: Install Lean toolchain
+        uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: afp_barrier_gate1
+          build: false
+          test: false
+          lint: false
+          nanoda: false
+          use-mathlib-cache: false
+          use-github-cache: false
+
+      - name: Resolve dependencies and obtain Mathlib cache
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd afp_barrier_gate1
+          lake update
+          lake exe cache get
+
+      - name: Build Lean package explicitly
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd afp_barrier_gate1
+          lake build
