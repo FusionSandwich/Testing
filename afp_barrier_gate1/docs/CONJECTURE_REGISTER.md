@@ -3,26 +3,36 @@
 Every conjecture requires a precise hypothesis set, deterministic falsification
 search, literature status, and explicit kill criterion.
 
-## C-M1. Strict local spherical feasibility
+## C-M1. Strict local spherical feasibility — resolved
 
-**Statement under test.** For candidate neighbors with tangent directions
+**Proved statement.** For candidate neighbors with tangent directions
 `u_j` and angles `0 < theta_j < pi`, a degree-one-exact row with every rate
 strictly positive exists if and only if the origin lies in the relative
 interior of `conv{u_j}`. Once a positive tangent dependence is selected, the
 normal-loss equation fixes one positive scale.
 
-**Status:** CONJECTURE / expected convex-geometry theorem.
+**Status:** PROVED, including repetitions, redundant points, lower-dimensional
+span, exact scaling/rate/uniqueness, antipodes, quantitative margins, and
+fixed-span perturbation stability.  See
+`pure_math/EXACT_LOCAL_GLOBAL_THEOREM_PACKAGE.md`.
 
-**Work needed:**
+**Resolved deliverables:**
 
-- prove the constructive scaling equivalence;
-- connect positive dependences to relative interior;
-- handle antipodal neighbors separately;
-- quantify a cone margin and coefficient sensitivity;
-- compare against Euclidean positive-stencil prior art.
+- the scaling map is a bijection with the normalized dependence polytope;
+- positive indexed dependences are equivalent to relative interior;
+- antipodes form a separate residual normal-budget simplex;
+- `rho`, `beta_*`, rate, coefficient, support, and singular-value margins are explicit;
+- standard positive-stencil inputs are separated from sphere-specific results.
 
-**Kill condition:** the statement fails for a small finite tangent set or adds
-no sphere-specific content beyond a direct textbook corollary.
+**Regression warnings:** lower-dimensional perturbations require a fixed or
+explicitly identified intrinsic span; uniqueness means existence and uniqueness.
+
+## C-M1G. Global local-to-shared compatibility — resolved negatively and conditionally
+
+The unrestricted implication is REJECTED by the centered unequal-mass
+equatorial four-cycle with an exact Farkas certificate.  Complete-graph
+sufficiency and equivariant orbit averaging are PROVED reconciliation results.
+Further sparse classifications must survive this regression example.
 
 ## C-M2. Global equality propagation
 

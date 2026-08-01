@@ -1,5 +1,10 @@
 import AFPBarrier.LocalSphericalFeasibility
+import AFPBarrier.ExactLocalRows
+import AFPBarrier.QuantitativeExactLocal
+import AFPBarrier.AntipodalFeasibility
 import AFPBarrier.GlobalLossRigidity
+import AFPBarrier.SharedEdgeEquilibrium
+import AFPBarrier.GroupAveraging
 
 /-! Focused axiom audit for the pure-mathematics branch. -/
 
@@ -10,6 +15,23 @@ import AFPBarrier.GlobalLossRigidity
 #print axioms AFPBarrier.tangentDependenceWeight_nonneg
 #print axioms AFPBarrier.tangentDependenceWeight_balance
 #print axioms AFPBarrier.tangentDependenceWeight_normal_scale
+#print axioms AFPBarrier.normalizedAngularScale_pos
+#print axioms AFPBarrier.exactLocalRowRate_normal_balance
+#print axioms AFPBarrier.exactLocalRowRate_sum
+#print axioms AFPBarrier.exactLocalRowRate_recover
+#print axioms AFPBarrier.normalizedWeightedSum_bounds
+#print axioms AFPBarrier.exactLocalRowRate_sum_bounds
+#print axioms AFPBarrier.antipodalOnlyFeasible_iff_simplex
+#print axioms AFPBarrier.uniformAntipodalRate_strictly_feasible
+#print axioms AFPBarrier.mixedRow_from_tangentBudget
+#print axioms AFPBarrier.mixedRow_to_tangentBudget
+#print axioms AFPBarrier.sharedEdge_equilibrium_implies_weightedCentering
+#print axioms AFPBarrier.squareLocalRate_coordinate_exact
+#print axioms AFPBarrier.squareDual_transpose_zero
+#print axioms AFPBarrier.squareDual_work
+#print axioms AFPBarrier.square_sharedEdge_infeasible
+#print axioms AFPBarrier.coordinateBalance_averagedConductance
+#print axioms AFPBarrier.groupOrbitAverage_reconciliation
 
 #print axioms AFPBarrier.rate_eq_of_symmetric_active_loss
 #print axioms AFPBarrier.rate_eq_of_active_reflTransGen

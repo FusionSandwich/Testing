@@ -10,6 +10,8 @@ on:
       - 'afp_barrier_gate1/pure_math/**'
       - 'afp_barrier_gate1/docs/CLAIM_MATRIX.md'
       - 'afp_barrier_gate1/docs/CONJECTURE_REGISTER.md'
+      - 'afp_barrier_gate1/docs/PURE_MATH_PRIOR_ART_MAP.md'
+      - 'afp_barrier_gate1/docs/THEOREM_TO_FILE_MAP.md'
       - 'afp_barrier_gate1/lakefile.lean'
       - 'afp_barrier_gate1/lean-toolchain'
       - 'afp_barrier_gate1/lake-manifest.json'
@@ -68,6 +70,13 @@ jobs:
           set -euo pipefail
           python pure_math/covariance/quadratic_covariance_audit.py \
             2>&1 | tee pure-math-covariance.log
+
+      - name: Exact local and global feasibility audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python pure_math/examples/exact_local_global_audit.py \
+            2>&1 | tee pure-math-local-global-exact.log
 
       - name: Install Elan and pinned Lean toolchain
         working-directory: .
@@ -172,6 +181,7 @@ jobs:
             afp_barrier_gate1/pure-math-python-compile.log
             afp_barrier_gate1/pure-math-falsification.log
             afp_barrier_gate1/pure-math-covariance.log
+            afp_barrier_gate1/pure-math-local-global-exact.log
             afp_barrier_gate1/pure-math-toolchain.log
             afp_barrier_gate1/pure-math-lake-update.log
             afp_barrier_gate1/pure-math-mathlib-cache.log

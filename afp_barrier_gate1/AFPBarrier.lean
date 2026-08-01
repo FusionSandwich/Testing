@@ -7,6 +7,9 @@ import AFPBarrier.SphericalNetScaling
 import AFPBarrier.LossVariance
 import AFPBarrier.LossVarianceSharpness
 import AFPBarrier.LocalSphericalFeasibility
+import AFPBarrier.ExactLocalRows
+import AFPBarrier.QuantitativeExactLocal
+import AFPBarrier.AntipodalFeasibility
 import AFPBarrier.GlobalLossRigidity
 import AFPBarrier.ExplicitEulerTransport
 import AFPBarrier.SpatialUpwindTransport
@@ -17,6 +20,8 @@ import AFPBarrier.ForwardAdjoint
 import AFPBarrier.ReversibleConductance
 import AFPBarrier.CompleteGraph
 import AFPBarrier.DualCertificate
+import AFPBarrier.SharedEdgeEquilibrium
+import AFPBarrier.GroupAveraging
 import AFPBarrier.ImplementationConvention
 import AFPBarrier.ScalingCompatibility
 import AFPBarrier.NormalizationAudit

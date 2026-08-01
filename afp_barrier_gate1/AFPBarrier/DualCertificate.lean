@@ -1,5 +1,7 @@
 import Mathlib.Algebra.Order.BigOperators.Ring.Finset
-import Mathlib.Tactic
+import Mathlib.Data.Real.Basic
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Ring
 
 /-!
 # Dual certificates for positive shared-edge systems

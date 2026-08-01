@@ -48,9 +48,18 @@ Omega_j = cos(theta_j) Omega_i + sin(theta_j) u_j,
 ```
 
 where `u_j` is tangent. Degree-one exactness is equivalent to a nonnegative
-tangent dependence plus one scalar normal-loss equation. The initial Lean
-module formalizes the constructive scaling equivalence. The full convex-hull
-and strict-relative-interior formulation is the next theorem target.
+tangent dependence plus one scalar normal-loss equation.
+
+**Status: resolved.** `EXACT_LOCAL_GLOBAL_THEOREM_PACKAGE.md` proves the full
+non-antipodal hull and strict-relative-interior theorem, exact
+scaling/rate/uniqueness, the pure and mixed antipodal theorem, quantitative
+`rho`/`beta_*` margins, explicit perturbation radii, local conditioning, the
+global Farkas/LP package, the centered local-but-not-global obstruction, group
+averaging reconciliation, and compatible global perturbation bounds.
+
+The original `LocalSphericalFeasibility.lean` remains the foundational scaling
+module. New modules formalize normalization and recovery, antipodal budgeting,
+shared-edge certificate arithmetic, and finite averaging where practical.
 
 ### M2 — global equality propagation
 
@@ -83,3 +92,10 @@ Every statement is labeled one of:
 - `REJECTED` — false, ill posed, redundant, or strategically unsuitable.
 
 Lean and CI are verification infrastructure, not mathematical novelty.
+
+## M1 records
+
+- `EXACT_LOCAL_GLOBAL_THEOREM_PACKAGE.md` — complete proofs and constants;
+- `APPROACH_REGISTRY.md` — mechanism-based route/audit registry;
+- `../docs/THEOREM_TO_FILE_MAP.md` — theorem/formalization/regression map;
+- `examples/exact_local_global_audit.py` — exact symbolic regression certificates.

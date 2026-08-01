@@ -63,6 +63,11 @@ Search targets:
 The current quadratic covariance characterization must be compared directly
 with this literature.
 
+The shared-edge matrix is, up to sign, the transpose of a Euclidean
+bar-framework rigidity matrix.  Its left kernel contains translations and
+rotations, so global perturbation bounds use a rigidity singular-value margin
+and explicit compatibility rather than a false full-row-rank assumption.
+
 ## 4. Graph curvature
 
 Core comparators include work on Bakry–Émery curvature matrices and curvature
@@ -109,14 +114,28 @@ Search targets:
 These topics primarily support the numerical-analysis paper, but may contain
 pure-math rigidity or impossibility results.
 
-## 7. Current priority conclusion
+## 7. Convex and linear-programming duality inputs
+
+The following are standard finite-dimensional inputs and are cited/transferred,
+not claimed as project discoveries: barycentric convex-hull representation,
+supporting separation and relative interior, support-function inradius and
+Hausdorff formulas, Farkas' lemma, finite LP strong duality and complementary
+slackness, and pseudoinverse/Weyl singular-value inequalities.
+
+The project-specific transfers are the spherical tangent/normal rescaling,
+antipodal budget split, angle-explicit constants, shared-edge sign convention,
+geometric interpretations of every dual block, and exact obstruction and
+reconciliation results.
+
+## 8. Current priority conclusion
 
 As of this initial map:
 
 - the local square and variance identities are standard;
 - positive stencil feasibility has substantial prior art;
 - positive spherical Laplacians with exact coordinate modes have prior art;
-- the exact AFP-specific combination may still be useful;
+- the spherical rescaling/antipodal and local-versus-shared packages are proved,
+  but priority claims remain restricted pending specialist review;
 - no priority claim is made yet for the quadratic covariance dimension formula,
   global equal-loss rigidity, or a spectral-product hierarchy.
 

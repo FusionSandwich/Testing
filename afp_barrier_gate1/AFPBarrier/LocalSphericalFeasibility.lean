@@ -1,5 +1,9 @@
 import Mathlib.Algebra.Order.Field.Basic
-import Mathlib.Tactic
+import Mathlib.Algebra.Order.BigOperators.Ring.Finset
+import Mathlib.Data.Real.Basic
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.Ring
 
 /-!
 # Constructive local spherical feasibility
