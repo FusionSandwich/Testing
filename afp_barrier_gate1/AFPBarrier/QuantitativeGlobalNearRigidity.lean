@@ -1,150 +1,166 @@
 import AFPBarrier.SphericalQEqualityRigidity
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Tactic
 
 /-!
-# Finite algebra for quantitative global near-rigidity
+# Quantitative graph-global near-rigidity
 
-This module checks the pointwise defect transfer and adjacent shared-edge
-ratio algebra.  Path, logarithmic, Poincare, resistance, and spherical-angle
-transfers are proved with explicit constants in the ordinary theorem document.
+This module formalizes the finite scalar inequalities used before the ordinary
+path, spectral-gap, effective-resistance, and spherical-angle arguments.
 -/
 
 namespace AFPBarrier
 
-/-- A squared deviation bound gives the corresponding absolute bound. -/
-theorem abs_sub_one_le_of_sq_le_delta_sq
-    (x delta : ℝ)
-    (hdelta : 0 ≤ delta)
-    (hsq : (x - 1) ^ 2 ≤ delta ^ 2) :
-    |x - 1| ≤ delta := by
-  rw [abs_le]
-  constructor <;>
-    nlinarith [sq_nonneg (x - 1 - delta), sq_nonneg (x - 1 + delta)]
+/-- A single positive weight controls one squared deviation in a nonnegative
+weighted variance. -/
+theorem weight_floor_mul_deviation_sq_le
+    (p kappa x eta : ℝ)
+    (hp : kappa ≤ p)
+    (hsq : 0 ≤ (x - 1) ^ 2)
+    (hweighted : p * (x - 1) ^ 2 ≤ eta) :
+    kappa * (x - 1) ^ 2 ≤ eta := by
+  exact (mul_le_mul_of_nonneg_right hp hsq).trans hweighted
 
-/-- One weighted variance term and a lower probability bound imply the Prompt 3
-pointwise `delta` estimate. -/
-theorem pointwise_delta_bound
-    (p x kappa eta delta : ℝ)
+/-- Explicit pointwise near-equality estimate in square form. -/
+theorem pointwise_deviation_sq_le_eta_div_kappa
+    (p kappa x eta : ℝ)
     (hkappa : 0 < kappa)
     (hp : kappa ≤ p)
-    (hterm : p * (x - 1) ^ 2 ≤ eta)
-    (heta : eta = kappa * delta ^ 2)
-    (hdelta : 0 ≤ delta) :
+    (hweighted : p * (x - 1) ^ 2 ≤ eta) :
+    (x - 1) ^ 2 ≤ eta / kappa := by
+  apply (le_div_iff₀ hkappa).2
+  exact weight_floor_mul_deviation_sq_le
+    p kappa x eta hp (sq_nonneg _) hweighted
+
+/-- Square control gives the advertised absolute deviation. -/
+theorem pointwise_delta_bound
+    (p kappa x eta delta : ℝ)
+    (hkappa : 0 < kappa)
+    (hp : kappa ≤ p)
+    (hweighted : p * (x - 1) ^ 2 ≤ eta)
+    (hdelta : 0 ≤ delta)
+    (hdeltaSq : eta / kappa = delta ^ 2) :
     |x - 1| ≤ delta := by
-  have hweight :
-      kappa * (x - 1) ^ 2 ≤ p * (x - 1) ^ 2 :=
-    mul_le_mul_of_nonneg_right hp (sq_nonneg _)
-  have hscaled : kappa * (x - 1) ^ 2 ≤ kappa * delta ^ 2 := by
-    calc
-      kappa * (x - 1) ^ 2 ≤ p * (x - 1) ^ 2 := hweight
-      _ ≤ eta := hterm
-      _ = kappa * delta ^ 2 := heta
-  have hsq : (x - 1) ^ 2 ≤ delta ^ 2 :=
-    (mul_le_mul_left hkappa).mp hscaled
-  exact abs_sub_one_le_of_sq_le_delta_sq x delta hdelta hsq
+  have hsquare : (x - 1) ^ 2 ≤ delta ^ 2 := by
+    rw [← hdeltaSq]
+    exact pointwise_deviation_sq_le_eta_div_kappa
+      p kappa x eta hkappa hp hweighted
+  nlinarith [sq_abs (x - 1)]
 
-/-- Absolute pointwise control is equivalent to the two-sided normalized edge
-scale interval used throughout Prompt 3. -/
-theorem normalized_scale_interval_of_abs
-    (x delta : ℝ)
-    (habs : |x - 1| ≤ delta) :
-    1 - delta ≤ x ∧ x ≤ 1 + delta := by
-  have h := (abs_le.mp habs)
-  constructor <;> linarith
-
-/-- Shared-edge balance plus local normalized-scale bounds gives the
-cross-multiplied adjacent rate bounds. -/
+/-- Shared-edge normalized scales yield the cross-multiplied adjacent-rate
+bounds. -/
 theorem adjacent_rate_cross_bounds
-    (r_i r_j x_ij x_ji delta : ℝ)
-    (hri : 0 ≤ r_i) (hrj : 0 ≤ r_j)
-    (hijLo : 1 - delta ≤ x_ij)
-    (hijHi : x_ij ≤ 1 + delta)
-    (hjiLo : 1 - delta ≤ x_ji)
-    (hjiHi : x_ji ≤ 1 + delta)
-    (hbalance : r_j * x_ij = r_i * x_ji) :
-    (1 - delta) * r_j ≤ (1 + delta) * r_i ∧
-      (1 - delta) * r_i ≤ (1 + delta) * r_j := by
+    (rateI rateJ ell xI xJ delta : ℝ)
+    (hrateI : 0 < rateI) (hrateJ : 0 < rateJ)
+    (hell : 0 < ell)
+    (hscaleI : xI = rateI * ell / 2)
+    (hscaleJ : xJ = rateJ * ell / 2)
+    (hxILo : 1 - delta ≤ xI) (hxIHi : xI ≤ 1 + delta)
+    (hxJLo : 1 - delta ≤ xJ) (hxJHi : xJ ≤ 1 + delta) :
+    (1 - delta) * rateJ ≤ (1 + delta) * rateI ∧
+      (1 - delta) * rateI ≤ (1 + delta) * rateJ := by
+  have hratioI : rateI = 2 * xI / ell := by
+    rw [hscaleI]
+    field_simp [ne_of_gt hell]
+  have hratioJ : rateJ = 2 * xJ / ell := by
+    rw [hscaleJ]
+    field_simp [ne_of_gt hell]
   constructor
-  · calc
-      (1 - delta) * r_j ≤ x_ij * r_j :=
-        mul_le_mul_of_nonneg_right hijLo hrj
-      _ = x_ji * r_i := by
-        simpa [mul_comm] using hbalance
-      _ ≤ (1 + delta) * r_i :=
-        mul_le_mul_of_nonneg_right hjiHi hri
-  · calc
-      (1 - delta) * r_i ≤ x_ji * r_i :=
-        mul_le_mul_of_nonneg_right hjiLo hri
-      _ = x_ij * r_j := by
-        simpa [mul_comm] using hbalance.symm
-      _ ≤ (1 + delta) * r_j :=
-        mul_le_mul_of_nonneg_right hijHi hrj
+  · rw [hratioI, hratioJ]
+    apply (div_le_div_iff₀ hell hell).2
+    nlinarith
+  · rw [hratioI, hratioJ]
+    apply (div_le_div_iff₀ hell hell).2
+    nlinarith
 
-/-- Division form of the adjacent Prompt 3 rate-ratio estimate. -/
+/-- Ratio form of the adjacent-rate estimate. -/
 theorem adjacent_rate_ratio_bounds
-    (r_i r_j x_ij x_ji delta : ℝ)
-    (hri : 0 < r_i) (hrj : 0 < r_j)
-    (hdelta0 : 0 ≤ delta) (hdelta1 : delta < 1)
-    (hijLo : 1 - delta ≤ x_ij)
-    (hijHi : x_ij ≤ 1 + delta)
-    (hjiLo : 1 - delta ≤ x_ji)
-    (hjiHi : x_ji ≤ 1 + delta)
-    (hbalance : r_j * x_ij = r_i * x_ji) :
-    (1 - delta) / (1 + delta) ≤ r_i / r_j ∧
-      r_i / r_j ≤ (1 + delta) / (1 - delta) := by
+    (rateI rateJ ell xI xJ delta : ℝ)
+    (hrateI : 0 < rateI) (hrateJ : 0 < rateJ)
+    (hell : 0 < ell)
+    (hdelta : 0 ≤ delta) (hdeltaOne : delta < 1)
+    (hscaleI : xI = rateI * ell / 2)
+    (hscaleJ : xJ = rateJ * ell / 2)
+    (hxILo : 1 - delta ≤ xI) (hxIHi : xI ≤ 1 + delta)
+    (hxJLo : 1 - delta ≤ xJ) (hxJHi : xJ ≤ 1 + delta) :
+    (1 - delta) / (1 + delta) ≤ rateI / rateJ ∧
+      rateI / rateJ ≤ (1 + delta) / (1 - delta) := by
   have hcross := adjacent_rate_cross_bounds
-    r_i r_j x_ij x_ji delta (le_of_lt hri) (le_of_lt hrj)
-    hijLo hijHi hjiLo hjiHi hbalance
+    rateI rateJ ell xI xJ delta hrateI hrateJ hell
+    hscaleI hscaleJ hxILo hxIHi hxJLo hxJHi
   have hplus : 0 < 1 + delta := by linarith
   have hminus : 0 < 1 - delta := by linarith
   constructor
-  · apply (div_le_div_iff₀ hplus hrj).2
+  · apply (div_le_div_iff₀ hplus hrateJ).2
     simpa [mul_comm] using hcross.1
-  · apply (div_le_div_iff₀ hrj hminus).2
+  · apply (div_le_div_iff₀ hrateJ hminus).2
     simpa [mul_comm] using hcross.2
 
-/-- The local edge-loss ratio at one vertex is bounded by the same adjacent
-normalized-scale cross inequalities. -/
+/-- Two normalized scales at one state give incident-edge loss control. -/
 theorem incident_loss_cross_bounds
     (ell₁ ell₂ x₁ x₂ rate delta : ℝ)
     (hrate : 0 < rate)
+    (hdelta : 0 ≤ delta) (hdeltaOne : delta < 1)
     (hbalance₁ : rate * ell₁ = 2 * x₁)
     (hbalance₂ : rate * ell₂ = 2 * x₂)
-    (hx₁Lo : 1 - delta ≤ x₁)
-    (hx₁Hi : x₁ ≤ 1 + delta)
-    (hx₂Lo : 1 - delta ≤ x₂)
-    (hx₂Hi : x₂ ≤ 1 + delta) :
+    (hx₁Lo : 1 - delta ≤ x₁) (hx₁Hi : x₁ ≤ 1 + delta)
+    (hx₂Lo : 1 - delta ≤ x₂) (hx₂Hi : x₂ ≤ 1 + delta) :
     (1 - delta) * ell₂ ≤ (1 + delta) * ell₁ ∧
       (1 - delta) * ell₁ ≤ (1 + delta) * ell₂ := by
-  have hrnonneg : 0 ≤ rate := le_of_lt hrate
+  have hrne : rate ≠ 0 := ne_of_gt hrate
+  have hell₁ : ell₁ = 2 * x₁ / rate := by
+    apply (eq_div_iff hrne).2
+    nlinarith [hbalance₁]
+  have hell₂ : ell₂ = 2 * x₂ / rate := by
+    apply (eq_div_iff hrne).2
+    nlinarith [hbalance₂]
+  have hminus : 0 ≤ 1 - delta := by linarith
+  have hplus : 0 ≤ 1 + delta := by linarith
+  have hnum₁ : (1 - delta) * (2 * x₂) ≤ (1 + delta) * (2 * x₁) := by
+    have ha := mul_le_mul_of_nonneg_left hx₂Hi hminus
+    have hb := mul_le_mul_of_nonneg_right hx₁Lo hplus
+    nlinarith
+  have hnum₂ : (1 - delta) * (2 * x₁) ≤ (1 + delta) * (2 * x₂) := by
+    have ha := mul_le_mul_of_nonneg_left hx₁Hi hminus
+    have hb := mul_le_mul_of_nonneg_right hx₂Lo hplus
+    nlinarith
   constructor
-  · have h : (1 - delta) * (rate * ell₂) ≤
-        (1 + delta) * (rate * ell₁) := by
-      rw [hbalance₁, hbalance₂]
-      nlinarith
-    nlinarith
-  · have h : (1 - delta) * (rate * ell₁) ≤
-        (1 + delta) * (rate * ell₂) := by
-      rw [hbalance₁, hbalance₂]
-      nlinarith
-    nlinarith
+  · calc
+      (1 - delta) * ell₂ = ((1 - delta) * (2 * x₂)) / rate := by
+        rw [hell₂]
+        ring
+      _ ≤ ((1 + delta) * (2 * x₁)) / rate :=
+        (div_le_div_iff₀ hrate hrate).2 hnum₁
+      _ = (1 + delta) * ell₁ := by
+        rw [hell₁]
+        ring
+  · calc
+      (1 - delta) * ell₁ = ((1 - delta) * (2 * x₁)) / rate := by
+        rw [hell₁]
+        ring
+      _ ≤ ((1 + delta) * (2 * x₂)) / rate :=
+        (div_le_div_iff₀ hrate hrate).2 hnum₂
+      _ = (1 + delta) * ell₂ := by
+        rw [hell₂]
+        ring
 
-/-- Algebraic radial near-equality estimate used by the covariance transfer. -/
+/-- Exact radial covariance error identity in terms of `Q-1`. -/
+theorem radial_covariance_error_identity
+    (Q rate : ℝ) (hrate : 0 < rate) :
+    4 * Q / rate - 4 / rate = 4 * (Q - 1) / rate := by
+  field_simp [ne_of_gt hrate] <;> ring
+
+/-- Near equality controls the radial covariance component, and only that
+component without an additional tangential-isotropy hypothesis. -/
 theorem radial_covariance_error_bounds
     (Q rate eta : ℝ)
     (hrate : 0 < rate)
-    (hQlower : 1 ≤ Q)
-    (hQupper : Q ≤ 1 + eta) :
+    (hQlo : 1 ≤ Q) (hQhi : Q ≤ 1 + eta) :
     0 ≤ 4 * Q / rate - 4 / rate ∧
       4 * Q / rate - 4 / rate ≤ 4 * eta / rate := by
-  have hrne : rate ≠ 0 := ne_of_gt hrate
-  have hrearrange :
-      4 * Q / rate - 4 / rate = (4 * Q - 4) / rate := by
-    field_simp [hrne]
-    ring
-  rw [hrearrange]
+  rw [radial_covariance_error_identity Q rate hrate]
   constructor
-  · exact div_nonneg (by nlinarith) (le_of_lt hrate)
+  · exact div_nonneg (mul_nonneg (by norm_num) (sub_nonneg.mpr hQlo)) hrate.le
   · apply (div_le_div_iff₀ hrate hrate).2
     nlinarith
 
