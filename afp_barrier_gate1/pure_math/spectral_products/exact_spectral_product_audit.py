@@ -122,7 +122,7 @@ def boolean_square_certificate():
     require(L * f == -2 * f, "Boolean linear eigenfunction")
     require(q != sp.zeros(4, 1) and L * q == -4 * q,
             "nonzero Boolean doubled square")
-    require(sum(q) == 0, "Boolean centered square has nonzero uniform mean")
+    require(sum(q) == 0, "Boolean centered square has zero uniform mean")
     require(gamma == [4, 4, 4, 4], "Boolean constant Gamma")
 
 

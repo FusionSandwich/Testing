@@ -1,6 +1,6 @@
-# Prompt 2 completion progress
+# Prompt 2 completion record
 
-## Authoritative starting point
+## Immutable baseline and branch
 
 ```text
 repository=FusionSandwich/Testing
@@ -13,66 +13,16 @@ completion_branch=agent/afp-pure-math-p2-quadratic-covariance-completion
 immutable_transport_archive=515f1aae6c20bd85711c90b5c1c21b4905252d01
 ```
 
-All three WIP identities above were independently verified with Git.  The
-completion branch was created remotely from the exact WIP commit.  The current
-pure-math integration branch `agent/afp-pure-math-p0-m1` is separately at
-`c88b57533c3c8ad8fd819e4e52a74c4b5a245479`; it is not silently substituted
-for the literal WIP baseline required by this completion task.
+The commit and tree identifiers above were independently checked with Git.
+Prompt 1 is identified by its immutable accepted commit and tree; the present
+tip of any mutable Prompt-1 branch is not substituted for that checkpoint.
+The completion delta is always audited against the literal Prompt-2 WIP commit
+`9cfacd0cb55b8f12f802beae86a4708f96ed7aa3`.
 
-The mutable remote branch
-`agent/afp-pure-math-p1-local-global-corrected` has advanced beyond its
-accepted checkpoint.  This task therefore identifies Prompt 1 by the immutable
-commit and tree above, not by the present branch tip.
+## Correction accepted during completion
 
-## Initial saved-checkpoint verification
-
-The exact CI dependency versions are Python 3.12, NumPy 2.3.2, SymPy 1.14.0,
-and Lean/Mathlib 4.30.0.  With those Python versions installed in an isolated
-environment, the following WIP checks pass:
-
-- Python bytecode compilation;
-- the Prompt 1 claim-falsification audit;
-- the legacy covariance audit;
-- the exact local/global audit;
-- the independent rational spherical-feasibility audit; and
-- the signed-cube exact restoration audit, including attained undirected
-  negative mass `2`.
-
-The remaining long exact audits and the Lean checks are rerun after the first
-repair round so that their logs refer to a stable candidate rather than an
-ephemeral environment setup.  The pinned Lean dependencies have been resolved.
-The Mathlib binary cache must use a writable task cache in this container.
-
-## Demonstrated WIP completion gaps
-
-The checkpoint is useful but is not a completed Gate-2 result.  The initial
-line-by-line audit demonstrates these gaps:
-
-1. no weighted-reversible centering corollary is formalized;
-2. the sphere residual and full sampled-dimension equality are not yet
-   formalized as the explicit finite-dimensional theorem requested here;
-3. the signed one-shell radial/tangent decomposition and `R = D S_X` theorem
-   have no dedicated Lean module;
-4. the finite distinct-eigenvalue direct-sum/rank theorem has no Lean module;
-5. there is no tracked exact `D_3` counterexample implementation;
-6. the prism certificate omits explicit connectivity and vertex-transitivity
-   regressions;
-7. the signed-cube script does not yet certify every requested sampling rank,
-   alias, averaging, and optimality item;
-8. the ordinary theorem draft does not yet contain the complete weighted,
-   isotypic, semigroup, and spectral-sampling proofs required by the task;
-9. the main claim-control documents and pure-math README are not synchronized
-   with this stronger theorem package; and
-10. no dedicated Prompt-2 completion workflow exists on this WIP branch.
-
-No missing item above is treated as proved merely because a comment, numerical
-rank, or theorem-registry row says so.
-
-## Accepted correction to the spectral-sampling statement
-
-The literal implication from pairwise-distinct harmonic degrees is false
-without a dimension or distinct-target condition.  The exact rejected witness
-is
+The unrestricted implication from pairwise-distinct harmonic degrees is
+false. The exact rejected witness is
 
 ```text
 d=1
@@ -81,44 +31,141 @@ Phi(*)=+1 in S^0
 L=0
 D={0,1}
 V_0=V_1=R^I
-r_0=r_1=1
+rank(V_0)+rank(V_1)=2>|I|=1
 lambda_0=lambda_1=0
 ```
 
-Thus both requested scalar actions hold, while `V_0` and `V_1` are not an
-internal direct sum and `r_0+r_1=2>|I|=1`.  The unrestricted
-pairwise-distinct-degree claim is `REJECTED`.
+Accordingly, the completed theorem groups sampled spaces by equal target
+eigenvalue. When one common operator has the prescribed scalar action on every
+class, distinct target-class sums are internal and their dimensions obey the
+rank bound. For spherical harmonics, distinct degrees give distinct
+targets only when `d>=2`, because
 
-The corrected abstract theorem assumes pairwise-distinct **target
-eigenvalues**, or first replaces all spaces with the sum belonging to each
-equal-target class.  For spherical harmonics, `d>=2` makes
-`ell -> ell(ell+d-2)` strictly increasing, so the desired distinct-degree
-corollary is then valid.  In `d=1`, all direct-sum and rank counts are made only
-after grouping equal `ell(ell-1)` classes.
+\[
+ \ell\longmapsto \ell(\ell+d-2)
+\]
 
-The converse similarly works with target-class sums.  The zero-target class is
-enlarged by `span{1}` exactly once; when degree zero is already included, its
-sampled space is the constants and is not counted twice.  Weighted
-reversibility requires mutual weighted orthogonality of all distinct target
-classes, in particular constants against every nonzero-target sampled space.
+is then strictly increasing. In `d=1`, degrees are grouped by equal
+`ell(ell-1)` target before any direct-sum or rank count.
 
-## Mechanism-based audit state
+The converse is constants-safe: `span{1}` is included exactly once in the
+zero-target class. In the weighted-reversible version, constants must be
+weighted-orthogonal to every nonzero-target class, in addition to the mutual
+orthogonality of distinct nonconstant classes.
 
-| mechanism | current evidence | completion gate |
+## Closure of the saved-checkpoint gaps
+
+The initial WIP audit identified ten completion gaps. The candidate closes
+them as follows.
+
+| initial gap | completion evidence | state |
 |---|---|---|
-| finite product/covariance algebra | Lean declarations plus exact algebra | retain, extend, axiom-audit |
-| sampling quotient | generic Lean kernel/rank lemmas | explicit range and dimension theorem |
-| positive radial obstruction | ordinary proof and exact examples | proof audit and final mapping |
-| signed one-shell geometry | ordinary coordinate derivation | narrow Lean algebraic core |
-| exact finite examples | WIP SymPy scripts | missing graph, `D_3`, alias, and LP certificates |
-| equivariant decomposition | ordinary outline | full multiplicity/isotypic proof and counterexample |
-| signed optimization | exact optimizer and piecewise bound | explicit averaging and dual/subgradient certificate |
-| spectral sampling | exact harmonic ranks, Pell recurrence, and the exact rejected (d=1) one-node witness | formalize the target-eigenvalue-class theorem; state the (d\ge2) degree corollary and constants-safe converse |
-| semigroup/Jensen | correct outline and Boolean regression | complete separated proofs |
-| claim control and CI | WIP registries only | repository-wide synchronization and dedicated workflow |
+| weighted-reversible centering | ordinary proof plus `QuadraticCovariance.lean`, including zero-target center independence | closed |
+| sphere residual and genuine sampled dimension | `QuadraticSphereResidual.lean` and the linear range/rank theorems in `QuadraticSampling.lean` | closed |
+| signed one-shell factorization | ordinary proof and `OneShellQuadraticRigidity.lean` | closed |
+| finite spectral direct-sum/rank theorem | corrected target-eigenvalue-class proof and `SpectralSamplingObstruction.lean` | closed |
+| missing exact \(D_3\) counterexample | `exact_d3_invariance_counterexample.py` | closed |
+| incomplete prism certificate | exact unit-shell, positivity, conservativity, reversibility, connectivity, transitivity, action, rank, minor, and anisotropy checks | closed |
+| incomplete signed-cube certificate | exact ranks, aliases, 48 actions, orbit equations, invariant averaging, lower bound, optimizer, and KKT identities | closed |
+| incomplete ordinary proofs | covariance theorem, derivation companion, and spectral-product analysis now state complete arguments and exact hypothesis boundaries | closed |
+| unsynchronized claim control | theorem and approach registries, claim matrix, conjecture register, prior-art map, theorem-to-file map, and README synchronized | closed |
+| no dedicated completion workflow | `.github/workflows/afp-prompt2-completion.yml` | closed |
+
+The two easily hidden hypotheses are explicit throughout the synchronized
+documents:
+
+- the positive residual/rank obstruction needs a nonempty finite state set,
+  `d>1`, nonnegative rates, unit nodes, and
+  `L Phi = -(d-1) Phi`; and
+- the signed one-shell theorem needs `d>1`, unit nodes with the same eigenmap
+  equation, a nonempty noncoincident shell with `0<ell_i<2`, and the full
+  signed tangent-moment identity.
+
+## Completed theorem package
+
+The ordinary proofs establish, under their stated hypotheses:
+
+- the quadratic covariance identity and arbitrary target, including
+  `mu=0`;
+- weighted centering for a nonzero reversible target and the independence of
+  the center at zero target;
+- the sphere residual factorization, sampling quotient, and
+  `rank(S)-rank(R)` genuine-dimension formula;
+- the positive residual/Frobenius obstruction;
+- signed one-shell full-tangent-isotropy rigidity `R_X=D S_X` under the
+  nonempty-shell and `0<ell_i<2` hypotheses;
+- the positive hexagonal-prism sharpness result;
+- the multiplicity-free kernel formulas and quotient rank gap under invariant
+  generator rates, and the corrected invariance theorem;
+- the five-Platonic degree-two classification;
+- signed-cube restoration with sharp undirected negative mass two;
+- product resonance and the finite semigroup variance identity;
+- the corrected common-operator target-eigenvalue-class sampling theorem and
+  constants-safe converse; and
+- the project-specific parity transfer and recurrence for the spherical Pell
+  hierarchy.
+
+The following inputs remain labeled EXTERNAL rather than being presented as
+new project proofs: finite rank-nullity, real Maschke semisimplicity, the
+self-adjoint spectral theorem, convex subgradient/KKT theory, finite
+Markov-kernel Jensen equality and uniformization, the real spherical-harmonic
+Clebsch--Gordan decomposition, and completeness of positive negative-Pell
+solutions.
+
+The unrestricted distinct-degree theorem in all dimensions, scalarity without
+invariance, a universal positivity-only spectral hierarchy, and the blanket
+positive-square obstruction are labeled REJECTED. Exact finite rank tables,
+minors, polynomial aliases, group actions, and optimizer identities are
+labeled COMPUTATIONAL unless an ordinary proof separately establishes the
+general claim.
+
+## Exact and formal support
+
+The deterministic exact certificate set is:
+
+```text
+pure_math/covariance/exact_quadratic_covariance_audit.py
+pure_math/covariance/exact_signed_restoration_audit.py
+pure_math/covariance/exact_d3_invariance_counterexample.py
+pure_math/spectral_products/exact_spectral_product_audit.py
+```
+
+The new or extended formal support is:
+
+```text
+AFPBarrier/QuadraticCovariance.lean
+AFPBarrier/QuadraticSampling.lean
+AFPBarrier/QuadraticSphereResidual.lean
+AFPBarrier/OneShellQuadraticRigidity.lean
+AFPBarrier/SpectralSamplingObstruction.lean
+```
+
+These Lean modules certify the finite algebraic core. Standard representation
+theory, Markov Jensen theory, continuous spherical-harmonic decomposition, and
+Pell completeness remain outside the formal kernel and retain their EXTERNAL
+labels.
+
+## Verification gate
+
+The pinned candidate environment is Python 3.12, NumPy 2.3.2, SymPy 1.14.0,
+and Lean/Mathlib 4.30.0. The dedicated workflow performs two independent jobs:
+
+1. scope and whitespace audit against the exact WIP baseline, Python bytecode
+   compilation, retained Prompt-1 regressions, and all exact Prompt-2
+   certificates; and
+2. the pinned Lean build, focused axiom audit, and source scan rejecting
+   `sorry`, `admit`, `sorryAx`, and user-declared axioms.
+
+Both jobs reject a dirty checkout after verification and upload logs, toolchain
+records, hashes, and an exact source archive. A final commit identifier,
+workflow run identifier, and green status belong in the immutable CI records;
+they are not guessed in this source document before the integrated candidate
+is committed and the remote workflow completes.
 
 ## Scope guard
 
-This branch does not redo Prompt 1, begin Prompt 3 triangulation or
+This completion changes only the Prompt-2 pure-mathematics package, its Lean
+algebraic support, exact certificates, claim-control documentation, and its
+dedicated workflow. It does not redo Prompt 1, begin Prompt 3 triangulation or
 near-rigidity, or alter transport, Radiant, HTS, multigroup, spatial-solver, or
-evaluated-material work.  The transport archive remains immutable.
+evaluated-material work. The transport archive remains immutable.

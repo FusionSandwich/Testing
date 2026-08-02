@@ -28,7 +28,7 @@ that remains interesting without AFP terminology:
 1. local positive feasibility on spherical eigenmap embeddings;
 2. quantitative robustness and conditioning of positive spherical rows;
 3. global reversible shared-edge compatibility and duality;
-4. attainable quadratic spectral-product exactness;
+4. sampling-kernel-aware quadratic and spectral-product exactness;
 5. global equality propagation and geometric rigidity.
 
 ## Completed P0/M1 sphere-specific package
@@ -121,7 +121,7 @@ to propagate one common edge loss and one common row rate. Classification is
 attempted only under explicit geometric restrictions such as spherical
 triangulation.
 
-### M3 — quadratic covariance
+### M3 — quadratic covariance and spectral products
 
 For an eigenmap `Phi`, introduce the jump covariance
 
@@ -129,9 +129,34 @@ For an eigenmap `Phi`, introduce the jump covariance
 C_i = sum_j a_ij (Phi_j - Phi_i)(Phi_j - Phi_i)^T.
 ```
 
-The target is an exact characterization and dimension bound for the quadratic
-forms reproduced with a prescribed eigenvalue. Merely repeating the full
-quadratic no-go theorem is insufficient.
+**Status: resolved for Prompt 2.** The complete ordinary proofs are in
+covariance/QUADRATIC_COVARIANCE_THEOREM.md and
+spectral_products/SPECTRAL_PRODUCT_ANALYSIS.md.
+
+The package proves:
+
+- covariance and arbitrary-target identities, including the zero target;
+- weighted centering under nonempty positive-weight detailed balance;
+- the sphere residual, sampling quotient, and genuine dimension formula;
+- the positive residual and Frobenius obstruction for a nonempty finite state
+  set, \(d>1\), and a nonnegative unit eigenmap with
+  \(L\Phi=-(d-1)\Phi\);
+- signed one-shell full-tangent-isotropy rigidity \(R_X=DS_X\) for \(d>1\)
+  unit nodes satisfying \(L\Phi=-(d-1)\Phi\), nonempty noncoincident shells
+  with \(0<\ell_i<2\), and the full signed moment;
+- positive prism sharpness, the exact five-Platonic classification, and signed
+  cube restoration with sharp undirected negative mass two;
+- multiplicity-free kernel formulas and the quotient rank gap under invariant
+  generator rates, plus the corrected invariance theorem with exact \(D_3\)
+  counterexample;
+- product resonance, semigroup variance, and separate Jensen equality;
+- the common-operator target-eigenvalue-class sampling theorem, constants-safe
+  converse, antipodal bound, exact aliases, and parity-filtered \(S^2\) Pell
+  hierarchy.
+
+The unrestricted distinct-degree theorem is REJECTED in \(d=1\); distinct
+degrees imply distinct spherical targets only for \(d\ge2\). A universal
+positivity-only hierarchy and scalarity without invariance are also REJECTED.
 
 ## Claim discipline
 
@@ -147,7 +172,7 @@ Lean and CI are verification infrastructure, not mathematical novelty. Local
 positive rows, weighted centering, and sparse global shared-edge compatibility
 must never be conflated.
 
-## M1 records
+## Prompt 1 records
 
 - `EXACT_LOCAL_GLOBAL_THEOREM_PACKAGE.md` — complete proofs and constants;
 - `APPROACH_REGISTRY.md` — mechanism-based route/audit registry;
@@ -158,3 +183,28 @@ must never be conflated.
 - `../docs/SPHERICAL_FEASIBILITY_SHARED_EDGE_THEOREM.md` and
   `../docs/SPHERICAL_FEASIBILITY_OPTIMAL_VALUE_SENSITIVITY.md` — independent
   theorem and sensitivity derivations retained for cross-audit.
+
+## Prompt 2 records
+
+- covariance/QUADRATIC_COVARIANCE_THEOREM.md — authoritative covariance,
+  rigidity, equivariance, prism, Platonic, and signed-cube proofs;
+- covariance/QUADRATIC_COVARIANCE_DERIVATION.md — short derivation and
+  assumption audit;
+- spectral_products/SPECTRAL_PRODUCT_ANALYSIS.md — product, semigroup, sampled
+  hierarchy, aliases, and Pell boundary;
+- covariance/P2_THEOREM_REGISTRY.md and covariance/P2_APPROACH_REGISTRY.md —
+  exact claim and mechanism controls;
+- ../docs/P2_THEOREM_TO_FILE_MAP.md — ordinary/Lean/exact theorem map;
+- covariance/exact_quadratic_covariance_audit.py — Platonic and prism exact
+  certificates;
+- covariance/exact_signed_restoration_audit.py — signed cube and optimum;
+- covariance/exact_d3_invariance_counterexample.py — omitted-invariance
+  regression; and
+- spectral_products/exact_spectral_product_audit.py — products, corrected
+  hierarchy, aliases, antipodal bounds, and Pell cases.
+
+Rank-nullity, real semisimplicity, self-adjoint spectral theory,
+Clebsch--Gordan, Pell completeness, Jensen/uniformization, and convex KKT are
+EXTERNAL. Exact finite matrices are COMPUTATIONAL support. No priority claim
+follows from the covariance identity, a rank table, Lean job count, or CI
+result alone.

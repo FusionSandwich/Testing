@@ -1,45 +1,48 @@
 # Prompt 2 theorem-to-file map
 
-This map distinguishes a mathematical claim from its ordinary proof, Lean
-kernel proof, and deterministic finite certificate.  A finite computation is
-never listed as a proof of the general theorem.
+This map separates complete ordinary proof, Lean kernel support, exact finite
+regression, and EXTERNAL standard inputs. A deterministic finite calculation is
+not presented as the proof of a general theorem.
 
-The only claim labels used are `PROVED`, `EXTERNAL`, `COMPUTATIONAL`,
-`CONJECTURE`, and `REJECTED`.
-
-| theorem family | claim label | ordinary proof | Lean kernel | deterministic certificate | completion note |
-|---|---|---|---|---|---|
-| product identity and arbitrary target | PROVED | `pure_math/spectral_products/SPECTRAL_PRODUCT_ANALYSIS.md` | `AFPBarrier/SpectralProductAlgebra.lean` | `exact_spectral_product_audit.py` | retain and audit |
-| covariance identity and arbitrary target | PROVED | `pure_math/covariance/QUADRATIC_COVARIANCE_THEOREM.md` | `AFPBarrier/QuadraticCovariance.lean` | `exact_quadratic_covariance_audit.py` | weighted centering missing |
-| sphere residual factorization | PROVED | `QUADRATIC_COVARIANCE_THEOREM.md` | pending narrow residual module | `exact_quadratic_covariance_audit.py` | explicit trace-free theorem missing in Lean |
-| genuine sampled dimension | PROVED | `QUADRATIC_COVARIANCE_THEOREM.md` | generic part in `QuadraticSampling.lean` | exact sampling ranks | full finite-dimensional equality missing in Lean |
-| positive full-module obstruction | PROVED | `QUADRATIC_COVARIANCE_THEOREM.md` | not separately required | exact positive examples | final proof audit pending |
-| signed one-shell tangent-isotropy rigidity | PROVED | `QUADRATIC_COVARIANCE_THEOREM.md` | pending one-shell module | Platonic and prism audits | radial/tangent Lean core missing |
-| positive hexagonal-prism sharpness | COMPUTATIONAL | draft proof in `QUADRATIC_COVARIANCE_THEOREM.md` | not required | `exact_quadratic_covariance_audit.py` | connectivity/transitivity checks missing |
-| equivariance and multiplicity-free kernel formula | PROVED | proof completion pending in theorem document | broad representation formalization not required | finite examples | isotypic argument must be written explicitly |
-| quotient residual rank gap | PROVED | proof completion pending in theorem document | broad representation formalization not required | cube/hexagon examples | exact hypotheses must remain visible |
-| omitted-invariance `D_3` counterexample | COMPUTATIONAL | proof completion pending in theorem document | not required | tracked audit missing | mandatory file absent at WIP |
-| five Platonic classification | COMPUTATIONAL | `QUADRATIC_COVARIANCE_THEOREM.md` | not required | `exact_quadratic_covariance_audit.py` | exact minors/rates must remain recorded |
-| signed cube restoration and optimum `2` | PROVED | proof completion pending in theorem document | not required | `exact_signed_restoration_audit.py` | averaging, alias, and dual checks incomplete |
-| finite spectral-sampling direct sum and rank bound | PROVED | `SPECTRAL_PRODUCT_ANALYSIS.md` | pending spectral-sampling module | exact harmonic ranks | Lean theorem missing |
-| continuous `S^2` symmetric-square decomposition | EXTERNAL | `SPECTRAL_PRODUCT_ANALYSIS.md` | not required | dimension/eigenvalue checks | standard Clebsch--Gordan input |
-| parity-filtered negative Pell classification | EXTERNAL | `SPECTRAL_PRODUCT_ANALYSIS.md` | not required | `exact_spectral_product_audit.py` | standard Pell input; recurrence retained |
-| semigroup variance identity | PROVED | `SPECTRAL_PRODUCT_ANALYSIS.md` | not required | Boolean example | full finite-dimensional proof must be expanded |
-| Jensen variance/equality and uniformization | EXTERNAL | `SPECTRAL_PRODUCT_ANALYSIS.md` | not required | Boolean non-equality example | standard finite Markov theory |
-| universal positive spectral-product hierarchy | REJECTED | `SPECTRAL_PRODUCT_ANALYSIS.md` | not applicable | exact aliases | rejected without added nonaliasing/component hypotheses |
+| theorem family | label | ordinary proof | Lean support | exact finite support |
+|---|---|---|---|---|
+| finite product identity and arbitrary target | PROVED | pure_math/spectral_products/SPECTRAL_PRODUCT_ANALYSIS.md §§1–2 | AFPBarrier/SpectralProductAlgebra.lean | exact_spectral_product_audit.py |
+| covariance identity and arbitrary target, including \(\mu=0\) | PROVED | pure_math/covariance/QUADRATIC_COVARIANCE_THEOREM.md §2 | AFPBarrier/QuadraticCovariance.lean | exact_quadratic_covariance_audit.py |
+| weighted centering and zero-target independence | PROVED | covariance theorem §2 | AFPBarrier/QuadraticCovariance.lean | not required; the result is finite algebra |
+| sphere residual factorization | PROVED | covariance theorem §3 | AFPBarrier/QuadraticSphereResidual.lean | exact_quadratic_covariance_audit.py |
+| sampling kernel, range intersection, and dimension equality | PROVED | covariance theorem §3 | AFPBarrier/QuadraticSampling.lean and QuadraticSphereResidual.lean | all covariance sampling ranks |
+| positive residual and Frobenius obstruction (nonempty \(I\), \(d>1\), nonnegative unit eigenmap) | PROVED | covariance theorem §4 | not separately formalized; the formal sphere-residual definitions fix the conventions | positive Platonic/prism regressions |
+| signed one-shell tangent-isotropy rigidity (unit \(L\Phi=-(d-1)\Phi\) eigenmap, \(d>1\), nonempty shell, \(0<\ell_i<2\)) | PROVED | covariance theorem §5 | AFPBarrier/OneShellQuadraticRigidity.lean | Platonic \(R=\kappa S\) checks |
+| positive hexagonal-prism sharpness | PROVED | covariance theorem §6 | no broad graph formalization required | exact_quadratic_covariance_audit.py |
+| prism graph, action, matrices, ranks, and minors | COMPUTATIONAL | values recorded in covariance theorem §6 | not applicable | exact_quadratic_covariance_audit.py |
+| multiplicity-free kernel formulas and quotient rank gap under invariant generator rates | PROVED | covariance theorem §7 | representation theory remains a stated EXTERNAL input | exact positive rank-gap examples |
+| corrected scalar theorem for a preserved self-adjoint irreducible copy | PROVED | covariance theorem §7 | self-adjoint spectral theorem is EXTERNAL | exact \(D_3\) negative regression |
+| omitted-invariance shortcut | REJECTED | covariance theorem §7 | not applicable | exact_d3_invariance_counterexample.py |
+| five Platonic classification | PROVED | covariance theorem §8 | one-shell Lean core | exact_quadratic_covariance_audit.py |
+| Platonic matrices, kernels, actions, and minors | COMPUTATIONAL | exact values recorded in theorem §8 | not applicable | exact_quadratic_covariance_audit.py |
+| signed cube restoration at coordinate target \(-2\), cross target \(-6\), and global optimum two | PROVED | covariance theorem §9 | no LP formalization required | exact_signed_restoration_audit.py |
+| signed cube matrices, aliases, group action, and KKT | COMPUTATIONAL | values recorded in theorem §9 | not applicable | exact_signed_restoration_audit.py |
+| semigroup variance and derivative converse | PROVED | spectral analysis §3 | finite matrix-exponential proof in prose | Boolean exact regression |
+| Jensen equality and irreducible uniformization | EXTERNAL | exact transfer in spectral analysis §3 | not required | Boolean non-equality regression |
+| continuous \(S^2\) symmetric-square decomposition | EXTERNAL | spectral analysis §5 | not required | component/dimension checks |
+| parity-filtered Pell completeness | EXTERNAL | parity transfer and recurrence in spectral analysis §5 | not required | exact_spectral_product_audit.py |
+| common-operator target-eigenvalue-class direct sum, rank bound, and converse | PROVED | spectral analysis §6 | AFPBarrier/SpectralSamplingObstruction.lean | exact positive and rejection cases |
+| unrestricted all-dimension distinct-degree theorem | REJECTED | exact \(d=1\) witness in spectral analysis §6 | rejection retained in spectral module boundary | exact_spectral_product_audit.py |
+| Platonic \(H_2/H_4\) aliases and antipodal rank compression | COMPUTATIONAL | identities recorded in spectral analysis §6 | not required | exact_spectral_product_audit.py |
+| universal positivity-only spectral hierarchy | REJECTED | spectral analysis final status | not applicable | Boolean and alias regressions |
 
 ## Exact external inputs
 
 - finite-dimensional rank-nullity and quotient dimension;
-- finite real representation semisimplicity and Schur/spectral arguments;
-- tight-frame moment algebra;
-- Clebsch--Gordan decomposition for real spherical harmonics on `S^2`;
-- classification of positive solutions of the negative Pell equation; and
+- finite real Maschke semisimplicity and self-adjoint spectral arguments;
+- tight-frame moment background;
+- convex invariant averaging and subgradient/KKT optimality;
+- Clebsch--Gordan decomposition for real spherical harmonics on \(S^2\);
+- completeness of positive negative-Pell solutions; and
 - finite Markov-kernel Jensen equality and continuous-time uniformization.
 
-These inputs are standard mathematics.  The project contribution boundary is
-the sampling-kernel-aware covariance framework, the signed one-shell
-full-tangent-isotropy factorization, the positive prism sharpness example, the
-equivariant quotient rank gap, the signed-cube optimum, and their combined
-sampling-safe interpretation.
-
+The candidate contribution boundary is the combined sampling-kernel-aware
+covariance framework, signed one-shell factorization, positive prism sharpness,
+equivariant quotient rank gap, signed-cube optimum, and sampling-safe spectral
+interpretation. No priority claim is made from a standard input, covariance
+identity, exact rank table, Lean build, or CI result alone.

@@ -1,4 +1,4 @@
-# Pure-math prior-art map — P0/M1 update
+# Pure-math prior-art map — Prompt 1 and Prompt 2
 
 The main publication risk is that an AFP statement already exists under a
 different vocabulary. This map separates standard inputs from the
@@ -173,7 +173,7 @@ These topics primarily support the numerical-analysis track. The P0/M1
 inverse-quadratic rate bounds are exact finite inequalities, not a continuum
 convergence theorem.
 
-## 7. Convex and linear-programming duality inputs
+## 8. Convex and linear-programming duality inputs
 
 The following are standard finite-dimensional inputs and are cited/transferred,
 not claimed as project discoveries: barycentric convex-hull representation,
@@ -186,7 +186,7 @@ antipodal budget split, angle-explicit constants, shared-edge sign convention,
 geometric interpretations of every dual block, and exact obstruction and
 reconciliation results.
 
-## 8. P0/M1 priority conclusion
+## 9. P0/M1 priority conclusion
 
 Current defensible conclusions are:
 
@@ -199,9 +199,118 @@ Current defensible conclusions are:
   explicit quantitative margin, positive masses, shared-edge cone duality,
   weighted-centered incompatibility example, and centered-clique gluing form
   the potentially publishable combined contribution;
-- no priority claim is made yet for the quadratic covariance dimension theorem,
-  global equal-loss rigidity, or spectral-product hierarchy.
+- this Prompt 1 review did not establish priority for the then-future
+  quadratic covariance, rigidity, or spectral-product stages.
 
 Before submission, complete MathSciNet/zbMATH and citation-chain review and seek
 direct specialist review in positive stencils, discrete spherical geometry,
 finite convexity, and reversible Markov generators.
+
+## 10. Prompt 2 standard algebraic inputs
+
+The following are standard and are labeled EXTERNAL or foundational PROVED
+lemmas, never candidate novelty:
+
+- the finite jump-product/carré-du-champ identity;
+- weighted conservation under detailed balance;
+- rank-nullity, kernels, images, quotients, and polynomial spectral
+  projections;
+- finite real Maschke semisimplicity and Schur-type arguments;
+- the self-adjoint spectral theorem;
+- Jensen variance, its support equality case, and finite-chain uniformization;
+- tight-frame second moments;
+- convex group averaging and subgradient/KKT optimality;
+- the \(S^2\) Clebsch--Gordan decomposition; and
+- completeness of positive solutions to the negative Pell equation.
+
+The covariance expansion
+
+\[
+ L(\Phi^TA\Phi)
+ =-2\lambda\Phi^TA\Phi+\operatorname{tr}(AC_i)
+\]
+
+is direct algebra. It cannot support an originality statement by itself.
+Likewise, a finite exact rank or minor table is a certificate for an example,
+not a general-theorem or priority argument.
+
+## 11. Sampling, designs, and association-scheme boundary
+
+Spherical designs, harmonic evaluation, distance-regular graphs, and
+association schemes already provide:
+
+- exact harmonic evaluation ranks and aliases;
+- multiplicity decompositions of permutation modules;
+- shell-constant eigenvalues and orbit matrices;
+- tight vertex figures and tangent moments; and
+- Platonic and hypercube character calculations.
+
+Prompt 2 therefore does not claim the Platonic spectra, harmonic aliases,
+Walsh characters, or tight-frame identities as new. The project-specific use
+is their integration with the sampling kernel \(K_X\), residual kernel
+\(E_{\rm form}\), and genuine sampled space \(E_{\rm sample}\). Any paper must
+compare its formulation with finite-frame, spherical-design,
+distance-regular-graph, and graph inverse-eigenvalue literature before making
+a priority statement.
+
+## 12. Equivariance and real representation theory
+
+Equivariance of evaluation maps and multiplicity-free kernel selection are
+standard finite representation theory. Real Schur's lemma does not say that
+every real equivariant endomorphism is a scalar in complex or quaternionic
+type. Prompt 2 instead uses the self-adjoint spectral theorem on an explicitly
+preserved irreducible copy.
+
+The two-layer \(D_3\) example is retained as a regression warning: an
+equivariant operator may move one irreducible copy into another isomorphic
+ambient copy. The potentially useful project result is the sampling-residual
+quotient rank gap, not the standard isotypic vocabulary.
+
+## 13. Signed restoration and optimization boundary
+
+Symmetry reduction of a convex invariant optimization problem, orbit variables,
+piecewise-linear negative-part objectives, and KKT certificates are standard.
+The hypercube Hamming scheme is also standard. No novelty is claimed for those
+ingredients separately.
+
+The candidate project contribution is the precise constrained problem that
+combines coordinate exactness, the full nonzero sampled quadratic module,
+sampling aliases, reversible signed conductances, and undirected negative mass,
+together with the exact optimum two. This claim still requires targeted review
+against signed graph Laplacians, inverse eigenvalue problems, cubature with
+negative weights, and invariant linear programming.
+
+## 14. Spectral products and Pell boundary
+
+Product decompositions of spherical harmonics and negative-Pell classifications
+are EXTERNAL. The target-eigenvalue direct-sum theorem is elementary polynomial
+spectral projection. The exact \(d=1\) rejection demonstrates why degree labels
+cannot replace target scalars.
+
+The conservative candidate contribution is the combined sampling-safe
+interpretation: continuous product components may be killed or aliased by a
+finite node set, and simultaneous exactness is constrained by the dimensions
+of distinct sampled target classes. Component availability does not imply that
+one product isolates it and is not a positivity obstruction.
+
+## 15. Prompt 2 priority conclusion
+
+The defensible boundary is:
+
+- PROVED but standard/foundational: product and covariance expansions,
+  weighted centering, finite quotient algebra, semigroup exponentiation, and
+  target-eigenvalue separation;
+- EXTERNAL: real semisimplicity/spectral inputs, Jensen/uniformization,
+  tight-frame background, Clebsch--Gordan, and Pell completeness;
+- COMPUTATIONAL: exact finite graph actions, ranks, minors, aliases, and KKT
+  regressions;
+- candidate combined project contribution: the sampling-kernel-aware
+  covariance framework, signed one-shell full-tangent-isotropy factorization,
+  positive prism sharpness, equivariant quotient rank gap, signed-cube
+  negative-mass optimum, and their unified sampling-safe interpretation.
+
+No unqualified first/novel/optimal-priority wording is authorized. Before
+submission, perform targeted MathSciNet/zbMATH and citation-chain review in
+finite frames and designs, discrete spherical Laplacians, association schemes,
+signed inverse-eigenvalue problems, and invariant convex optimization, followed
+by specialist review.

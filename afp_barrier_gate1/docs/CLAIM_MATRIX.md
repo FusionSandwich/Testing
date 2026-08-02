@@ -1,51 +1,88 @@
 # AFP mathematical claim matrix
 
-This document controls publication wording for the pure-mathematics track.
-Statuses distinguish ordinary proof, Lean verification, external theorem use,
-and computational regression.
+Only PROVED, EXTERNAL, COMPUTATIONAL, CONJECTURE, and REJECTED are claim
+labels. Lean and exact scripts verify proofs or finite instances; they are not
+novelty evidence.
 
-| Claim | Status | Current support | Publication treatment |
-|---|---|---|---|
-| Finite jump generators satisfy the carré-du-champ square identity | PROVED / standard | Lean module `JumpGenerator.lean`; standard Markov-generator algebra | Foundational lemma only |
-| `lambda^2 <= rate * peakDefect` | PROVED / standard | Lean modules `Quantitative.lean` and `LossVariance*.lean` | Foundational weighted Cauchy–Schwarz lemma |
-| The gap equals a weighted edge-loss variance | PROVED | Lean module `LossVariance.lean` | Foundational sharpness identity |
-| A finite positive conservative generator cannot reproduce the complete degree-one and complete degree-two spherical eigenspaces exactly | PROVED in the stated AFP formulation | Lean algebraic core plus spherical specialization | Candidate AFP-specific corollary; priority still requires specialist review |
-| A centered positive quadrature admits a dense positive reversible degree-one-exact operator | PROVED | `CompleteGraph.lean`; Theorem 4.2 in `SPHERICAL_FEASIBILITY_SHARED_EDGE_THEOREM.md` | Supporting construction |
-| Positive spherical Delaunay families attain the natural `h^-2` rate scale | EXTERNAL specialization | Published spherical Delaunay Laplacian theory plus project loss bounds | Cite as achievability input, not as an original construction |
-| The project’s quasi-uniform family is globally minimax or spectrally optimal | CONJECTURE / unsupported | No global minimax theorem | Do not claim |
-| Only `K in {4,6,12}` can have global `Q=1` | REJECTED | Cube (`K=8`) and dodecahedron (`K=20`) are counterexamples | Never state without new restrictive assumptions |
-| Connected reversible `Q=1` graphs have one common active-edge loss and one common row rate | CONJECTURE with complete proof target | Local equality plus shared-edge propagation; separate M2 work | Not part of the completed P0/M1 package |
-| Only tetrahedral, octahedral, and icosahedral spherical triangulations can satisfy global `Q=1` under strict equal-edge hypotheses | CONJECTURE | Plausible only after explicit triangulation, positivity, and embedding assumptions | Counterexample search before proof |
-| Non-antipodal local feasibility is equivalent to `0` in the indexed tangent hull | PROVED | Exact bijection and proof in the M1 theorem package; finite scaling in Lean | Sphere-specific transfer of standard positive-stencil geometry |
-| Strict positivity on every non-antipodal edge is equivalent to tangent-hull relative interior | PROVED | Supporting separation plus constructive inball proof, including repetitions/lower dimension | M1 theorem with standard convex input identified |
-| Tangent-dependence and row uniqueness are equivalent to the normalized dependence polytope being a singleton | PROVED | Exact dependence/row bijection; equivalent minimal-face affine-independence criterion | Include indexed repetitions and redundancies explicitly |
-| Pure and mixed antipodal feasibility is a separate normal-budget simplex | PROVED | Exact no-division parameterization | Never assign a tangent direction at an antipode |
-| `rho>0`, `beta_*>0`, and strict local feasibility are equivalent, with `beta_j >= rho/[m(1+rho)]` | PROVED | Constructive barycentric proof and exact support/LP formulas | Quantitative M1 result |
-| Local exact rows have explicit inverse-quadratic rate and coefficient bounds under positive quasi-uniform angle constants | PROVED | Theorem 3.3 of the M1 package | State the positivity of `c1` explicitly |
-| The local balance matrix has explicit singular-value, right-inverse, and condition-number bounds | PROVED | Theorem 3.5 with relative-span hypotheses | Never call conditioning controlled without the displayed margin |
-| Strict local feasibility persists under the stated transported-span perturbation bound | PROVED | Theorem 3.4 with an explicit span isometry and angular constants | Endpoint motion alone does not identify changing lower-dimensional spans |
-| Local row feasibility implies global reversible shared-edge feasibility | REJECTED | Centered alternating-mass four-cycle has strict local rows and exact Farkas certificate | Retain as regression obstruction |
-| Weighted centering is sufficient on every permitted graph | REJECTED | Same centered four-cycle obstruction | Sufficient on the complete graph or under reconciliation hypotheses |
-| Centering is necessary on every graph and sufficient on the complete graph via `gamma_ij=2w_iw_j/sum w` | PROVED | Block-sum proof and `CompleteGraph.lean` | Supporting global theorem |
-| Global reversible feasibility is exactly shared-edge cone membership; its spherical feasible set is a compact polytope | PROVED | Theorem 4.1 and the positive edge-loss conductance bounds | Retain the noncoincident permitted-edge hypothesis |
-| Strict all-edge global feasibility is equivalent to relative-interior membership in the shared-edge cone | PROVED | Finite indexed conic relative-interior theorem | Global analogue of positive barycentric coordinates |
-| Equivariant averaging reconciles local rows when averaged edge orientations agree | PROVED | Precise action/embedding/mass hypotheses in Theorem 4.5 | Noncomplete-graph reconciliation theorem |
-| Centered-clique submass decompositions reconcile sparse local blocks | PROVED | Independent Theorem 4.5 in `SPHERICAL_FEASIBILITY_SHARED_EDGE_THEOREM.md` | Additional noncomplete-graph sufficient mechanism |
-| Existing Lean dual-certificate theorem is the full Farkas alternative | REJECTED wording | Lean proves soundness; the proof package separately transfers the full finite alternative and LP strong duality | Preserve formal/prose distinction |
-| Strict shared feasibility is stable under compatible perturbations controlled by an interior and singular-value margin | PROVED under stated compatibility/rigidity hypotheses | Explicit bounds in Theorem 4.6 | Never omit centering/range compatibility |
-| Constant-stopping layered final energy is order independent | PROVED for that model only | Additive energy decrement | Manufactured benchmark, not a general material theorem |
-| Layered final energy is generally order independent | REJECTED | Nonproportional stopping flows need not commute | Replace by flow-commutator theory |
-| No finite positive graph can satisfy positive Bakry–Émery curvature or `CD(1,2)` | REJECTED | Positive-curvature finite graphs are known | Study only AFP-specific curvature defects |
-| Positivity alone gives standard continuum `W_2` contraction | REJECTED | Discrete Markov chains require a specified discrete transport metric | Deferred high-risk branch |
-| The attainable quadratic exact subspace is characterized by jump covariance tensors | CONJECTURE with derived identity target | Algebraic expansion identified; full local/global dimension theorem absent | Core M3 research target |
-| A nontrivial spectral-product hierarchy limits simultaneous exactness of low eigenspaces | CONJECTURE | Degree-one/degree-two case motivates it; general statement unknown | Pure-math main-theorem candidate |
+## Foundational and Prompt 1 claims
+
+| Claim | Status | Support and publication boundary |
+|---|---|---|
+| Finite jump generators satisfy the carré-du-champ product identity | PROVED | SpectralProductAlgebra.lean; standard foundational algebra |
+| \(\lambda^2\le\text{rate}\times\text{peak defect}\) | PROVED | Quantitative.lean and LossVariance modules; standard weighted Cauchy--Schwarz |
+| The rate-defect gap is a weighted edge-loss variance | PROVED | LossVariance.lean; foundational sharpness identity |
+| For nonempty finite \(I\) and \(d>1\), complete coordinate and trace-free quadratic exactness is impossible for a nonnegative unit spherical eigenmap with \(L\Phi=-(d-1)\Phi\) | PROVED | positive radial covariance obstruction; AFP-specific corollary, priority review still required |
+| A centered positive quadrature admits a dense positive reversible coordinate-exact operator | PROVED | CompleteGraph.lean and Prompt 1 Theorem 4.2 |
+| Positive spherical Delaunay families attain the natural inverse-square rate scale | EXTERNAL | published spherical Delaunay Laplacian theory plus project loss bounds |
+| The project's quasi-uniform family is globally minimax or spectrally optimal | CONJECTURE | no minimax theorem; do not claim |
+| Only \(K\in\{4,6,12\}\) can have global \(Q=1\) | REJECTED | cube and dodecahedron |
+| Connected reversible equality rows propagate one common active loss and row rate | CONJECTURE | reserved for Prompt 3; requires its complete propagation proof |
+| Only tetrahedral, octahedral, and icosahedral triangulations satisfy global \(Q=1\) | CONJECTURE | only under future explicit triangulation and embedding hypotheses |
+| Non-antipodal local feasibility is equivalent to origin membership in the indexed tangent hull | PROVED | Prompt 1 exact local/global package |
+| Strict positivity on every indexed non-antipodal edge is equivalent to tangent-hull relative interior | PROVED | Prompt 1, including repetitions and lower-dimensional span |
+| Local row uniqueness is equivalent to a singleton normalized dependence polytope | PROVED | exact dependence/row bijection |
+| Pure and mixed antipodal feasibility is a separate normal-budget simplex | PROVED | division-free Prompt 1 parameterization |
+| \(\rho>0\), \(\beta_*>0\), and strict local feasibility are equivalent with the stated coefficient bound | PROVED | constructive Prompt 1 proof |
+| Local exact rows have inverse-quadratic rate bounds under positive quasi-uniform angle constants | PROVED | Prompt 1 Theorem 3.3; positivity of the lower constant is mandatory |
+| The local balance matrix has the stated singular-value and right-inverse bounds | PROVED | Prompt 1 Theorem 3.5 |
+| Strict local feasibility persists under the transported-span perturbation bound | PROVED | Prompt 1 Theorem 3.4; endpoint motion alone is insufficient in changing lower dimension |
+| Local row feasibility implies sparse global reversible shared-edge feasibility | REJECTED | centered unequal-mass four-cycle and weighted cube certificates |
+| Weighted centering is sufficient on every permitted graph | REJECTED | same sparse shared-edge obstructions |
+| Centering is necessary on every graph and sufficient on the complete graph | PROVED | block-sum proof and CompleteGraph.lean |
+| Global reversible feasibility is shared-edge cone membership and its positive spherical feasible set is compact | PROVED | Prompt 1 Theorem 4.1 |
+| Strict shared feasibility is relative-interior membership in the shared-edge cone | PROVED | finite indexed conic theorem |
+| Equivariant averaging reconciles local rows when averaged orientations agree | PROVED | Prompt 1 Theorem 4.5 and GroupAveraging.lean |
+| The old Lean dual certificate alone is the full Farkas alternative | REJECTED | Lean proves soundness; full finite alternative is an EXTERNAL standard theorem transferred in prose |
+| Strict shared feasibility is stable under the stated compatibility and rigidity margins | PROVED | Prompt 1 Theorem 4.6; never omit range/centering compatibility |
+| Layered final energy is generally order independent | REJECTED | nonproportional stopping flows need not commute |
+| Positivity alone gives standard continuum \(W_2\) contraction | REJECTED | a specified discrete transport metric is required |
+
+## Prompt 2 covariance and representation claims
+
+| Claim | Status | Support and publication boundary |
+|---|---|---|
+| The quadratic covariance and arbitrary-target formulas hold without positivity or reversibility | PROVED | QUADRATIC_COVARIANCE_THEOREM.md §2 and QuadraticCovariance.lean |
+| Nonzero reversible targets force the weighted sample center | PROVED | positive weights, nonempty state set, detailed balance, and \(\mu\ne0\); pointwise residual remains necessary |
+| Weighted conservation determines the center at zero target | REJECTED | \(c\) disappears when \(\mu=0\) |
+| The sphere residual factors through sampling and genuine dimension is rank \(S\) minus rank \(R\) | PROVED | theorem §3 and sampling formalization |
+| Every positive sphere row has a nonzero residual tensor with the stated Frobenius lower bound | PROVED | theorem §4; nonempty finite state set, \(d>1\), nonnegative rates, unit eigenmap with \(L\Phi=-(d-1)\Phi\) |
+| Signed one-shell full tangent isotropy forces \(R_X=DS_X\) and no genuine quadratic mode | PROVED | theorem §5; \(d>1\), unit nodes with \(L\Phi=-(d-1)\Phi\), nonempty noncoincident shell, \(0<\ell_i<2\), coincident jumps excluded from shell moments |
+| One shell, positivity, connectedness, transitivity, and injective sampling imply the same rigidity without tangent isotropy | REJECTED | positive spherical hexagonal prism has two genuine modes |
+| The prism graph/rank/minor data are exact | COMPUTATIONAL | exact_quadratic_covariance_audit.py |
+| An equivariant embedding and invariant generator give the multiplicity-free kernel formulas and quotient rank gap | PROVED | theorem §7; \(a_{gi,gj}=a_{ij}\); finite real semisimplicity is EXTERNAL |
+| Equivariance alone makes a selected irreducible sampled copy invariant | REJECTED | exact two-layer \(D_3\) counterexample |
+| A preserved self-adjoint real irreducible copy carries a scalar action | PROVED | invariant real eigenspaces; do not omit preservation |
+| The five natural positive Platonic generators have the recorded ranks and no genuine degree-two mode | PROVED | one-shell theorem plus exact algebraic minors |
+| The Platonic finite matrices and minors are exact | COMPUTATIONAL | exact_quadratic_covariance_audit.py |
+| Symmetric cube conductances satisfying coordinate target \(-2\) and the full sampled cross-quadratic target \(-6\) have minimum undirected negative mass two | PROVED | arbitrary-feasible cube averaging, orbit lower bound, and KKT |
+| The signed-cube finite group, aliases, optimizer, and KKT identities are exact | COMPUTATIONAL | exact_signed_restoration_audit.py |
+
+## Prompt 2 spectral-product claims
+
+| Claim | Status | Support and publication boundary |
+|---|---|---|
+| Resonant products are equivalent to constant polarized carré du champ | PROVED | finite product identity; no sign assumptions |
+| Positive generators forbid every nonzero centered doubled square | REJECTED | exact positive Boolean square |
+| Resonant-square semigroup variance is the stated exponential identity | PROVED | finite matrix exponential and derivative converse |
+| Positive Markov Jensen variance is nonnegative with support-constancy equality | EXTERNAL | standard Jensen equality; irreducible positivity by uniformization |
+| On \(S^2\), \(\operatorname{Sym}^2(H_\ell)=\bigoplus_{r=0}^{\ell}H_{2r}\) | EXTERNAL | Clebsch--Gordan and exchange symmetry |
+| The even doubled component occurs at the parity-filtered negative-Pell solutions | EXTERNAL | Pell completeness; project parity transfer and recurrence proved explicitly |
+| Pairwise distinct target eigenvalues for scalar restrictions of one common operator force an internal sampled direct sum and rank bound | PROVED | polynomial spectral projections |
+| Pairwise distinct degrees suffice in every dimension | REJECTED | \(d=1\) singleton has \(V_0=V_1\); valid for \(d\ge2\) |
+| A constants-safe signed converse exists exactly for internally direct target classes | PROVED | zero-target class contains constants once |
+| Weighted reversibility of the converse needs only orthogonality among nonconstant sampled spaces | REJECTED | constants must also be orthogonal to all nonzero target spaces |
+| The Platonic \(H_2/H_4\) aliases and antipodal orbit ranks are exact | COMPUTATIONAL | exact_spectral_product_audit.py |
+| Positivity alone gives a universal new all-degree hierarchy | REJECTED | finite aliases and the Boolean example leave only pointwise product residuals |
 
 ## Claim-writing rules
 
-1. Never use gate counts, Lean job counts, or CI hashes as evidence of novelty.
-2. Separate `PROVED`, `EXTERNAL`, `COMPUTATIONAL`, and `CONJECTURE` in every draft.
-3. State graph class, positivity, reversibility, embedding, masses, connectivity, and relative-span hypotheses explicitly.
-4. Never hide antipodes inside a formula containing division by `sin(theta)`.
-5. A finite audit is not an all-orders theorem.
-6. A standard convex-hull, Farkas, or LP theorem can support the spherical package but is not itself the publication contribution.
-7. Local positive rows, weighted centering, and global shared-edge compatibility are three distinct logical levels.
+1. State dimension, graph class, signs, reversibility, masses, connectivity,
+   embedding, group action, and sampling-kernel hypotheses explicitly.
+2. Do not identify an algebraic exact form with a nonzero sampled function.
+3. Do not infer invariance of one irreducible copy from equivariance alone.
+4. Do not count equal target-eigenvalue spaces separately.
+5. Degree-zero samples are the constants and are counted once.
+6. Separate PROVED ordinary theorems, EXTERNAL inputs, and COMPUTATIONAL finite
+   certificates.
+7. No priority claim follows from a covariance identity, Lean job count, CI
+   hash, rank table, or standard theorem alone.

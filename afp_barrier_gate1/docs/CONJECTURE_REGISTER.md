@@ -1,136 +1,127 @@
 # AFP pure-math conjecture register
 
-Every conjecture requires a precise hypothesis set, deterministic falsification
-search, literature status, and explicit kill criterion. Resolved entries are
-retained so earlier claim changes remain auditable.
+Every active conjecture has an exact hypothesis target and kill criterion.
+Resolved and rejected entries remain visible so claim changes are auditable.
+Status fields use only the controlled claim labels.
 
-## C-M1. Strict local spherical feasibility — resolved
+## C-M1. Strict local spherical feasibility
 
-**Proved statement.** For candidate neighbors with tangent directions
-`u_j` and angles `0 < theta_j < pi`, a degree-one-exact row with every rate
-strictly positive exists if and only if the origin lies in the relative
-interior of `conv{u_j}`. Once a positive tangent dependence is selected, the
-normal-loss equation fixes one positive scale.
+**Status:** PROVED
 
-**Status:** PROVED, including repetitions, redundant points, lower-dimensional
-span, exact scaling/rate/uniqueness, antipodes, quantitative margins, and
-explicitly identified-span perturbation stability. See
-`pure_math/EXACT_LOCAL_GLOBAL_THEOREM_PACKAGE.md` and the independent
-`SPHERICAL_FEASIBILITY_SHARED_EDGE_THEOREM.md` development.
+For indexed non-antipodal neighbours, an all-positive coordinate-exact row
+exists exactly when the origin is in the relative interior of the tangent
+hull. The Prompt 1 package covers repetitions, redundant directions,
+lower-dimensional span, exact scaling/rate/uniqueness, antipodes, quantitative
+margins, and identified-span perturbations.
 
-**Resolved deliverables:**
+**Regression warning:** a changing lower-dimensional span requires a specified
+isometry; endpoint motion alone is insufficient.
 
-- the scaling map is a bijection with the normalized dependence polytope;
-- positive indexed dependences are equivalent to relative interior;
-- antipodes form a separate residual normal-budget simplex;
-- `rho`, `beta_*`, rate, coefficient, support, and singular-value margins are explicit;
-- standard positive-stencil inputs are separated from sphere-specific results.
+## C-M1G. Local-to-shared compatibility
 
-**Regression warnings:** lower-dimensional perturbations require a fixed or
-explicitly identified intrinsic span; uniqueness means existence and uniqueness.
-Exact repeated-direction and boundary-crossing regressions are retained in both
-`pure_math/examples/exact_local_global_audit.py` and
-`pure_math/tests/test_spherical_feasibility.py`.
+**Status:** REJECTED
 
-## C-M1G. Global local-to-shared compatibility — resolved negatively and conditionally
+Local positive rows plus weighted centering do not imply sparse shared-edge
+feasibility. The centered unequal-mass four-cycle and the weighted cube have
+exact Farkas certificates.
 
-The unrestricted implication is REJECTED by two independent exact examples:
-the centered unequal-mass equatorial four-cycle, and the weighted-centered
-cube with a heavy antipodal pair. The cube certificate
-`y_x=(x_2,x_3,x_1)/sqrt(3)` has zero edge work and `b dot y=-4`.
-Complete-graph sufficiency, equivariant orbit averaging, and centered-clique
-submass decomposition are PROVED reconciliation results. Further sparse
-classifications must survive both regression examples.
+**Resolved sufficient mechanisms:** complete-graph construction, equivariant
+orientation reconciliation, and centered-clique submass decomposition are
+PROVED.
 
 ## C-M2. Global equality propagation
 
-**Statement under test.** In a connected reversible positive graph with a
-symmetric spherical loss, if every row attains equality in the local
-rate-defect inequality, all row rates coincide and all active edges have one
-common loss.
+**Status:** CONJECTURE
 
-**Status:** CONJECTURE with a short proof route; Lean formalization active.
+**Statement under test:** in a connected reversible positive graph with a
+symmetric spherical loss, equality in every local rate-defect row forces one
+global active loss and one row rate.
 
-**Kill condition:** none expected for the propagation lemma; its publication
-role is supporting unless it enables a harder classification or near-rigidity
-theorem.
+**Work needed:** a complete propagation proof with zero-rate and repeated-node
+cases exposed. This is Prompt 3 scope, not part of Prompt 2.
 
-## C-M3. Triangulated global `Q=1` classification
+**Kill condition:** an exact connected reversible counterexample satisfying
+every row equality.
 
-**Candidate statement.** A connected geodesic triangulation of `S^2` with
-positive conductances on every edge, exact coordinate eigenmap, and `Q_i=1`
-at every vertex must be one of the tetrahedral, octahedral, or icosahedral
-triangulations, subject to a precise nondegeneracy and convex-embedding
-hypothesis.
+## C-M3. Triangulated global \(Q=1\) classification
 
-**Status:** CONJECTURE.
+**Status:** CONJECTURE
 
-**Known warning:** without the triangulation restrictions, cube and
-dodecahedron embeddings give immediate counterexamples.
+**Candidate statement:** a connected nondegenerate geodesic triangulation of
+\(S^2\), positive on every edge and coordinate-exact with \(Q_i=1\), is one of
+the tetrahedral, octahedral, or icosahedral triangulations under a precise
+convex-embedding hypothesis.
 
-**Falsification plan:** enumerate small spherical triangulations and symmetric
-polyhedral embeddings; test equal-edge and weighted variants; search for
-nonregular equal-edge triangulations.
+**Warning:** without the triangulation restrictions, the cube and dodecahedron
+are counterexamples.
 
 **Kill condition:** one valid non-Platonic triangulated counterexample.
 
 ## C-M4. Quantitative near-rigidity
 
-**Statement under test.** If every normalized active edge weight is bounded
-below and `max_i(Q_i-1) <= eta`, then active edge losses differ from a global
-common loss by `O(sqrt eta)` after accounting for graph diameter or overlap.
+**Status:** CONJECTURE
 
-**Status:** CONJECTURE.
+**Statement under test:** under a positive normalized active-edge lower bound,
+\(\max_i(Q_i-1)\le\eta\) controls global active-loss variation by
+\(O(\sqrt\eta)\), with explicit graph-diameter and conductance dependence.
 
-**Work needed:** propagate the existing local weighted-variance estimate across
-shared edges; determine the unavoidable dependence on minimum conductance,
-graph diameter, and rate variation.
-
-**Kill condition:** families with `Q -> 1` but no controlled global edge-length
-concentration under the stated hypotheses.
+**Kill condition:** a family with \(Q\to1\) but no such concentration under all
+stated quantitative hypotheses.
 
 ## C-M5. Attainable quadratic exactness
 
-**Statement under test.** For an eigenmap `Phi` and jump covariance tensors
-`C_i`, exactness of a quadratic form is equivalent to a linear contraction
-condition involving `C_i`, `Phi_i Phi_i^T`, and the target eigenvalue. The
-intersection of these local linear spaces gives the globally attainable
-quadratic subspace.
+**Status:** PROVED
 
-**Status:** CONJECTURE as a theorem package; core algebraic identity derived.
+The Prompt 2 package proves:
 
-**Deliverables:**
+- the arbitrary-target covariance identity, including \(\mu=0\);
+- weighted centering under nonempty positive-weight detailed balance;
+- the trace-free sphere residual \(R_X=(L+2dI)S_X\);
+- the sampling quotient and exact genuine dimension formula;
+- the positive radial and Frobenius obstruction for nonempty \(I\), \(d>1\),
+  nonnegative rates, and a unit eigenmap with \(L\Phi=-(d-1)\Phi\);
+- signed one-shell full-tangent-isotropy rigidity for \(d>1\), nonempty
+  noncoincident shells with \(0<\ell_i<2\), and the full signed moment;
+- positive prism sharpness;
+- equivariant kernel and quotient-rank formulas under invariant generator
+  rates, with the corrected invariance theorem;
+- exact Platonic classifications; and
+- signed cube restoration with coordinate target \(-2\), cross-quadratic target
+  \(-6\), and global optimum \(N^-=2\).
 
-- exact local identity;
-- local rank/dimension bound;
-- global intersection bound;
-- symmetry examples and sharpness cases;
-- comparison with negative-conductance operators.
-
-**Kill condition:** only tautological rank bookkeeping remains and no useful
-sharp dimension or rigidity statement survives.
+**Boundary:** rank-nullity, real semisimplicity, the self-adjoint spectral
+theorem, and convex KKT are EXTERNAL standard inputs. The finite matrices and
+minors are COMPUTATIONAL exact regressions. No priority claim is made from the
+covariance identity or ranks alone.
 
 ## C-M6. Spectral-product hierarchy
 
-**Statement under test.** Positivity constrains simultaneous exactness of an
-eigenspace and selected irreducible components of its symmetric square, with a
-nontrivial hierarchy on spheres or compact homogeneous spaces.
+**Status:** PROVED
 
-**Status:** HIGH-RISK CONJECTURE.
+The valid finite theorem is target-eigenvalue-class separation: when one
+common operator has the prescribed scalar action, sums belonging to distinct
+target scalars form an internal direct sum, with a constants-safe signed
+converse and weighted-orthogonal reversible converse. For spherical harmonics,
+distinct degrees imply distinct targets when \(d\ge2\).
 
-**First tests:** Legendre and spherical-harmonic products for degrees 1--6;
-strict-extremum and antipodal-maximizer cases; computational linear algebra on
-Platonic and optimized graphs.
+The unrestricted all-dimension distinct-degree wording is REJECTED by the exact
+\(d=1\) singleton with \(V_0=V_1\). A universal positivity hierarchy is also
+REJECTED by finite aliases and the positive Boolean square.
 
-**Kill condition:** every case reduces to the same one-function square identity
-without a dimension tradeoff or new global consequence.
+The \(S^2\) Clebsch--Gordan decomposition and negative-Pell completeness are
+EXTERNAL. Platonic harmonic ranks and aliases are COMPUTATIONAL exact
+certificates.
 
-## Rejected conjectures retained as regression warnings
+## Retained rejected claims
 
-- local row feasibility plus weighted centering implies sparse shared-edge
-  feasibility;
-- unrestricted `Q=1` classification by `K in {4,6,12}`;
-- global `Q>1` for every finite spherical graph;
-- blanket finite-graph Bakry–Émery curvature collapse;
-- standard continuum `W_2` contraction from positivity alone;
-- general order independence of layered stopping maps.
+**Status:** REJECTED
+
+- unrestricted \(Q=1\) classification by \(K\in\{4,6,12\}\);
+- global \(Q>1\) for every finite spherical graph;
+- blanket finite-graph Bakry--Émery curvature collapse;
+- continuum \(W_2\) contraction from positivity alone;
+- general order independence of layered stopping maps;
+- weighted centering as sparse global sufficiency;
+- symmetry scalarity without invariance;
+- distinct sampled degree labels without distinct target eigenvalues; and
+- a blanket positive doubled-square obstruction.

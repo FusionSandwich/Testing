@@ -1,191 +1,163 @@
-# Quadratic covariance characterization
+# Quadratic covariance derivation and assumption audit
 
-This note records the next candidate theorem for the pure-mathematics paper.
-It is not yet promoted to `PROVED` until the complete proof and priority review
-are finished.
+This is the short derivation companion to
+QUADRATIC_COVARIANCE_THEOREM.md. The latter is the authoritative ordinary proof
+package. The covariance characterization is PROVED; this note no longer
+describes it as a conjectural M3 target.
 
-## Setting
+## Exact jump expansion
 
-Let
-
-\[
-(Lf)(i)=\sum_j a_{ij}(f(j)-f(i))
-\]
-
-be a finite generator, and let
+For
 
 \[
-\Phi:X\to\mathbb R^d
+ (Lf)(i)=\sum_{j\ne i}a_{ij}(f(j)-f(i)),\qquad
+ L\Phi=-\lambda\Phi,
 \]
 
-be an eigenmap satisfying, coordinatewise,
+define
 
 \[
-L\Phi=-\lambda\Phi.
+ \Delta_{ij}=\Phi_j-\Phi_i,\qquad
+ C_i=\sum_{j\ne i}a_{ij}\Delta_{ij}\Delta_{ij}^T.
 \]
 
-For one vertex define
+For \(A=A^T\),
 
 \[
-\Delta_{ij}=\Phi_j-\Phi_i,
-\qquad
-C_i=\sum_j a_{ij}\Delta_{ij}\Delta_{ij}^{T}.
+ \Phi_j^TA\Phi_j-\Phi_i^TA\Phi_i
+ =2\Phi_i^TA\Delta_{ij}+\Delta_{ij}^TA\Delta_{ij}.
 \]
 
-For a symmetric matrix `A`, set
+Summation gives
 
 \[
-q_A(\Phi)=\Phi^T A\Phi.
+ L(S_X(A))(i)
+ =-2\lambda\Phi_i^TA\Phi_i+\operatorname{tr}(AC_i).
 \]
 
-## Exact expansion
-
-Expanding one jump gives
+Thus \(S_X(A)-c\mathbf1\) has target \(-\mu\) exactly when
 
 \[
-q_A(\Phi_j)-q_A(\Phi_i)
-=
-2\Phi_i^T A\Delta_{ij}
-+
-\Delta_{ij}^T A\Delta_{ij}.
+ \operatorname{tr}(AC_i)
+ +(\mu-2\lambda)\Phi_i^TA\Phi_i-\mu c=0
 \]
 
-Summing and using the eigenmap equation gives
+at every vertex. This derivation needs no positivity, reversibility,
+connectivity, or division by \(\mu\). At \(\mu=0\), the center is invisible.
+
+## Weighted-center audit
+
+Detailed balance with positive weights gives
+\(\sum_iw_iLf_i=0\). For a nonzero target, the exact center is therefore the
+weighted sample mean. This is only a necessary scalar consequence; it does not
+replace the pointwise covariance residual. A nonempty state set and positive
+total weight are required before dividing by \(\sum_iw_i\). At zero target,
+the center remains arbitrary. Connectivity and nonnegative active rates are
+needed for the stronger assertion that harmonic functions are constant.
+
+## Sphere residual and sampling quotient
+
+For unit nodes, \(\lambda=d-1\), target \(2d\), and
+\(A\in\operatorname{Sym}_0(d)\), define
 
 \[
-\boxed{
-Lq_A(i)
-=
--2\lambda q_A(\Phi_i)
-+
-\operatorname{tr}(A C_i).
-}
+ M_i=P_0(C_i+2\Phi_i\Phi_i^T).
 \]
 
-If `q_A-c_A` is required to have target eigenvalue `-mu`, its residual is
+Then
 
 \[
-\boxed{
-L(q_A-c_A)(i)+\mu(q_A(\Phi_i)-c_A)
-=
-\operatorname{tr}(A C_i)
-+(μ-2\lambda)\Phi_i^T A\Phi_i
--\mu c_A.
-}
+ R_X(A)_i=(L+2dI)S_X(A)_i=\langle A,M_i\rangle_F.
 \]
 
-This is the exact local linear characterization of attainable quadratic
-exactness.
-
-## Sphere specialization
-
-For the coordinate eigenmap on `S^{d-1}`,
+The algebraic form space is
 
 \[
-\lambda=d-1.
+ E_{\rm form}=\ker R_X=\operatorname{span}\{M_i\}^{\perp}.
 \]
 
-Degree-two spherical harmonics are represented by trace-free symmetric `A` and
-have eigenvalue
+The genuinely sampled exact space is instead
 
 \[
-\mu=2d.
+ E_{\rm sample}=S_X(E_{\rm form})
+ =\operatorname{im}S_X\cap\ker(L+2dI),
 \]
 
-Hence the residual is
+and
 
 \[
-\boxed{
-\operatorname{tr}
-\left[
-A\left(C_i+2\Phi_i\Phi_i^T\right)
-\right].
-}
+ \dim E_{\rm sample}
+ =\operatorname{rank}S_X-\operatorname{rank}R_X.
 \]
 
-Let `P_0` denote traceless projection and define
+This quotient correction is essential: nonzero forms may vanish on every
+sampled node. The earlier notation that counted only \(\dim E_{\rm form}\) is
+not a genuine-mode count.
+
+## Positive obstruction
+
+Under \(I\ne\varnothing\), \(d>1\), nonnegative rates, unit nodes, and
+\(L\Phi=-(d-1)\Phi\),
 
 \[
-M_i=P_0\left(C_i+2\Phi_i\Phi_i^T\right).
+ \operatorname{tr}C_i=2(d-1),\qquad
+ \Phi_i^TM_i\Phi_i
+ =\sum_ja_{ij}(\Phi_i\cdot\Phi_j-1)^2>0.
 \]
 
-Then the globally exact quadratic-form space is
+Strictness follows from the eigenmap equation itself: if all positive jumps
+were between coincident embedded nodes, \(L\Phi(i)\) would vanish. Testing the
+trace-free tensor \(M_i\) against
+\(\Phi_i\Phi_i^T-I/d\) gives
 
 \[
-\boxed{
-\mathcal E_2
-=
-\left(
-\operatorname{span}\{M_i:i\in X\}
-\right)^\perp
-\subseteq \operatorname{Sym}_0(d).
-}
+ \|M_i\|_F\ge
+ \frac{\sum_ja_{ij}(\Phi_i\cdot\Phi_j-1)^2}
+ {\sqrt{1-1/d}}.
 \]
 
-Consequently,
+Hence \(R_X\ne0\), but aliases remain in its kernel.
+
+## Structural result and sharpness
+
+The main rigidity mechanism is not the covariance expansion alone. For
+\(d>1\), unit nodes satisfying \(L\Phi=-(d-1)\Phi\), one non-antipodal shell
+together with the full signed tangent tight-frame identity gives
 
 \[
-\boxed{
-\dim\mathcal E_2
-=
-\frac{d(d+1)}2-1
--
-\operatorname{rank}\operatorname{span}\{M_i\}.
-}
+ R_X=DS_X,\qquad D_{ii}=d\ell_i>0,
 \]
 
-This dimension identity is the central M3 target.  It is more informative than
-only proving that the complete degree-two space is impossible.
+so \(E_{\rm form}=K_X\) and \(E_{\rm sample}=0\). Coincident embedded jumps are
+excluded from shell rates and moments because their increments vanish.
 
-## Covariance proof of the full no-go theorem
+The positive spherical hexagonal prism proves sharpness: it is connected,
+reversible, vertex-transitive, full-dimensional, one-shell, and injectively
+sampled, but tangent-anisotropic and has two genuine exact modes. The signed
+cube gives the complementary attainability result, restoring the full sampled
+cross-quadratic module with sharp undirected negative mass two.
 
-If every trace-free quadratic form were exact, then every `M_i` would vanish,
-so
+## Status boundary
 
-\[
-C_i+2\Phi_i\Phi_i^T=c_i I.
-\]
+PROVED:
 
-For unit-sphere points and exact coordinate eigenvalue `d-1`,
+- covariance and arbitrary-target identities;
+- weighted centering under the stated hypotheses;
+- residual factorization and sampling quotient;
+- positive radial obstruction and norm bound;
+- signed one-shell rigidity;
+- equivariant quotient rank gap and corrected invariance theorem;
+- prism sharpness and signed-cube optimum.
 
-\[
-\operatorname{tr}C_i
-=
-\sum_j a_{ij}\|\Phi_j-\Phi_i\|^2
-=
-2(d-1).
-\]
+COMPUTATIONAL:
 
-Taking traces therefore gives `c_i=2`, and
+- exact finite matrices, ranks, minors, group actions, and KKT regressions in
+  the dedicated SymPy audits.
 
-\[
-C_i=2(I-\Phi_i\Phi_i^T).
-\]
+EXTERNAL:
 
-The right side has zero radial component.  But
+- rank-nullity, finite real semisimplicity, the self-adjoint spectral theorem,
+  and convex KKT/subgradient theory.
 
-\[
-\Phi_i^T C_i\Phi_i
-=
-\sum_j a_{ij}
-(\Phi_i\cdot\Phi_j-1)^2,
-\]
-
-which is strictly positive for any positive jump to a distinct point.  This is
-a contradiction.
-
-## Research questions
-
-1. Which dimensions of `E_2` are attainable under positivity, reversibility,
-   connectivity, and bounded degree?
-2. Which graph symmetries force the span of the `M_i` to be all of
-   `Sym_0(d)`?
-3. Can one bound `dim E_2` using active stencil size or covariance rank?
-4. How does global `Q=1` constrain the tensors `M_i`?
-5. Can negative conductances restore prescribed quadratic subspaces, and what
-   is the minimal sign violation required?
-6. Does the same construction extend to irreducible components of
-   `Sym^2(V_lambda)` for a general eigenspace?
-
-A publishable pure-math paper requires a sharp dimension, rigidity, or
-classification theorem beyond the displayed linear identity.
+No priority claim is made from the covariance identity or finite rank tables
+alone.

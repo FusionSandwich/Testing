@@ -1,3 +1,11 @@
 
 # Large HDF5 inputs
 alara_inputs/*.h5
+
+# Reproducible local build and audit products
+.lake/
+__pycache__/
+*.py[cod]
+*.log
+p2-*-report.txt
+afp-prompt2-source-*.tar.gz
