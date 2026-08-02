@@ -15,6 +15,8 @@ import AFPBarrier.QuantitativeSphericalFeasibility
 -- Prompt 2 covariance, sampled exactness, and centered product resonance.
 import AFPBarrier.QuadraticCovariance
 import AFPBarrier.GlobalLossRigidity
+-- Prompt 3 spherical Q=1 specialization and quantitative rigidity.
+import AFPBarrier.SphericalQOneRigidity
 import AFPBarrier.ExplicitEulerTransport
 import AFPBarrier.SpatialUpwindTransport
 import AFPBarrier.MultigroupTransfer
