@@ -29,8 +29,9 @@ theorem pointwise_deviation_sq_le_eta_div_kappa
     (hweighted : p * (x - 1) ^ 2 ≤ eta) :
     (x - 1) ^ 2 ≤ eta / kappa := by
   apply (le_div_iff₀ hkappa).2
-  exact weight_floor_mul_deviation_sq_le
-    p kappa x eta hp (sq_nonneg _) hweighted
+  simpa [mul_comm] using
+    weight_floor_mul_deviation_sq_le
+      p kappa x eta hp (sq_nonneg _) hweighted
 
 /-- Square control gives the advertised absolute deviation. -/
 theorem pointwise_delta_bound
@@ -65,13 +66,46 @@ theorem adjacent_rate_cross_bounds
   have hratioJ : rateJ = 2 * xJ / ell := by
     rw [hscaleJ]
     field_simp [ne_of_gt hell]
+  have hxIpos : 0 < xI := by
+    rw [hscaleI]
+    positivity
+  have hxJpos : 0 < xJ := by
+    rw [hscaleJ]
+    positivity
+  have hnumIJ : (1 - delta) * (2 * xJ) ≤ (1 + delta) * (2 * xI) := by
+    have hleft : (1 - delta) * xJ ≤ xI * xJ :=
+      mul_le_mul_of_nonneg_right hxILo (le_of_lt hxJpos)
+    have hright : xI * xJ ≤ xI * (1 + delta) :=
+      mul_le_mul_of_nonneg_left hxJHi (le_of_lt hxIpos)
+    nlinarith
+  have hnumJI : (1 - delta) * (2 * xI) ≤ (1 + delta) * (2 * xJ) := by
+    have hleft : (1 - delta) * xI ≤ xJ * xI :=
+      mul_le_mul_of_nonneg_right hxJLo (le_of_lt hxIpos)
+    have hright : xJ * xI ≤ xJ * (1 + delta) :=
+      mul_le_mul_of_nonneg_left hxIHi (le_of_lt hxJpos)
+    nlinarith
+  have hinv : 0 ≤ ell⁻¹ := le_of_lt (inv_pos.mpr hell)
   constructor
-  · rw [hratioI, hratioJ]
-    apply (div_le_div_iff₀ hell hell).2
-    nlinarith
-  · rw [hratioI, hratioJ]
-    apply (div_le_div_iff₀ hell hell).2
-    nlinarith
+  · calc
+      (1 - delta) * rateJ
+          = ((1 - delta) * (2 * xJ)) * ell⁻¹ := by
+              rw [hratioJ]
+              ring
+      _ ≤ ((1 + delta) * (2 * xI)) * ell⁻¹ :=
+        mul_le_mul_of_nonneg_right hnumIJ hinv
+      _ = (1 + delta) * rateI := by
+              rw [hratioI]
+              ring
+  · calc
+      (1 - delta) * rateI
+          = ((1 - delta) * (2 * xI)) * ell⁻¹ := by
+              rw [hratioI]
+              ring
+      _ ≤ ((1 + delta) * (2 * xJ)) * ell⁻¹ :=
+        mul_le_mul_of_nonneg_right hnumJI hinv
+      _ = (1 + delta) * rateJ := by
+              rw [hratioJ]
+              ring
 
 /-- Ratio form of the adjacent-rate estimate. -/
 theorem adjacent_rate_ratio_bounds
@@ -124,31 +158,34 @@ theorem incident_loss_cross_bounds
     have ha := mul_le_mul_of_nonneg_left hx₁Hi hminus
     have hb := mul_le_mul_of_nonneg_right hx₂Lo hplus
     nlinarith
+  have hinv : 0 ≤ rate⁻¹ := le_of_lt (inv_pos.mpr hrate)
   constructor
   · calc
-      (1 - delta) * ell₂ = ((1 - delta) * (2 * x₂)) / rate := by
-        rw [hell₂]
-        ring
-      _ ≤ ((1 + delta) * (2 * x₁)) / rate :=
-        (div_le_div_iff₀ hrate hrate).2 hnum₁
+      (1 - delta) * ell₂
+          = ((1 - delta) * (2 * x₂)) * rate⁻¹ := by
+              rw [hell₂]
+              ring
+      _ ≤ ((1 + delta) * (2 * x₁)) * rate⁻¹ :=
+        mul_le_mul_of_nonneg_right hnum₁ hinv
       _ = (1 + delta) * ell₁ := by
-        rw [hell₁]
-        ring
+              rw [hell₁]
+              ring
   · calc
-      (1 - delta) * ell₁ = ((1 - delta) * (2 * x₁)) / rate := by
-        rw [hell₁]
-        ring
-      _ ≤ ((1 + delta) * (2 * x₂)) / rate :=
-        (div_le_div_iff₀ hrate hrate).2 hnum₂
+      (1 - delta) * ell₁
+          = ((1 - delta) * (2 * x₁)) * rate⁻¹ := by
+              rw [hell₁]
+              ring
+      _ ≤ ((1 + delta) * (2 * x₂)) * rate⁻¹ :=
+        mul_le_mul_of_nonneg_right hnum₂ hinv
       _ = (1 + delta) * ell₂ := by
-        rw [hell₂]
-        ring
+              rw [hell₂]
+              ring
 
 /-- Exact radial covariance error identity in terms of `Q-1`. -/
 theorem radial_covariance_error_identity
     (Q rate : ℝ) (hrate : 0 < rate) :
     4 * Q / rate - 4 / rate = 4 * (Q - 1) / rate := by
-  field_simp [ne_of_gt hrate] <;> ring
+  field_simp [ne_of_gt hrate]
 
 /-- Near equality controls the radial covariance component, and only that
 component without an additional tangential-isotropy hypothesis. -/
