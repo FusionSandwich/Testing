@@ -17,6 +17,8 @@ import AFPBarrier.QuadraticCovariance
 import AFPBarrier.GlobalLossRigidity
 -- Prompt 3 spherical Q=1 specialization and quantitative rigidity.
 import AFPBarrier.SphericalQOneRigidity
+-- Prompt 4 sharp product barriers and finite extremal algebra.
+import AFPBarrier.SharpProductBarriers
 import AFPBarrier.ExplicitEulerTransport
 import AFPBarrier.SpatialUpwindTransport
 import AFPBarrier.MultigroupTransfer
