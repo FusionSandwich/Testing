@@ -296,17 +296,21 @@ theorem sampledRange_exact_eq_range_inf_ker
       = LinearMap.range S ⊓ LinearMap.ker B := by
   apply le_antisymm
   · intro y hy
-    rcases hy with ⟨x, rfl⟩
-    refine ⟨⟨x.1, rfl⟩, ?_⟩
-    change B (S x.1) = 0
-    change B (S x.1) = 0 at x.2
-    exact x.2
+    rcases hy with ⟨x, hx⟩
+    refine ⟨⟨x.1, hx⟩, ?_⟩
+    have hxker := x.2
+    change B (S x.1) = 0 at hxker
+    change B y = 0
+    rw [← hx]
+    exact hxker
   · intro y hy
     rcases hy.1 with ⟨x, hx⟩
     refine ⟨⟨x, ?_⟩, hx⟩
+    have hyker := hy.2
+    change B y = 0 at hyker
     change B (S x) = 0
     rw [hx]
-    exact hy.2
+    exact hyker
 
 end SamplingResidualFactorization
 
