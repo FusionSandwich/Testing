@@ -139,26 +139,37 @@ The degree-five vertex `a_i` already has the five distinct neighbors
 x, a_(i-1), a_(i+1), b_(i-1), b_i.
 ```
 
-Its link is a five-cycle. The two consecutive faces
+Its link is a five-cycle. Four consecutive link edges are fixed by the four
+known incident faces:
 
 ```text
-a_i a_(i+1) b_i,
-a_i a_(i-1) b_(i-1)
+x--a_(i-1),
+a_(i-1)--b_(i-1),
+b_i--a_(i+1),
+a_(i+1)--x.
 ```
 
-force `b_(i-1)b_i` to be an edge. Hence the vertices `b_i` form a second
-five-cycle.
+The fifth link edge must therefore be `b_(i-1)b_i`. Hence the vertices `b_i`
+form a second five-cycle.
 
-Now `b_i` has the four distinct neighbors
+At this point `x` already has its five neighbors `a_i`, and every `a_i`
+already has the five neighbors displayed above. The remaining vertex `y` also
+has degree five. Its neighbors cannot be `x` or any `a_i`, whose degrees are
+already exhausted. The only available vertices are the five distinct `b_i`.
+Consequently
 
 ```text
-a_i, a_(i+1), b_(i-1), b_(i+1).
+y--b_i
 ```
 
-Its fifth neighbor cannot be any `a_j` or nonconsecutive `b_j`, because that
-would create a nonfacial triangular cycle or a chord in one of the already
-identified links. The only remaining vertex is `y`. Therefore `y` is adjacent
-to every `b_i`.
+for every `i`. Each `b_i` already had the four neighbors
+
+```text
+a_i, a_(i+1), b_(i-1), b_(i+1),
+```
+
+so adjacency to `y` fills its fifth and final degree slot. No additional chord
+or edge is possible.
 
 The complete adjacency is now forced:
 
