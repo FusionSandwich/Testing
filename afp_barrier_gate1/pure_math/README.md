@@ -111,7 +111,7 @@ conjugation.
 
 ### Centered product resonance
 
-`AFPBarrier/QuadraticCovariance.lean` now proves
+`AFPBarrier/QuadraticCovariance.lean` proves
 
 ```text
 L(fg-c)+mu(fg-c)
@@ -175,6 +175,126 @@ consequence survives the kernel and alias audits. The general hierarchy is
 `REJECTED FOR PROMPT 2` for that reason, not because centered squares are
 impossible.
 
+## Prompt 3 spherical `Q=1` rigidity package
+
+Prompt 3 begins from the verified baseline
+
+```text
+c88b57533c3c8ad8fd819e4e52a74c4b5a245479.
+```
+
+The authoritative ordinary proof is
+
+```text
+rigidity/SPHERICAL_Q1_RIGIDITY_THEOREM.md.
+```
+
+The direct five-regular graph lemma is
+
+```text
+rigidity/ICOSAHEDRAL_GRAPH_LEMMA.md.
+```
+
+For `Omega_i in S^2`, let
+
+```text
+g_i(j)=Omega_i dot Omega_j,
+ell_ij=1-g_i(j),
+r_i=sum_j a_ij,
+D_i=sum_j a_ij ell_ij^2,
+Q_i=r_i D_i/4.
+```
+
+Under the coordinate eigenmap equation
+
+```text
+sum_j a_ij(Omega_j-Omega_i)=-2 Omega_i
+```
+
+and nonnegative off-diagonal rates,
+
+```text
+Q_i>=1,
+Q_i=1 iff ell_ij=2/r_i on every active edge from i.
+```
+
+Symmetric connected activity therefore yields one common row rate and one
+common active chord/geodesic length. Active zero-loss edges are impossible; an
+active antipodal edge forces row rate one and propagates the antipodal loss.
+
+### Restricted triangulation classification
+
+The valid classification assumes that the active graph is exactly the
+one-skeleton of an injective strict convex minor-geodesic triangulation, every
+triangulation edge is active, and there are no active nonedges. Under these
+hypotheses, exact `Q_i=1` gives, up to an orthogonal transformation:
+
+```text
+regular tetrahedron,
+regular octahedron,
+regular icosahedron.
+```
+
+The proof derives equilateral spherical faces,
+`cos(alpha)=c/(1+c)`, degree `q in {3,4,5}`, exact Euler count triples, direct
+finite graph identifications, and convex Cauchy congruence.
+
+Exact adjacent data are:
+
+| degree | active dot | common row rate |
+|---:|---:|---:|
+| 3 | `-1/3` | `3/2` |
+| 4 | `0` | `2` |
+| 5 | `1/sqrt(5)` | `(5+sqrt(5))/2` |
+
+The cube and dodecahedron are permanent unrestricted `Q=1` counterexamples.
+The theorem fixes the geometry and total row rate, not each individual edge
+rate.
+
+### Quantitative near-rigidity
+
+For a general positive eigenvalue `lambda`, set
+
+```text
+m_i=lambda/r_i,
+p_ij=a_ij/r_i,
+Q_i=r_iD_i/lambda^2.
+```
+
+Then
+
+```text
+Q_i-1=sum_j p_ij(ell_ij/m_i-1)^2.
+```
+
+If `Q_i<=1+epsilon`, active normalized weights satisfy `p_ij>=p_*>0`, and
+
+```text
+delta=sqrt(epsilon/p_*)<1,
+kappa=(1+delta)/(1-delta),
+```
+
+then active edge-loss errors are at most `delta` relative to their local mean,
+shared centers and row rates differ by at most `kappa`, and path/diameter bounds
+use the explicit powers in Prompt 3 Theorem 4.1.
+
+An additive theorem assumes
+
+```text
+r_iD_i-lambda^2<=eta,
+r_i>=r_min>0,
+a_ij>=a_min>0,
+Delta=sqrt(eta/(r_min a_min)),
+```
+
+and gives explicit one-edge, shared-edge, path, diameter, and row-rate bounds.
+Shared-conductance floors transfer to these hypotheses under upper mass and
+row-rate bounds.
+
+The rare-edge family in the exact audit shows that small `Q-1` alone does not
+control every active edge. Coordinate-space stability is not claimed without
+a separately stated framework-rigidity singular-value margin.
+
 ## Exact verification
 
 Prompt 2 exact regressions are:
@@ -182,7 +302,11 @@ Prompt 2 exact regressions are:
 - `covariance/quadratic_covariance_audit.py`;
 - `covariance/prompt2_closeout_audit.py`.
 
-Together they check:
+Prompt 3 exact regression is:
+
+- `rigidity/prompt3_rigidity_audit.py`.
+
+Together with the Prompt 1 audits, they check:
 
 - covariance/factorization and all Platonic ranks;
 - regular-simplex formulas;
@@ -191,36 +315,25 @@ Together they check:
 - centered product algebra and the Boolean example;
 - semigroup variance;
 - the `S^2` `ell=1,...,6` table;
-- bounded and Pell resonance assertions; and
-- singular/plural user-axiom policy fixtures.
+- bounded and Pell resonance assertions;
+- exact Platonic `Q=1` rows and triangulation incidence;
+- exact tetrahedral/octahedral/icosahedral classification arithmetic;
+- normalized variance and stability constants;
+- the rare-active-edge counterfamily; and
+- shared-conductance floor transfer.
 
 Lean support is concentrated in:
 
 - `AFPBarrier/QuadraticCovariance.lean`;
-- `AFPBarrier/PureMathAxiomAudit.lean`;
-- `AFPBarrier/GlobalLossRigidity.lean`; and
+- `AFPBarrier/GlobalLossRigidity.lean`;
+- `AFPBarrier/SphericalQOneRigidity.lean`;
+- `AFPBarrier/PureMathAxiomAudit.lean`; and
 - the aggregate `AFPBarrier.lean`.
 
 No `sorry`, `admit`, `sorryAx`, singular `axiom`, or plural `axioms`
-declaration is permitted. The dedicated workflow scans the aggregate source,
-tests both axiom spellings, performs the full Lean build and focused axiom
-audit, and independently checks selected declarations with nanoda.
-
-## Global equality propagation and Prompt 3 boundary
-
-The abstract equality-propagation result is already `PROVED / LEAN` in
-`GlobalLossRigidity.lean`: on a connected symmetric active graph, the local
-formula `loss=lambda/rate` propagates one common row rate and one common
-active-edge loss.
-
-Prompt 3 begins only from the verified closeout handoff and is limited to:
-
-1. complete spherical `Q=1` specialization audit;
-2. restricted geodesic-triangulation classification; and
-3. quantitative near-rigidity.
-
-Those three items remain open targets. No graph enumeration, classification,
-or stability proof is performed in the Prompt 2 closeout.
+declaration is permitted. Dedicated workflows scan the aggregate source,
+perform full Lean builds and focused axiom audits, and independently check
+selected declarations with nanoda.
 
 ## Claim discipline
 
@@ -231,17 +344,20 @@ Use the following labels:
 - `EXACT EXAMPLE` — finite symbolic certificate;
 - `EXTERNAL` — cited standard theorem;
 - `COMPUTATIONAL` — finite deterministic search only;
-- `CONJECTURE` — open statement with a kill criterion; and
+- `CONDITIONAL` — implication requiring an additional explicit quantitative
+  margin; and
 - `REJECTED` — false or strategically unsupported wording.
 
 CI counts and hashes are provenance, not mathematical novelty. Algebraic form
 exactness and genuine sampled exactness must never be conflated. Centered
-resonance and Jensen equality must never be conflated.
+resonance and Jensen equality must never be conflated. Edge-metric stability
+must not be inflated into coordinate-space rigidity.
 
-## Closeout and handoff records
+## Stage records
 
-- `../docs/PROMPT2_QUADRATIC_COVARIANCE_STAGE_REPORT.md`
-- `../docs/PROMPT2_QUADRATIC_COVARIANCE_THEOREM_MAP.md`
-- `../docs/PROMPT2_QUADRATIC_COVARIANCE_INTEGRATION_RECORD.md`
 - `../docs/PROMPT2_CLOSEOUT_AUDIT.md`
 - `../docs/PROMPT3_READINESS_HANDOFF.md`
+- `../docs/PROMPT3_APPROACH_REGISTRY.md`
+- `../docs/PROMPT3_STAGE_REPORT.md`
+- `../docs/PROMPT3_THEOREM_MAP.md`
+- `../docs/THEOREM_TO_FILE_MAP.md`
