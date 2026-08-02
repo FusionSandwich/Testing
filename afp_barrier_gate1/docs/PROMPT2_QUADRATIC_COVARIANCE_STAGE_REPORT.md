@@ -1,399 +1,352 @@
-# Prompt 2 stage report — sampled quadratic covariance and spectral products
+# Prompt 2 stage report — corrective closeout
 
-## 1. Baseline and scope
+## 1. Provenance and bounded scope
 
 - Repository: `FusionSandwich/Testing`
-- Corrected Prompt 1 baseline:
-  `923dc47dae4f83dbea9cd56aa904164c6378e52d`
-- Corrected Prompt 1 branch:
-  `agent/afp-pure-math-p1-local-global-corrected`
-- Original checkpoint named in Prompt 2:
-  `4efef67a20cdb8b2437cad093ccc16bcd0f17796`
-- Isolated Prompt 2 implementation branch:
-  `agent/afp-quadratic-covariance-p2-corrected`
+- Target branch: `agent/afp-pure-math-p0-m1`
+- Actual remote target head at closeout start:
+  `1835918fe9d0b941395e9f00f6ac5514129cefa0`
+- Previously reported head:
+  `694b913c99364bb0032a8ffbd7008b549b491af0`
+- Reported head resolution: `NO COMMIT FOUND`
+- Prompt 2 integration merge preceding the actual target head:
+  `f9fb1e336a4569c2d7e2e440821976bd30a6c29f`
+- Closeout branch:
+  `agent/afp-pure-math-p2-closeout-corrected`
 - Immutable transport archive:
   `archive/afp-gate6-spatial-multigroup-verified` at
   `515f1aae6c20bd85711c90b5c1c21b4905252d01`
 
-Prompt 2 is developed from the corrected Prompt 1 theorem tree rather than
-silently discarding the later local/global corrections. The diff is confined
-to pure mathematics, exact symbolic regressions, claim-control documentation,
-Lean finite algebra, and a dedicated workflow. It introduces no transport,
-Radiant, HTS, multigroup, or spatial-solver work and does not modify the frozen
-archive.
+The only intervening target change after `f9fb1e...` was the integration-record
+commit `1835918...`. The closeout changes only pure-mathematics Lean source,
+exact audits, claim-control documents, and the three pure-math workflows. It
+does not begin Prompt 3 classification or near-rigidity and does not modify
+transport, Radiant, HTS, multigroup, evaluated-material, spatial, or production
+solver paths.
 
-A literal multiagent-v2 runtime was not exposed in this execution environment.
-It was not used and is not claimed. Independent covariance, sampling,
-symmetry, signed-construction, product, harmonic, exact-symbolic, and Lean
-routes were maintained explicitly and adversarially cross-checked.
+A literal multiagent-v2 runtime was unavailable. It was not used or claimed.
+The independent audit routes are recorded in Section 8.
 
-## 2. Candidate-audit correction
+## 2. Defects found after the initial Prompt 2 integration
 
-An earlier Prompt 2 candidate on
-`agent/afp-quadratic-covariance-p2` contained much of the required theorem
-package and had a green dedicated workflow. It was not accepted unchanged for
-two reasons:
+### 2.1 Equivariant positivity defect — PR #17
 
-1. it descended from the obsolete Prompt 1 head rather than corrected commit
-   `923dc47...`; and
-2. it treated the covariance-constraint and sampling maps as generic unrelated
-   maps.
-
-The second issue was mathematical rather than stylistic. In the spherical
-quadratic problem,
+The earlier equivariant irreducibility statement required only one positive
+jump between distinct embedded points. Its proof used
 
 ```text
-R_X = (L+2d I) S_X.
+beta_i=sum_j a_ij(1-Phi_i dot Phi_j)^2>0,
 ```
 
-Therefore
+which is valid from one positive term only when every other off-diagonal rate
+is nonnegative. Signed terms can cancel the positive square contribution.
+
+The theorem is corrected to require
 
 ```text
-K_X = ker S_X subset ker R_X = E_form.
+a_ij>=0 for every i!=j.
 ```
 
-The generic restriction formula
+Reversibility is not required. Conservation fixes only the diagonal matrix
+entries. The positive distinct-jump assumption is used after global
+nonnegativity to make one radial covariance strictly positive.
+
+### 2.2 Centered-product omission
+
+The earlier product discussion established the uncentered implication
 
 ```text
-dim E_sample
-  = dim E_form - dim(E_form intersect K_X)
+L(f^2)=-2lambda f^2 => Gamma(f)=0,
 ```
 
-remains correct, but the intersection is automatically `K_X` here. The sharp
-specialized formulas are
+but did not give the arbitrary shift or centered resonance. It could therefore
+be read as a universal centered-square obstruction, which is false.
 
-```text
-dim E_sample = dim E_form-dim K_X,
-dim E_sample = rank(S_X)-rank(R_X),
-rank([R;S]) = rank(S).
-```
+The closeout adds the exact arbitrary-target residual and the Boolean
+counterexample.
 
-The corrected exact audit tests this factorization directly and no longer uses
-an unrelated-map example as a negative test against the specialized formula.
+### 2.3 Low-degree hierarchy omission
 
-## 3. Mathematical result
+The existing Pell search did not include the required hand-derived and
+machine-checked `S^2` table for `ell=1,...,6`. The table is now part of the
+theorem and exact closeout audit.
 
-The paper-style proof is
-`pure_math/covariance/SAMPLED_QUADRATIC_EXACTNESS_THEOREM.md`.
+### 2.4 User-axiom verification defect — PR #18
 
-### 3.1 Covariance and shifted residual
+The dedicated workflow scanned for singular `axiom` inside one Lean file but
+missed Lean's valid plural declaration syntax `axioms`. The corrected workflow
+scans the aggregate pure-math Lean source with an anchored
+`(axiom|axioms)` declaration regex and contains deterministic singular/plural
+fixtures.
+
+## 3. Accepted covariance and sampled-space core
 
 For a finite coordinate eigenmap,
 
 ```text
 L(Phi^T A Phi)(i)
-  = -2 lambda Phi_i^T A Phi_i + tr(A^T C_i).
+  =-2lambda Phi_i^T A Phi_i+tr(A^T C_i).
 ```
 
-For `q_{A,c}=Phi^T A Phi-c` with target eigenvalue `-mu`, exactness is
-equivalent to
+For `q_{A,c}=Phi^T A Phi-c` and target `-mu`, exactness is equivalent to
 
 ```text
 tr(A^T C_i)
-  + (mu-2 lambda) Phi_i^T A Phi_i
-  - mu c = 0
+ +(mu-2lambda)Phi_i^T A Phi_i
+ -mu c=0
 ```
 
-at every state. No positivity or reversibility is required for this algebra.
-The admissible shift is treated separately from trace-freeness because a
-trace-free quadratic may have nonzero mean on a finite sample.
+at every state.
 
-For the sphere coordinate eigenmap,
+In the spherical degree-two specialization,
 
 ```text
 lambda=d-1,
 mu=2d,
-A in Sym_0(d),
-M_i=P_0(C_i+2 Phi_i Phi_i^T).
+M_i=P_0(C_i+2Phi_iPhi_i^T),
+S_X(A)_i=Phi_i^T A Phi_i,
+R_X(A)_i=<A,M_i>_F.
 ```
 
-The zero-centered form space is
+The exact structural relations are
 
 ```text
-E_form = span{M_i}^perp.
-```
-
-### 3.2 Genuine sampled exactness
-
-The quadratic sampling map and residual map are
-
-```text
-S_X(A)_i = Phi_i^T A Phi_i,
-R_X(A)_i = <A,M_i>_F.
-```
-
-The exact factorization gives
-
-```text
+E_form=ker R_X=span{M_i}^perp,
 R_X=(L+2dI)S_X,
-K_X subset E_form,
-E_sample=S_X(E_form)
-        =im(S_X) intersect ker(L+2dI).
+K_X=ker S_X subset E_form,
+E_sample=im(S_X) intersect ker(L+2dI),
+dim E_sample=rank(S_X)-rank(R_X).
 ```
 
-Thus every later dimension claim concerns sampled functions, not only
-algebraic forms. The exact dimension formulas are
+## 4. Corrected rigidity and exact signed boundary
 
-```text
-dim E_sample
-  = dim E_form-dim(E_form intersect K_X)
-  = dim E_form-dim K_X
-  = rank(S_X)-rank(R_X).
-```
+### 4.1 Positive axial rigidity
 
-### 3.3 Sharp axial-covariance rigidity
-
-If every local covariance has the radial/tangential form
-
-```text
-C_i=tau_i(I-Phi_i Phi_i^T)
-    +beta_i Phi_i Phi_i^T,
-beta_i>0,
-```
-
-then
-
-```text
-M_i=d beta_i/(d-1)
-    (Phi_i Phi_i^T-I/d).
-```
-
-Every constraint row is therefore a positive scaling of the corresponding
-sampling row. Consequently
+If every local covariance is axially isotropic with positive radial variance,
+then every residual row is a positive scaling of the corresponding sampling
+row. Hence
 
 ```text
 E_form=K_X,
 E_sample={0}.
 ```
 
-This is the principal sharp theorem. It improves on rank bookkeeping and is
-meaningful for arbitrary finite positive eigenmap generators. The local
-version forces vanishing only at vertices satisfying axial covariance; the
-global conclusion requires the hypothesis at every state.
+Regular simplices attain this theorem in every dimension. The closeout audit
+checks the coordinate eigenvalue and explicit inverse sampling formula exactly
+for dimensions 2 through 10.
 
-### 3.4 Equality and independent rigidity mechanisms
+### 4.2 Corrected positive equivariant rigidity
 
-A regular simplex in every dimension attains the axial theorem. With complete
-edge rate `(d-1)/(d+1)`, its sampling rank is exactly `d` and
+Let a finite group act transitively, let the unit-sphere eigenmap and rates be
+equivariant, require
 
 ```text
-dim E_form=dim K_X=d(d+1)/2-1-d,
-dim E_sample=0.
+L Phi=-(d-1)Phi,
+a_ij>=0 for every i!=j,
 ```
 
-A second theorem assumes a transitive equivariant eigenmap and irreducibility
-of `Sym_0(d)` under conjugation. The exact-form kernel is then zero or the full
-module. Positive radial covariance excludes the full alternative, giving
-`E_form={0}`. This route is independent of axial row scaling.
-
-### 3.5 Exact Platonic examples
-
-For a shortest-edge Platonic generator with adjacent inner product `alpha`,
+and assume the real conjugation representation on `Sym_0(d)` is irreducible.
+If at least one positive jump joins distinct embedded points, then
 
 ```text
-C_i=(1+alpha)I+(1-3alpha)Phi_i Phi_i^T,
-M_i=3(1-alpha)(Phi_i Phi_i^T-I/3).
+E_form={0}.
 ```
 
-Exact rational and `Q(sqrt(5))` calculations give:
+The proof is valid without reversibility. Irreducibility makes the form kernel
+zero or full. The full alternative forces zero radial covariance, while global
+nonnegativity and one positive distinct jump force positive radial covariance.
 
-| Graph | rank `R_X` | rank `S_X` | dim `E_form` | dim `K_X` | dim `E_sample` |
-|---|---:|---:|---:|---:|---:|
-| tetrahedron | 3 | 3 | 2 | 2 | 0 |
-| octahedron | 2 | 2 | 3 | 3 | 0 |
-| cube | 3 | 3 | 2 | 2 | 0 |
-| icosahedron | 5 | 5 | 0 | 0 | 0 |
-| dodecahedron | 5 | 5 | 0 | 0 | 0 |
+### 4.3 Signed regular-pentagon counterexample
 
-The tetrahedral and cubical kernels are diagonal trace-free forms; the
-octahedral kernel is the off-diagonal subspace. The icosahedral and
-dodecahedral evaluation determinants are exactly
+For the regular pentagon, set
 
 ```text
-32(11+5 sqrt(5))
+u=(5+3sqrt(5))/10>0
 ```
 
-and
+on distance-one neighbors and
 
 ```text
--192.
+v=(5-3sqrt(5))/10<0
 ```
 
-The first three apparent algebraic exact spaces are entirely sampling kernel.
-None of the five graphs has a nonzero sampled degree-two mode with eigenvalue
-`-6`.
-
-### 3.6 Signed restoration
-
-On the four cardinal points of `S^1`, adjacent rates `1` and antipodal rates
-`-1/2` give a symmetric conservative generator satisfying
+on distance-two neighbors. Exact `Q(sqrt(5))` calculation gives
 
 ```text
+L1=0,
 Lx=-x,
 Ly=-y,
-L(x^2-y^2)=-4(x^2-y^2).
+Lcos(2theta)=-4cos(2theta),
+Lsin(2theta)=-4sin(2theta).
 ```
 
-At each row the coordinate and quadratic equations uniquely force
-`(1,-1/2,1)`. The negative antipodal magnitude `1/2` is therefore sharp on
-this fixed node/support problem; the total negative undirected mass is one.
-
-### 3.7 Independent product obstructions
-
-The carré-du-champ proof shows that additive exact product propagation forces
-`Gamma(f,g)=0`; aligned strict extrema and a positive changing edge contradict
-this. For a square, zero carré du champ makes the sampled function constant on
-every positive active edge.
-
-The independent semigroup proof uses
+Thus
 
 ```text
-P_t(f^2)>=(P_t f)^2.
+E_form=Sym_0(2),
+dim E_sample=2.
 ```
 
-If the square propagated at the additive eigenvalue, equality would hold.
-Strict convexity characterizes equality as constancy on the transition
-support, and uniformization identifies that support with the reachable set.
-An irreducible positive chain and positive eigenvalue therefore admit no
-nonzero additive exact sampled square.
+The `C_5` action on `Sym_0(2)` is rotation through `4pi/5`; its characteristic
+discriminant `(sqrt(5)-5)/2` is negative, so the real representation is
+irreducible. This is the exact counterexample when global positivity is
+omitted.
 
-### 3.8 Hierarchy decision
+## 5. Centered product and semigroup theory
 
-The bounded search handles even product parity, odd/even zonal antipodal
-sets, non-singleton maxima, degree-specific sampling kernels, cross-degree
-aliases, and the difference between one sampled combination and a complete
-irreducible component.
-
-The resonance equation
+Define
 
 ```text
-k(k+d-2)=2l(l+d-2)
+Gamma(f,g)(i)
+ =1/2 sum_j a_ij(f(j)-f(i))(g(j)-g(i)).
 ```
 
-is Pell-type and can have infinite arithmetic families. Resonance alone does
-not isolate a sampled component or eliminate other product terms. Whenever
-additional assumptions do isolate the sampled square, the conclusion reduces
-to the same one-function carré-du-champ/Jensen obstruction. No new
-`l`-indexed dimension tradeoff or global consequence survives.
+The completed theorem package proves
 
-The general spectral-product hierarchy is therefore `REJECTED` for Prompt 2
-under its kill criterion. This does not rule out future theorems under stronger
-design or association-scheme hypotheses.
+```text
+L(fg)-fLg-gLf=2Gamma(f,g).
+```
 
-## 4. Approach registry
+If `Lf=-lambda f` and `Lg=-nu g`, then
 
-| Approach family | Outcome |
-|---|---|
-| Direct coordinate expansion | Adopted for the finite covariance identity |
-| Abstract carré-du-champ expansion | Adopted independently for the product obstruction and as a check on the coordinate proof |
-| Form-space rank only | Blocked because it ignores sampling aliases |
-| Generic unrelated constraint/sampling maps | Rejected for the specialized problem after discovering `R_X=(L+2dI)S_X` |
-| Residual-through-sampling factorization | Adopted as the central sampled-space correction |
-| Assume sampling injective | Rejected by tetrahedral, octahedral, and cubical kernels |
-| Local covariance matrix rank alone | Redirected; it did not give a sharp sampled conclusion |
-| Axial stabilizer symmetry | Adopted to reduce covariance to radial/tangential scalars |
-| Axial row scaling | Adopted as the principal sharp theorem |
-| Regular-simplex family | Adopted as the all-dimensional equality construction |
-| Transitive representation irreducibility | Adopted as an independent rigidity theorem |
-| Symmetry without exact tensor/module analysis | Blocked |
-| Floating Platonic ranks | Replaced by exact algebraic arithmetic and determinant witnesses |
-| Association-scheme intersection numbers | Retained as a future extension, not assumed here |
-| Spherical-design averaging | Used only for shifted-constant exclusion in symmetric examples |
-| Unconstrained signed solve | Rejected as insufficient |
-| Fixed-support signed row equations | Adopted; the negative rate is forced |
-| Strict-extremum carré du champ | Adopted as first product obstruction |
-| Markov semigroup/Jensen equality | Adopted as independent second proof |
-| Harmonic parity/Fischer bookkeeping | Adopted as an identifiability audit, not as the main theorem |
-| Bounded resonance enumeration | Retained as exact falsification only |
-| Pell resonance as hierarchy | Rejected; arithmetic gives no sampled dimension theorem |
-| Full abstract representation formalization in Lean | Deferred to avoid replacing a transparent ordinary proof with a large library project |
-| Narrow finite Lean core | Adopted for covariance, factorization, projection, restricted rank-nullity, and axial consequences |
+```text
+L(fg-c)+mu(fg-c)
+ =2Gamma(f,g)+(mu-lambda-nu)fg-mu c.
+```
 
-## 5. Adversarial audit
+At additive resonance,
 
-The package was checked against the required failure modes:
+```text
+L(fg-c)=-(lambda+nu)(fg-c)
+iff
+2Gamma(f,g)=(lambda+nu)c.
+```
 
-- nonzero matrices are not identified with nonzero sampled functions;
-- form-space dimension is never reported as sampled-space dimension;
-- the residual and sampling matrices are not treated as unrelated;
-- every sampling alias is recognized as an exact zero function;
-- no theorem assumes sampling injectivity;
-- local axial exactness is not promoted globally without a vertexwise
-  hypothesis;
-- disconnected and directed generators are distinguished from irreducible
-  chains in product arguments;
-- semigroup equality uses the exact reachable support;
-- even zonal modes are not assigned singleton maxima;
-- odd antipodal signs are distinguished from the square's equality set;
-- algebraic harmonic components are not assumed nonzero after sampling;
-- one sampled combination is not promoted to a complete irreducible component;
-- signed rates are checked for conservation, coordinate modes, quadratic mode,
-  symmetry, and forced sign pattern;
-- golden-ratio ranks use exact algebraic arithmetic;
-- no equal-weight or reversibility hypothesis is hidden in the covariance
-  identity;
-- positivity and a distinct active jump are explicit in radial-covariance
-  rigidity; and
-- workflow counts and hashes remain provenance rather than mathematical
-  evidence.
+For a square,
 
-## 6. Files and formalization boundary
+```text
+L(f^2-c)=-2lambda(f^2-c)
+iff
+Gamma(f,f)=lambda c.
+```
 
-Primary files:
+The uncentered `c=0` case forces zero carré du champ. On an irreducible
+positive chain with `lambda>0`, this forces the eigenfunction to be zero. A
+centered square may be nonzero.
 
-- theorem:
-  `pure_math/covariance/SAMPLED_QUADRATIC_EXACTNESS_THEOREM.md`;
-- derivation summary:
-  `pure_math/covariance/QUADRATIC_COVARIANCE_DERIVATION.md`;
-- exact symbolic audit:
-  `pure_math/covariance/quadratic_covariance_audit.py`;
-- Lean finite algebra:
-  `AFPBarrier/QuadraticCovariance.lean`;
-- theorem map:
-  `docs/PROMPT2_QUADRATIC_COVARIANCE_THEOREM_MAP.md`.
+### Boolean regression
 
-Lean formalizes:
+On the four-state Boolean square with unit coordinate-flip rates and
+`f=x_1+x_2`,
 
-- finite product and covariance identities;
-- shifted target equivalence;
+```text
+Lf=-2f,
+f^2-2=2x_1x_2!=0,
+L(f^2-2)=-4(f^2-2),
+Gamma(f,f)=4.
+```
+
+For `P_t=exp(tL)`, centered resonance gives
+
+```text
+P_t(f^2)-(P_t f)^2=c(1-exp(-2lambda t)).
+```
+
+The converse follows by differentiating the finite matrix exponential at
+`t=0`. Jensen equality remains the separate condition that `f` is constant on
+the positive transition support. The Boolean variance is
+
+```text
+2(1-exp(-4t))>0
+```
+
+for `t>0`; Jensen equality does not hold.
+
+## 6. Spherical shift and hierarchy audit
+
+On `S^(d-1)`:
+
+```text
+coordinate eigenvalue=d-1,
+doubled coordinate eigenvalue=2(d-1),
+degree-two eigenvalue=2d.
+```
+
+The covariance theorem therefore has shift `2` and is not additive square
+resonance.
+
+For `S^2`, the pointwise multiplication image of `Sym^2(H_ell)` contains the
+even degrees `0,2,...,2ell`. The exact table for `ell=1,...,6` is:
+
+| `ell` | degrees | eigenvalues | additive target | resonance |
+|---:|---|---|---:|---|
+| 1 | `0,2` | `0,6` | 4 | none |
+| 2 | `0,2,4` | `0,6,20` | 12 | none |
+| 3 | `0,2,4,6` | `0,6,20,42` | 24 | none |
+| 4 | `0,2,4,6,8` | `0,6,20,42,72` | 40 | none |
+| 5 | `0,2,4,6,8,10` | `0,6,20,42,72,110` | 60 | none |
+| 6 | `0,2,4,6,8,10,12` | `0,6,20,42,72,110,156` | 84 | none |
+
+Centering removes only degree zero. Odd/even antipodal equality sets and every
+degree-specific sampling kernel/cross-degree alias still require explicit
+audit.
+
+The generalized resonance equation remains Pell-type. The bounded exact search
+retains the higher-dimensional hits
+
+```text
+(4,4,6), (6,8,12), (8,12,18), (9,5,8).
+```
+
+No `ell`-indexed sampled dimension tradeoff, multiplicity obstruction, or new
+global consequence survives the identifiability and alias checks. The general
+hierarchy remains `REJECTED FOR PROMPT 2` for that reason, not because centered
+squares are impossible.
+
+## 7. Lean and exact verification boundary
+
+`AFPBarrier/QuadraticCovariance.lean` now formalizes:
+
+- bilinear `jumpGamma` and the product identity;
+- the arbitrary shifted product residual and target equivalence;
+- additive product resonance;
+- centered and uncentered square resonance;
+- the positive uncentered pointwise obstruction;
+- the covariance identity and shifted quadratic target;
 - trace-free projection contraction;
-- rank-nullity for sampling restricted to the exact-form subspace;
-- sampling-kernel inclusion under residual factorization;
-- equality of the sampled exact range with `range S intersect ker B`;
-- row-scaled constraint/sample equivalence; and
-- the axial trace coefficient.
+- restricted rank-nullity;
+- sampling-kernel inclusion and sampled-range intersection; and
+- axial row-scaling consequences.
 
-The semigroup equality theorem, Markov uniformization, spherical harmonic
-product decomposition, and real representation irreducibility remain clearly
-identified standard external inputs. No `sorry`, `admit`, `sorryAx`, or
-user-declared axioms are permitted.
+The exact closeout audit verifies:
 
-## 7. Prior-art and publication boundary
+- existing covariance/factorization/Platonic tests;
+- regular-simplex formulas;
+- four-point signed restoration;
+- signed pentagon counterexample and irreducibility certificate;
+- centered product algebra;
+- Boolean centered square;
+- semigroup variance;
+- `S^2` `ell=1,...,6` table;
+- existing bounded/Pell assertions; and
+- singular/plural axiom-regex fixtures.
 
-The prior-art map covers finite Markov generators and product calculus,
-positive stencils, discrete spherical eigenmaps, spherical designs, quadratic
-harmonic sampling, distance-regular and Q-polynomial association schemes,
-local covariance tensors, and signed Laplacian inverse problems.
+## 8. Independent and adversarial audit routes
 
-Standard inputs include covariance expansion, finite rank-nullity, carré du
-champ, Jensen, uniformization, harmonic parity/decomposition, and general
-representation irreducibility. The candidate contribution is the combined
-genuinely sampled covariance factorization, sharp axial/equivariant rigidity,
-regular-simplex equality family, exact aliasing classifications, and forced
-signed restoration.
+| Route | Exact question | Outcome |
+|---|---|---|
+| Equivariant proof audit | Does every use of radial positivity follow from stated hypotheses? | Global off-diagonal nonnegativity added; reversibility confirmed unused |
+| Signed counterexample audit | Can negative rates cancel radial covariance under irreducible symmetry? | Yes; exact regular pentagon gives full quadratic exactness |
+| Centered product derivation | What is the residual for arbitrary `mu,c`? | Exact residual and additive equivalence proved independently and in Lean |
+| Boolean audit | Can a positive generator have nonzero centered doubled resonance? | Yes; exact four-state example with constant `Gamma=4` |
+| Jensen adversary | Does centered resonance imply zero semigroup variance? | No; Boolean variance is strictly positive |
+| Low-degree harmonic audit | Do `S^2` rows `ell=1,...,6` contain additive resonance? | No; exact integer table |
+| Workflow policy audit | Are both `axiom` and `axioms` rejected without false positives? | Yes; anchored aggregate scan plus fixtures |
+| Claim-status audit | Is abstract propagation still mislabeled conjectural? | Corrected to `PROVED / LEAN`; Prompt 3 specializations remain open |
 
-## 8. Acceptance gate
+## 9. Closeout status
 
-Prompt 2 is accepted only after an exact implementation head passes:
-
-1. exact symbolic covariance, factorization, Platonic, signed, and resonance
-   regressions;
-2. rejection of proof placeholders and user axioms;
-3. full Lean 4.30 / Mathlib 4.30 build;
-4. focused pure-math axiom audit; and
-5. independent nanoda checking of all selected Prompt 2 declarations,
-   including the new factorization theorems.
-
-Workflow, job, accepted-head, PR, merge, and post-integration identifiers are
-recorded after the gate completes rather than being used as mathematical
-support.
+The closeout is not certified by prose alone. Final closure requires all three
+workflows on the literal merged target head, archive verification, review-thread
+resolution, final commit/tree resolution, and completion of
+`PROMPT2_CLOSEOUT_AUDIT.md` and `PROMPT3_READINESS_HANDOFF.md`.

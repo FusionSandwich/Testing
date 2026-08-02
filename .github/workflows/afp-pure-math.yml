@@ -1,21 +1,25 @@
 name: AFP Pure Mathematics
 
 on:
+  push:
+    branches:
+      - agent/afp-pure-math-p0-m1
+      - agent/afp-pure-math-p2-closeout-corrected
   pull_request:
     branches:
       - testing
+      - agent/afp-pure-math-p0-m1
     paths:
       - 'afp_barrier_gate1/AFPBarrier/**'
       - 'afp_barrier_gate1/AFPBarrier.lean'
       - 'afp_barrier_gate1/pure_math/**'
-      - 'afp_barrier_gate1/docs/CLAIM_MATRIX.md'
-      - 'afp_barrier_gate1/docs/CONJECTURE_REGISTER.md'
-      - 'afp_barrier_gate1/docs/PURE_MATH_PRIOR_ART_MAP.md'
-      - 'afp_barrier_gate1/docs/THEOREM_TO_FILE_MAP.md'
+      - 'afp_barrier_gate1/docs/**'
       - 'afp_barrier_gate1/lakefile.lean'
       - 'afp_barrier_gate1/lean-toolchain'
       - 'afp_barrier_gate1/lake-manifest.json'
       - '.github/workflows/afp-pure-math.yml'
+      - '.github/workflows/afp-quadratic-covariance.yml'
+      - '.github/workflows/afp-spherical-feasibility.yml'
   workflow_dispatch:
 
 concurrency:
@@ -28,14 +32,30 @@ permissions:
 jobs:
   theorem-checkpoint:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 55
     defaults:
       run:
         working-directory: afp_barrier_gate1
 
     steps:
-      - name: Check out repository
+      - name: Check out exact repository head
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+
+      - name: Assert exact pure-math checkout
+        working-directory: .
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected='${{ github.event.pull_request.head.sha || github.sha }}'
+          actual=$(git rev-parse HEAD)
+          tree=$(git show -s --format=%T HEAD)
+          echo "expected_head=${expected}"
+          echo "actual_head=${actual}"
+          echo "actual_tree=${tree}"
+          test "$actual" = "$expected"
 
       - name: Set up deterministic Python runtime
         uses: actions/setup-python@v5
@@ -64,12 +84,14 @@ jobs:
           python pure_math/falsification/claim_falsification_audit.py \
             2>&1 | tee pure-math-falsification.log
 
-      - name: Quadratic covariance audit
+      - name: Quadratic covariance and closeout audits
         shell: bash
         run: |
           set -euo pipefail
           python pure_math/covariance/quadratic_covariance_audit.py \
             2>&1 | tee pure-math-covariance.log
+          python pure_math/covariance/prompt2_closeout_audit.py \
+            2>&1 | tee pure-math-prompt2-closeout.log
 
       - name: Exact local and global feasibility audit
         shell: bash
@@ -135,28 +157,50 @@ jobs:
             exit 1
           fi
 
-      - name: Source placeholder audit
+      - name: Source placeholder and user-axiom audit
         shell: bash
         run: |
           set -euo pipefail
-          if grep -RInE --include='*.lean' '(^|[^[:alnum:]_])(sorry|admit|sorryAx)([^[:alnum:]_]|$)' AFPBarrier AFPBarrier.lean; then
+          if grep -RInE --include='*.lean' \
+            '(^|[^[:alnum:]_])(sorry|admit|sorryAx)([^[:alnum:]_]|$)' \
+            AFPBarrier AFPBarrier.lean; then
             echo "Proof placeholder found." >&2
             exit 1
           fi
-          if grep -RInE --include='*.lean' '^[[:space:]]*(axiom|axioms)([[:space:]]|$)' AFPBarrier AFPBarrier.lean; then
+          if grep -RInE --include='*.lean' \
+            '^[[:space:]]*(axiom|axioms)([[:space:]]|$)' \
+            AFPBarrier AFPBarrier.lean; then
             echo "User axiom declaration found." >&2
             exit 1
           fi
           echo "No proof placeholders or user axiom declarations found." \
             | tee pure-math-source-audit.log
 
+      - name: Verify immutable archive and closeout scope
+        working-directory: .
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin \
+            archive/afp-gate6-spatial-multigroup-verified
+          test "$(git rev-parse FETCH_HEAD)" = \
+            "515f1aae6c20bd85711c90b5c1c21b4905252d01"
+          base=1835918fe9d0b941395e9f00f6ac5514129cefa0
+          if git merge-base --is-ancestor "$base" HEAD; then
+            bad=$(git diff --name-only "$base"...HEAD | \
+              grep -Ev '^(.github/workflows/afp-(quadratic-covariance|pure-math|spherical-feasibility)\.yml|afp_barrier_gate1/(AFPBarrier(\.lean|/.*\.lean)|pure_math/.*|docs/.*))$' || true)
+            test -z "$bad" || { echo "$bad" >&2; exit 1; }
+            git diff --check "$base"...HEAD
+          fi
+
       - name: Write checkpoint report
         if: always()
         shell: bash
         run: |
           {
-            echo "AFP pure-mathematics P0/M1 checkpoint"
+            echo "AFP pure-mathematics checkpoint"
             echo "commit=${GITHUB_SHA}"
+            echo "tree=$(git show -s --format=%T HEAD)"
             echo "run_id=${GITHUB_RUN_ID}"
             echo "run_attempt=${GITHUB_RUN_ATTEMPT}"
             echo "toolchain=$(cat lean-toolchain)"
@@ -175,7 +219,9 @@ jobs:
             --exclude='afp_barrier_gate1/pure-math-report.txt' \
             -czf afp-pure-math-source-${GITHUB_SHA}.tar.gz \
             afp_barrier_gate1 \
-            .github/workflows/afp-pure-math.yml
+            .github/workflows/afp-pure-math.yml \
+            .github/workflows/afp-quadratic-covariance.yml \
+            .github/workflows/afp-spherical-feasibility.yml
 
       - name: Upload pure-math records
         if: always()
@@ -188,6 +234,7 @@ jobs:
             afp_barrier_gate1/pure-math-python-compile.log
             afp_barrier_gate1/pure-math-falsification.log
             afp_barrier_gate1/pure-math-covariance.log
+            afp_barrier_gate1/pure-math-prompt2-closeout.log
             afp_barrier_gate1/pure-math-local-global-exact.log
             afp_barrier_gate1/pure-math-spherical-rational.log
             afp_barrier_gate1/pure-math-toolchain.log

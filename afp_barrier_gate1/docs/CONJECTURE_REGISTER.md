@@ -1,177 +1,225 @@
 # AFP pure-math conjecture register
 
-Every conjecture requires a precise hypothesis set, deterministic falsification
-search, literature status, and explicit kill criterion. Resolved entries are
-retained so earlier claim changes remain auditable.
+Every unresolved conjecture requires a precise hypothesis set, deterministic
+falsification search, literature status, and kill criterion. Resolved and
+rejected entries remain here as permanent regression controls.
 
 ## C-M1. Strict local spherical feasibility — resolved
 
-**Proved statement.** For candidate neighbors with tangent directions
-`u_j` and angles `0 < theta_j < pi`, a degree-one-exact row with every rate
-strictly positive exists if and only if the origin lies in the relative
-interior of `conv{u_j}`. Once a positive tangent dependence is selected, the
-normal-loss equation fixes one positive scale.
+**Status:** PROVED.
 
-**Status:** PROVED, including repetitions, redundant points, lower-dimensional
-span, exact scaling/rate/uniqueness, antipodes, quantitative margins, and
-explicitly identified-span perturbation stability. See
-`pure_math/EXACT_LOCAL_GLOBAL_THEOREM_PACKAGE.md` and the independent
-`SPHERICAL_FEASIBILITY_SHARED_EDGE_THEOREM.md` development.
+The corrected Prompt 1 package proves indexed convex-hull/relative-interior
+feasibility, exact scaling and uniqueness, division-free antipodal handling,
+quantitative margins, conditioning, and transported-span perturbation
+stability. Repetitions, redundancies, and lower-dimensional spans are included.
 
-**Resolved deliverables:**
+## C-M1G. Local-to-global reversible compatibility — resolved negatively and conditionally
 
-- the scaling map is a bijection with the normalized dependence polytope;
-- positive indexed dependences are equivalent to relative interior;
-- antipodes form a separate residual normal-budget simplex;
-- `rho`, `beta_*`, rate, coefficient, support, and singular-value margins are explicit;
-- standard positive-stencil inputs are separated from sphere-specific results.
+The unrestricted implication is REJECTED by exact centered sparse examples.
+Complete-graph sufficiency, equivariant orbit averaging, centered-clique
+submass decomposition, and the full shared-edge cone/Farkas test are PROVED
+replacement mechanisms.
 
-**Regression warnings:** lower-dimensional perturbations require a fixed or
-explicitly identified intrinsic span; uniqueness means existence and uniqueness.
-Exact repeated-direction and boundary-crossing regressions are retained in both
-`pure_math/examples/exact_local_global_audit.py` and
-`pure_math/tests/test_spherical_feasibility.py`.
+## C-M2A. Abstract global equality propagation — resolved
 
-## C-M1G. Global local-to-shared compatibility — resolved negatively and conditionally
-
-The unrestricted implication is REJECTED by two independent exact examples:
-the centered unequal-mass equatorial four-cycle, and the weighted-centered
-cube with a heavy antipodal pair. The cube certificate
-`y_x=(x_2,x_3,x_1)/sqrt(3)` has zero edge work and `b dot y=-4`.
-Complete-graph sufficiency, equivariant orbit averaging, and centered-clique
-submass decomposition are PROVED reconciliation results. Further sparse
-classifications must survive both regression examples.
-
-## C-M2. Global equality propagation
-
-**Statement under test.** In a connected reversible positive graph with a
-symmetric spherical loss, if every row attains equality in the local
-rate-defect inequality, all row rates coincide and all active edges have one
-common loss.
-
-**Status:** CONJECTURE with a short proof route; Lean formalization active.
-
-**Kill condition:** none expected for the propagation lemma; its publication
-role is supporting unless it enables a harder classification or near-rigidity
-theorem.
-
-## C-M3. Triangulated global `Q=1` classification
-
-**Candidate statement.** A connected geodesic triangulation of `S^2` with
-positive conductances on every edge, exact coordinate eigenmap, and `Q_i=1`
-at every vertex must be one of the tetrahedral, octahedral, or icosahedral
-triangulations, subject to a precise nondegeneracy and convex-embedding
-hypothesis.
-
-**Status:** CONJECTURE.
-
-**Known warning:** without the triangulation restrictions, cube and
-dodecahedron embeddings give immediate counterexamples.
-
-**Falsification plan:** enumerate small spherical triangulations and symmetric
-polyhedral embeddings; test equal-edge and weighted variants; search for
-nonregular equal-edge triangulations.
-
-**Kill condition:** one valid non-Platonic triangulated counterexample.
-
-## C-M4. Quantitative near-rigidity
-
-**Statement under test.** If every normalized active edge weight is bounded
-below and `max_i(Q_i-1) <= eta`, then active edge losses differ from a global
-common loss by `O(sqrt eta)` after accounting for graph diameter or overlap.
-
-**Status:** CONJECTURE.
-
-**Work needed:** propagate the existing local weighted-variance estimate across
-shared edges; determine the unavoidable dependence on minimum conductance,
-graph diameter, and rate variation.
-
-**Kill condition:** families with `Q -> 1` but no controlled global edge-length
-concentration under the stated hypotheses.
-
-## C-M5. Genuine sampled quadratic exactness — resolved
-
-**Proved theorem package.** For an eigenmap `Phi` and jump covariance tensors
-`C_i`, the quadratic target residual is the exact covariance contraction. In
-the spherical degree-two specialization,
+**Proved statement.** Under a positive common eigenvalue, positive row rates,
+a symmetric active relation, a symmetric edge loss, the local equality formula
 
 ```text
-R_X = (L+2d I) S_X,
-E_form = ker R_X,
-K_X = ker S_X subset E_form,
-E_sample = im(S_X) intersect ker(L+2d I).
+loss(i,j)=lambda/rate(i)
 ```
 
-Hence
+on every active edge, and connectedness of the active relation, all row rates
+are equal and all active-edge losses have one common value.
+
+**Status:** PROVED / LEAN in `AFPBarrier/GlobalLossRigidity.lean` through:
 
 ```text
-dim E_sample
-  = dim E_form-dim K_X
-  = rank(S_X)-rank(R_X).
+rate_eq_of_symmetric_active_loss,
+rate_eq_of_active_reflTransGen,
+connected_active_loss_rigidity.
 ```
 
-Under positive axial covariance at every vertex,
+This abstract propagation theorem is no longer a conjecture.
+
+## C-M2B. Complete spherical `Q=1` specialization — Prompt 3 target
+
+**Question.** Determine the exact spherical hypotheses under which the local
+rate-defect equality condition supplies the abstract theorem's active-edge
+formula, and audit all normalization and zero-edge cases.
+
+**Status:** PROMPT 3 TARGET. Do not call it proved merely because the abstract
+propagation theorem is formalized.
+
+## C-M3. Restricted geodesic-triangulation classification — Prompt 3 target
+
+**Candidate statement.** A connected nondegenerate geodesic triangulation of
+`S^2` with positive conductances on every edge, exact coordinate eigenmap, and
+`Q_i=1` at every vertex must be tetrahedral, octahedral, or icosahedral under a
+fully stated convex-embedding/equal-loss hypothesis.
+
+**Status:** CONJECTURE / PROMPT 3 TARGET.
+
+**Known warning:** cube and dodecahedron embeddings defeat every unrestricted
+Platonic-only claim.
+
+**Kill criterion:** one valid non-Platonic triangulated counterexample under
+the final hypotheses.
+
+## C-M4. Quantitative near-rigidity — Prompt 3 target
+
+**Candidate statement.** Under explicit lower active-weight, connectivity, and
+rate-control hypotheses, small local equality defect forces global active-edge
+loss concentration with an explicit graph-dependent bound.
+
+**Status:** CONJECTURE / PROMPT 3 TARGET.
+
+**Work needed:** propagate the local weighted-variance estimate while tracking
+minimum conductance, graph diameter/overlap, and row-rate variation.
+
+**Kill criterion:** a family with defect tending to zero but no controlled
+loss concentration under the stated hypotheses.
+
+## C-M5. Genuine sampled quadratic exactness — resolved after corrective audit
+
+The covariance package proves
 
 ```text
-E_form = K_X,
-E_sample = {0}.
+R_X=(L+2d I)S_X,
+K_X=ker S_X subset E_form=ker R_X,
+E_sample=im(S_X) intersect ker(L+2d I),
+dim E_sample=rank(S_X)-rank(R_X).
 ```
 
-**Status:** PROVED. The sharp theorem has two independent structural routes:
-axial covariance row scaling and transitive irreducibility of `Sym_0(d)`.
-Regular simplices attain the axial theorem in every dimension. Exact Platonic
-proofs give form dimensions `2,3,2,0,0` and sampled dimensions all zero.
+Positive axial covariance at every vertex gives
 
-**Signed contrast:** the four cardinal points of `S^1` with adjacent rates
-`1` and antipodal rates `-1/2` restore one genuine quadratic sampled mode; the
-negative antipodal rate is forced on that fixed support.
+```text
+E_form=K_X,
+E_sample={0}.
+```
 
-**Regression warnings:**
+Regular simplices attain this theorem in every dimension, and the five
+Platonic examples are classified exactly.
 
-- never report `dim E_form` as a sampled mode count;
-- never treat `R_X` and `S_X` as unrelated matrices;
-- sampling aliases are automatically in `E_form` because the residual factors
-  through sampling;
-- numerical rank thresholds are not exact proof.
+The independent equivariant route is now correctly stated only under
 
-## C-M6. General spectral-product hierarchy — rejected for Prompt 2
+```text
+a_ij>=0 for every i!=j.
+```
 
-**Tested statement.** Positivity constrains simultaneous exactness of an
-eigenspace and selected irreducible components of its symmetric square through
-a nontrivial degree-indexed hierarchy.
+Together with transitivity, an equivariant unit-sphere coordinate eigenmap,
+irreducibility of the real conjugation representation on `Sym_0(d)`, and one
+positive distinct jump, this gives `E_form={0}`. Reversibility is not used.
 
-**Outcome:** REJECTED under the stated kill criterion.
+**Permanent signed regression.** On the regular pentagon, distance-one rate
 
-The audit accounted for:
+```text
+(5+3sqrt(5))/10
+```
 
-- even product parity in the pointwise multiplication image;
-- odd/even zonal antipodal equality sets;
-- non-singleton maxima;
-- degree-specific sampling kernels and cross-degree aliases;
-- one sampled combination versus a complete irreducible component; and
-- the additive-resonance equation
-  `k(k+d-2)=2l(l+d-2)`.
+and distance-two rate
 
-The resonance equation is Pell-type and even has sparse infinite families,
-so absence of resonance is not the obstruction. The problem is
-identifiability: without proving that all other sampled product components
-vanish or separate, no component is isolated. Whenever those extra conditions
-hold, the conclusion is exactly the one-function carré-du-champ/Jensen square
-obstruction. No new `l`-indexed dimension tradeoff or global consequence
-survived.
+```text
+(5-3sqrt(5))/10
+```
 
-**Status:** REJECTED for the general Prompt 2 branch, not declared impossible
-under future association-scheme, design, or representation-theoretic
+produce coordinate eigenvalue `-1`, full trace-free quadratic eigenvalue
+`-4`, `E_form=Sym_0(2)`, and `dim E_sample=2`, while the real `C_5`
+conjugation action is irreducible. Therefore the equivariant theorem without
+global nonnegativity is REJECTED.
+
+**Status:** PROVED AFTER CORRECTIVE AUDIT.
+
+## C-M6. Centered spectral products — resolved locally, hierarchy rejected
+
+For
+
+```text
+Gamma(f,g)=1/2 sum_j a_ij(f_j-f_i)(g_j-g_i),
+Lf=-lambda f,
+Lg=-nu g,
+```
+
+the exact shifted residual is
+
+```text
+L(fg-c)+mu(fg-c)
+ =2Gamma(f,g)+(mu-lambda-nu)fg-mu c.
+```
+
+At additive resonance,
+
+```text
+L(fg-c)=-(lambda+nu)(fg-c)
+iff
+2Gamma(f,g)=(lambda+nu)c.
+```
+
+For a square,
+
+```text
+L(f^2-c)=-2lambda(f^2-c)
+iff
+Gamma(f,f)=lambda c.
+```
+
+**Resolved conclusions:**
+
+- uncentered resonance (`c=0`) forces zero carré du champ;
+- on an irreducible positive chain with `lambda>0`, the uncentered resonant
+  eigenfunction is zero;
+- centered resonance may be nonzero;
+- centered resonance gives semigroup variance
+  `c(1-exp(-2lambda t))`, not Jensen equality.
+
+**Permanent positive regression.** On the four-state Boolean square with rate
+one coordinate flips and `f=x_1+x_2`,
+
+```text
+Lf=-2f,
+f^2-2=2x_1x_2 != 0,
+L(f^2-2)=-4(f^2-2),
+Gamma(f,f)=4.
+```
+
+Thus universal centered-square impossibility is REJECTED.
+
+The exact `S^2` table for `ell=1,...,6` has no additive resonance, while the
+general higher-dimensional resonance equation remains Pell-type. After
+sampling kernels, cross-degree aliases, equality sets, and component
+identifiability are enforced, no `ell`-indexed sampled dimension tradeoff,
+multiplicity obstruction, or new global consequence survives.
+
+**Hierarchy status:** REJECTED FOR PROMPT 2 under that kill criterion. The
+rejection does not rely on a centered-square impossibility theorem and does
+not rule out future theorems under stronger association-scheme or design
 hypotheses.
 
-## Rejected conjectures retained as regression warnings
+## Verification-policy correction — resolved
 
-- local row feasibility plus weighted centering implies sparse shared-edge
+The dedicated Prompt 2 workflow now scans the aggregate pure-math Lean source
+for both
+
+```text
+axiom
+axioms
+```
+
+using an anchored declaration regex, includes deterministic singular/plural
+fixtures, keeps `sorryAx` outside the nanoda allowed list, runs the focused
+axiom audit, and asserts the literal checked-out head SHA.
+
+## Rejected statements retained as regression warnings
+
+- local positive rows plus centering imply arbitrary sparse shared-edge
   feasibility;
 - unrestricted `Q=1` classification by `K in {4,6,12}`;
-- global `Q>1` for every finite spherical graph;
+- algebraic form dimension equals genuine sampled exact dimension;
+- equivariant irreducibility needs only one positive rate while other rates may
+  be signed;
+- every nonzero centered additive square is impossible;
+- centered resonance is Jensen equality;
+- a Pell arithmetic resonance alone produces a spectral-product hierarchy;
 - blanket finite-graph Bakry–Émery curvature collapse;
-- standard continuum `W_2` contraction from positivity alone;
-- general order independence of layered stopping maps;
-- algebraic quadratic form dimension equals genuine sampled exact dimension;
-- a Pell-type additive resonance by itself yields a spectral-product hierarchy.
+- continuum `W_2` contraction from positivity alone; and
+- general order independence of layered stopping maps.

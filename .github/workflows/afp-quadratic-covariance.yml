@@ -6,6 +6,7 @@ on:
       - agent/afp-quadratic-covariance-p2-corrected
       - agent/afp-pure-math-p1-local-global-corrected
       - agent/afp-pure-math-p0-m1
+      - agent/afp-pure-math-p2-closeout-corrected
   pull_request:
     branches:
       - agent/afp-pure-math-p1-local-global-corrected
@@ -22,23 +23,41 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 55
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
 
-      - name: Assert exact Prompt 2 checkout
+      - name: Assert exact Prompt 2 checkout and record provenance
         shell: bash
         run: |
           set -euo pipefail
           expected='${{ github.event.pull_request.head.sha || github.sha }}'
           actual=$(git rev-parse HEAD)
+          tree=$(git show -s --format=%T HEAD)
+          start_head=1835918fe9d0b941395e9f00f6ac5514129cefa0
+          start_tree=$(git show -s --format=%T "$start_head")
           echo "expected_head=${expected}"
           echo "actual_head=${actual}"
+          echo "actual_tree=${tree}"
+          echo "closeout_start_head=${start_head}"
+          echo "closeout_start_tree=${start_tree}"
           echo "event=${GITHUB_EVENT_NAME}"
           echo "ref=${GITHUB_REF}"
           test "${actual}" = "${expected}"
+          if git cat-file -e 694b913c99364bb0032a8ffbd7008b549b491af0^{commit} 2>/dev/null; then
+            echo "reported_final_head_resolves=yes"
+            exit 1
+          else
+            echo "reported_final_head_resolves=no"
+          fi
+          git fetch --no-tags origin \
+            archive/afp-gate6-spatial-multigroup-verified
+          test "$(git rev-parse FETCH_HEAD)" = \
+            "515f1aae6c20bd85711c90b5c1c21b4905252d01"
+          echo "immutable_archive=515f1aae6c20bd85711c90b5c1c21b4905252d01"
 
       - uses: actions/setup-python@v5
         with:
@@ -47,19 +66,55 @@ jobs:
       - name: Install exact symbolic dependencies
         run: python -m pip install --disable-pip-version-check --no-input 'sympy==1.14.0'
 
-      - name: Run exact covariance and sampled-space audit
-        run: python afp_barrier_gate1/pure_math/covariance/quadratic_covariance_audit.py
+      - name: Run exact covariance and sampled-space audits
+        shell: bash
+        run: |
+          set -euo pipefail
+          python afp_barrier_gate1/pure_math/covariance/quadratic_covariance_audit.py
+          python afp_barrier_gate1/pure_math/covariance/prompt2_closeout_audit.py
+
+      - name: Verify axiom-regex policy fixtures
+        shell: bash
+        run: |
+          set -euo pipefail
+          tmp=$(mktemp -d)
+          trap 'rm -rf "$tmp"' EXIT
+          cat > "$tmp/singular.lean" <<'EOF'
+          axiom forbidden : Prop
+          EOF
+          cat > "$tmp/plural.lean" <<'EOF'
+          axioms forbidden1 forbidden2 : Prop
+          EOF
+          cat > "$tmp/allowed.lean" <<'EOF'
+          #print axioms Existing.theorem
+          theorem axiomName : True := by trivial
+          EOF
+          pattern='^[[:space:]]*(axiom|axioms)([[:space:]]|$)'
+          grep -qE "$pattern" "$tmp/singular.lean"
+          grep -qE "$pattern" "$tmp/plural.lean"
+          if grep -qE "$pattern" "$tmp/allowed.lean"; then
+            echo 'Axiom regex produced a false positive.' >&2
+            exit 1
+          fi
+          echo 'axiom and axioms fixtures rejected: PASS'
 
       - name: Reject proof placeholders and user axioms
         shell: bash
         run: |
-          files=(
-            afp_barrier_gate1/AFPBarrier/QuadraticCovariance.lean
-          )
-          if grep -nE '(^|[^[:alnum:]_])(sorry|admit|sorryAx|axiom)([^[:alnum:]_]|$)' "${files[@]}"; then
-            echo 'Forbidden Lean placeholder or user axiom found.' >&2
+          set -euo pipefail
+          if grep -RInE --include='*.lean' \
+            '(^|[^[:alnum:]_])(sorry|admit|sorryAx)([^[:alnum:]_]|$)' \
+            afp_barrier_gate1/AFPBarrier afp_barrier_gate1/AFPBarrier.lean; then
+            echo 'Forbidden proof placeholder found.' >&2
             exit 1
           fi
+          if grep -RInE --include='*.lean' \
+            '^[[:space:]]*(axiom|axioms)([[:space:]]|$)' \
+            afp_barrier_gate1/AFPBarrier afp_barrier_gate1/AFPBarrier.lean; then
+            echo 'User axiom declaration found.' >&2
+            exit 1
+          fi
+          echo 'aggregate proof-placeholder and user-axiom scan: PASS'
 
       - name: Install Lean toolchain
         uses: leanprover/lean-action@v1
@@ -93,8 +148,6 @@ jobs:
             f3cf6458a309d643dc586a80f9ab5a93c2304db9
           git -C _lean4export checkout --detach FETCH_HEAD
 
-          # Export format 2.0.0 does not serialize Lean 4.30's let-expression
-          # `nondep` bit. Canonicalize the bit before exporter hashing.
           python3 - <<'PY'
           from pathlib import Path
 
@@ -182,7 +235,16 @@ jobs:
 
           declarations=(
             AFPBarrier.jumpCrossVariation
+            AFPBarrier.jumpGamma
             AFPBarrier.jumpGenerator_product_identity
+            AFPBarrier.jumpGenerator_product_identity_gamma
+            AFPBarrier.jumpGenerator_shifted_product_residual
+            AFPBarrier.shifted_product_target_iff
+            AFPBarrier.additive_product_resonance_iff
+            AFPBarrier.centered_square_resonance_iff
+            AFPBarrier.uncentered_square_resonance_iff_zero_gamma
+            AFPBarrier.jumpCrossVariation_self_eq_carreDuChamp
+            AFPBarrier.uncentered_square_resonance_forces_value_zero
             AFPBarrier.jumpGenerator_const_mul
             AFPBarrier.jumpGenerator_fintype_sum
             AFPBarrier.finiteQuadraticSample
@@ -230,3 +292,18 @@ jobs:
 
           RUST_BACKTRACE=1 \
             _nanoda_lib/target/release/nanoda_bin _nanoda_config.json
+
+      - name: Verify closeout diff is pure-math only
+        shell: bash
+        run: |
+          set -euo pipefail
+          base=1835918fe9d0b941395e9f00f6ac5514129cefa0
+          bad=$(git diff --name-only "$base"...HEAD | \
+            grep -Ev '^(.github/workflows/afp-(quadratic-covariance|pure-math|spherical-feasibility)\.yml|afp_barrier_gate1/(AFPBarrier(\.lean|/.*\.lean)|pure_math/.*|docs/.*))$' || true)
+          if test -n "$bad"; then
+            echo 'Out-of-scope closeout paths:' >&2
+            echo "$bad" >&2
+            exit 1
+          fi
+          git diff --check "$base"...HEAD
+          echo 'pure-math-only closeout diff: PASS'

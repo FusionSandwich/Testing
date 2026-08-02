@@ -1,96 +1,195 @@
-# Prompt 2 sampled quadratic covariance integration record
+# Prompt 2 sampled quadratic covariance integration and closeout record
 
-## Integrated stage
+## 1. Original integration provenance
 
 - Repository: `FusionSandwich/Testing`
-- Requested target branch: `agent/afp-pure-math-p0-m1`
+- Target branch: `agent/afp-pure-math-p0-m1`
 - Original P0/M1 checkpoint:
   `4efef67a20cdb8b2437cad093ccc16bcd0f17796`
 - Corrected Prompt 1 baseline:
   `923dc47dae4f83dbea9cd56aa904164c6378e52d`
-- Prompt 2 exact theorem head before reconciliation:
+- Prompt 2 theorem head before original reconciliation:
   `478055166fc874a519865506989586c3e02dc583`
-- Final corrected reconciliation head:
-  `dd3ea8ee612958f223bbbf05cf5de926377cd5a1`
 - Prompt 2 merge into corrected Prompt 1 branch:
   PR `#17`, squash commit `f1cea9c13a3de28288470a53b67ad852aaa3635b`
-- Corrected Prompt 1 plus Prompt 2 merge into the requested target:
+- Prompt 1 plus Prompt 2 merge into the requested target:
   PR `#18`, squash commit `f9fb1e336a4569c2d7e2e440821976bd30a6c29f`
+- Integration-record commit following that merge:
+  `1835918fe9d0b941395e9f00f6ac5514129cefa0`
 
-The stage is confined to the pure-mathematics package, exact symbolic
-regressions, Lean finite algebra, claim-control documentation, and dedicated
-verification workflows. The immutable transport archive
-`archive/afp-gate6-spatial-multigroup-verified` at
-`515f1aae6c20bd85711c90b5c1c21b4905252d01` was not modified. No transport,
-Radiant, HTS, multigroup, or spatial-solver work was added.
+## 2. Corrected closeout provenance
 
-A literal multiagent-v2 runtime was not available in this execution
-environment. It was not used and is not claimed. Independent covariance,
-sampling, symmetry, signed-construction, product, harmonic, exact-symbolic,
-and Lean audit routes are recorded in the Prompt 2 stage report.
-
-## Mathematical correction made during audit
-
-The earlier candidate treated the covariance-constraint and quadratic
-sampling maps as if they were unrelated. In the spherical degree-two problem,
-the exact covariance identity instead gives
+At closeout start, the actual remote target head was
 
 ```text
-R_X = (L+2d I) S_X.
+1835918fe9d0b941395e9f00f6ac5514129cefa0.
+```
+
+The previously reported final target head
+
+```text
+694b913c99364bb0032a8ffbd7008b549b491af0
+```
+
+did not resolve as a remote commit. It is rejected as provenance and must not
+be used as a Prompt 3 baseline.
+
+The closeout branch was created without rewriting the target:
+
+```text
+agent/afp-pure-math-p2-closeout-corrected
+```
+
+from the actual target head `1835918...`.
+
+The immutable archive remains
+
+```text
+archive/afp-gate6-spatial-multigroup-verified
+515f1aae6c20bd85711c90b5c1c21b4905252d01.
+```
+
+## 3. Original sampled-space correction retained
+
+The Prompt 2 covariance residual factors through sampling:
+
+```text
+R_X=(L+2dI)S_X.
 ```
 
 Consequently
 
 ```text
-K_X = ker S_X subset E_form = ker R_X,
-E_sample = im(S_X) intersect ker(L+2d I),
-dim E_sample = dim E_form-dim K_X,
-dim E_sample = rank(S_X)-rank(R_X),
-rank([R_X;S_X]) = rank(S_X).
+K_X=ker S_X subset E_form=ker R_X,
+E_sample=im(S_X) intersect ker(L+2dI),
+dim E_sample=dim E_form-dim K_X,
+dim E_sample=rank(S_X)-rank(R_X),
+rank([R_X;S_X])=rank(S_X).
 ```
 
-The generic restricted-map intersection formula remains correct, but it
-collapses to these sharper specialized identities. The unrelated-map negative
-test was removed and replaced by exact factorization regressions.
+This remains the central sampled-space theorem.
 
-## Integrated theorem package
+## 4. Closeout mathematical corrections
 
-The integrated stage proves:
+### 4.1 Equivariant positivity
 
-- the finite covariance identity and exact shifted target residual;
-- the trace-free form-space characterization;
-- the residual-through-sampling factorization and genuine sampled-space
-  formula;
-- sharp axial-covariance rigidity `E_form=K_X`, `E_sample={0}`;
-- a regular-simplex equality family in every dimension;
-- an independent equivariant-irreducibility rigidity theorem;
-- exact covariance tensors, sampling kernels, and dimensions for all five
-  Platonic shortest-edge generators;
-- a four-point signed restoration with forced antipodal rate `-1/2` and one
-  genuine sampled quadratic mode;
-- independent carre-du-champ and semigroup/Jensen product obstructions; and
-- rejection of the unsupported general spectral-product hierarchy under its
-  stated kill criterion after parity, equality-set, aliasing, and Pell
-  resonance analysis.
+The equivariant irreducibility theorem now requires
 
-## Pre-integration verification
+```text
+a_ij>=0 for every i!=j.
+```
 
-The final reconciliation head
-`dd3ea8ee612958f223bbbf05cf5de926377cd5a1` passed:
+With an equivariant unit-sphere coordinate eigenmap, transitivity,
+irreducibility of the real conjugation representation on `Sym_0(d)`, and one
+positive jump between distinct embedded points, this gives `E_form={0}`.
+Reversibility is not required.
 
-- dedicated Prompt 2 workflow run `30726175033`, job `91438236453`;
-- exact head checkout assertion;
-- exact symbolic covariance, factorization, Platonic, signed, and resonance
-  audit;
-- signed sampled-dimension check `rank S=1`, `rank R=0`,
-  `dim E_sample=1`;
-- full Lean 4.30 / Mathlib 4.30 package build;
-- focused pure-math axiom audit; and
-- independent nanoda validation.
+The signed regular pentagon is committed as the permanent exact counterexample
+when global nonnegativity is removed:
 
-The same reconciliation passed the corrected Prompt 1 compatibility gate in
-workflow run `30726174993`, job `91438212980`.
+```text
+distance-one rate: (5+3sqrt(5))/10,
+distance-two rate: (5-3sqrt(5))/10,
+coordinate eigenvalue: -1,
+trace-free quadratic eigenvalue: -4,
+E_form=Sym_0(2),
+dim E_sample=2,
+real C_5 conjugation action irreducible.
+```
 
-Post-integration exact-head workflow and job identifiers are recorded in the
-merged pull-request discussion and final stage response after the target-branch
-runs complete. They are not used as mathematical evidence.
+### 4.2 Centered products
+
+For eigenfunctions `Lf=-lambda f`, `Lg=-nu g`,
+
+```text
+L(fg-c)+mu(fg-c)
+ =2Gamma(f,g)+(mu-lambda-nu)fg-mu c.
+```
+
+At additive resonance,
+
+```text
+L(fg-c)=-(lambda+nu)(fg-c)
+iff
+2Gamma(f,g)=(lambda+nu)c.
+```
+
+For a square,
+
+```text
+L(f^2-c)=-2lambda(f^2-c)
+iff
+Gamma(f,f)=lambda c.
+```
+
+The Boolean square is the permanent positive centered-resonance regression.
+Its semigroup variance is positive, so centered resonance is explicitly
+separated from Jensen equality.
+
+### 4.3 Low-degree hierarchy
+
+The exact `S^2` table for `ell=1,...,6` is committed and has no additive
+resonance. The generalized Pell analysis is retained. The general hierarchy is
+rejected only because no sampled dimension tradeoff, multiplicity obstruction,
+or new global consequence survived the kernel and alias audits.
+
+## 5. Verification-policy correction
+
+The dedicated Prompt 2 workflow now:
+
+- asserts the literal expected head SHA and records the tree SHA;
+- records the actual closeout start head/tree;
+- verifies that the reported `694b913...` commit does not resolve;
+- verifies the immutable archive SHA;
+- runs existing and corrective exact audits;
+- scans the aggregate Lean source for `sorry`, `admit`, and `sorryAx`;
+- scans anchored declarations for both `axiom` and plural `axioms`;
+- tests singular/plural regex fixtures and allowed nondeclaration text;
+- performs the full Lean build and focused axiom audit;
+- keeps `sorryAx` outside the nanoda permitted-axiom list;
+- independently checks all selected Prompt 2 declarations with nanoda; and
+- rejects out-of-scope closeout paths.
+
+The repository-wide pure-math and spherical compatibility workflows also
+assert literal head checkouts and use the aggregate singular/plural axiom
+policy.
+
+## 6. Scope preservation
+
+The closeout diff is restricted to:
+
+```text
+.github/workflows/afp-quadratic-covariance.yml
+.github/workflows/afp-pure-math.yml
+.github/workflows/afp-spherical-feasibility.yml
+afp_barrier_gate1/AFPBarrier.lean
+afp_barrier_gate1/AFPBarrier/*.lean
+afp_barrier_gate1/pure_math/**
+afp_barrier_gate1/docs/**
+```
+
+No transport, Radiant, HTS, multigroup, evaluated-material, spatial-solver, or
+production-solver path is permitted. The immutable archive is not merged,
+rebased, or written.
+
+## 7. Closeout integration fields
+
+These fields are authoritative only after the closeout PR is merged and all
+three workflows pass on the literal final target head:
+
+```text
+closeout_pr=19
+closeout_implementation_head=TO_BE_RECORDED
+closeout_merge_commit=TO_BE_RECORDED
+final_target_head=TO_BE_RECORDED
+final_target_tree=TO_BE_RECORDED
+quadratic_workflow_run=TO_BE_RECORDED
+quadratic_workflow_job=TO_BE_RECORDED
+spherical_workflow_run=TO_BE_RECORDED
+spherical_workflow_job=TO_BE_RECORDED
+pure_math_workflow_run=TO_BE_RECORDED
+pure_math_workflow_job=TO_BE_RECORDED
+```
+
+The final values are also copied into `PROMPT2_CLOSEOUT_AUDIT.md` and
+`PROMPT3_READINESS_HANDOFF.md`.

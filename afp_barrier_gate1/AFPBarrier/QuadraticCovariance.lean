@@ -7,8 +7,9 @@ import Mathlib.Tactic
 # Quadratic covariance and sampled exactness
 
 This module formalizes the finite algebraic core of the sampled quadratic
-exactness theorem. It proves the product/covariance identity, the exact target
-residual with a constant shift, the trace-free projection contraction, the
+exactness theorem. It proves the product/covariance identity, arbitrary shifted
+product residuals, centered and uncentered additive resonance, the exact
+quadratic target residual, trace-free projection contraction, the
 sampling/residual factorization consequences, restricted-map rank-nullity, and
 the row-scaled constraint implication used by axial-covariance rigidity.
 -/
@@ -27,6 +28,11 @@ def jumpCrossVariation
   (offdiag i).sum (fun j =>
     a i j * (f j - f i) * (g j - g i))
 
+/-- The bilinear carré du champ with the conventional factor `1/2`. -/
+noncomputable def jumpGamma
+    (a : ι → ι → ℝ) (f g : ι → ℝ) (i : ι) : ℝ :=
+  (1 / 2 : ℝ) * jumpCrossVariation a f g i
+
 /-- Exact finite product identity. -/
 theorem jumpGenerator_product_identity
     (a : ι → ι → ℝ) (f g : ι → ℝ) (i : ι) :
@@ -41,6 +47,147 @@ theorem jumpGenerator_product_identity
   apply Finset.sum_congr rfl
   intro j hj
   ring
+
+/-- Product identity written using the conventional carré du champ. -/
+theorem jumpGenerator_product_identity_gamma
+    (a : ι → ι → ℝ) (f g : ι → ℝ) (i : ι) :
+    jumpGenerator a (fun j => f j * g j) i
+      = f i * jumpGenerator a g i
+        + g i * jumpGenerator a f i
+        + 2 * jumpGamma a f g i := by
+  rw [jumpGenerator_product_identity]
+  unfold jumpGamma
+  ring
+
+/-- Exact arbitrary-target residual for a shifted product of two eigenfunctions. -/
+theorem jumpGenerator_shifted_product_residual
+    (a : ι → ι → ℝ) (f g : ι → ℝ) (i : ι)
+    (lam nu mu c : ℝ)
+    (hf : jumpGenerator a f i = -lam * f i)
+    (hg : jumpGenerator a g i = -nu * g i) :
+    jumpGenerator a (fun j => f j * g j - c) i
+        + mu * (f i * g i - c)
+      = 2 * jumpGamma a f g i
+        + (mu - lam - nu) * (f i * g i)
+        - mu * c := by
+  rw [jumpGenerator_sub_const]
+  rw [jumpGenerator_product_identity_gamma, hf, hg]
+  ring
+
+/-- Necessary and sufficient arbitrary-target equation for a shifted product. -/
+theorem shifted_product_target_iff
+    (a : ι → ι → ℝ) (f g : ι → ℝ) (i : ι)
+    (lam nu mu c : ℝ)
+    (hf : jumpGenerator a f i = -lam * f i)
+    (hg : jumpGenerator a g i = -nu * g i) :
+    jumpGenerator a (fun j => f j * g j - c) i
+        = -mu * (f i * g i - c)
+      ↔ 2 * jumpGamma a f g i
+          + (mu - lam - nu) * (f i * g i)
+          - mu * c = 0 := by
+  have hres := jumpGenerator_shifted_product_residual
+    (a := a) (f := f) (g := g) (i := i)
+    (lam := lam) (nu := nu) (mu := mu) (c := c) hf hg
+  constructor <;> intro h <;> nlinarith
+
+/-- At additive resonance, a centered product is exact exactly when its
+carré du champ is the corresponding constant. -/
+theorem additive_product_resonance_iff
+    (a : ι → ι → ℝ) (f g : ι → ℝ) (i : ι)
+    (lam nu c : ℝ)
+    (hf : jumpGenerator a f i = -lam * f i)
+    (hg : jumpGenerator a g i = -nu * g i) :
+    jumpGenerator a (fun j => f j * g j - c) i
+        = -(lam + nu) * (f i * g i - c)
+      ↔ 2 * jumpGamma a f g i = (lam + nu) * c := by
+  have htarget := shifted_product_target_iff
+    (a := a) (f := f) (g := g) (i := i)
+    (lam := lam) (nu := nu) (mu := lam + nu) (c := c) hf hg
+  constructor
+  · intro h
+    have hz := htarget.mp h
+    nlinarith
+  · intro h
+    apply htarget.mpr
+    nlinarith
+
+/-- A centered square propagates at the doubled eigenvalue exactly when its
+pointwise carré du champ is the constant `lam * c`. -/
+theorem centered_square_resonance_iff
+    (a : ι → ι → ℝ) (f : ι → ℝ) (i : ι)
+    (lam c : ℝ)
+    (hf : jumpGenerator a f i = -lam * f i) :
+    jumpGenerator a (fun j => (f j) ^ 2 - c) i
+        = -2 * lam * ((f i) ^ 2 - c)
+      ↔ jumpGamma a f f i = lam * c := by
+  have hproduct := additive_product_resonance_iff
+    (a := a) (f := f) (g := f) (i := i)
+    (lam := lam) (nu := lam) (c := c) hf hf
+  constructor
+  · intro h
+    have hmul :
+        jumpGenerator a (fun j => f j * f j - c) i
+          = -(lam + lam) * (f i * f i - c) := by
+      simpa [pow_two, two_mul] using h
+    have hgamma := hproduct.mp hmul
+    nlinarith
+  · intro h
+    have hgamma :
+        2 * jumpGamma a f f i = (lam + lam) * c := by
+      nlinarith
+    have hmul := hproduct.mpr hgamma
+    simpa [pow_two, two_mul] using hmul
+
+/-- The uncentered square is the `c=0` specialization of centered resonance. -/
+theorem uncentered_square_resonance_iff_zero_gamma
+    (a : ι → ι → ℝ) (f : ι → ℝ) (i : ι)
+    (lam : ℝ)
+    (hf : jumpGenerator a f i = -lam * f i) :
+    jumpGenerator a (fun j => (f j) ^ 2) i
+        = -2 * lam * (f i) ^ 2
+      ↔ jumpGamma a f f i = 0 := by
+  simpa using centered_square_resonance_iff
+    (a := a) (f := f) (i := i) (lam := lam) (c := 0) hf
+
+/-- Self cross-variation is the project's square carré du champ. -/
+theorem jumpCrossVariation_self_eq_carreDuChamp
+    (a : ι → ι → ℝ) (f : ι → ℝ) (i : ι) :
+    jumpCrossVariation a f f i = carreDuChamp a f i := by
+  classical
+  unfold jumpCrossVariation carreDuChamp
+  apply Finset.sum_congr rfl
+  intro j hj
+  ring
+
+/-- For nonnegative rates and a nonzero eigenvalue, an uncentered square at the
+additive eigenvalue forces the sampled eigenfunction value to vanish at that
+state. On an irreducible positive chain, applying this at every state gives the
+usual zero-function obstruction. -/
+theorem uncentered_square_resonance_forces_value_zero
+    (a : ι → ι → ℝ) (f : ι → ℝ) (i : ι)
+    (lam : ℝ)
+    (ha : ∀ j, j ≠ i → 0 ≤ a i j)
+    (hlam : lam ≠ 0)
+    (hf : jumpGenerator a f i = -lam * f i)
+    (hsquare :
+      jumpGenerator a (fun j => (f j) ^ 2) i
+        = -2 * lam * (f i) ^ 2) :
+    f i = 0 := by
+  have hgamma : jumpGamma a f f i = 0 :=
+    (uncentered_square_resonance_iff_zero_gamma
+      (a := a) (f := f) (i := i) (lam := lam) hf).mp hsquare
+  have hcross : jumpCrossVariation a f f i = 0 := by
+    unfold jumpGamma at hgamma
+    nlinarith
+  have hcarre : carreDuChamp a f i = 0 := by
+    rw [← jumpCrossVariation_self_eq_carreDuChamp]
+    exact hcross
+  have hgenerator : jumpGenerator a f i = 0 :=
+    zero_carreDuChamp_forces_generator_zero
+      (a := a) (f := f) (i := i) ha hcarre
+  rw [hf] at hgenerator
+  have hproduct : lam * f i = 0 := by nlinarith
+  exact (mul_eq_zero.mp hproduct).resolve_left hlam
 
 /-- A jump generator commutes with multiplication by a scalar. -/
 theorem jumpGenerator_const_mul
