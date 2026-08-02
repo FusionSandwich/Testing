@@ -5,9 +5,9 @@ import AFPBarrier.ReversibleConductance
 # Compatibility layer for the verified Prompt 2 completion
 
 The later corrective covariance module uses `finiteQuadraticSample` and
-`quadraticCovarianceContraction`.  The independently verified Prompt 2
+`quadraticCovarianceContraction`. The independently verified Prompt 2
 completion used the names `sampledQuadratic` and
-`quadraticCovariancePairing`.  This module identifies the two APIs and retains
+`quadraticCovariancePairing`. This module identifies the two APIs and retains
 the weighted-centering consequences without replacing either proof line.
 -/
 
@@ -16,7 +16,7 @@ open scoped BigOperators
 namespace AFPBarrier
 
 variable {ι κ : Type*}
-  [Fintype ι] [DecidableEq ι] [Fintype κ]
+  [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ]
 
 /-- Prompt 2 completion name for the finite quadratic sample. -/
 def sampledQuadratic
