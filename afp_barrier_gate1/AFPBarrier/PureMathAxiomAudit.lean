@@ -7,6 +7,7 @@ import AFPBarrier.QuantitativeSphericalFeasibility
 import AFPBarrier.QuadraticCovariance
 import AFPBarrier.GlobalLossRigidity
 import AFPBarrier.SphericalQOneRigidity
+import AFPBarrier.SharpProductBarriers
 import AFPBarrier.SharedEdgeEquilibrium
 import AFPBarrier.GroupAveraging
 import AFPBarrier.GlobalSharedEdgeDuality
@@ -86,3 +87,16 @@ import AFPBarrier.GlobalSharedEdgeDuality
 #print axioms AFPBarrier.spherical_active_loss_deviation_sq_le_gap_div_rate
 #print axioms AFPBarrier.shared_edge_centers_close
 #print axioms AFPBarrier.shared_relative_center_cross_bounds
+
+#print axioms AFPBarrier.squarePolarQualityFromStep_formula
+#print axioms AFPBarrier.squarePolar_rates_forced
+#print axioms AFPBarrier.squarePolar_totalRate_forced
+#print axioms AFPBarrier.squarePolar_forced_quartic_lower
+#print axioms AFPBarrier.cscSquaredTruncation_rate_identity
+#print axioms AFPBarrier.squarePolarRateMainStep_grid
+#print axioms AFPBarrier.squarePolarQualityMainStep_grid
+#print axioms AFPBarrier.universal_rate_lower_of_defect_upper
+#print axioms AFPBarrier.finiteExtremal_defect_lower
+#print axioms AFPBarrier.twoLossQuality_sub_one
+#print axioms AFPBarrier.biregular_interRing_incidence
+#print axioms AFPBarrier.perfectMatching_ringCounts_eq
