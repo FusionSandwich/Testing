@@ -64,11 +64,13 @@ jobs:
           git fetch --no-tags origin archive/afp-gate6-spatial-multigroup-verified
           test "$(git rev-parse FETCH_HEAD)" = "${ARCHIVE_SHA}"
 
-          cat \
+          : > /tmp/p3p4.patch.xz
+          for chunk in \
             .github/p3p4-patch-00.b64 \
             .github/p3p4-patch-01.b64 \
-            .github/p3p4-patch-02.b64 \
-            | base64 --decode > /tmp/p3p4.patch.xz
+            .github/p3p4-patch-02.b64; do
+            base64 --decode "${chunk}" >> /tmp/p3p4.patch.xz
+          done
           echo "${PATCH_XZ_SHA256}  /tmp/p3p4.patch.xz" | sha256sum --check
           xz --decompress --stdout /tmp/p3p4.patch.xz > /tmp/p3p4.patch
           echo "${PATCH_SHA256}  /tmp/p3p4.patch" | sha256sum --check
