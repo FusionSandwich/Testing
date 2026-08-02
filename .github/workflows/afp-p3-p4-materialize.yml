@@ -61,7 +61,8 @@ jobs:
           test "$(git rev-parse FETCH_HEAD)" = "${ARCHIVE_SHA}"
 
           cat > /tmp/segment-checks <<'EOF'
-          635ea3ebba9149ecb94efca807afca570db30e79de0ee5789458f98ae4d06ae7  .github/p3p4-seg-patch-00.b64
+          1efb6a5a981215e9fe6b1c3910b82dc34ace14d42a68e406f18abfec2e125b2b  .github/p3p4-seg-patch-00a.b64
+          24b7b7d48952d7bf98ac06897e8455b41cc7b2f60bedb6c9cd394eefac9c8877  .github/p3p4-seg-patch-00b.b64
           e870fc4f5138589782468bb0cf9e44c422d78542afb9125d605b958fad2a78d4  .github/p3p4-seg-patch-01.b64
           e1158007948134b897f7e75c189b89f129624b276b64a483901574bdf20a958a  .github/p3p4-seg-patch-02.b64
           c59296ac81be66dd942b3244b77033b38138e0f0d944d25b258c02cebbd4a8ee  .github/p3p4-seg-patch-03.b64
@@ -81,8 +82,11 @@ jobs:
           def clean(path: str) -> str:
               return ''.join(Path(path).read_text(encoding='utf-8').split())
 
-          patch_text = ''.join(clean(f'.github/p3p4-seg-patch-{i:02d}.b64')
-                               for i in range(8))
+          patch_paths = [
+              '.github/p3p4-seg-patch-00a.b64',
+              '.github/p3p4-seg-patch-00b.b64',
+          ] + [f'.github/p3p4-seg-patch-{i:02d}.b64' for i in range(1, 8)]
+          patch_text = ''.join(clean(path) for path in patch_paths)
           patch_text += '=' * (-len(patch_text) % 4)
           Path('/tmp/p3p4.patch.xz').write_bytes(
               base64.b64decode(patch_text, validate=True)
@@ -113,6 +117,8 @@ jobs:
             .github/p3p4-patch-02.b64 \
             .github/p3p4-global.b64 \
             .github/p3p4-seg-patch-00.b64 \
+            .github/p3p4-seg-patch-00a.b64 \
+            .github/p3p4-seg-patch-00b.b64 \
             .github/p3p4-seg-patch-01.b64 \
             .github/p3p4-seg-patch-02.b64 \
             .github/p3p4-seg-patch-03.b64 \
@@ -143,6 +149,8 @@ jobs:
             .github/p3p4-patch-02.b64 \
             .github/p3p4-global.b64 \
             .github/p3p4-seg-patch-00.b64 \
+            .github/p3p4-seg-patch-00a.b64 \
+            .github/p3p4-seg-patch-00b.b64 \
             .github/p3p4-seg-patch-01.b64 \
             .github/p3p4-seg-patch-02.b64 \
             .github/p3p4-seg-patch-03.b64 \
