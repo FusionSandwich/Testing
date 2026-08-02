@@ -1,10 +1,11 @@
-# Exact feasibility and covariance theorem-to-file map
+# Exact feasibility, covariance, and rigidity theorem-to-file map
 
 The complete Prompt 1 mathematical proof is
 `pure_math/EXACT_LOCAL_GLOBAL_THEOREM_PACKAGE.md`. “Lean support” identifies
 the finite algebra formalized in the project; standard finite convex geometry,
-Farkas, LP strong duality, semigroup, and representation facts are transferred
-explicitly rather than misrepresented as project axioms.
+Farkas, LP strong duality, semigroup, representation, topology, and convex
+polyhedron facts are transferred explicitly rather than misrepresented as
+project axioms.
 
 ## Prompt 1 local and global feasibility
 
@@ -54,23 +55,57 @@ The authoritative Prompt 2 proof is
 | `S^2` table `ell=1,...,6` | Prompt 2 Section 8 | not a Lean claim | closeout audit exact rows |
 | Pell arithmetic and hierarchy verdict | Prompt 2 Section 9 | ordinary arithmetic/kill-criterion analysis | existing and closeout assertions |
 | Abstract equal-rate/equal-loss propagation | `GlobalLossRigidity.lean` | three named Lean theorems | build and nanoda |
-| Prompt 3 spherical specialization/classification/near-rigidity | `PROMPT3_READINESS_HANDOFF.md` | not begun | not part of closeout |
+
+## Prompt 3 spherical `Q=1` rigidity and stability
+
+The authoritative ordinary proof is
+`pure_math/rigidity/SPHERICAL_Q1_RIGIDITY_THEOREM.md`. The direct degree-five
+graph lemma is `pure_math/rigidity/ICOSAHEDRAL_GRAPH_LEMMA.md`.
+
+| Mandatory item | Mathematical proof | Lean support | Exact regression |
+|---|---|---|---|
+| Coordinate eigenmap gives first active-loss moment two | Prompt 3 Section 0 | existing `JumpGenerator`/`SphereSpecialization` algebra | five Platonic coordinate checks |
+| Local `Q_i>=1` and equality iff active loss `2/r_i` | Prompt 3 Theorem 1.1 | `sphericalQOne_active_loss`; imported sharp variance theorem | exact Platonic rows |
+| Positive row rate at eigenvalue `-2` | Prompt 3 Theorem 1.1 | `jumpRate_pos_of_nonzero_eigenvalue_at_peak` | all exact examples |
+| Active zero-loss exclusion | Prompt 3 Corollary 1.2 | `sphericalQOne_active_zero_loss_impossible` | coincident-edge boundary |
+| Active antipode forces row rate one | Prompt 3 Corollary 1.2 | `sphericalQOne_active_antipode_forces_rate_one` | exact loss-two calculation |
+| Connected common row rate and edge loss | Prompt 3 Theorem 1.3 | `connected_sphericalQOne_rigidity`; `GlobalLossRigidity.lean` | connected Platonic rows |
+| Equilateral spherical-face angle formula | Prompt 3 Theorem 2.2 | `equilateral_tangent_cosine` | exact `q=3,4,5` values |
+| Degree restriction `q in {3,4,5}` | Prompt 3 Theorem 2.2 | ordinary angle-sum transfer | exact integer audit |
+| Euler/incidence identity and count triples | Prompt 3 Theorem 2.2 | `regular_triangulation_euler_identity`; three count theorems | exact `(V,E,F)` assertions |
+| Tetrahedral graph lemma | Prompt 3 Theorem 2.2 | finite ordinary graph proof | `K_4` certificate |
+| Octahedral graph lemma | Prompt 3 Theorem 2.2 | finite ordinary graph proof | complement perfect-matching certificate |
+| Icosahedral graph lemma | `ICOSAHEDRAL_GRAPH_LEMMA.md` | no project axiom; direct finite proof | exact two-ring link certificate |
+| Convex geometric congruence | Prompt 3 Theorem 2.2 | standard Cauchy-rigidity transfer with hypotheses checked | exact standard coordinates |
+| Cube/dodecahedron unrestricted counterexamples | Prompt 3 Sections 2 and 7 | not a Lean classification claim | exact `Q=1`, nontriangular support |
+| Normalized variance identity | Prompt 3 Theorem 3.1 | existing variance modules | exact rational examples |
+| Multiplicative one-edge and shared-edge bounds | Prompt 3 Theorem 4.1 | `shared_relative_center_cross_bounds` plus local variance | exact `delta,kappa` case |
+| Multiplicative path and diameter bounds | Prompt 3 Theorem 4.1 | ordinary finite path induction | exact saturating chain |
+| Additive one-edge gap estimate | Prompt 3 Theorem 5.1 | `spherical_active_loss_deviation_sq_le_gap_div_rate` | exact constants |
+| Additive shared-edge comparison | Prompt 3 Theorem 5.1 | `shared_edge_centers_close` | exact rational case |
+| Additive path, diameter, and row-rate bounds | Prompt 3 Theorem 5.1 | ordinary finite path induction and reciprocal identity | exact constants |
+| Conductance-floor transfer | Prompt 3 Corollary 5.2 | elementary rate definition | exact rational assertion |
+| Necessity of active-weight floor | Prompt 3 Section 6.1 | not a Lean claim | exact parameterized rare-edge family |
+| Necessity of connectivity/diameter/support symmetry | Prompt 3 Section 6.2 | adversarial argument registry | path and disconnected warnings |
+| Coordinate-space stability boundary | Prompt 3 Section 6.2 | conditional singular-value transfer only | no unsupported promotion |
 
 ## Verification and provenance
 
 - focused axiom report: `AFPBarrier/PureMathAxiomAudit.lean`;
 - existing covariance audit:
   `pure_math/covariance/quadratic_covariance_audit.py`;
-- corrective closeout audit:
+- corrective Prompt 2 audit:
   `pure_math/covariance/prompt2_closeout_audit.py`;
-- Prompt 2 workflow: `.github/workflows/afp-quadratic-covariance.yml`;
+- Prompt 3 exact audit:
+  `pure_math/rigidity/prompt3_rigidity_audit.py`;
+- Prompt 3 workflow: `.github/workflows/afp-prompt3-rigidity.yml`;
+- Prompt 2 compatibility workflow: `.github/workflows/afp-quadratic-covariance.yml`;
 - Prompt 1 compatibility workflow:
   `.github/workflows/afp-spherical-feasibility.yml`;
 - repository-wide workflow: `.github/workflows/afp-pure-math.yml`;
-- closeout audit: `docs/PROMPT2_CLOSEOUT_AUDIT.md`;
-- Prompt 3 handoff: `docs/PROMPT3_READINESS_HANDOFF.md`.
+- Prompt 3 approach/adversarial registry:
+  `docs/PROMPT3_APPROACH_REGISTRY.md`.
 
-All workflows reject `sorry`, `admit`, and `sorryAx`; the closeout policy scans
-anchored declarations for both singular `axiom` and plural `axioms` and tests
-both spellings deterministically. `sorryAx` is absent from the independent
-nanoda permitted-axiom list.
+All workflows reject `sorry`, `admit`, and `sorryAx`; the policy scans anchored
+declarations for both singular `axiom` and plural `axioms`. `sorryAx` is
+absent from the independent nanoda permitted-axiom lists.

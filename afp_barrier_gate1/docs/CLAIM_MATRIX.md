@@ -14,9 +14,20 @@ regression, external input, conjecture, and rejected wording.
 | The project family is globally minimax or spectrally optimal | CONJECTURE / unsupported | No global minimax proof | Do not claim |
 | Only `K in {4,6,12}` can have global `Q=1` | REJECTED | Cube and dodecahedron counterexamples | Never state unrestricted |
 | Abstract local equality propagates one common rate and one common symmetric active-edge loss on a connected active graph | PROVED / Lean | `GlobalLossRigidity.lean`: `rate_eq_of_symmetric_active_loss`, `rate_eq_of_active_reflTransGen`, `connected_active_loss_rigidity` | Supporting abstract rigidity theorem already complete |
-| Complete spherical `Q=1` specialization of the abstract propagation theorem | PROMPT 3 TARGET | Needs hypothesis and normalization audit | Do not conflate with the abstract Lean theorem |
-| Tetrahedral/octahedral/icosahedral classification under restricted geodesic-triangulation hypotheses | CONJECTURE / PROMPT 3 TARGET | Requires enumeration and geometric proof | Not part of Prompt 2 closeout |
-| Quantitative near-rigidity from small equality defect | CONJECTURE / PROMPT 3 TARGET | Local variance estimate exists; global propagation absent | Not part of Prompt 2 closeout |
+| Complete spherical `Q=1` specialization of the abstract propagation theorem | PROVED / Lean | `SphericalQOneRigidity.lean`; Theorems 1.1–1.3 in the Prompt 3 theorem package | Requires nonnegative rates, symmetric connected activity, and coordinate eigenvalue `-2` |
+| Exact connected spherical `Q=1` forces one common active chord loss and one common total row rate | PROVED / Lean | `connected_sphericalQOne_rigidity` | Does not by itself force individual edge-rate equality |
+| An active zero-loss edge can occur in a nondegenerate exact spherical `Q=1` row | REJECTED / Lean contradiction | `sphericalQOne_active_zero_loss_impossible` | Coincident embedded endpoints cannot be active |
+| A connected injective exact `Q=1` support may contain one isolated antipodal active edge without global consequences | REJECTED | Antipodal loss is two; propagation forces every active loss to be two | Nondegenerate triangulations exclude this case |
+| Tetrahedral/octahedral/icosahedral classification under strict convex geodesic-triangulation hypotheses | PROVED / ordinary proof with Lean finite core | `SPHERICAL_Q1_RIGIDITY_THEOREM.md`, `ICOSAHEDRAL_GRAPH_LEMMA.md`, exact audit, Euler/count lemmas in Lean | State every support, triangulation, injectivity, convexity, and activity hypothesis |
+| Unrestricted connected equal-edge spherical `Q=1` supports are only tetrahedron, octahedron, and icosahedron | REJECTED | Exact cube and dodecahedron shortest-edge generators | Triangulation is essential |
+| The restricted classification fixes every individual active edge rate | REJECTED as a general conclusion | Geometry and first moment fix the total row rate; tangent dependences may be nonunique | Claim only common row rate and active edge metric |
+| `Q_i-1` is normalized weighted relative-loss variance | PROVED / exact | Prompt 3 Theorem 3.1 and exact symbolic audit | Principal quantitative identity |
+| Quantitative edge-loss and row-rate near-rigidity follows from small `Q_i-1`, a normalized active-weight floor, symmetric connectivity, and diameter | PROVED | Prompt 3 Theorem 4.1 | State `delta=sqrt(epsilon/p_*)<1` and every path/diameter exponent explicitly |
+| Additive near-rigidity follows from a raw gap bound plus lower total-rate and active-rate floors | PROVED / Lean local estimate | Prompt 3 Theorem 5.1; `spherical_active_loss_deviation_sq_le_gap_div_rate` | State `Delta=sqrt(eta/(r_min a_min))` and diameter dependence |
+| Small `Q_i-1` alone uniformly controls every active edge | REJECTED | Exact rare-active-edge counterfamily | A normalized active-weight floor or equivalent structure is necessary |
+| Local near-equality yields a diameter-free global bound on arbitrary connected supports | REJECTED | Interval-overlap ratios can accumulate along paths | Retain path length or graph diameter |
+| Edge-metric near-rigidity automatically yields coordinate-space closeness modulo rotations | CONDITIONAL / NOT PROMOTED | Requires an explicit gauge-fixed rigidity singular-value margin | No universal framework margin is claimed |
+| Shared-conductance floors transfer to raw and normalized active-rate floors | PROVED | Prompt 3 Corollary 5.2 and exact audit | Requires upper mass and row-rate bounds |
 | Non-antipodal local feasibility is equivalent to `0` in the indexed tangent hull | PROVED | Corrected Prompt 1 package and Lean finite scaling | Sphere-specific transfer of standard positive-stencil geometry |
 | Strict positivity on every indexed non-antipodal edge is equivalent to relative-interior membership | PROVED | Corrected Prompt 1 theorem, repetitions and lower dimension included | State relative, not ambient, interior |
 | Tangent dependence and row uniqueness are controlled by the normalized dependence polytope/minimal face | PROVED | Prompt 1 package | Preserve indexed repetitions and redundancies |
@@ -75,6 +86,10 @@ regression, external input, conjecture, and rejected wording.
    carré du champ.
 7. Centered resonance is not Jensen equality.
 8. Algebraic harmonic decomposition does not imply sampled identifiability.
-9. The abstract equality-propagation theorem is proved; its spherical
-   classification and near-rigidity consequences remain Prompt 3 work.
-10. The immutable transport archive is outside the pure-math claim set.
+9. The abstract equality-propagation theorem and its complete spherical
+   `Q=1` specialization are proved. The Platonic classification is restricted
+   to strict convex geodesic triangulations; the quantitative results require
+   explicit active-weight/rate floors and graph diameter.
+10. Edge-metric concentration is not coordinate-space rigidity without a
+    separately stated rigidity-operator margin.
+11. The immutable transport archive is outside the pure-math claim set.

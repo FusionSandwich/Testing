@@ -5,6 +5,7 @@ on:
     branches:
       - agent/afp-pure-math-p0-m1
       - agent/afp-pure-math-p2-closeout-corrected
+      - agent/afp-pure-math-p3-q1-rigidity
   pull_request:
     branches:
       - testing
@@ -20,6 +21,7 @@ on:
       - '.github/workflows/afp-pure-math.yml'
       - '.github/workflows/afp-quadratic-covariance.yml'
       - '.github/workflows/afp-spherical-feasibility.yml'
+      - '.github/workflows/afp-prompt3-rigidity.yml'
   workflow_dispatch:
 
 concurrency:
@@ -92,6 +94,13 @@ jobs:
             2>&1 | tee pure-math-covariance.log
           python pure_math/covariance/prompt2_closeout_audit.py \
             2>&1 | tee pure-math-prompt2-closeout.log
+
+      - name: Prompt 3 rigidity audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python pure_math/rigidity/prompt3_rigidity_audit.py \
+            2>&1 | tee pure-math-prompt3-rigidity.log
 
       - name: Exact local and global feasibility audit
         shell: bash
@@ -176,7 +185,7 @@ jobs:
           echo "No proof placeholders or user axiom declarations found." \
             | tee pure-math-source-audit.log
 
-      - name: Verify immutable archive and closeout scope
+      - name: Verify immutable archive and pure-math scope
         working-directory: .
         shell: bash
         run: |
@@ -188,7 +197,7 @@ jobs:
           base=1835918fe9d0b941395e9f00f6ac5514129cefa0
           if git merge-base --is-ancestor "$base" HEAD; then
             bad=$(git diff --name-only "$base"...HEAD | \
-              grep -Ev '^(.github/workflows/afp-(quadratic-covariance|pure-math|spherical-feasibility)\.yml|afp_barrier_gate1/(AFPBarrier(\.lean|/.*\.lean)|pure_math/.*|docs/.*))$' || true)
+              grep -Ev '^(.github/workflows/afp-(prompt3-rigidity|quadratic-covariance|pure-math|spherical-feasibility)\.yml|afp_barrier_gate1/(AFPBarrier(\.lean|/.*\.lean)|pure_math/.*|docs/.*))$' || true)
             test -z "$bad" || { echo "$bad" >&2; exit 1; }
             git diff --check "$base"...HEAD
           fi
@@ -221,7 +230,8 @@ jobs:
             afp_barrier_gate1 \
             .github/workflows/afp-pure-math.yml \
             .github/workflows/afp-quadratic-covariance.yml \
-            .github/workflows/afp-spherical-feasibility.yml
+            .github/workflows/afp-spherical-feasibility.yml \
+            .github/workflows/afp-prompt3-rigidity.yml
 
       - name: Upload pure-math records
         if: always()
@@ -235,6 +245,7 @@ jobs:
             afp_barrier_gate1/pure-math-falsification.log
             afp_barrier_gate1/pure-math-covariance.log
             afp_barrier_gate1/pure-math-prompt2-closeout.log
+            afp_barrier_gate1/pure-math-prompt3-rigidity.log
             afp_barrier_gate1/pure-math-local-global-exact.log
             afp_barrier_gate1/pure-math-spherical-rational.log
             afp_barrier_gate1/pure-math-toolchain.log

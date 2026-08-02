@@ -42,43 +42,124 @@ connected_active_loss_rigidity.
 
 This abstract propagation theorem is no longer a conjecture.
 
-## C-M2B. Complete spherical `Q=1` specialization — Prompt 3 target
+## C-M2B. Complete spherical `Q=1` specialization — resolved
 
-**Question.** Determine the exact spherical hypotheses under which the local
-rate-defect equality condition supplies the abstract theorem's active-edge
-formula, and audit all normalization and zero-edge cases.
+Let
 
-**Status:** PROMPT 3 TARGET. Do not call it proved merely because the abstract
-propagation theorem is formalized.
+```text
+g_i(j)=Omega_i dot Omega_j,
+ell_ij=1-g_i(j),
+r_i=sum_j a_ij,
+D_i=sum_j a_ij ell_ij^2,
+Q_i=r_i D_i/4,
+```
 
-## C-M3. Restricted geodesic-triangulation classification — Prompt 3 target
+and assume the unit-sphere coordinate eigenmap equation
 
-**Candidate statement.** A connected nondegenerate geodesic triangulation of
-`S^2` with positive conductances on every edge, exact coordinate eigenmap, and
-`Q_i=1` at every vertex must be tetrahedral, octahedral, or icosahedral under a
-fully stated convex-embedding/equal-loss hypothesis.
+```text
+sum_j a_ij(Omega_j-Omega_i)=-2 Omega_i
+```
 
-**Status:** CONJECTURE / PROMPT 3 TARGET.
+with nonnegative off-diagonal rates. Then `Q_i>=1`, and
 
-**Known warning:** cube and dodecahedron embeddings defeat every unrestricted
-Platonic-only claim.
+```text
+Q_i=1
+iff
+ell_ij=2/r_i on every active edge from i.
+```
 
-**Kill criterion:** one valid non-Platonic triangulated counterexample under
-the final hypotheses.
+With symmetric connected activity, all row rates and all active-edge losses
+are globally equal. Active zero-loss edges are impossible, and an active
+antipodal edge forces row rate one.
 
-## C-M4. Quantitative near-rigidity — Prompt 3 target
+**Status:** PROVED / LEAN in `AFPBarrier/SphericalQOneRigidity.lean`.
 
-**Candidate statement.** Under explicit lower active-weight, connectivity, and
-rate-control hypotheses, small local equality defect forces global active-edge
-loss concentration with an explicit graph-dependent bound.
+## C-M3. Restricted geodesic-triangulation classification — resolved under explicit hypotheses
 
-**Status:** CONJECTURE / PROMPT 3 TARGET.
+**Proved statement.** Suppose the symmetric active graph is exactly the
+one-skeleton of an injective strict convex minor-geodesic triangulation of
+`S^2`, every triangulation edge is active, the coordinate eigenmap equation
+holds, and `Q_i=1` at every vertex. Then, up to an orthogonal transformation,
+the embedding is a regular tetrahedron, octahedron, or icosahedron.
 
-**Work needed:** propagate the local weighted-variance estimate while tracking
-minimum conductance, graph diameter/overlap, and row-rate variation.
+The proof establishes one common active dot product, equilateral spherical
+faces, degree `q in {3,4,5}`, the exact Euler count triples, the tetrahedral,
+octahedral, and icosahedral graph lemmas, and convex Cauchy congruence. The
+five-regular graph step has a direct finite link-expansion proof in
+`pure_math/rigidity/ICOSAHEDRAL_GRAPH_LEMMA.md`.
 
-**Kill criterion:** a family with defect tending to zero but no controlled
-loss concentration under the stated hypotheses.
+**Status:** PROVED / ORDINARY MATHEMATICS, with the finite algebra and local/global
+propagation formalized in Lean.
+
+**Permanent warning:** cube and dodecahedron shortest-edge generators satisfy
+`Q=1` but are not triangular spheres. Every unrestricted Platonic-only claim
+remains REJECTED.
+
+**Additional boundary:** the classification fixes the embedded geometry and
+the common total row rate, not every individual active rate.
+
+## C-M4. Quantitative active-edge and row-rate near-rigidity — resolved
+
+The exact normalized identity is
+
+```text
+Q_i-1=sum_j p_ij(ell_ij/m_i-1)^2,
+p_ij=a_ij/r_i,
+m_i=lambda/r_i.
+```
+
+If `Q_i<=1+epsilon`, every active normalized weight is at least `p_*>0`, the
+active graph is symmetric and connected, and
+
+```text
+delta=sqrt(epsilon/p_*)<1,
+kappa=(1+delta)/(1-delta),
+```
+
+then every active edge has relative loss error at most `delta`, neighboring
+centers and row rates differ by at most a factor `kappa`, and paths/diameter
+give the explicit powers recorded in Prompt 3 Theorem 4.1.
+
+An additive version follows from
+
+```text
+r_i D_i-lambda^2<=eta,
+r_i>=r_min>0,
+a_ij>=a_min>0,
+Delta=sqrt(eta/(r_min a_min)),
+```
+
+with exact edge, path, diameter, and row-rate constants.
+
+**Status:** PROVED. The per-edge raw-gap estimate and shared-edge comparison
+lemmas are Lean-checked; the path and diameter arguments are ordinary finite
+graph induction.
+
+**Permanent necessity regression.** The exact rare-edge family
+
+```text
+p_1=t^4,
+p_2=1-t^4,
+x_1=1+1/t,
+x_2=1-t^3/(1-t^4)
+```
+
+has mean one and variance `t^2/(1-t^4)` tending to zero while `x_1` diverges.
+Small equality defect without an active-weight floor does not control every
+active edge.
+
+## C-M4G. Coordinate-space quantitative rigidity — conditional, not promoted
+
+Edge-metric concentration alone does not provide a coordinate displacement
+bound modulo rotations. Such a theorem requires a gauge-fixed rigidity matrix
+or equivalent framework map with an explicit positive smallest singular
+value, plus a nonlinear remainder radius.
+
+**Status:** CONDITIONAL / UNRESOLVED AS A UNIFORM THEOREM.
+
+**Kill criterion for any future universal version:** a sequence of admissible
+frameworks with the rigidity margin tending to zero while the Prompt 3 edge
+metric hypotheses remain bounded.
 
 ## C-M5. Genuine sampled quadratic exactness — resolved after corrective audit
 
@@ -214,6 +295,12 @@ axiom audit, and asserts the literal checked-out head SHA.
 - local positive rows plus centering imply arbitrary sparse shared-edge
   feasibility;
 - unrestricted `Q=1` classification by `K in {4,6,12}`;
+- unrestricted Platonic-only classification from equal active edge length;
+- individual active edge-rate equality from common edge metric and common row
+  rate;
+- uniform edgewise near-rigidity without an active-weight/rate floor;
+- diameter-free global stability on arbitrary connected supports;
+- coordinate-space stability without a framework-rigidity margin;
 - algebraic form dimension equals genuine sampled exact dimension;
 - equivariant irreducibility needs only one positive rate while other rates may
   be signed;
