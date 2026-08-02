@@ -49,11 +49,13 @@ theorem pointwise_delta_bound
   nlinarith [sq_abs (x - 1)]
 
 /-- Shared-edge normalized scales yield the cross-multiplied adjacent-rate
-bounds. -/
+bounds. The domain `0 ≤ delta < 1` is essential: it makes both interval
+endpoints positive and licenses the monotone multiplications below. -/
 theorem adjacent_rate_cross_bounds
     (rateI rateJ ell xI xJ delta : ℝ)
     (hrateI : 0 < rateI) (hrateJ : 0 < rateJ)
     (hell : 0 < ell)
+    (hdelta : 0 ≤ delta) (hdeltaOne : delta < 1)
     (hscaleI : xI = rateI * ell / 2)
     (hscaleJ : xJ = rateJ * ell / 2)
     (hxILo : 1 - delta ≤ xI) (hxIHi : xI ≤ 1 + delta)
@@ -66,10 +68,14 @@ theorem adjacent_rate_cross_bounds
   have hratioJ : rateJ = 2 * xJ / ell := by
     rw [hscaleJ]
     field_simp [ne_of_gt hell]
+  have hminus : 0 ≤ 1 - delta := by linarith
+  have hplus : 0 ≤ 1 + delta := by linarith
   constructor
   · rw [hratioI, hratioJ]
+    have ha := mul_le_mul_of_nonneg_left hxJHi hminus
+    have hb := mul_le_mul_of_nonneg_left hxILo hplus
     have hnum : (1 - delta) * (2 * xJ) ≤ (1 + delta) * (2 * xI) := by
-      nlinarith
+      nlinarith [ha, hb]
     calc
       (1 - delta) * (2 * xJ / ell) =
           ((1 - delta) * (2 * xJ)) / ell := by ring
@@ -78,8 +84,10 @@ theorem adjacent_rate_cross_bounds
           (mul_le_mul_of_nonneg_right hnum hell.le)
       _ = (1 + delta) * (2 * xI / ell) := by ring
   · rw [hratioI, hratioJ]
+    have ha := mul_le_mul_of_nonneg_left hxIHi hminus
+    have hb := mul_le_mul_of_nonneg_left hxJLo hplus
     have hnum : (1 - delta) * (2 * xI) ≤ (1 + delta) * (2 * xJ) := by
-      nlinarith
+      nlinarith [ha, hb]
     calc
       (1 - delta) * (2 * xI / ell) =
           ((1 - delta) * (2 * xI)) / ell := by ring
@@ -101,7 +109,7 @@ theorem adjacent_rate_ratio_bounds
     (1 - delta) / (1 + delta) ≤ rateI / rateJ ∧
       rateI / rateJ ≤ (1 + delta) / (1 - delta) := by
   have hcross := adjacent_rate_cross_bounds
-    rateI rateJ ell xI xJ delta hrateI hrateJ hell
+    rateI rateJ ell xI xJ delta hrateI hrateJ hell hdelta hdeltaOne
     hscaleI hscaleJ hxILo hxIHi hxJLo hxJHi
   have hplus : 0 < 1 + delta := by linarith
   have hminus : 0 < 1 - delta := by linarith
@@ -133,11 +141,11 @@ theorem incident_loss_cross_bounds
   have hplus : 0 ≤ 1 + delta := by linarith
   have hnum₁ : (1 - delta) * (2 * x₂) ≤ (1 + delta) * (2 * x₁) := by
     have ha := mul_le_mul_of_nonneg_left hx₂Hi hminus
-    have hb := mul_le_mul_of_nonneg_right hx₁Lo hplus
+    have hb := mul_le_mul_of_nonneg_left hx₁Lo hplus
     nlinarith
   have hnum₂ : (1 - delta) * (2 * x₁) ≤ (1 + delta) * (2 * x₂) := by
     have ha := mul_le_mul_of_nonneg_left hx₁Hi hminus
-    have hb := mul_le_mul_of_nonneg_right hx₂Lo hplus
+    have hb := mul_le_mul_of_nonneg_left hx₂Lo hplus
     nlinarith
   constructor
   · calc
