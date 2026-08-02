@@ -1,0 +1,235 @@
+name: AFP Prompt 3 rigidity
+
+on:
+  push:
+    branches:
+      - agent/afp-pure-math-p3-q1-rigidity
+      - agent/afp-pure-math-p0-m1
+  pull_request:
+    branches:
+      - agent/afp-pure-math-p0-m1
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+
+      - name: Assert exact Prompt 3 checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected='${{ github.event.pull_request.head.sha || github.sha }}'
+          actual=$(git rev-parse HEAD)
+          tree=$(git show -s --format=%T HEAD)
+          echo "expected_head=${expected}"
+          echo "actual_head=${actual}"
+          echo "actual_tree=${tree}"
+          echo "prompt3_baseline=c88b57533c3c8ad8fd819e4e52a74c4b5a245479"
+          test "$actual" = "$expected"
+          git merge-base --is-ancestor \
+            c88b57533c3c8ad8fd819e4e52a74c4b5a245479 HEAD
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install exact symbolic dependency
+        run: python -m pip install --disable-pip-version-check --no-input 'sympy==1.14.0'
+
+      - name: Run exact Prompt 3 and compatibility audits
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m compileall -q afp_barrier_gate1/pure_math
+          python afp_barrier_gate1/pure_math/rigidity/prompt3_rigidity_audit.py
+          python afp_barrier_gate1/pure_math/falsification/claim_falsification_audit.py
+          python afp_barrier_gate1/pure_math/covariance/quadratic_covariance_audit.py
+          python afp_barrier_gate1/pure_math/covariance/prompt2_closeout_audit.py
+          python afp_barrier_gate1/pure_math/examples/exact_local_global_audit.py
+          python afp_barrier_gate1/pure_math/tests/test_spherical_feasibility.py
+
+      - name: Reject proof placeholders and user axioms
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -RInE --include='*.lean' \
+            '(^|[^[:alnum:]_])(sorry|admit|sorryAx)([^[:alnum:]_]|$)' \
+            afp_barrier_gate1/AFPBarrier afp_barrier_gate1/AFPBarrier.lean; then
+            echo 'Forbidden proof placeholder found.' >&2
+            exit 1
+          fi
+          if grep -RInE --include='*.lean' \
+            '^[[:space:]]*(axiom|axioms)([[:space:]]|$)' \
+            afp_barrier_gate1/AFPBarrier afp_barrier_gate1/AFPBarrier.lean; then
+            echo 'User axiom declaration found.' >&2
+            exit 1
+          fi
+
+      - name: Install Lean toolchain
+        uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: afp_barrier_gate1
+          build: false
+          test: false
+          lint: false
+          nanoda: false
+          use-mathlib-cache: false
+          use-github-cache: false
+
+      - name: Prepare pinned independent checker
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd afp_barrier_gate1
+          rm -rf _lean4export _nanoda_lib
+          rm -f _nanoda_export.txt _nanoda_config.json
+
+          if ! command -v cargo >/dev/null 2>&1; then
+            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
+              | sh -s -- -y --default-toolchain stable --profile minimal
+            source "$HOME/.cargo/env"
+          fi
+
+          git init _lean4export
+          git -C _lean4export remote add origin \
+            https://github.com/ammkrn/lean4export.git
+          git -C _lean4export fetch --depth 1 origin \
+            f3cf6458a309d643dc586a80f9ab5a93c2304db9
+          git -C _lean4export checkout --detach FETCH_HEAD
+
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('_lean4export/Export.lean')
+          source = path.read_text(encoding='utf-8')
+          old = 'e.updateLet! (← removeMData d) (← removeMData v) (← removeMData b)'
+          new = old + ' false'
+          if source.count(old) != 1:
+              raise SystemExit('Unexpected Lean exporter let-expression source')
+          path.write_text(source.replace(old, new), encoding='utf-8')
+          PY
+
+          cp lean-toolchain _lean4export/
+          (cd _lean4export && lake build)
+
+          git init _nanoda_lib
+          git -C _nanoda_lib remote add origin \
+            https://github.com/ammkrn/nanoda_lib.git
+          git -C _nanoda_lib fetch --depth 1 origin \
+            e5438ac0a85a036b6dfe093aa457bc3448498014
+          git -C _nanoda_lib checkout --detach FETCH_HEAD
+          (cd _nanoda_lib && cargo build --release)
+
+      - name: Resolve dependencies and obtain Mathlib cache
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd afp_barrier_gate1
+          lake update
+          lake exe cache get
+
+      - name: Build Lean package and run focused axiom audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd afp_barrier_gate1
+          lake build
+          lake env lean AFPBarrier/PureMathAxiomAudit.lean \
+            2>&1 | tee prompt3-axiom-audit.log
+          if grep -q 'sorryAx' prompt3-axiom-audit.log; then
+            echo "A Prompt 3 theorem depends on Lean's sorry axiom." >&2
+            exit 1
+          fi
+
+      - name: Independently type-check Prompt 3 declarations with nanoda
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd afp_barrier_gate1
+
+          cleanup() {
+            rm -rf _lean4export _nanoda_lib
+            rm -f _nanoda_export.txt _nanoda_config.json
+          }
+          trap cleanup EXIT
+
+          foundations=(
+            Nat Nat.zero Nat.succ
+            List List.nil List.cons
+            String String.mk Char Char.ofNat
+          )
+          declarations=(
+            AFPBarrier.activeOffdiag
+            AFPBarrier.zonalLoss
+            AFPBarrier.sphericalQOneAt
+            AFPBarrier.jumpRate_pos_of_nonzero_eigenvalue_at_peak
+            AFPBarrier.sphericalQOne_active_loss
+            AFPBarrier.sphericalQOne_active_loss_pos
+            AFPBarrier.sphericalQOne_active_zero_loss_impossible
+            AFPBarrier.connected_sphericalQOne_rigidity
+            AFPBarrier.sphericalQOne_active_antipode_forces_rate_one
+            AFPBarrier.equilateral_tangent_cosine
+            AFPBarrier.regular_triangulation_euler_identity
+            AFPBarrier.degree_three_triangulation_counts
+            AFPBarrier.degree_four_triangulation_counts
+            AFPBarrier.degree_five_triangulation_counts
+            AFPBarrier.spherical_active_loss_deviation_sq_le_gap_div_rate
+            AFPBarrier.shared_edge_centers_close
+            AFPBarrier.shared_relative_center_cross_bounds
+          )
+
+          lake env _lean4export/.lake/build/bin/lean4export \
+            AFPBarrier.SphericalQOneRigidity -- \
+            "${foundations[@]}" "${declarations[@]}" \
+            > _nanoda_export.txt
+          test -s _nanoda_export.txt
+
+          cat > _nanoda_config.json <<'EOF'
+          {
+            "export_file_path": "_nanoda_export.txt",
+            "use_stdin": false,
+            "permitted_axioms": [
+              "propext",
+              "Classical.choice",
+              "Quot.sound",
+              "Lean.trustCompiler"
+            ],
+            "unpermitted_axiom_hard_error": false,
+            "nat_extension": true,
+            "string_extension": true,
+            "print_success_message": true
+          }
+          EOF
+
+          RUST_BACKTRACE=1 \
+            _nanoda_lib/target/release/nanoda_bin _nanoda_config.json
+
+      - name: Verify immutable archive and Prompt 3 scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin \
+            archive/afp-gate6-spatial-multigroup-verified
+          test "$(git rev-parse FETCH_HEAD)" = \
+            '515f1aae6c20bd85711c90b5c1c21b4905252d01'
+          base=c88b57533c3c8ad8fd819e4e52a74c4b5a245479
+          bad=$(git diff --name-only "$base"...HEAD | \
+            grep -Ev '^(.github/workflows/afp-(prompt3-rigidity|quadratic-covariance|pure-math|spherical-feasibility)\.yml|afp_barrier_gate1/(AFPBarrier(\.lean|/.*\.lean)|pure_math/.*|docs/.*))$' || true)
+          if test -n "$bad"; then
+            echo 'Out-of-scope Prompt 3 paths:' >&2
+            echo "$bad" >&2
+            exit 1
+          fi
+          git diff --check "$base"...HEAD
