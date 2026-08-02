@@ -89,41 +89,80 @@ graph diameter, and rate variation.
 **Kill condition:** families with `Q -> 1` but no controlled global edge-length
 concentration under the stated hypotheses.
 
-## C-M5. Attainable quadratic exactness
+## C-M5. Genuine sampled quadratic exactness — resolved
 
-**Statement under test.** For an eigenmap `Phi` and jump covariance tensors
-`C_i`, exactness of a quadratic form is equivalent to a linear contraction
-condition involving `C_i`, `Phi_i Phi_i^T`, and the target eigenvalue. The
-intersection of these local linear spaces gives the globally attainable
-quadratic subspace.
+**Proved theorem package.** For an eigenmap `Phi` and jump covariance tensors
+`C_i`, the quadratic target residual is the exact covariance contraction. In
+the spherical degree-two specialization,
 
-**Status:** CONJECTURE as a theorem package; core algebraic identity derived.
+```text
+R_X = (L+2d I) S_X,
+E_form = ker R_X,
+K_X = ker S_X subset E_form,
+E_sample = im(S_X) intersect ker(L+2d I).
+```
 
-**Deliverables:**
+Hence
 
-- exact local identity;
-- local rank/dimension bound;
-- global intersection bound;
-- symmetry examples and sharpness cases;
-- comparison with negative-conductance operators.
+```text
+dim E_sample
+  = dim E_form-dim K_X
+  = rank(S_X)-rank(R_X).
+```
 
-**Kill condition:** only tautological rank bookkeeping remains and no useful
-sharp dimension or rigidity statement survives.
+Under positive axial covariance at every vertex,
 
-## C-M6. Spectral-product hierarchy
+```text
+E_form = K_X,
+E_sample = {0}.
+```
 
-**Statement under test.** Positivity constrains simultaneous exactness of an
-eigenspace and selected irreducible components of its symmetric square, with a
-nontrivial hierarchy on spheres or compact homogeneous spaces.
+**Status:** PROVED. The sharp theorem has two independent structural routes:
+axial covariance row scaling and transitive irreducibility of `Sym_0(d)`.
+Regular simplices attain the axial theorem in every dimension. Exact Platonic
+proofs give form dimensions `2,3,2,0,0` and sampled dimensions all zero.
 
-**Status:** HIGH-RISK CONJECTURE.
+**Signed contrast:** the four cardinal points of `S^1` with adjacent rates
+`1` and antipodal rates `-1/2` restore one genuine quadratic sampled mode; the
+negative antipodal rate is forced on that fixed support.
 
-**First tests:** Legendre and spherical-harmonic products for degrees 1--6;
-strict-extremum and antipodal-maximizer cases; computational linear algebra on
-Platonic and optimized graphs.
+**Regression warnings:**
 
-**Kill condition:** every case reduces to the same one-function square identity
-without a dimension tradeoff or new global consequence.
+- never report `dim E_form` as a sampled mode count;
+- never treat `R_X` and `S_X` as unrelated matrices;
+- sampling aliases are automatically in `E_form` because the residual factors
+  through sampling;
+- numerical rank thresholds are not exact proof.
+
+## C-M6. General spectral-product hierarchy — rejected for Prompt 2
+
+**Tested statement.** Positivity constrains simultaneous exactness of an
+eigenspace and selected irreducible components of its symmetric square through
+a nontrivial degree-indexed hierarchy.
+
+**Outcome:** REJECTED under the stated kill criterion.
+
+The audit accounted for:
+
+- even product parity in the pointwise multiplication image;
+- odd/even zonal antipodal equality sets;
+- non-singleton maxima;
+- degree-specific sampling kernels and cross-degree aliases;
+- one sampled combination versus a complete irreducible component; and
+- the additive-resonance equation
+  `k(k+d-2)=2l(l+d-2)`.
+
+The resonance equation is Pell-type and even has sparse infinite families,
+so absence of resonance is not the obstruction. The problem is
+identifiability: without proving that all other sampled product components
+vanish or separate, no component is isolated. Whenever those extra conditions
+hold, the conclusion is exactly the one-function carré-du-champ/Jensen square
+obstruction. No new `l`-indexed dimension tradeoff or global consequence
+survived.
+
+**Status:** REJECTED for the general Prompt 2 branch, not declared impossible
+under future association-scheme, design, or representation-theoretic
+hypotheses.
 
 ## Rejected conjectures retained as regression warnings
 
@@ -133,4 +172,6 @@ without a dimension tradeoff or new global consequence.
 - global `Q>1` for every finite spherical graph;
 - blanket finite-graph Bakry–Émery curvature collapse;
 - standard continuum `W_2` contraction from positivity alone;
-- general order independence of layered stopping maps.
+- general order independence of layered stopping maps;
+- algebraic quadratic form dimension equals genuine sampled exact dimension;
+- a Pell-type additive resonance by itself yields a spectral-product hierarchy.
