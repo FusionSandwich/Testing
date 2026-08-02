@@ -39,6 +39,14 @@ import AFPBarrier.GlobalSharedEdgeDuality
 #print axioms AFPBarrier.normalBalance_outgoingRate_upper
 
 #print axioms AFPBarrier.jumpGenerator_product_identity
+#print axioms AFPBarrier.jumpGenerator_product_identity_gamma
+#print axioms AFPBarrier.jumpGenerator_shifted_product_residual
+#print axioms AFPBarrier.shifted_product_target_iff
+#print axioms AFPBarrier.additive_product_resonance_iff
+#print axioms AFPBarrier.centered_square_resonance_iff
+#print axioms AFPBarrier.uncentered_square_resonance_iff_zero_gamma
+#print axioms AFPBarrier.jumpCrossVariation_self_eq_carreDuChamp
+#print axioms AFPBarrier.uncentered_square_resonance_forces_value_zero
 #print axioms AFPBarrier.jumpGenerator_quadratic_covariance_identity
 #print axioms AFPBarrier.quadratic_target_eigen_iff
 #print axioms AFPBarrier.finiteMatrixContraction_tracelessProjection
