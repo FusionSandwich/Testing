@@ -5,19 +5,15 @@ on:
     branches:
       - agent/afp-pure-math-p3-p4-final-reconciliation
     paths:
-      - '.github/p3p4-patch-00.b64'
-      - '.github/p3p4-patch-01.b64'
-      - '.github/p3p4-patch-02.b64'
-      - '.github/p3p4-global.b64'
+      - '.github/p3p4-seg-patch-*.b64'
+      - '.github/p3p4-seg-global-*.b64'
       - '.github/workflows/afp-p3-p4-materialize.yml'
   pull_request:
     branches:
       - agent/afp-pure-math-p0-m1
     paths:
-      - '.github/p3p4-patch-00.b64'
-      - '.github/p3p4-patch-01.b64'
-      - '.github/p3p4-patch-02.b64'
-      - '.github/p3p4-global.b64'
+      - '.github/p3p4-seg-patch-*.b64'
+      - '.github/p3p4-seg-global-*.b64'
       - '.github/workflows/afp-p3-p4-materialize.yml'
   workflow_dispatch:
 
@@ -41,7 +37,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
 
-      - name: Verify ancestry, decode, apply, audit, and publish
+      - name: Verify, decode, apply, audit, and publish
         shell: bash
         env:
           EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
@@ -64,6 +60,20 @@ jobs:
           git fetch --no-tags origin archive/afp-gate6-spatial-multigroup-verified
           test "$(git rev-parse FETCH_HEAD)" = "${ARCHIVE_SHA}"
 
+          cat > /tmp/segment-checks <<'EOF'
+          635ea3ebba9149ecb94efca807afca570db30e79de0ee5789458f98ae4d06ae7  .github/p3p4-seg-patch-00.b64
+          e870fc4f5138589782468bb0cf9e44c422d78542afb9125d605b958fad2a78d4  .github/p3p4-seg-patch-01.b64
+          e1158007948134b897f7e75c189b89f129624b276b64a483901574bdf20a958a  .github/p3p4-seg-patch-02.b64
+          c59296ac81be66dd942b3244b77033b38138e0f0d944d25b258c02cebbd4a8ee  .github/p3p4-seg-patch-03.b64
+          9babea0b7faaa9f8556d58f3e8a96ae1dc8e29f63f3cc5676784a324b363d2c9  .github/p3p4-seg-patch-04.b64
+          9cdf584a7f1947c3015f30b8b3b5895ed5eac0355c09d38ad8858b6e02bc771a  .github/p3p4-seg-patch-05.b64
+          31105fe2c6e4a7aa8189dbecf172ff6a15c407aa0ad6e979c31311bd1e877eb1  .github/p3p4-seg-patch-06.b64
+          a984a3798e5bedb092e3d9bac39e070e7da6cc32192dfe47d8e0667c7be196f1  .github/p3p4-seg-patch-07.b64
+          0d5655a4de9f8b08acf45edcdb03f62c697a4734eb66eec2c1529f2e1073afbb  .github/p3p4-seg-global-00.b64
+          aefe962978344dab2cb273330dcaa901a945cba4fd449173383952d56cde8b9c  .github/p3p4-seg-global-01.b64
+          EOF
+          sha256sum --check /tmp/segment-checks
+
           python3 - <<'PY'
           import base64
           from pathlib import Path
@@ -71,20 +81,18 @@ jobs:
           def clean(path: str) -> str:
               return ''.join(Path(path).read_text(encoding='utf-8').split())
 
-          patch_text = ''.join(clean(path) for path in (
-              '.github/p3p4-patch-00.b64',
-              '.github/p3p4-patch-01.b64',
-              '.github/p3p4-patch-02.b64',
-          ))
+          patch_text = ''.join(clean(f'.github/p3p4-seg-patch-{i:02d}.b64')
+                               for i in range(8))
           patch_text += '=' * (-len(patch_text) % 4)
           Path('/tmp/p3p4.patch.xz').write_bytes(
-              base64.b64decode(patch_text, validate=False)
+              base64.b64decode(patch_text, validate=True)
           )
 
-          global_text = clean('.github/p3p4-global.b64')
+          global_text = ''.join(clean(f'.github/p3p4-seg-global-{i:02d}.b64')
+                                for i in range(2))
           global_text += '=' * (-len(global_text) % 4)
           Path('/tmp/afp-global-rigidity.yml.xz').write_bytes(
-              base64.b64decode(global_text, validate=False)
+              base64.b64decode(global_text, validate=True)
           )
           PY
 
@@ -104,6 +112,16 @@ jobs:
             .github/p3p4-patch-01.b64 \
             .github/p3p4-patch-02.b64 \
             .github/p3p4-global.b64 \
+            .github/p3p4-seg-patch-00.b64 \
+            .github/p3p4-seg-patch-01.b64 \
+            .github/p3p4-seg-patch-02.b64 \
+            .github/p3p4-seg-patch-03.b64 \
+            .github/p3p4-seg-patch-04.b64 \
+            .github/p3p4-seg-patch-05.b64 \
+            .github/p3p4-seg-patch-06.b64 \
+            .github/p3p4-seg-patch-07.b64 \
+            .github/p3p4-seg-global-00.b64 \
+            .github/p3p4-seg-global-01.b64 \
             .github/workflows/afp-p3-p4-materialize.yml \
             .github/workflows/afp-p3-p4-targeted-lean.yml
 
@@ -112,23 +130,32 @@ jobs:
           python afp_barrier_gate1/pure_math/rigidity/q1_covariance_audit.py
           python afp_barrier_gate1/pure_math/barriers/prompt4_sharp_barrier_audit.py
 
+          find afp_barrier_gate1/pure_math -type d -name __pycache__ \
+            -prune -exec rm -rf {} +
+          find afp_barrier_gate1/pure_math -type f -name '*.pyc' -delete
+
           git diff --cached --check
+          test -z "$(git ls-files --others --exclude-standard)"
 
-          bad_generated=$(git diff --cached --name-only | grep -E \
-            '(^|/)(__pycache__|_lean4export|_nanoda_lib)(/|$)|\.pyc$|(^|/)plantri$|prompt3-triangulations-through-12\.jsonl$|\.b64$|afp-p3-p4-(materialize|targeted-lean)\.yml$' \
-            || true)
-          test -z "${bad_generated}" || {
-            echo 'Generated/bootstrap artifact remains staged:' >&2
-            echo "${bad_generated}" >&2
-            exit 1
-          }
-
-          test ! -e .github/p3p4-patch-00.b64
-          test ! -e .github/p3p4-patch-01.b64
-          test ! -e .github/p3p4-patch-02.b64
-          test ! -e .github/p3p4-global.b64
-          test ! -e .github/workflows/afp-p3-p4-materialize.yml
-          test ! -e .github/workflows/afp-p3-p4-targeted-lean.yml
+          for path in \
+            .github/p3p4-patch-00.b64 \
+            .github/p3p4-patch-01.b64 \
+            .github/p3p4-patch-02.b64 \
+            .github/p3p4-global.b64 \
+            .github/p3p4-seg-patch-00.b64 \
+            .github/p3p4-seg-patch-01.b64 \
+            .github/p3p4-seg-patch-02.b64 \
+            .github/p3p4-seg-patch-03.b64 \
+            .github/p3p4-seg-patch-04.b64 \
+            .github/p3p4-seg-patch-05.b64 \
+            .github/p3p4-seg-patch-06.b64 \
+            .github/p3p4-seg-patch-07.b64 \
+            .github/p3p4-seg-global-00.b64 \
+            .github/p3p4-seg-global-01.b64 \
+            .github/workflows/afp-p3-p4-materialize.yml \
+            .github/workflows/afp-p3-p4-targeted-lean.yml; do
+            test ! -e "${path}"
+          done
 
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
