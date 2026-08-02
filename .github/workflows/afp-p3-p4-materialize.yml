@@ -10,13 +10,22 @@ on:
       - '.github/p3p4-patch-02.b64'
       - '.github/p3p4-global.b64'
       - '.github/workflows/afp-p3-p4-materialize.yml'
+  pull_request:
+    branches:
+      - agent/afp-pure-math-p0-m1
+    paths:
+      - '.github/p3p4-patch-00.b64'
+      - '.github/p3p4-patch-01.b64'
+      - '.github/p3p4-patch-02.b64'
+      - '.github/p3p4-global.b64'
+      - '.github/workflows/afp-p3-p4-materialize.yml'
   workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: afp-p3-p4-materialize-${{ github.ref }}
+  group: afp-p3-p4-materialize-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -29,12 +38,13 @@ jobs:
       - name: Check out literal payload head
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.sha }}
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
 
       - name: Verify ancestry, decode, apply, audit, and publish
         shell: bash
         env:
+          EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
           TARGET_BRANCH: agent/afp-pure-math-p3-p4-final-reconciliation
           TARGET_BASE: 94aebf6578a43516cce4bb7c042fc57681c93890
           RICH_SOURCE: f1ef5b3c3107d2dfc835ed84c443eb82d752cb56
@@ -46,7 +56,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          test "$(git rev-parse HEAD)" = "${EXPECTED_HEAD}"
           git merge-base --is-ancestor "${TARGET_BASE}" HEAD
           git merge-base --is-ancestor "${RICH_SOURCE}" HEAD
           git merge-base --is-ancestor "${REPAIR_BASE}" HEAD
@@ -107,6 +117,3 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git commit -m 'Complete Prompt 3–4 reconciliation candidate'
           git push origin "HEAD:refs/heads/${TARGET_BRANCH}"
-
-# This second descendant commit is intentional: the workflow now existed
-# before the triggering push, avoiding workflow-registration ambiguity.
