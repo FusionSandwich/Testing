@@ -21,16 +21,17 @@
 | Poincare variance/sup bounds | §5.3 | ordinary variational proof | spectral-gap small graph checks |
 | effective-resistance pointwise bound | §5.4 | ordinary Dirichlet principle | exact rational path resistance |
 | uniform side reference and `Delta_theta` | §6.1 | ordinary proof | arc conversion audit |
-| explicit `C_ang` | §6.2 | ordinary derivative proof | interval/finite-difference audit |
+| explicit positive angle-sine floor and `C_ang` | §6.2 | ordinary Gram/Heron factorization plus derivative proof | zero-defect and positive-width box audit |
 | integer valence separation | §6.3 | ordinary proof | exact `g_kappa` values |
 | edge distance to exact `theta_q` | §6.4 | ordinary mean-value proof | `alpha_eq'` audit |
-| explicit conservative `eta_*` | §6.5 | ordinary inequalities | threshold stress cases |
+| explicit conservative `eta_*` | §6.5 | ordinary inequalities with fixed Gram/Heron box | nonzero threshold tests at q=3,4,5 |
 | `tr C_i=4`, radial covariance | §7.1 | `QEqualityCovariance.lean` | covariance audit |
 | exact `T_i,C_i,M_i` decomposition | §7.2 | finite entrywise decomposition | weighted octahedron symbolic audit |
 | axial iff tangent second moment is isotropic | §7.3 | scalar/tensor finite core | exact parameter equalities |
-| weighted octahedron counterexample | §7.4 | selected scalar identities | exact three-parameter SymPy family |
-| genuine sampled degree-two space `{0}` | §7.4 | ordinary sampling-map contraction | exact linear system/minors |
-| near-equality radial bound and tangent non-control | §7.5 | finite inequality | exact anisotropy limit |
+| antipodal radial boundary | §7.4 | `qOne_antipodal_*` | exact two-state regression |
+| weighted octahedron counterexample | §7.5 | selected scalar identities | exact three-parameter SymPy family |
+| genuine sampled degree-two space `{0}` | §7.5 | ordinary sampling-map argument | exact positive determinant of `P+2I` |
+| near-equality radial bound and tangent non-control | §7.6 | finite inequality | exact anisotropy limit |
 
 ## Claim-control and stage records
 
@@ -39,7 +40,9 @@
 * `docs/PURE_MATH_PRIOR_ART_MAP.md`
 * `docs/THEOREM_TO_FILE_MAP.md`
 * `docs/PROMPT3_GLOBAL_RIGIDITY_STAGE_REPORT.md`
-* `docs/PROMPT4_READINESS_HANDOFF.md`
+* `docs/PROMPT3_FINAL_INTEGRATION_RECORD.md`
+* `docs/PROMPT4_REACCEPTANCE_AFTER_P3_RECONCILIATION.md`
+* `docs/FINAL_PURE_MATH_ACCEPTANCE.md`
 * `pure_math/rigidity/APPROACH_REGISTRY.md`
 * `pure_math/rigidity/THEOREM_REGISTRY.md`
 

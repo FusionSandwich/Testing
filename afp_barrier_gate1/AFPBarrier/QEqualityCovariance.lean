@@ -147,6 +147,24 @@ theorem qOne_tangent_entry_isotropic_iff
   · intro h
     rw [h]
 
+/-- At the antipodal equality boundary `ell=2`, the tangential covariance
+coefficient vanishes.  This is separate from tangent normalization. -/
+theorem qOne_antipodal_tangent_coefficient_zero
+    (ell : ℝ) (hell : ell = 2) :
+    2 * (2 - ell) = 0 := by
+  rw [hell]
+  norm_num
+
+/-- With antipodal loss `ell=2` and row rate one, the covariance entry is
+purely radial: `4 omega_k omega_l`. -/
+theorem qOne_antipodal_covarianceEntry
+    (omega : κ → ℝ) (k l : κ) (rate ell : ℝ)
+    (hrate : rate = 1) (hell : ell = 2) :
+    rate * ((-ell * omega k) * (-ell * omega l))
+      = 4 * omega k * omega l := by
+  rw [hrate, hell]
+  ring
+
 /-- The two tangent probabilities at a weighted octahedral axis sum to one. -/
 theorem weightedOctahedron_tangentWeights_sum_one
     (g₁ g₂ : ℝ) (hsum : 0 < g₁ + g₂) :

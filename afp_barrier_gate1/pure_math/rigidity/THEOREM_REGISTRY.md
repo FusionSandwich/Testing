@@ -14,14 +14,15 @@
 | P3-9 | P3-4 and P3-8 | `E_P(log r)<=2eta/(1-delta)^2` | logarithm bound, detailed-balance swap | no bound without defect control | §5.2 | finite algebra boundary | resistance audit |
 | P3-10 | P3-9, spectral gap `lambda_P>0` | variance and `pi_min` sup bounds | Poincare definition | small gap stress | §5.3 | external variational input | exact small graphs |
 | P3-11 | P3-9, connected conductance graph | effective-resistance pointwise bound | Dirichlet principle | large resistance stress | §5.4 | external variational input | exact rational paths |
-| P3-S | near-equality and round triangulation hypotheses plus explicit domain inequalities | common valence, Platonic type, edge-length distance to `theta_q` | P3-4–11, explicit angle derivatives, integer gap | domain margins are mandatory | §6.1–6.4 | selected finite inequalities | angle/valence audit |
-| P3-S* | P3-S reference loss satisfies explicit margins (6.16) | single threshold `eta_*=kappa delta_*^2` suffices | logarithmic upper bounds and fixed derivative box | no uniform threshold at geometric degeneracy | §6.5 | ordinary proof | threshold stress |
+| P3-S | near-equality and round triangulation hypotheses plus explicit side-box inequalities | common valence, Platonic type, edge-length distance to `theta_q` | P3-4–11, positive Gram/Heron determinant, explicit angle derivatives, integer gap | domain margins are mandatory | §6.1–6.4 | selected finite inequalities | zero-defect and positive-width angle/valence audit |
+| P3-S* | P3-S reference loss satisfies the explicit margins in §6.5 | single threshold `eta_*=kappa delta_*^2` suffices | logarithmic bounds and fixed Gram/Heron-certified box | no uniform threshold at geometric degeneracy | §6.5 | ordinary proof | closed-threshold stress at q=3,4,5 |
 | P3-C1 | any spherical coordinate eigenmap | `tr C_i=4`, radial covariance `=4Q_i/r_i` | loss moment | sign convention audited | §7.1 | `QEqualityCovariance.lean` | covariance audit |
 | P3-C2 | local `Q_i=1`, `0<ell_i<2` | exact `T_i,C_i,M_i` decomposition | tangent expansion | antipodal case excluded | §7.2 | finite entrywise decomposition | covariance audit |
 | P3-C3 | P3-C2 | axial iff `T_i=P_i/2` | positive tangent coefficient | weighted octahedron | §7.3 | finite algebra | covariance audit |
-| P3-C4 | positive weighted octahedral family | `L Omega=-2Omega`, `r=2`, `ell=1`, `Q=1`, axial iff all `g` equal | exact conductance computation | none within stated family | §7.4 | selected scalar identities | exact SymPy |
-| P3-C5 | P3-C4 and genuine sampling map | degree-two sampled exact space is `{0}` | `P` is an infinity-norm contraction | form aliases retained | §7.4 | ordinary finite proof | exact linear system |
-| P3-C6 | `1<=Q_i<=1+eta` | radial error in `[0,4eta/r_i]`; no tangent bound | P3-C1 | anisotropy tends to `1/2` at `eta=0` | §7.5 | finite scalar inequality | exact parameter limit |
+| P3-CB | exact antipodal equality `ell=2`, `r=1` | `C_i=4 Omega_i Omega_i^T`; tangent coefficient zero and no unit tangent normalization | direct displacement algebra | excluded from P3-C2 | §7.4 | `qOne_antipodal_*` | exact two-state regression |
+| P3-C4 | positive weighted octahedral family | `L Omega=-2Omega`, `r=2`, `ell=1`, `Q=1`, axial iff all `g` equal | exact conductance computation | none within stated family | §7.5 | selected scalar identities | exact SymPy |
+| P3-C5 | P3-C4 and genuine sampling map | degree-two sampled exact space is `{0}` | exact positive determinant of `P+2I` and stochastic contraction | form aliases retained | §7.5 | ordinary finite proof | exact determinant and coordinate audit |
+| P3-C6 | `1<=Q_i<=1+eta` | radial error in `[0,4eta/r_i]`; no tangent bound | P3-C1 | anisotropy tends to `1/2` at `eta=0` | §7.6 | finite scalar inequality | exact parameter limit |
 
 ## Constants
 
@@ -34,7 +35,8 @@ h_delta   = -log(1-delta)
 B_delta   = h_delta+R_G s_delta
 sigma_arc = min(sqrt(ell_-(2-ell_-)),sqrt(ell_+(2-ell_+)))
 Delta_theta = ell_ref(exp(B_delta)-1)/sigma_ref
-C_ang     = 1/(s_A s_theta^2)+4/(s_A s_theta^3)
+s_A0      = 2 sqrt(m_S m_T^3), from the Gram/Heron determinant floor
+C_ang     = 1/(s_A0 s_theta^2)+4/(s_A0 s_theta^3)
 g_kappa   = min{|2pi/m-2pi/n|:3<=m<n<=floor(1/kappa)}
 m_eq      = inf_J alpha_eq'(theta), with m_eq>=s_J/4
 ```

@@ -133,9 +133,37 @@ ordinary proof and deterministic audits.
 
 No `sorry`, `admit`, `sorryAx`, or user-declared `axiom`/`axioms` is permitted.
 
-## Prompt 4 boundary
+## Prompt 4 preservation and reacceptance boundary
 
-No product-grid lower bound, extremal optimization, final global optimization,
-or paper synthesis has been started.  Prompt 4 may begin only from the exact
-merged target SHA/tree and successful final-head runs recorded in
-`PROMPT4_READINESS_HANDOFF.md` and the merged PR discussion.
+Prompt 4 was already complete on the accepted target
+`94aebf6578a43516cce4bb7c042fc57681c93890` before this richer Prompt 3
+reconciliation.  Its theorem package, exact constants, workflows, and synthesis
+files are protected inputs.  Rich Prompt 3 is integrated additively after that
+history.  The final combined head reruns every Prompt 4 exact and Lean gate and
+updates only the synthesis/claim-control text needed to acknowledge the stronger
+Prompt 3 companion results.  No Prompt 4 theorem is rediscovered or replaced.
+
+
+## Reconciliation corrections
+
+The pre-reconciliation literal head `f1ef5b3c3107d2dfc835ed84c443eb82d752cb56`
+passed all Python, source-policy, and 9,150-map enumeration stages but failed the
+Lean build in `QuantitativeGlobalNearRigidity.lean`.  The repairs preserve the
+theorem statements:
+
+```text
+explicit commutativity conversion in the weighted square inequality;
+positive-inverse multiplication for adjacent-rate bounds;
+positive-inverse multiplication for incident-loss bounds;
+0<=delta<1 retained before lower-scale multiplication;
+redundant post-field_simp tactic removed.
+```
+
+The former endpoint-product angle enclosure is rejected on the required fixed
+icosahedral neighborhood.  The accepted replacement is the positive
+Gram/Heron determinant factorization, with zero-defect and positive-width
+regressions for q=3,4,5.  The covariance theorem is restricted to `0<ell<2`;
+the antipodal `ell=2` radial boundary is separate.
+
+The independent PR #28 history is not merged.  Its exact source hashes and the
+manually re-derived corrections are recorded in the reconciliation ledgers.

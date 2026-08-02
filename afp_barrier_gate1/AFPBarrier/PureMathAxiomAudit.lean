@@ -114,10 +114,13 @@ import AFPBarrier.GlobalSharedEdgeDuality
 #print axioms AFPBarrier.sphericalQ_eq_one_active_loss
 #print axioms AFPBarrier.active_symmetric_of_shared_conductance
 #print axioms AFPBarrier.connected_spherical_active_loss_rigidity
+#print axioms AFPBarrier.weight_floor_mul_deviation_sq_le
+#print axioms AFPBarrier.pointwise_deviation_sq_le_eta_div_kappa
 #print axioms AFPBarrier.pointwise_delta_bound
 #print axioms AFPBarrier.adjacent_rate_cross_bounds
 #print axioms AFPBarrier.adjacent_rate_ratio_bounds
 #print axioms AFPBarrier.incident_loss_cross_bounds
+#print axioms AFPBarrier.radial_covariance_error_identity
 #print axioms AFPBarrier.radial_covariance_error_bounds
 #print axioms AFPBarrier.covarianceTrace_eq_four_of_normLoss
 #print axioms AFPBarrier.radialCovariance_eq_sphericalEpsilon
@@ -125,4 +128,7 @@ import AFPBarrier.GlobalSharedEdgeDuality
 #print axioms AFPBarrier.weighted_centered_affine_product_sum
 #print axioms AFPBarrier.qOne_covarianceEntry_decomposition
 #print axioms AFPBarrier.qOne_tangent_entry_isotropic_iff
+#print axioms AFPBarrier.qOne_antipodal_tangent_coefficient_zero
+#print axioms AFPBarrier.qOne_antipodal_covarianceEntry
+#print axioms AFPBarrier.weightedOctahedron_tangentWeights_sum_one
 #print axioms AFPBarrier.weightedOctahedron_axis_axial_iff

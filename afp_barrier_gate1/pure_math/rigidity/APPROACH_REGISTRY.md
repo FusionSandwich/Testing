@@ -20,7 +20,7 @@ distinct mechanism and kill criterion, before synthesis.
 | A7 | Euler counting | `qV=2E`, `3F=2E`, `chi=2` | `q=3,4,5` and exact counts | COMPLETE |
 | A8 | local-link combinatorics | link cycle and simplicial collar | direct uniqueness of `K4`, octahedral, icosahedral maps | COMPLETE |
 | A9 | developing/face propagation | unique third vertex on opposite side of shared great circle | geometric uniqueness up to `O(3)` | COMPLETE |
-| A10 | compact derivative enclosure | explicit derivatives of spherical cosine law | computed `C_ang` | COMPLETE |
+| A10 | positive spherical Gram/Heron determinant | `D=4 sin(S)prod sin(S-side)` on a complete side box | certified angle-sine floor and explicit `C_ang` | COMPLETE |
 | A11 | integer angular separation | finite gap among `2pi/m` | stable valence identification | COMPLETE |
 | A12 | monotone equilateral angle map | explicit positive derivative | distance to exact Platonic side | COMPLETE |
 | A13 | covariance radial/tangent split | tangent directions and second moment `T_i` | exact `Q=1` covariance decomposition | COMPLETE |
@@ -61,7 +61,8 @@ distinct mechanism and kill criterion, before synthesis.
 | Cauchy/Alexandrov as a black box | unnecessary and would require a convex-polyhedron transfer | NOT USED in the proof |
 | numerical equal-edge embedding search | approximate solutions are not certificates | REJECTED |
 | path multiplication only | hides graph geometry and may be weak | INCOMPLETE; supplemented by energy/resistance |
-| unnamed compactness modulus | does not meet quantitative contract | REJECTED; explicit derivative box supplied |
+| endpoint-product `C_A<1` enclosure | fails the required fixed icosahedral box | REJECTED; replaced by the positive Gram/Heron determinant |
+| unnamed compactness modulus | does not meet quantitative contract | REJECTED; explicit Gram/Heron derivative box supplied |
 | asymptotic `O(sqrt eta)` | hides `kappa`, radius, and nondegeneracy margins | REJECTED |
 | `Q=1 =>` axial covariance | false in weighted octahedral family | REJECTED |
 | `dim E_form = dim E_sample` | ignores sampling aliases | REJECTED |
@@ -88,3 +89,18 @@ Every covariance statement was checked by:
 2. the weighted-octahedron positive reversible family;
 3. the infinity-norm sampled-space certificate; and
 4. permanent Prompt 2 sampling-alias regressions.
+
+
+## Reconciliation and preservation route
+
+| Route | Mechanism | Result |
+|---|---|---|
+| R1 | exact Git ancestry and protected-ref ledger | accepted Prompt 4 target and rich Prompt 3 source are both ancestors of the reconciliation line |
+| R2 | per-file authority ledger | target claim/synthesis files are updated additively; stale Prompt 3 documents never replace Prompt 4 text |
+| R3 | audit-only manual re-derivation | PR #28 contributes warnings and the Gram/Heron mechanism without importing divergent ancestry |
+| R4 | six-workflow exact-head acceptance | Prompt 1–4 regressions, Lean, nanoda, archive, and scope are checked on one literal head |
+| R5 | target reacceptance | the exact tested reconciliation head is used as the final target, followed by literal target-ref reruns |
+
+The accepted Prompt 4 theorem package is not a new search route here.  It is a
+protected input whose exact audit, Lean module, constants, and synthesis role
+must survive the combined-head gate.

@@ -782,50 +782,58 @@ max_e |theta_e-theta_ref|
 
 ### 6.2 Explicit spherical-angle Lipschitz constant
 
-Put
+Choose a displayed side box `[t_-,t_+]` satisfying
 
 ```text
-t_- =theta_ref-Delta_theta,
-t_+ =theta_ref+Delta_theta.
-```
-
-Require
-
-```text
-0<t_-<t_+<pi,
+0<t_-<=theta_ref-Delta_theta,
+theta_ref+Delta_theta<=t_+<pi,
 2t_->t_+,
 3t_+<2pi.                                               (6.3)
 ```
 
-These conditions keep every line segment in side-coordinate space inside the
-compact nondegenerate convex spherical-triangle domain.
+The last two strict inequalities imply all three strict triangle inequalities
+and perimeter less than `2pi` for every side triple in the box.  They therefore
+keep the complete line segment in side-coordinate space inside the
+nondegenerate convex spherical-triangle domain, including the zero-defect case
+`Delta_theta=0`.
 
 Define
 
 ```text
 s_theta=min(sin t_-,sin t_+)>0,
-c_- =cos t_+,
-c_+ =cos t_-,
-P_- =min{c_-^2,c_-c_+,c_+^2},
-P_+ =max{c_-^2,c_-c_+,c_+^2},
-N_- =c_- -P_+,
-N_+ =c_+ -P_-,
-C_A =max(|N_-|,|N_+|)/s_theta^2.
+g_box=2t_--t_+>0,
+m_T=sin(g_box/2)>0,
+m_S=min(sin(3t_-/2),sin(3t_+/2))>0,
+s_A0=2 sqrt(m_S m_T^3)>0.                               (6.4)
 ```
 
-Require the certified interval condition
+These are closed elementary expressions.  To certify the angle-sine bound,
+let `S=(a+b+c)/2`.  The spherical Gram determinant has the exact factorization
 
 ```text
-C_A<1,                                                  (6.4)
+D=sin^2(b)sin^2(c)-(cos(a)-cos(b)cos(c))^2
+ =4 sin(S)sin(S-a)sin(S-b)sin(S-c).                     (6.5)
 ```
 
-and set
+For sides in the box,
 
 ```text
-s_A=sqrt(1-C_A^2)>0.
+S in [3t_-/2,3t_+/2] subset (0,pi),
+S-a,S-b,S-c in [g_box/2,(2t_+-t_-)/2] subset (0,pi/2).
 ```
 
-For a spherical triangle with sides `a,b,c` and opposite angle `A`,
+Consequently `D>=4m_S m_T^3`.  Since
+
+```text
+sin(A)=sqrt(D)/(sin(b)sin(c))
+```
+
+and the denominator is at most one, every angle in the box satisfies
+`sin(A)>=s_A0`.  This proves positivity directly.  It does not use the rejected
+endpoint-product enclosure for `cos(A)` and introduces no additional
+unsatisfied `C_A<1` assumption.
+
+For the angle opposite `a`,
 
 ```text
 F(a,b,c)=cos A
@@ -840,19 +848,19 @@ partial_b F=(cos c-cos a cos b)/(sin^2 b sin c),
 partial_c F=(cos b-cos a cos c)/(sin^2 c sin b).
 ```
 
-The interval definitions imply `|cos A|<=C_A`, hence `sin A>=s_A`, and
+Therefore
 
 ```text
-|partial_a A|<=1/(s_A s_theta^2),
-|partial_b A|<=2/(s_A s_theta^3),
-|partial_c A|<=2/(s_A s_theta^3).
+|partial_a A|<=1/(s_A0 s_theta^2),
+|partial_b A|<=2/(s_A0 s_theta^3),
+|partial_c A|<=2/(s_A0 s_theta^3).
 ```
 
-Therefore the explicit valid Lipschitz constant
+The explicit Lipschitz constant
 
 ```text
 C_ang
- =1/(s_A s_theta^2)+4/(s_A s_theta^3)                  (6.5)
+ =1/(s_A0 s_theta^2)+4/(s_A0 s_theta^3)                 (6.6)
 ```
 
 satisfies
@@ -860,7 +868,7 @@ satisfies
 ```text
 |A-A_ref|
  <=C_ang max(|a-theta_ref|,|b-theta_ref|,|c-theta_ref|)
- <=C_ang Delta_theta,                                  (6.6)
+ <=C_ang Delta_theta,                                   (6.7)
 ```
 
 where
@@ -869,6 +877,10 @@ where
 A_ref=alpha_eq(theta_ref)
      =arccos(cos theta_ref/(1+cos theta_ref)).
 ```
+
+The deterministic audit evaluates (6.4)–(6.7) both at zero defect and on a
+positive-width fixed box around each of the tetrahedral, octahedral, and
+icosahedral reference side lengths.
 
 ### 6.3 Integer-valence separation and combinatorial type
 
@@ -881,7 +893,7 @@ At a vertex,
 so
 
 ```text
-deg(i)<=d_max=floor(1/kappa).                           (6.7)
+deg(i)<=d_max=floor(1/kappa).                           (6.8)
 ```
 
 Every simple spherical triangulation has degree at least three.  If
@@ -890,14 +902,23 @@ positive separation
 
 ```text
 g_kappa=min{
- |2pi/m-2pi/n| : 3<=m<n<=d_max}.                       (6.8)
+ |2pi/m-2pi/n| : 3<=m<n<=d_max}.                        (6.9)
 ```
 
-For a vertex of degree `m`, sum (6.6) over its incident face angles and use the
+This finite minimum is explicitly
+
+```text
+g_kappa=2pi/(d_max(d_max-1)).                           (6.10)
+```
+
+Indeed, for a fixed lower denominator the smallest gap occurs for consecutive
+integers, and `2pi/(m(m+1))` decreases with `m`.
+
+For a vertex of degree `m`, sum (6.7) over its incident face angles and use the
 round-sphere angle sum:
 
 ```text
-|2pi/m-A_ref|<=C_ang Delta_theta.                       (6.9)
+|2pi/m-A_ref|<=C_ang Delta_theta.                       (6.11)
 ```
 
 For degrees `m,n` at two vertices,
@@ -909,7 +930,7 @@ For degrees `m,n` at two vertices,
 Thus, if
 
 ```text
-2 C_ang Delta_theta<g_kappa,                            (6.10)
+2 C_ang Delta_theta<g_kappa,                            (6.12)
 ```
 
 all valences are equal.  Euler's formula then gives `q in {3,4,5}`, and the
@@ -929,60 +950,75 @@ Its derivative is
 
 ```text
 alpha_eq'(theta)
- =sin theta/((1+cos theta)^2 sin(alpha_eq(theta)))>0.   (6.11)
+ =sin theta/((1+cos theta)^2 sin(alpha_eq(theta)))>0.   (6.13)
 ```
 
-Let `theta_q` be the exact side in Section 3.5.  Choose a certified compact
-interval `J subset (0,2pi/3)` containing `theta_ref` and `theta_q`.  Set
+Let `theta_q` be the exact side in Section 3.5 and set
 
 ```text
-m_eq=inf_{theta in J} alpha_eq'(theta)>0.               (6.12)
+J_- =min(theta_ref,theta_q),
+J_+ =max(theta_ref,theta_q),
+J   =[J_-,J_+] subset (0,2pi/3),
+m_eq=alpha_eq'(J_-)>0.                                  (6.14)
 ```
 
-An entirely explicit lower certificate is
+This is the exact minimum on `J`.  With `c=cos theta`,
+
+```text
+(alpha_eq'(theta))^2=(1-c)/((1+c)(1+2c)),
+```
+
+whose logarithmic derivative with respect to `c` is
+
+```text
+-1/(1-c)-1/(1+c)-2/(1+2c)<0.
+```
+
+Since `c` decreases with `theta`, `alpha_eq'` is strictly increasing.  The
+explicit endpoint value also obeys
 
 ```text
 m_eq>=s_J/4,
-s_J=min_{theta in J} sin theta
-   =min(sin inf J,sin sup J)>0,                         (6.13)
+s_J=min(sin J_-,sin J_+)>0,                             (6.15)
 ```
 
 because `(1+cos theta)^2<=4` and `sin(alpha_eq(theta))<=1`.
 
-Equation (6.9), now with common degree `q`, says
+Equation (6.11), now with common degree `q`, says
 
 ```text
 |alpha_eq(theta_ref)-alpha_eq(theta_q)|
  <=C_ang Delta_theta.
 ```
 
-The mean-value theorem and (6.12) yield
+The mean-value theorem and (6.14) yield
 
 ```text
 |theta_ref-theta_q|
- <=C_ang Delta_theta/m_eq,                              (6.14)
+ <=C_ang Delta_theta/m_eq,                              (6.16)
 ```
 
 and hence
 
 ```text
 max_e |theta_e-theta_q|
- <=Delta_theta(1+C_ang/m_eq).                           (6.15)
+ <=Delta_theta(1+C_ang/m_eq).                           (6.17)
 ```
 
-This is the required edge-length sup-norm distance to the corresponding exact
-Platonic spherical framework.
+This is the mandatory edge-length sup-norm distance to the corresponding exact
+Platonic spherical framework.  It does not assert coordinate-level stability
+without a separate framework-rigidity singular-value margin.
 
 ### 6.5 Closed-form conservative defect threshold
 
-The preceding conditions are directly checkable.  The following gives a
-single conservative threshold, avoiding an unnamed continuity modulus.
+The following packages every domain condition into a single conservative
+threshold with no unnamed compactness modulus.
 
 Assume the observed reference loss satisfies
 
 ```text
 0<ell_0:=ell_ref<2,
-theta_0:=arccos(1-ell_0)<2pi/3.                         (6.16)
+theta_0:=arccos(1-ell_0)<2pi/3.                         (6.18)
 ```
 
 Set
@@ -998,45 +1034,112 @@ K_theta   = ell_0 exp(b_0) C_R/sigma_0,
 tau       = (1/4) min(theta_0,pi-theta_0,2pi/3-theta_0).
 ```
 
+Thus `0<rho<min(ell_0,2-ell_0)` and `tau>0`.  For the fixed side box put
+
+```text
+t_lo      =theta_0-tau,
+t_hi      =theta_0+tau,
+g_0       =2t_lo-t_hi=theta_0-3tau,
+s_theta,0 =min(sin t_lo,sin t_hi),
+m_T,0     =sin(g_0/2),
+m_S,0     =min(sin(3t_lo/2),sin(3t_hi/2)),
+s_A,0     =2 sqrt(m_S,0 m_T,0^3),
+C_ang,0   =1/(s_A,0 s_theta,0^2)+4/(s_A,0 s_theta,0^3).
+```
+
+All displayed denominators are positive.  The definition of `tau` gives
+
+```text
+0<t_lo<t_hi<pi,
+2t_lo>t_hi,
+3t_hi<2pi,
+(2t_hi-t_lo)/2<pi/2.
+```
+
+Section 6.2 therefore proves `sin A>=s_A,0` throughout this fixed box and
+certifies `C_ang,0` by the explicit Gram/Heron factorization.  This certificate
+remains valid at `eta=0` and at the exact icosahedral reference.
+
 On `0<=delta<=1/2`, elementary logarithmic bounds give
 
 ```text
-B_delta<=C_R delta.                                    (6.17)
+B_delta<=C_R delta.                                    (6.19)
 ```
 
-Use the fixed side box `[theta_0-tau,theta_0+tau]` in the construction
-(6.4)–(6.5), and suppose its explicit `C_A<1`; call the resulting constant
-`C_ang,0`.  When `d_max>=4`, use `g_kappa` from (6.8); when `d_max=3`, omit
-the corresponding term.  Define
+Indeed, `-log(1-delta)<=2delta` and `log(1+delta)<=delta`, so
+`s_delta<=3delta<=4delta`; substitute in
+`B_delta=h_delta+R_G s_delta`.
+
+Put `d_max=floor(1/kappa)`.  The hypotheses imply `d_max>=3`.  If
+`d_max>=4`, use `g_kappa` from (6.9); if `d_max=3`, every valence is already
+three and the valence-separation entry below is omitted.  Define
 
 ```text
 delta_* = min(
   1/2,
   b_0/C_R,
   tau/K_theta,
-  g_kappa/(4 C_ang,0 K_theta) )                         (6.18)
+  g_kappa/(4 C_ang,0 K_theta) )                         (6.20)
 ```
 
 with the last entry omitted in the one-valence case, and set
 
 ```text
-eta_*=kappa delta_*^2.                                  (6.19)
+eta_*=kappa delta_*^2.                                  (6.21)
 ```
 
-If `0<=eta<eta_*`, then `delta<delta_*`.  Equations (6.17)–(6.18) imply
+Every entry is positive.  If `0<=eta<eta_*`, then
+`delta=sqrt(eta/kappa)<delta_*`.  Equations (6.19)–(6.20) give
+`B_delta<b_0`.  Hence
 
 ```text
-ell_0(exp(B_delta)-1)<=rho,
-Delta_theta<=K_theta delta<tau,
-2C_ang,0 Delta_theta<g_kappa.
+ell_0 exp(B_delta)<ell_0+rho,
+ell_0 exp(-B_delta)>ell_0^2/(ell_0+rho)>ell_0-rho.
 ```
 
-Thus (6.1), (6.3), (6.4), and (6.10) all hold, the Platonic type is identified,
-and (6.15) applies.  Every parameter in (6.18) is an explicit function of the
-finite graph, `kappa`, and the reference row rate.  No hidden `O(sqrt eta)` or
-uncomputed compactness constant remains.
+The last strict inequality has difference `rho^2/(ell_0+rho)`.  Thus every
+active loss lies in `[ell_0-rho,ell_0+rho] subset (0,2)`, whose arc denominator
+is at least `sigma_0`.  Since `B_delta<b_0`, the mean-value estimate
 
----
+```text
+exp(B_delta)-1<=exp(b_0)B_delta
+```
+
+and (6.19) yield
+
+```text
+max_e |theta_e-theta_0|
+ <=K_theta delta=:Delta_theta<tau.                     (6.22)
+```
+
+Every face side therefore remains in the fixed nondegenerate minor-arc box,
+and Section 6.2 gives
+
+```text
+|A_face-alpha_eq(theta_0)|<=C_ang,0 Delta_theta.       (6.23)
+```
+
+If `d_max>=4`, (6.20) gives
+
+```text
+2C_ang,0 Delta_theta<g_kappa/2<g_kappa;
+```
+
+for `d_max=3` constant valence was automatic.  Euler and Section 3.4 identify
+the abstract triangulation as tetrahedral, octahedral, or icosahedral.  For its
+common valence `q`, take `J` and `m_eq` from (6.14).  Equations (6.16)–(6.17),
+with (6.22), prove
+
+```text
+max_e |theta_e-theta_q|
+ <=Delta_theta(1+C_ang,0/m_eq).                        (6.24)
+```
+
+Equations (6.22)–(6.24) are respectively the certified side-domain,
+face-angle, and edge-length conclusions.  Every parameter is an explicit
+function of the finite graph, `kappa`, and the observed reference row rate.
+There is no hidden `O(sqrt eta)`, uncomputed compactness constant, or
+uncertified angle box.
 
 ## 7. Interaction with Prompt 2 covariance
 
@@ -1164,7 +1267,29 @@ E_sample={0}.
 
 No implication from `Q=1` alone to (7.6) is valid.
 
-### 7.4 Exact positive reversible anisotropic family
+### 7.4 Antipodal covariance boundary
+
+The tangent-frame formula in Section 7.2 is deliberately restricted to
+`0<ell_i<2`.  At the valid equality boundary
+
+```text
+ell_i=2,
+r_i=1,
+sqrt(ell_i(2-ell_i))=0,
+```
+
+every active neighbor is `-Omega_i`, so the displacement is `-2Omega_i` and
+
+```text
+C_i=4 Omega_i Omega_i^T.                               (7.7)
+```
+
+The covariance is purely radial.  There is no geometrically determined unit
+tangent direction and no quotient by `sqrt(ell_i(2-ell_i))` is defined.  This
+boundary case is proved and tested separately; it is not obtained by silently
+extending the non-antipodal tangent normalization.
+
+### 7.5 Exact positive reversible anisotropic family
 
 Use the six vertices `+/-e_1,+/-e_2,+/-e_3`.  For positive parameters
 `g_12,g_13,g_23`, assign conductance `g_ab` to each of the four edges between
@@ -1199,7 +1324,7 @@ T_1
  =g_12/(g_12+g_13) e_2e_2^T
   +g_13/(g_12+g_13) e_3e_3^T,
 C_1=2T_1+2e_1e_1^T,
-M_1=3(e_1e_1^T-I/3)+2(T_1-P_1/2).                      (7.7)
+M_1=3(e_1e_1^T-I/3)+2(T_1-P_1/2).                      (7.8)
 ```
 
 The analogous formulas hold cyclically.  Axial covariance at axis 1 is
@@ -1207,7 +1332,7 @@ The analogous formulas hold cyclically.  Axial covariance at axis 1 is
 `g_13=g_23`.  Therefore axial covariance at all vertices holds exactly when
 
 ```text
-g_12=g_13=g_23.                                        (7.8)
+g_12=g_13=g_23.                                        (7.9)
 ```
 
 This is a connected positive reversible minor-arc geodesic octahedral
@@ -1236,18 +1361,18 @@ But a row-stochastic matrix is a contraction in the infinity norm:
 only for `f=0`.  Consequently, for every positive `g_12,g_13,g_23`,
 
 ```text
-E_sample={0}.                                           (7.9)
+E_sample={0}.                                          (7.10)
 ```
 
 This conclusion uses the sampling map and does not identify form-space
 dimension with sampled-space dimension.
 
-### 7.5 Near-equality radial control and tangential non-control
+### 7.6 Near-equality radial control and tangential non-control
 
 From (7.2) and `1<=Q_i<=1+eta`,
 
 ```text
-0<=Omega_i^T C_i Omega_i-4/r_i<=4eta/r_i.              (7.10)
+0<=Omega_i^T C_i Omega_i-4/r_i<=4eta/r_i.             (7.11)
 ```
 
 There is no corresponding bound on `T_i-P_i/2`.  In the exact weighted

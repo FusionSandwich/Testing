@@ -81,3 +81,16 @@ AFPBarrier/PureMathAxiomAudit.lean
 
 Compatibility workflows must also run the Prompt 4 exact audit and allow only
 the new pure-math workflow/source/documentation paths.
+
+## Post-Prompt 3 reconciliation verification
+
+The theorem-to-file mapping above remains authoritative.  Rich Prompt 3 adds no
+replacement Prompt 4 source.  Post-reconciliation reacceptance is recorded in:
+
+```text
+docs/PROMPT4_REACCEPTANCE_AFTER_P3_RECONCILIATION.md
+docs/FINAL_PURE_MATH_ACCEPTANCE.md
+```
+
+The exact Prompt 4 audit and `AFPBarrier/SharpProductBarriers.lean` are mandatory
+members of the combined-head verification suite.

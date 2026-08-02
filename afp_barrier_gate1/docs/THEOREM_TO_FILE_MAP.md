@@ -171,3 +171,18 @@ All workflows reject `sorry`, `admit`, and `sorryAx`; the policy scans anchored
 declarations for both singular `axiom` and plural `axioms`. `sorryAx` is absent
 from every independent nanoda permitted-axiom list. Exact CI heads and job
 identifiers belong in integration records, not in mathematical proofs.
+
+## Reconciled rich Prompt 3 and Prompt 4 acceptance map
+
+| Result | Authoritative ordinary proof / record | Lean boundary | Deterministic evidence |
+|---|---|---|---|
+| Exact spherical normalized variance and equality transfer | `pure_math/rigidity/GLOBAL_Q_RIGIDITY_THEOREM.md` §§1–2 | `SphericalQEqualityRigidity.lean` | `global_near_rigidity_audit.py` |
+| Restricted tetrahedral/octahedral/icosahedral classification | theorem §3 | accepted finite algebra plus narrow Prompt 3 module | `triangulation_counterexample_audit.py` and exact Gram/hull certificates |
+| Path, diameter, reference-loss, Poincaré, and resistance stability | theorem §§4–5 | `QuantitativeGlobalNearRigidity.lean` finite inequalities | `global_near_rigidity_audit.py` |
+| Explicit Gram/Heron angle certificate and `eta_*` threshold | theorem §6 | ordinary proof | zero-defect and positive-width Platonic box regressions |
+| `Q=1`, `0<ell<2` covariance decomposition | theorem §§7.1–7.3 | `QEqualityCovariance.lean` | `q1_covariance_audit.py` |
+| Antipodal `ell=2` radial boundary | theorem §7.4 | `qOne_antipodal_*` | exact two-state regression |
+| Weighted-octahedron anisotropy and sampled space `{0}` | theorem §§7.5–7.6 | selected scalar identities | exact determinant and coordinate-eigenmap audit |
+| Prompt 4 sharp barriers and extremal synthesis | existing Prompt 4 package | `SharpProductBarriers.lean` and inherited modules | `prompt4_sharp_barrier_audit.py` |
+| Non-destructive branch/file provenance | `docs/P3_P4_*_LEDGER.md` | n/a | Git ancestry and scope gates |
+| Final combined acceptance | `docs/FINAL_PURE_MATH_ACCEPTANCE.md` plus reconciliation PR discussion | full aggregate build/axiom audit | all six exact-head workflows |
