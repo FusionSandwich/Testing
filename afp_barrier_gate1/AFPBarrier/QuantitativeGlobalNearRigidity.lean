@@ -29,8 +29,9 @@ theorem pointwise_deviation_sq_le_eta_div_kappa
     (hweighted : p * (x - 1) ^ 2 ≤ eta) :
     (x - 1) ^ 2 ≤ eta / kappa := by
   apply (le_div_iff₀ hkappa).2
-  exact weight_floor_mul_deviation_sq_le
-    p kappa x eta hp (sq_nonneg _) hweighted
+  simpa [mul_comm] using
+    (weight_floor_mul_deviation_sq_le
+      p kappa x eta hp (sq_nonneg _) hweighted)
 
 /-- Square control gives the advertised absolute deviation. -/
 theorem pointwise_delta_bound
@@ -67,11 +68,25 @@ theorem adjacent_rate_cross_bounds
     field_simp [ne_of_gt hell]
   constructor
   · rw [hratioI, hratioJ]
-    apply (div_le_div_iff₀ hell hell).2
-    nlinarith
+    have hnum : (1 - delta) * (2 * xJ) ≤ (1 + delta) * (2 * xI) := by
+      nlinarith
+    calc
+      (1 - delta) * (2 * xJ / ell) =
+          ((1 - delta) * (2 * xJ)) / ell := by ring
+      _ ≤ ((1 + delta) * (2 * xI)) / ell :=
+        (div_le_div_iff₀ hell hell).2
+          (mul_le_mul_of_nonneg_right hnum hell.le)
+      _ = (1 + delta) * (2 * xI / ell) := by ring
   · rw [hratioI, hratioJ]
-    apply (div_le_div_iff₀ hell hell).2
-    nlinarith
+    have hnum : (1 - delta) * (2 * xI) ≤ (1 + delta) * (2 * xJ) := by
+      nlinarith
+    calc
+      (1 - delta) * (2 * xI / ell) =
+          ((1 - delta) * (2 * xI)) / ell := by ring
+      _ ≤ ((1 + delta) * (2 * xJ)) / ell :=
+        (div_le_div_iff₀ hell hell).2
+          (mul_le_mul_of_nonneg_right hnum hell.le)
+      _ = (1 + delta) * (2 * xJ / ell) := by ring
 
 /-- Ratio form of the adjacent-rate estimate. -/
 theorem adjacent_rate_ratio_bounds
@@ -130,7 +145,8 @@ theorem incident_loss_cross_bounds
         rw [hell₂]
         ring
       _ ≤ ((1 + delta) * (2 * x₁)) / rate :=
-        (div_le_div_iff₀ hrate hrate).2 hnum₁
+        (div_le_div_iff₀ hrate hrate).2
+          (mul_le_mul_of_nonneg_right hnum₁ hrate.le)
       _ = (1 + delta) * ell₁ := by
         rw [hell₁]
         ring
@@ -139,7 +155,8 @@ theorem incident_loss_cross_bounds
         rw [hell₁]
         ring
       _ ≤ ((1 + delta) * (2 * x₂)) / rate :=
-        (div_le_div_iff₀ hrate hrate).2 hnum₂
+        (div_le_div_iff₀ hrate hrate).2
+          (mul_le_mul_of_nonneg_right hnum₂ hrate.le)
       _ = (1 + delta) * ell₂ := by
         rw [hell₂]
         ring
