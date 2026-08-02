@@ -12,6 +12,7 @@ import AFPBarrier.QuantitativeExactLocal
 import AFPBarrier.AntipodalFeasibility
 import AFPBarrier.SphericalFeasibilityAlgebra
 import AFPBarrier.QuantitativeSphericalFeasibility
+import AFPBarrier.QuadraticCovariance
 import AFPBarrier.GlobalLossRigidity
 import AFPBarrier.ExplicitEulerTransport
 import AFPBarrier.SpatialUpwindTransport
