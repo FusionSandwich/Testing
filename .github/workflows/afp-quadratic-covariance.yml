@@ -25,14 +25,20 @@ jobs:
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
 
-      - name: Record checked-out Prompt 2 head
+      - name: Assert exact Prompt 2 checkout
         shell: bash
         run: |
           set -euo pipefail
-          echo "checked_out_head=$(git rev-parse HEAD)"
+          expected='${{ github.event.pull_request.head.sha || github.sha }}'
+          actual=$(git rev-parse HEAD)
+          echo "expected_head=${expected}"
+          echo "actual_head=${actual}"
           echo "event=${GITHUB_EVENT_NAME}"
           echo "ref=${GITHUB_REF}"
+          test "${actual}" = "${expected}"
 
       - uses: actions/setup-python@v5
         with:
