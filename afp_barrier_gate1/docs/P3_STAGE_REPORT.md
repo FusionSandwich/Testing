@@ -95,7 +95,29 @@ prove the all-orders classification or any unrestricted claim.
 
 ## Verification status
 
-The exact final commit/tree, final protected-ref comparison, exact-head
-workflow/jobs, artifact IDs/digests, Lean job count, axiom audit, and complete
-deterministic results are filled only after the dedicated final CI gate passes.
-Until then the PR remains draft and this stage is not a Prompt 4 baseline.
+The prepublication verification on the pinned local toolchain is complete:
+
+- all retained Prompt 1 and Prompt 2 deterministic regressions pass;
+- all three Prompt 3 audits pass, including the source-pinned Plantri counts
+  `1,1,2,5,14,50,233,1249,7595` through 12 vertices;
+- `python -m compileall -q pure_math` and both Lean source-policy scans pass;
+- the full Lean package builds successfully in 3,110 jobs; and
+- the focused axiom audit reports only `propext`, `Classical.choice`, and
+  `Quot.sound`.
+
+The protected-ref table is populated from a fresh remote observation immediately
+before the final candidate is committed and is re-queried by CI.  The exact
+candidate commit/tree, exact-head workflow/jobs, artifact IDs/digests, and
+post-commit results are reported from that workflow and the final handoff; they
+cannot be embedded self-referentially in the commit being verified.  Until the
+dedicated final gate passes, the PR remains draft and this stage is not a
+Prompt 4 baseline.
+
+The prepublication observation found four protected heads unchanged and one
+independently moved head:
+`agent/afp-pure-math-p3-global-rigidity-near-rigidity` advanced from the
+recorded `d9304b5d...` source head to `f1ef5b3c...`.  The initial SHA remains
+the required comparison value, and this work neither moved nor restored that
+read-only ref.  Consequently the dedicated workflow is intentionally
+fail-closed at its protection gate unless that external condition is resolved;
+this is a provenance blocker, not a suppressed theorem or regression failure.

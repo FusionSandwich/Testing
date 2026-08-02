@@ -16,8 +16,8 @@ novelty evidence.
 | Positive spherical Delaunay families attain the natural inverse-square rate scale | EXTERNAL | published spherical Delaunay Laplacian theory plus project loss bounds |
 | The project's quasi-uniform family is globally minimax or spectrally optimal | CONJECTURE | no minimax theorem; do not claim |
 | Only \(K\in\{4,6,12\}\) can have global \(Q=1\) | REJECTED | cube and dodecahedron |
-| Connected reversible equality rows propagate one common active loss and row rate | CONJECTURE | reserved for Prompt 3; requires its complete propagation proof |
-| Only tetrahedral, octahedral, and icosahedral triangulations satisfy global \(Q=1\) | CONJECTURE | only under future explicit triangulation and embedding hypotheses |
+| Connected reversible equality rows propagate one common active loss and row rate | PROVED | Prompt 3 exact variance equality plus `GlobalLossRigidity.lean`; connected active graph and shared positive conductances required |
+| A global \(Q=1\) embedding under the fixed ten round minor-geodesic triangulation hypotheses is tetrahedral, octahedral, or icosahedral | PROVED | Prompt 3 spherical angle sum, Euler, direct link/collar uniqueness, and face propagation; no unrestricted classification |
 | Non-antipodal local feasibility is equivalent to origin membership in the indexed tangent hull | PROVED | Prompt 1 exact local/global package |
 | Strict positivity on every indexed non-antipodal edge is equivalent to tangent-hull relative interior | PROVED | Prompt 1, including repetitions and lower-dimensional span |
 | Local row uniqueness is equivalent to a singleton normalized dependence polytope | PROVED | exact dependence/row bijection |

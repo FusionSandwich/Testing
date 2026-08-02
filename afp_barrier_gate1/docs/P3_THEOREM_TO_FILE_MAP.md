@@ -19,7 +19,7 @@ enumeration or exact example is never listed as the proof of a general theorem.
 | corrected fixed-box angle constant | PROVED | global theorem §§6.2, 6.5 | ordinary trigonometric boundary | Gram/Heron threshold audit |
 | closed `delta_*`, `eta_*`, valence, and Platonic edge sup bound | PROVED | global theorem §§6.3–6.5 | selected finite inequalities | threshold/valence stress |
 | literal tangent normalization at `ell=2` | REJECTED | global theorem antipodal boundary | no false totalized-division theorem | two-state antipodal regression |
-| exact `T,C,M` covariance decomposition | PROVED for `0<ell<2` | global theorem §7.2 | `AFPBarrier/QEqualityCovariance.lean` | exact weighted-octahedron matrices |
+| exact `T,C,M` covariance decomposition for `0<ell<2` | PROVED | global theorem §7.2 | `AFPBarrier/QEqualityCovariance.lean` | exact weighted-octahedron matrices |
 | Prompt-2 axial condition iff `T=P/2` | PROVED | global theorem §7.3 | covariance module plus `OneShellQuadraticRigidity.lean` | conductance-parameter identities |
 | positive anisotropic weighted octahedron | PROVED | global theorem §7.4 | finite scalar entries | `q1_covariance_audit.py` |
 | genuine sampled degree-two space `{0}` | PROVED | stochastic contraction in §7.4 | Prompt-2 sampling boundary | exact linear system/minors |

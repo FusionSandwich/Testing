@@ -26,7 +26,7 @@ Poincare variational definition are identified explicitly when used.
 
 ## 1. Finite spherical generator and normalization
 
-Let `V` be finite, let `Omega_i in S^2 subset R^3`, and let `w_i>0`.  Let
+Let `V` be nonempty and finite, let `Omega_i in S^2 subset R^3`, and let `w_i>0`.  Let
 `E` be an undirected simple graph.  On every `{i,j} in E`, let
 `gamma_ij=gamma_ji>0`; put
 
@@ -1488,7 +1488,7 @@ is the combined package consisting of:
 2. the restricted round geodesic-triangulation classification;
 3. explicit graph-global, spectral-gap, and resistance near-rigidity bounds;
 4. an explicit data-dependent and closed-form conservative triangulation
-   stability threshold with edge-length distance (6.15); and
+   stability threshold with its mandatory edge-length distance (6.22); and
 5. the exact covariance decomposition and positive reversible anisotropy
    separation.
 

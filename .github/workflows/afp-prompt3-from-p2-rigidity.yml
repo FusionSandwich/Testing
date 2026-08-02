@@ -1,0 +1,776 @@
+name: AFP Prompt 3 from verified Prompt 2
+
+on:
+  push:
+    branches:
+      - agent/afp-pure-math-p3-rigidity-from-p2-31ea6a49
+  pull_request:
+    branches:
+      - agent/afp-pure-math-p2-quadratic-covariance-completion
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  CANDIDATE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+  P3_BRANCH: agent/afp-pure-math-p3-rigidity-from-p2-31ea6a49
+  P2_COMMIT: 31ea6a49f006df10ca633eafd6848ad43b51ac3f
+  P2_TREE: 879b88de81eeb52ebb09373c2ccb77cb7cb7642c
+
+jobs:
+  exact-regressions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 100
+
+    steps:
+      - name: Check out exact candidate
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ env.CANDIDATE_SHA }}
+          persist-credentials: false
+
+      - name: Verify Prompt 2 ancestry and record protected refs
+        shell: bash
+        run: |
+          set -euo pipefail
+          record=afp_barrier_gate1/pure_math/rigidity/P3_BRANCH_PROTECTION_RECORD.md
+          test "$(git rev-parse HEAD)" = "${CANDIDATE_SHA}"
+          test "$(git rev-parse "${P2_COMMIT}^{tree}")" = "${P2_TREE}"
+          git merge-base --is-ancestor "${P2_COMMIT}" "${CANDIDATE_SHA}"
+
+          protected=(
+            'agent/afp-pure-math-p2-quadratic-covariance-completion 31ea6a49f006df10ca633eafd6848ad43b51ac3f'
+            'agent/afp-pure-math-p3-q1-rigidity 65821ff1ebd47fbee1098b30c552906cd6e03b46'
+            'agent/afp-pure-math-p3-integration-record 6b5d7ad53d704b7ff1b96d40abbef19f6e6a2125'
+            'agent/afp-pure-math-p3-global-rigidity-near-rigidity d9304b5d19a1bbe69fe4ac23736308f9efe9d694'
+            'archive/afp-gate6-spatial-multigroup-verified 515f1aae6c20bd85711c90b5c1c21b4905252d01'
+          )
+          mkdir -p "${RUNNER_TEMP}/p3-exact"
+          protected_log="${RUNNER_TEMP}/p3-exact/protected-refs.log"
+          printf 'ref expected_initial observed result record_rows\n' \
+            > "${protected_log}"
+          protected_mismatch=0
+          if [[ ! -f "${record}" ]]; then
+            echo 'Branch-protection record is missing.' >&2
+            protected_mismatch=1
+          fi
+          for item in "${protected[@]}"; do
+            read -r ref expected <<< "${item}"
+            record_rows=0
+            if [[ -f "${record}" ]]; then
+              needle="| \`${ref}\` | \`${expected}\` |"
+              if ! record_rows=$(awk -v needle="${needle}" \
+                  'index($0, needle) { count++ } END { print count + 0 }' \
+                  "${record}"); then
+                record_rows=ERROR
+                protected_mismatch=1
+              fi
+            fi
+            if remote_output=$(git ls-remote --heads origin "refs/heads/${ref}"); then
+              actual=$(awk 'NR == 1 { print $1 }' <<< "${remote_output}")
+              if [[ -z "${actual}" ]]; then
+                actual=MISSING
+              fi
+            else
+              actual=QUERY_ERROR
+            fi
+            result=MATCH
+            if [[ "${actual}" != "${expected}" ]]; then
+              result=MOVED
+              protected_mismatch=1
+            fi
+            if [[ "${record_rows}" != 1 ]]; then
+              result="${result}+RECORD_ERROR"
+              protected_mismatch=1
+            fi
+            printf '%s %s %s %s %s\n' \
+              "${ref}" "${expected}" "${actual}" "${result}" "${record_rows}" \
+              >> "${protected_log}"
+          done
+
+          old_commits=(
+            65821ff1ebd47fbee1098b30c552906cd6e03b46
+            6b5d7ad53d704b7ff1b96d40abbef19f6e6a2125
+            d9304b5d19a1bbe69fe4ac23736308f9efe9d694
+          )
+          for old in "${old_commits[@]}"; do
+            git cat-file -e "${old}^{commit}"
+            if git merge-base --is-ancestor "${old}" "${CANDIDATE_SHA}"; then
+              echo "Old Prompt 3 source commit entered candidate ancestry: ${old}" >&2
+              exit 1
+            fi
+          done
+
+          {
+            echo "candidate=${CANDIDATE_SHA}"
+            echo "candidate_tree=$(git rev-parse HEAD^{tree})"
+            echo "prompt2_commit=${P2_COMMIT}"
+            echo "prompt2_tree=${P2_TREE}"
+            echo 'old_prompt3_ancestry=absent'
+          } | tee "${RUNNER_TEMP}/p3-exact/provenance.log"
+          if [[ "${protected_mismatch}" -ne 0 ]]; then
+            echo 'Protected-ref movement or record corruption recorded; the always-running final-state job enforces the fail-closed result.' >&2
+            cat "${protected_log}" >&2
+            : > "${RUNNER_TEMP}/p3-exact/protected-ref-mismatch"
+          fi
+          : > "${RUNNER_TEMP}/p3-exact/protected-ref-audit-completed"
+
+      - name: Enforce Prompt 3 pure-math allowlist
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "${RUNNER_TEMP}/p3-exact"
+          scope_log="${RUNNER_TEMP}/p3-exact/scope-validation.log"
+          python - "${P2_COMMIT}" "${CANDIDATE_SHA}" <<'PY' \
+            2>&1 | tee "${scope_log}"
+          import os
+          from pathlib import PurePosixPath
+          import subprocess
+          import sys
+
+          base, candidate = sys.argv[1:]
+          changed_raw = subprocess.check_output([
+              "git", "diff", "--no-renames", "--name-only", "-z", base, candidate,
+          ])
+          changed_bytes = [item for item in changed_raw.split(b"\0") if item]
+          changed = [os.fsdecode(item) for item in changed_bytes]
+
+          exact_paths = {
+              ".gitignore",
+              ".github/workflows/afp-prompt3-from-p2-rigidity.yml",
+              "afp_barrier_gate1/AFPBarrier.lean",
+              "afp_barrier_gate1/AFPBarrier/PureMathAxiomAudit.lean",
+              "afp_barrier_gate1/AFPBarrier/SphericalQEqualityRigidity.lean",
+              "afp_barrier_gate1/AFPBarrier/QuantitativeGlobalNearRigidity.lean",
+              "afp_barrier_gate1/AFPBarrier/QEqualityCovariance.lean",
+              "afp_barrier_gate1/pure_math/README.md",
+              "afp_barrier_gate1/docs/P3_THEOREM_TO_FILE_MAP.md",
+              "afp_barrier_gate1/docs/P3_STAGE_REPORT.md",
+              "afp_barrier_gate1/docs/CLAIM_MATRIX.md",
+              "afp_barrier_gate1/docs/CONJECTURE_REGISTER.md",
+              "afp_barrier_gate1/docs/PURE_MATH_PRIOR_ART_MAP.md",
+              "afp_barrier_gate1/docs/THEOREM_TO_FILE_MAP.md",
+          }
+
+          def allowed(path: str) -> bool:
+              return path in exact_paths or path.startswith(
+                  "afp_barrier_gate1/pure_math/rigidity/"
+              )
+
+          failures: list[str] = []
+          for path in changed:
+              if not allowed(path):
+                  failures.append(f"outside allowlist: {path!r}")
+
+          tree_raw = subprocess.check_output([
+              "git", "ls-tree", "-r", "-z", candidate,
+          ])
+          tree: dict[str, tuple[str, str]] = {}
+          for entry in tree_raw.split(b"\0"):
+              if not entry:
+                  continue
+              metadata, raw_path = entry.split(b"\t", 1)
+              mode, object_type, _object_sha = metadata.decode("ascii").split()
+              path = os.fsdecode(raw_path)
+              tree[path] = (mode, object_type)
+
+              parts = PurePosixPath(path).parts
+              basename = parts[-1].lower() if parts else ""
+              forbidden = (
+                  "__pycache__" in parts
+                  or basename.endswith((".pyc", ".pyo", ".b64", ".jsonl"))
+                  or basename in {"plantri", "plantri.exe", "plantri.c"}
+              )
+              if forbidden:
+                  failures.append(f"forbidden tracked generated file: {path!r}")
+
+          for path in changed:
+              if path in tree:
+                  mode, object_type = tree[path]
+                  if object_type != "blob" or mode not in {"100644", "100755"}:
+                      failures.append(
+                          f"changed path is not a regular file: {path!r} "
+                          f"mode={mode} type={object_type}"
+                      )
+
+          numstat_raw = subprocess.check_output([
+              "git", "diff", "--no-renames", "--numstat", "-z", base, candidate,
+          ])
+          for record in numstat_raw.split(b"\0"):
+              if not record:
+                  continue
+              fields = record.split(b"\t", 2)
+              if len(fields) != 3:
+                  failures.append(f"malformed numstat record: {record!r}")
+                  continue
+              added, deleted, raw_path = fields
+              if added == b"-" or deleted == b"-":
+                  failures.append(
+                      f"binary change forbidden: {os.fsdecode(raw_path)!r}"
+                  )
+
+          if failures:
+              print("Prompt 3 scope/tree hygiene: FAIL", file=sys.stderr)
+              for failure in failures:
+                  print(f"  {failure}", file=sys.stderr)
+              raise SystemExit(1)
+          print(f"Prompt 3 scope/tree hygiene: PASS ({len(changed)} changed paths)")
+          PY
+          git diff --check "${P2_COMMIT}" "${CANDIDATE_SHA}"
+          echo 'Prompt 3 path scope: PASS' \
+            | tee "${RUNNER_TEMP}/p3-exact/scope.log"
+
+      - name: Set up deterministic Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install pinned audit dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "${RUNNER_TEMP}/p3-exact"
+          python -m pip install --disable-pip-version-check --no-input \
+            'numpy==2.3.2' 'sympy==1.14.0' 'mpmath==1.3.0' \
+            2>&1 | tee "${RUNNER_TEMP}/p3-exact/python-dependencies.log"
+          {
+            python --version
+            python -c 'import numpy, sympy, mpmath; print("numpy", numpy.__version__); print("sympy", sympy.__version__); print("mpmath", mpmath.__version__)'
+          } | tee "${RUNNER_TEMP}/p3-exact/python-toolchain.log"
+
+      - name: Compile pure-math Python
+        shell: bash
+        working-directory: afp_barrier_gate1
+        run: |
+          set -euo pipefail
+          export PYTHONPYCACHEPREFIX="${RUNNER_TEMP}/p3-pycache"
+          python -m compileall -q pure_math \
+            2>&1 | tee "${RUNNER_TEMP}/p3-exact/python-compile.log"
+
+      - name: Run retained Prompt 1 and Prompt 2 regressions
+        shell: bash
+        working-directory: afp_barrier_gate1
+        run: |
+          set -euo pipefail
+          export PYTHONPYCACHEPREFIX="${RUNNER_TEMP}/p3-pycache"
+          python pure_math/falsification/claim_falsification_audit.py \
+            2>&1 | tee "${RUNNER_TEMP}/p3-exact/p1-claim-falsification.log"
+          python pure_math/covariance/quadratic_covariance_audit.py \
+            2>&1 | tee "${RUNNER_TEMP}/p3-exact/p1-covariance.log"
+          python pure_math/examples/exact_local_global_audit.py \
+            2>&1 | tee "${RUNNER_TEMP}/p3-exact/p1-local-global.log"
+          python pure_math/tests/test_spherical_feasibility.py \
+            2>&1 | tee "${RUNNER_TEMP}/p3-exact/p1-spherical-feasibility.log"
+          python pure_math/covariance/exact_quadratic_covariance_audit.py \
+            2>&1 | tee "${RUNNER_TEMP}/p3-exact/p2-exact-covariance.log"
+          python pure_math/covariance/exact_signed_restoration_audit.py \
+            2>&1 | tee "${RUNNER_TEMP}/p3-exact/p2-signed-restoration.log"
+          python pure_math/covariance/exact_d3_invariance_counterexample.py \
+            2>&1 | tee "${RUNNER_TEMP}/p3-exact/p2-d3-invariance.log"
+          python pure_math/spectral_products/exact_spectral_product_audit.py \
+            2>&1 | tee "${RUNNER_TEMP}/p3-exact/p2-spectral-products.log"
+
+      - name: Run source-pinned Plantri hostile census
+        shell: bash
+        working-directory: afp_barrier_gate1
+        env:
+          P3_REQUIRE_PLANTRI: '1'
+        run: |
+          set -euo pipefail
+          export PYTHONPYCACHEPREFIX="${RUNNER_TEMP}/p3-pycache"
+          catalog="${RUNNER_TEMP}/p3-exact/triangulations-through-12.jsonl"
+          python pure_math/rigidity/triangulation_counterexample_audit.py \
+            --require-plantri --catalog "${catalog}" \
+            2>&1 | tee "${RUNNER_TEMP}/p3-exact/triangulation-audit.log"
+          test "$(wc -l < "${catalog}")" -eq 9150
+
+      - name: Run Prompt 3 quantitative and covariance audits
+        shell: bash
+        working-directory: afp_barrier_gate1
+        run: |
+          set -euo pipefail
+          export PYTHONPYCACHEPREFIX="${RUNNER_TEMP}/p3-pycache"
+          python pure_math/rigidity/global_near_rigidity_audit.py \
+            2>&1 | tee "${RUNNER_TEMP}/p3-exact/global-near-rigidity.log"
+          python pure_math/rigidity/q1_covariance_audit.py \
+            2>&1 | tee "${RUNNER_TEMP}/p3-exact/q1-covariance.log"
+
+      - name: Verify exact-regression checkout cleanliness
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check
+          test -z "$(git status --short)"
+          echo 'Exact-regression checkout remains clean.' \
+            | tee "${RUNNER_TEMP}/p3-exact/checkout-clean.log"
+
+      - name: Enforce recorded protected-ref observation
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          marker="${RUNNER_TEMP}/p3-exact/protected-ref-mismatch"
+          completed="${RUNNER_TEMP}/p3-exact/protected-ref-audit-completed"
+          if [[ ! -e "${completed}" ]]; then
+            echo 'The early protected-ref audit did not complete.' >&2
+            exit 1
+          fi
+          if [[ -e "${marker}" ]]; then
+            echo 'The early protected-ref audit observed movement or record corruption.' >&2
+            cat "${RUNNER_TEMP}/p3-exact/protected-refs.log" >&2
+            exit 1
+          fi
+          echo 'Early protected-ref observation remained clean.' \
+            | tee "${RUNNER_TEMP}/p3-exact/protected-observation-clean.log"
+
+      - name: Hash exact-regression records
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="${RUNNER_TEMP}/p3-exact"
+          mkdir -p "${dir}"
+          {
+            echo 'AFP Prompt 3 exact regressions'
+            echo "commit=${CANDIDATE_SHA}"
+            echo "tree=$(git rev-parse HEAD^{tree})"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "run_attempt=${GITHUB_RUN_ATTEMPT}"
+            echo "timestamp_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } > "${dir}/p3-exact-report.txt"
+          (
+            cd "${dir}"
+            find . -maxdepth 1 -type f ! -name 'records.sha256' -print0 \
+              | sort -z | xargs -0 sha256sum > records.sha256
+          )
+
+      - name: Upload exact-regression records
+        if: always()
+        id: upload-exact
+        uses: actions/upload-artifact@v4
+        with:
+          name: afp-prompt3-exact-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/p3-exact
+          if-no-files-found: error
+
+      - name: Record exact-regression artifact identity
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo '### Prompt 3 exact-regression artifact'
+            echo "artifact_id=${{ steps.upload-exact.outputs.artifact-id }}"
+            echo "artifact_url=${{ steps.upload-exact.outputs.artifact-url }}"
+            echo "artifact_digest=${{ steps.upload-exact.outputs.artifact-digest }}"
+          } >> "${GITHUB_STEP_SUMMARY}"
+
+  lean-kernel:
+    runs-on: ubuntu-latest
+    timeout-minutes: 100
+
+    steps:
+      - name: Check out exact candidate
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ env.CANDIDATE_SHA }}
+          persist-credentials: false
+
+      - name: Recheck pinned Prompt 2 base
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${CANDIDATE_SHA}"
+          test "$(git rev-parse "${P2_COMMIT}^{tree}")" = "${P2_TREE}"
+          git merge-base --is-ancestor "${P2_COMMIT}" "${CANDIDATE_SHA}"
+          mkdir -p "${RUNNER_TEMP}/p3-lean"
+          {
+            echo "candidate=${CANDIDATE_SHA}"
+            echo "tree=$(git rev-parse HEAD^{tree})"
+            echo "prompt2=${P2_COMMIT}"
+          } | tee "${RUNNER_TEMP}/p3-lean/provenance.log"
+
+      - name: Install pinned Lean toolchain
+        uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: afp_barrier_gate1
+          build: false
+          test: false
+          lint: false
+          nanoda: false
+          use-mathlib-cache: false
+          use-github-cache: false
+
+      - name: Record Lean toolchain
+        shell: bash
+        working-directory: afp_barrier_gate1
+        run: |
+          set -euo pipefail
+          {
+            lean --version
+            lake --version
+            echo "toolchain=$(cat lean-toolchain)"
+          } | tee "${RUNNER_TEMP}/p3-lean/toolchain.log"
+
+      - name: Resolve pinned dependencies and cache
+        shell: bash
+        working-directory: afp_barrier_gate1
+        run: |
+          set -euo pipefail
+          lake update 2>&1 | tee "${RUNNER_TEMP}/p3-lean/lake-update.log"
+          lake exe cache get 2>&1 | tee "${RUNNER_TEMP}/p3-lean/mathlib-cache.log"
+
+      - name: Build pinned Lean package
+        shell: bash
+        working-directory: afp_barrier_gate1
+        run: |
+          set -euo pipefail
+          lake build 2>&1 | tee "${RUNNER_TEMP}/p3-lean/lean-build.log"
+
+      - name: Run focused axiom audit
+        shell: bash
+        working-directory: afp_barrier_gate1
+        run: |
+          set -euo pipefail
+          lake env lean AFPBarrier/PureMathAxiomAudit.lean \
+            2>&1 | tee "${RUNNER_TEMP}/p3-lean/axiom-audit.log"
+          if grep -n 'sorryAx' "${RUNNER_TEMP}/p3-lean/axiom-audit.log"; then
+            echo "A Prompt 3 declaration depends on Lean's sorry axiom." >&2
+            exit 1
+          else
+            grep_status=$?
+            if [[ "${grep_status}" -ne 1 ]]; then
+              echo "Axiom-log scan failed with status ${grep_status}." >&2
+              exit "${grep_status}"
+            fi
+          fi
+
+      - name: Reject placeholders and user axioms
+        shell: bash
+        working-directory: afp_barrier_gate1
+        run: |
+          set -euo pipefail
+          if placeholder_matches=$(rg --glob '*.lean' \
+              '(^|[^[:alnum:]_])(sorry|admit|sorryAx)([^[:alnum:]_]|$)' \
+              AFPBarrier AFPBarrier.lean); then
+            printf '%s\n' "${placeholder_matches}"
+            echo 'Lean proof placeholder found.' >&2
+            exit 1
+          else
+            scan_status=$?
+            if [[ "${scan_status}" -ne 1 ]]; then
+              echo "Placeholder scan failed with status ${scan_status}." >&2
+              exit "${scan_status}"
+            fi
+          fi
+          if axiom_matches=$(rg --glob '*.lean' \
+              '^[[:space:]]*((private|protected|noncomputable|unsafe|scoped)[[:space:]]+)*(axiom|axioms)([[:space:]]|$)' \
+              AFPBarrier AFPBarrier.lean); then
+            printf '%s\n' "${axiom_matches}"
+            echo 'User axiom declaration found.' >&2
+            exit 1
+          else
+            scan_status=$?
+            if [[ "${scan_status}" -ne 1 ]]; then
+              echo "User-axiom scan failed with status ${scan_status}." >&2
+              exit "${scan_status}"
+            fi
+          fi
+          echo 'No placeholders or user axioms.' \
+            | tee "${RUNNER_TEMP}/p3-lean/source-policy.log"
+
+      - name: Verify Lean checkout cleanliness
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check
+          test -z "$(git status --short)"
+          echo 'Lean checkout remains clean.' \
+            | tee "${RUNNER_TEMP}/p3-lean/checkout-clean.log"
+
+      - name: Pack and hash exact source
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="${RUNNER_TEMP}/p3-lean"
+          mkdir -p "${dir}"
+          archive_name="afp-prompt3-source-${CANDIDATE_SHA}.tar.gz"
+          archive="${dir}/${archive_name}"
+          git archive --format=tar.gz --output="${archive}" "${CANDIDATE_SHA}" -- \
+            .gitignore \
+            .github/workflows/afp-prompt3-from-p2-rigidity.yml \
+            afp_barrier_gate1
+          (
+            cd "${dir}"
+            sha256sum "${archive_name}" > "${archive_name}.sha256"
+            sha256sum -c "${archive_name}.sha256"
+          )
+          if ! lean_jobs=$(grep -Eo '[0-9]+ jobs' "${dir}/lean-build.log" | tail -n 1); then
+            echo 'Lean job count was not found in the build log.' >&2
+            exit 1
+          fi
+          if [[ -z "${lean_jobs}" ]]; then
+            echo 'Lean job count was empty.' >&2
+            exit 1
+          fi
+          {
+            echo 'AFP Prompt 3 Lean kernel verification'
+            echo "commit=${CANDIDATE_SHA}"
+            echo "tree=$(git rev-parse HEAD^{tree})"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "run_attempt=${GITHUB_RUN_ATTEMPT}"
+            echo "toolchain=$(cat afp_barrier_gate1/lean-toolchain)"
+            echo "lean_build=${lean_jobs}"
+            echo "timestamp_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } > "${dir}/p3-lean-report.txt"
+          (
+            cd "${dir}"
+            find . -maxdepth 1 -type f ! -name 'records.sha256' -print0 \
+              | sort -z | xargs -0 sha256sum > records.sha256
+          )
+
+      - name: Upload Lean records and exact source
+        if: always()
+        id: upload-lean
+        uses: actions/upload-artifact@v4
+        with:
+          name: afp-prompt3-lean-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/p3-lean
+          if-no-files-found: error
+
+      - name: Record Lean artifact identity
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo '### Prompt 3 Lean/source artifact'
+            echo "artifact_id=${{ steps.upload-lean.outputs.artifact-id }}"
+            echo "artifact_url=${{ steps.upload-lean.outputs.artifact-url }}"
+            echo "artifact_digest=${{ steps.upload-lean.outputs.artifact-digest }}"
+          } >> "${GITHUB_STEP_SUMMARY}"
+
+  protected-final-state:
+    name: protected-final-state
+    needs:
+      - exact-regressions
+      - lean-kernel
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out exact candidate for final-state audit
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ env.CANDIDATE_SHA }}
+          persist-credentials: false
+
+      - name: Verify final candidate, ancestry, and protected remote heads
+        shell: bash
+        env:
+          EXACT_RESULT: ${{ needs.exact-regressions.result }}
+          LEAN_RESULT: ${{ needs.lean-kernel.result }}
+        run: |
+          set -uo pipefail
+          dir="${RUNNER_TEMP}/p3-final-state"
+          mkdir -p "${dir}"
+          record=afp_barrier_gate1/pure_math/rigidity/P3_BRANCH_PROTECTION_RECORD.md
+          final_log="${dir}/protected-refs-final.log"
+          gate_log="${dir}/final-gate.log"
+          gate_failed=0
+
+          {
+            echo "exact_regressions=${EXACT_RESULT}"
+            echo "lean_kernel=${LEAN_RESULT}"
+          } > "${gate_log}"
+          if [[ "${EXACT_RESULT}" != success || "${LEAN_RESULT}" != success ]]; then
+            echo 'A prerequisite verification job did not succeed.' \
+              | tee -a "${gate_log}" >&2
+            gate_failed=1
+          fi
+
+          candidate_head=$(git rev-parse HEAD 2>/dev/null) || candidate_head=ERROR
+          candidate_tree=$(git rev-parse HEAD^{tree} 2>/dev/null) || candidate_tree=ERROR
+          p2_tree=$(git rev-parse "${P2_COMMIT}^{tree}" 2>/dev/null) || p2_tree=ERROR
+          {
+            echo "candidate_expected=${CANDIDATE_SHA}"
+            echo "candidate_observed=${candidate_head}"
+            echo "candidate_tree=${candidate_tree}"
+            echo "prompt2_commit=${P2_COMMIT}"
+            echo "prompt2_tree_expected=${P2_TREE}"
+            echo "prompt2_tree_observed=${p2_tree}"
+          } >> "${gate_log}"
+          if [[ "${candidate_head}" != "${CANDIDATE_SHA}" ]]; then
+            echo 'Checked-out candidate does not match the event candidate SHA.' \
+              | tee -a "${gate_log}" >&2
+            gate_failed=1
+          fi
+          if [[ "${p2_tree}" != "${P2_TREE}" ]]; then
+            echo 'Prompt 2 tree does not match its immutable recorded tree.' \
+              | tee -a "${gate_log}" >&2
+            gate_failed=1
+          fi
+          if ! git merge-base --is-ancestor "${P2_COMMIT}" "${CANDIDATE_SHA}"; then
+            echo 'Prompt 2 is not an ancestor of the final candidate.' \
+              | tee -a "${gate_log}" >&2
+            gate_failed=1
+          fi
+
+          old_commits=(
+            65821ff1ebd47fbee1098b30c552906cd6e03b46
+            6b5d7ad53d704b7ff1b96d40abbef19f6e6a2125
+            d9304b5d19a1bbe69fe4ac23736308f9efe9d694
+          )
+          for old in "${old_commits[@]}"; do
+            if ! git cat-file -e "${old}^{commit}"; then
+              echo "Old source object is unavailable: ${old}" \
+                | tee -a "${gate_log}" >&2
+              gate_failed=1
+            elif git merge-base --is-ancestor "${old}" "${CANDIDATE_SHA}"; then
+              echo "Old Prompt 3 source commit entered candidate ancestry: ${old}" \
+                | tee -a "${gate_log}" >&2
+              gate_failed=1
+            fi
+          done
+
+          protected=(
+            'agent/afp-pure-math-p2-quadratic-covariance-completion 31ea6a49f006df10ca633eafd6848ad43b51ac3f'
+            'agent/afp-pure-math-p3-q1-rigidity 65821ff1ebd47fbee1098b30c552906cd6e03b46'
+            'agent/afp-pure-math-p3-integration-record 6b5d7ad53d704b7ff1b96d40abbef19f6e6a2125'
+            'agent/afp-pure-math-p3-global-rigidity-near-rigidity d9304b5d19a1bbe69fe4ac23736308f9efe9d694'
+            'archive/afp-gate6-spatial-multigroup-verified 515f1aae6c20bd85711c90b5c1c21b4905252d01'
+          )
+          printf 'ref expected_initial observed result initial_rows final_rows\n' \
+            > "${final_log}"
+          if [[ ! -f "${record}" ]]; then
+            echo 'Branch-protection record is missing.' | tee -a "${gate_log}" >&2
+            gate_failed=1
+          fi
+          for item in "${protected[@]}"; do
+            read -r ref expected <<< "${item}"
+            if remote_output=$(git ls-remote --heads origin "refs/heads/${ref}"); then
+              actual=$(awk 'NR == 1 { print $1 }' <<< "${remote_output}")
+              if [[ -z "${actual}" ]]; then
+                actual=MISSING
+              fi
+            else
+              actual=QUERY_ERROR
+            fi
+            result=MATCH
+            if [[ "${actual}" != "${expected}" ]]; then
+              result=MOVED
+              gate_failed=1
+            fi
+            initial_rows=0
+            final_rows=0
+            if [[ -f "${record}" ]]; then
+              initial_needle="| \`${ref}\` | \`${expected}\` |"
+              final_needle="| \`${ref}\` | \`${expected}\` | \`${actual}\` | ${result} |"
+              if ! initial_rows=$(awk -v needle="${initial_needle}" \
+                  'index($0, needle) { count++ } END { print count + 0 }' \
+                  "${record}"); then
+                initial_rows=ERROR
+                gate_failed=1
+              fi
+              if ! final_rows=$(awk -v needle="${final_needle}" \
+                  'index($0, needle) { count++ } END { print count + 0 }' \
+                  "${record}"); then
+                final_rows=ERROR
+                gate_failed=1
+              fi
+            fi
+            if [[ "${initial_rows}" != 1 || "${final_rows}" != 1 ]]; then
+              result="${result}+RECORD_ERROR"
+              gate_failed=1
+            fi
+            printf '%s %s %s %s %s %s\n' \
+              "${ref}" "${expected}" "${actual}" "${result}" \
+              "${initial_rows}" "${final_rows}" >> "${final_log}"
+          done
+
+          pending_rows=0
+          if [[ -f "${record}" ]]; then
+            if ! pending_rows=$(awk -F'|' \
+                '$4 ~ /pending/ || $5 ~ /pending/ { count++ } END { print count + 0 }' \
+                "${record}"); then
+              pending_rows=ERROR
+              gate_failed=1
+            fi
+          fi
+          echo "pending_final_record_rows=${pending_rows}" >> "${gate_log}"
+          if [[ "${pending_rows}" != 0 ]]; then
+            echo 'Branch-protection record still contains pending final rows.' \
+              | tee -a "${gate_log}" >&2
+            gate_failed=1
+          fi
+
+          if branch_output=$(git ls-remote --heads origin "refs/heads/${P3_BRANCH}"); then
+            remote_candidate=$(awk 'NR == 1 { print $1 }' <<< "${branch_output}")
+            if [[ -z "${remote_candidate}" ]]; then
+              remote_candidate=MISSING
+            fi
+          else
+            remote_candidate=QUERY_ERROR
+          fi
+          echo "remote_candidate=${remote_candidate}" >> "${gate_log}"
+          if [[ "${remote_candidate}" != "${CANDIDATE_SHA}" ]]; then
+            echo 'Remote Prompt 3 head is not the exact verified candidate.' \
+              | tee -a "${gate_log}" >&2
+            gate_failed=1
+          fi
+
+          cat "${final_log}" | tee -a "${gate_log}"
+          if [[ "${gate_failed}" -ne 0 ]]; then
+            echo 'Prompt 3 protected final-state gate: FAIL' \
+              | tee -a "${gate_log}" >&2
+            exit 1
+          fi
+          echo 'Prompt 3 protected final-state gate: PASS' | tee -a "${gate_log}"
+
+      - name: Hash final-state evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="${RUNNER_TEMP}/p3-final-state"
+          mkdir -p "${dir}"
+          {
+            echo 'AFP Prompt 3 protected final-state gate'
+            echo "commit=${CANDIDATE_SHA}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "run_attempt=${GITHUB_RUN_ATTEMPT}"
+            echo "timestamp_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } > "${dir}/p3-final-state-report.txt"
+          (
+            cd "${dir}"
+            find . -maxdepth 1 -type f ! -name 'records.sha256' -print0 \
+              | sort -z | xargs -0 sha256sum > records.sha256
+          )
+
+      - name: Upload protected final-state evidence
+        if: always()
+        id: upload-final-state
+        uses: actions/upload-artifact@v4
+        with:
+          name: afp-prompt3-final-state-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/p3-final-state
+          if-no-files-found: error
+
+      - name: Record final-state artifact identity
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo '### Prompt 3 protected final-state artifact'
+            echo "artifact_id=${{ steps.upload-final-state.outputs.artifact-id }}"
+            echo "artifact_url=${{ steps.upload-final-state.outputs.artifact-url }}"
+            echo "artifact_digest=${{ steps.upload-final-state.outputs.artifact-digest }}"
+          } >> "${GITHUB_STEP_SUMMARY}"

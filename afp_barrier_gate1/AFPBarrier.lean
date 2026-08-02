@@ -31,6 +31,9 @@ import AFPBarrier.QuadraticSampling
 import AFPBarrier.QuadraticSphereResidual
 import AFPBarrier.OneShellQuadraticRigidity
 import AFPBarrier.SpectralSamplingObstruction
+import AFPBarrier.SphericalQEqualityRigidity
+import AFPBarrier.QuantitativeGlobalNearRigidity
+import AFPBarrier.QEqualityCovariance
 import AFPBarrier.ImplementationConvention
 import AFPBarrier.ScalingCompatibility
 import AFPBarrier.NormalizationAudit

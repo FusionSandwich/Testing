@@ -18,10 +18,10 @@ are recorded in `P3_THEOREM_REGISTRY.md`.
 | G5 | Euler incidence algebra | `qV=2E`, `3F=2E`, `V-E+F=2` gives `q in {3,4,5}` | PROVED |
 | G6 | separating triangles and cyclic links | disk curvature, chord exclusion, two pentagonal collars, and the opposite pole | PROVED |
 | G7 | opposite-side face development | fix one face and propagate the unique adjacent equilateral face through the dual graph | PROVED |
-| C1 | source-pinned finite generation | verified `plantri` source blob and counts through 12 vertices | ACTIVE — COMPUTATIONAL only |
+| C1 | source-pinned finite generation | verified `plantri` source blob and counts through 12 vertices | PROVED — COMPUTATIONAL only |
 | N1 | local variance extraction | `p_ij>=kappa` gives `|x_ij-1|<=sqrt(eta/kappa)` | PROVED |
-| N2 | shared-edge ratio and path multiplication | adjacent `r_i/r_j=x_ij/x_ji`, length-indexed path products, diameter stress | PROVED ordinary; ACTIVE in Lean |
-| N3 | graph-center logarithmic reference | `|log(ell_e/ell_ref)|<=h_delta+R_G s_delta` | PROVED ordinary; ACTIVE in Lean |
+| N2 | shared-edge ratio and path multiplication | adjacent `r_i/r_j=x_ij/x_ji`, length-indexed path products, diameter stress | PROVED ordinary and in Lean |
+| N3 | graph-center logarithmic reference | `|log(ell_e/ell_ref)|<=h_delta+R_G s_delta` | PROVED ordinary and in Lean |
 | N4 | reversible Dirichlet form | detailed-balance swap gives the exact factor `2eta/(1-delta)^2` | PROVED |
 | N5 | Poincare variational gap | non-absolute gap with `E/Var` convention | PROVED using EXTERNAL standard principle |
 | N6 | effective-resistance variational route | `|du|^2<=R_eff E` under one-edge energy convention | PROVED using EXTERNAL standard principle |
@@ -30,12 +30,12 @@ are recorded in `P3_THEOREM_REGISTRY.md`.
 | S3 | finite integer valence gap | `g_kappa=2pi/(d_max(d_max-1))` for `d_max>=4` | PROVED |
 | S4 | monotone equilateral angle map | explicit derivative and endpoint minimum `m_eq` | PROVED |
 | V1 | radial/tangent covariance expansion | centered tangent first moment removes mixed terms | PROVED |
-| V2 | Prompt 2 axial bridge | in dimension three, full one-shell tangent moment iff `T_i=P_i/2` | PROVED ordinary; ACTIVE in Lean |
+| V2 | Prompt 2 axial bridge | in dimension three, full one-shell tangent moment iff `T_i=P_i/2` | PROVED ordinary and in Lean |
 | V3 | unrestricted tangent normalization | antipodal exact equality has `ell=2` and zero denominator | REJECTED |
-| V4 | weighted-octahedron anisotropy | three positive conductances; axial at all vertices iff all three agree | PROVED ordinary; ACTIVE exact audit |
+| V4 | weighted-octahedron anisotropy | three positive conductances; axial at all vertices iff all three agree | PROVED ordinary and by exact audit |
 | V5 | sampling-kernel contraction | the diagonal sample sector would require stochastic `P` to have eigenvalue `-2` | PROVED |
 | L1 | old incident-loss Lean lemma | countermodel at `delta=2`; missing `delta<1` | REJECTED |
-| L2 | corrected finite Lean algebra | coordinate specialization, equality, paths/logs, covariance entries, axial bridge | ACTIVE |
+| L2 | corrected finite Lean algebra | coordinate specialization, equality, paths/logs, covariance entries, axial bridge | PROVED |
 
 ## Adversarial matrix
 
