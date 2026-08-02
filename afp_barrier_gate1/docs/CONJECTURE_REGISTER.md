@@ -4,50 +4,43 @@ Every conjecture requires a precise hypothesis set, deterministic falsification
 search, literature status, and explicit kill criterion. Resolved entries are
 retained so earlier claim changes remain auditable.
 
-## C-M1. Strict local spherical feasibility — RESOLVED
+## C-M1. Strict local spherical feasibility — resolved
 
-**Final theorem.** For permitted non-antipodal neighbors with
-`0 < theta_j < pi`, a nonnegative degree-one-exact row exists exactly when the
-origin lies in the convex hull of the tangent directions. A row strictly
-positive on every indexed edge exists exactly when the origin lies in the
-relative interior of that convex hull. Repetitions and redundant indexed
-points are allowed. The minimal-face affine-independence criterion gives exact
-uniqueness, and the normal equation fixes the single positive scale.
+**Proved statement.** For candidate neighbors with tangent directions
+`u_j` and angles `0 < theta_j < pi`, a degree-one-exact row with every rate
+strictly positive exists if and only if the origin lies in the relative
+interior of `conv{u_j}`. Once a positive tangent dependence is selected, the
+normal-loss equation fixes one positive scale.
 
-Antipodal neighbors are classified separately by a division-free normal-budget
-simplex. Quantitative margin, conditioning, perturbation, and objective bounds
-are stated with explicit constants.
+**Status:** PROVED, including repetitions, redundant points, lower-dimensional
+span, exact scaling/rate/uniqueness, antipodes, quantitative margins, and
+explicitly identified-span perturbation stability. See
+`pure_math/EXACT_LOCAL_GLOBAL_THEOREM_PACKAGE.md` and the independent
+`SPHERICAL_FEASIBILITY_SHARED_EDGE_THEOREM.md` development.
 
-**Status:** PROVED. See `SPHERICAL_FEASIBILITY_SHARED_EDGE_THEOREM.md`,
-Sections 1–3; Lean consequences are in
-`LocalSphericalFeasibility.lean`, `SphericalFeasibilityAlgebra.lean`, and
-`QuantitativeSphericalFeasibility.lean`.
+**Resolved deliverables:**
 
-**Falsification outcome:** no small counterexample survived after replacing
-ambient interior by relative interior and separating antipodes. The rational
-boundary-crossing tests and repeated-direction tests are retained in
+- the scaling map is a bijection with the normalized dependence polytope;
+- positive indexed dependences are equivalent to relative interior;
+- antipodes form a separate residual normal-budget simplex;
+- `rho`, `beta_*`, rate, coefficient, support, and singular-value margins are explicit;
+- standard positive-stencil inputs are separated from sphere-specific results.
+
+**Regression warnings:** lower-dimensional perturbations require a fixed or
+explicitly identified intrinsic span; uniqueness means existence and uniqueness.
+Exact repeated-direction and boundary-crossing regressions are retained in both
+`pure_math/examples/exact_local_global_audit.py` and
 `pure_math/tests/test_spherical_feasibility.py`.
 
-**Publication warning:** the isolated convex-hull equivalence is standard
-finite convex geometry and adjacent to positive-stencil theory. Any
-publication claim must use the additional spherical tangent/normal structure,
-fixed coordinate eigenvalue, quantitative margin, masses, reversibility, and
-global compatibility theory.
+## C-M1G. Global local-to-shared compatibility — resolved negatively and conditionally
 
-## C-M1G. Local-to-global reversible compatibility — RESOLVED NEGATIVELY
-
-**Rejected statement.** Locally feasible positive rows plus weighted centering
-imply a globally reversible shared-edge solution.
-
-**Status:** REJECTED. The cube graph with pairwise-antipodal nonuniform masses
-is weighted centered and has a unique positive local row at every node, but has
-no shared-edge solution. The exact Farkas field
-`y_x=(x_2,x_3,x_1)/sqrt(3)` has zero edge work and `b dot y = -4`.
-
-**Replacement theorem.** Global feasibility is membership of `b` in the
-shared-edge cone. The complete graph construction and centered-clique submass
-decomposition are sufficient mechanisms; arbitrary sparse graphs require the
-full cone test.
+The unrestricted implication is REJECTED by two independent exact examples:
+the centered unequal-mass equatorial four-cycle, and the weighted-centered
+cube with a heavy antipodal pair. The cube certificate
+`y_x=(x_2,x_3,x_1)/sqrt(3)` has zero edge work and `b dot y=-4`.
+Complete-graph sufficiency, equivariant orbit averaging, and centered-clique
+submass decomposition are PROVED reconciliation results. Further sparse
+classifications must survive both regression examples.
 
 ## C-M2. Global equality propagation
 
@@ -96,41 +89,80 @@ graph diameter, and rate variation.
 **Kill condition:** families with `Q -> 1` but no controlled global edge-length
 concentration under the stated hypotheses.
 
-## C-M5. Attainable quadratic exactness
+## C-M5. Genuine sampled quadratic exactness — resolved
 
-**Statement under test.** For an eigenmap `Phi` and jump covariance tensors
-`C_i`, exactness of a quadratic form is equivalent to a linear contraction
-condition involving `C_i`, `Phi_i Phi_i^T`, and the target eigenvalue. The
-intersection of these local linear spaces gives the globally attainable
-quadratic subspace.
+**Proved theorem package.** For an eigenmap `Phi` and jump covariance tensors
+`C_i`, the quadratic target residual is the exact covariance contraction. In
+the spherical degree-two specialization,
 
-**Status:** CONJECTURE as a theorem package; core algebraic identity derived.
+```text
+R_X = (L+2d I) S_X,
+E_form = ker R_X,
+K_X = ker S_X subset E_form,
+E_sample = im(S_X) intersect ker(L+2d I).
+```
 
-**Deliverables:**
+Hence
 
-- exact local identity;
-- local rank/dimension bound;
-- global intersection bound;
-- symmetry examples and sharpness cases;
-- comparison with negative-conductance operators.
+```text
+dim E_sample
+  = dim E_form-dim K_X
+  = rank(S_X)-rank(R_X).
+```
 
-**Kill condition:** only tautological rank bookkeeping remains and no useful
-sharp dimension or rigidity statement survives.
+Under positive axial covariance at every vertex,
 
-## C-M6. Spectral-product hierarchy
+```text
+E_form = K_X,
+E_sample = {0}.
+```
 
-**Statement under test.** Positivity constrains simultaneous exactness of an
-eigenspace and selected irreducible components of its symmetric square, with a
-nontrivial hierarchy on spheres or compact homogeneous spaces.
+**Status:** PROVED. The sharp theorem has two independent structural routes:
+axial covariance row scaling and transitive irreducibility of `Sym_0(d)`.
+Regular simplices attain the axial theorem in every dimension. Exact Platonic
+proofs give form dimensions `2,3,2,0,0` and sampled dimensions all zero.
 
-**Status:** HIGH-RISK CONJECTURE.
+**Signed contrast:** the four cardinal points of `S^1` with adjacent rates
+`1` and antipodal rates `-1/2` restore one genuine quadratic sampled mode; the
+negative antipodal rate is forced on that fixed support.
 
-**First tests:** Legendre and spherical-harmonic products for degrees 1--6;
-strict-extremum and antipodal-maximizer cases; computational linear algebra on
-Platonic and optimized graphs.
+**Regression warnings:**
 
-**Kill condition:** every case reduces to the same one-function square identity
-without a dimension tradeoff or new global consequence.
+- never report `dim E_form` as a sampled mode count;
+- never treat `R_X` and `S_X` as unrelated matrices;
+- sampling aliases are automatically in `E_form` because the residual factors
+  through sampling;
+- numerical rank thresholds are not exact proof.
+
+## C-M6. General spectral-product hierarchy — rejected for Prompt 2
+
+**Tested statement.** Positivity constrains simultaneous exactness of an
+eigenspace and selected irreducible components of its symmetric square through
+a nontrivial degree-indexed hierarchy.
+
+**Outcome:** REJECTED under the stated kill criterion.
+
+The audit accounted for:
+
+- even product parity in the pointwise multiplication image;
+- odd/even zonal antipodal equality sets;
+- non-singleton maxima;
+- degree-specific sampling kernels and cross-degree aliases;
+- one sampled combination versus a complete irreducible component; and
+- the additive-resonance equation
+  `k(k+d-2)=2l(l+d-2)`.
+
+The resonance equation is Pell-type and even has sparse infinite families,
+so absence of resonance is not the obstruction. The problem is
+identifiability: without proving that all other sampled product components
+vanish or separate, no component is isolated. Whenever those extra conditions
+hold, the conclusion is exactly the one-function carré-du-champ/Jensen square
+obstruction. No new `l`-indexed dimension tradeoff or global consequence
+survived.
+
+**Status:** REJECTED for the general Prompt 2 branch, not declared impossible
+under future association-scheme, design, or representation-theoretic
+hypotheses.
 
 ## Rejected conjectures retained as regression warnings
 
@@ -140,4 +172,6 @@ without a dimension tradeoff or new global consequence.
 - global `Q>1` for every finite spherical graph;
 - blanket finite-graph Bakry–Émery curvature collapse;
 - standard continuum `W_2` contraction from positivity alone;
-- general order independence of layered stopping maps.
+- general order independence of layered stopping maps;
+- algebraic quadratic form dimension equals genuine sampled exact dimension;
+- a Pell-type additive resonance by itself yields a spectral-product hierarchy.

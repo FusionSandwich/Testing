@@ -335,7 +335,7 @@ repeated and redundant directions.  ∎
 
 ### 3.2 Explicit angular and inverse-quadratic bounds
 
-Assume
+Assume (0<c_1le c_2) and
 
 \[
  c_1h\le\theta_j\le c_2h,\qquad 0<h\le h_0,\qquad

@@ -123,6 +123,7 @@ for every index, including repeated and redundant candidates.
 Under
 
 ```text
+0 < c1 <= c2,
 c1 h <= theta_j <= c2 h,
 0 < h <= h0,
 c2 h0 <= pi/2,

@@ -79,7 +79,8 @@ The lower and upper bounds in (2.2) both use the cone margin.  The wider
 loss-only bound remains
 \(0\le a_j\le2/(1-\cos\theta_-)\).
 
-Under the angular window `c1 h <= theta_j <= c2 h` from the main theorem,
+Under the angular window `0 < c1 <= c2` and
+`c1 h <= theta_j <= c2 h` from the main theorem,
 (2.2) gives
 
 \[

@@ -1,191 +1,150 @@
-# Quadratic covariance characterization
+# Quadratic covariance derivation — corrected sampled-space summary
 
-This note records the next candidate theorem for the pure-mathematics paper.
-It is not yet promoted to `PROVED` until the complete proof and priority review
-are finished.
+The complete Prompt 2 theorem is
+`SAMPLED_QUADRATIC_EXACTNESS_THEOREM.md`. This file records the short derivation
+and the claim-control distinctions that must not be lost in later work.
 
-## Setting
+## 1. General identity
 
-Let
+For
 
-\[
-(Lf)(i)=\sum_j a_{ij}(f(j)-f(i))
-\]
+```text
+(Lf)(i) = sum_j a_ij (f(j)-f(i)),
+L Phi = -lambda Phi,
+Delta_ij = Phi_j-Phi_i,
+C_i = sum_j a_ij Delta_ij Delta_ij^T,
+Q_A(i) = Phi_i^T A Phi_i,
+```
 
-be a finite generator, and let
+coordinate expansion gives
 
-\[
-\Phi:X\to\mathbb R^d
-\]
+```text
+L Q_A(i)
+  = -2 lambda Q_A(i) + tr(A^T C_i).
+```
 
-be an eigenmap satisfying, coordinatewise,
+For symmetric `A`, the contraction is `tr(A C_i)`. For a shifted target
+`q_{A,c}=Q_A-c` with eigenvalue `-mu`, exactness is equivalent to
 
-\[
-L\Phi=-\lambda\Phi.
-\]
+```text
+tr(A^T C_i)
+  + (mu-2 lambda) Q_A(i)
+  - mu c = 0
+```
 
-For one vertex define
+at every state. Trace-freeness does not by itself determine `c` on an
+arbitrary finite sample.
 
-\[
-\Delta_{ij}=\Phi_j-\Phi_i,
-\qquad
-C_i=\sum_j a_{ij}\Delta_{ij}\Delta_{ij}^{T}.
-\]
+## 2. Sphere specialization
 
-For a symmetric matrix `A`, set
+For the coordinate eigenmap on `S^(d-1)`,
 
-\[
-q_A(\Phi)=\Phi^T A\Phi.
-\]
+```text
+lambda = d-1,
+mu = 2d,
+A in Sym_0(d),
+M_i = P_0(C_i + 2 Phi_i Phi_i^T).
+```
 
-## Exact expansion
+The zero-centered exact-form space is
 
-Expanding one jump gives
+```text
+E_form
+  = {A : <A,M_i>_F = 0 for every i}
+  = span{M_i}^perp.
+```
 
-\[
-q_A(\Phi_j)-q_A(\Phi_i)
-=
-2\Phi_i^T A\Delta_{ij}
-+
-\Delta_{ij}^T A\Delta_{ij}.
-\]
+This is a matrix space, not yet a sampled function space.
 
-Summing and using the eigenmap equation gives
+## 3. Sampling factorization
 
-\[
-\boxed{
-Lq_A(i)
-=
--2\lambda q_A(\Phi_i)
-+
-\operatorname{tr}(A C_i).
-}
-\]
+Define
 
-If `q_A-c_A` is required to have target eigenvalue `-mu`, its residual is
+```text
+S_X(A)_i = Phi_i^T A Phi_i,
+K_X = ker S_X,
+B = L + 2d I,
+R_X(A)_i = <A,M_i>_F.
+```
 
-\[
-\boxed{
-L(q_A-c_A)(i)+\mu(q_A(\Phi_i)-c_A)
-=
-\operatorname{tr}(A C_i)
-+(μ-2\lambda)\Phi_i^T A\Phi_i
--\mu c_A.
-}
-\]
+The covariance identity gives the exact factorization
 
-This is the exact local linear characterization of attainable quadratic
-exactness.
+```text
+R_X = B S_X.
+```
 
-## Sphere specialization
+Therefore
 
-For the coordinate eigenmap on `S^{d-1}`,
+```text
+K_X subset E_form,
+E_sample = S_X(E_form)
+         = im(S_X) intersect ker(L+2d I).
+```
 
-\[
-\lambda=d-1.
-\]
+Rank-nullity may first be written in the general restriction form
 
-Degree-two spherical harmonics are represented by trace-free symmetric `A` and
-have eigenvalue
+```text
+dim E_sample
+  = dim E_form - dim(E_form intersect K_X).
+```
 
-\[
-\mu=2d.
-\]
+Here the intersection is exactly `K_X`, so the specialized formulas are
 
-Hence the residual is
+```text
+dim E_sample
+  = dim E_form - dim K_X
+  = rank(S_X) - rank(R_X).
+```
 
-\[
-\boxed{
-\operatorname{tr}
-\left[
-A\left(C_i+2\Phi_i\Phi_i^T\right)
-\right].
-}
-\]
+For basis matrices, if `S` is the sampling matrix and `R` the covariance
+constraint matrix, then
 
-Let `P_0` denote traceless projection and define
+```text
+R = (G + 2d I) S,
+rank([R;S]) = rank(S).
+```
 
-\[
-M_i=P_0\left(C_i+2\Phi_i\Phi_i^T\right).
-\]
+Any audit that treats `R` and `S` as unrelated matrices is not auditing this
+quadratic covariance problem.
 
-Then the globally exact quadratic-form space is
+## 4. Sharp structural theorem
 
-\[
-\boxed{
-\mathcal E_2
-=
-\left(
-\operatorname{span}\{M_i:i\in X\}
-\right)^\perp
-\subseteq \operatorname{Sym}_0(d).
-}
-\]
+If every local covariance is axially isotropic,
 
-Consequently,
+```text
+C_i = tau_i(I-Phi_i Phi_i^T)
+      + beta_i Phi_i Phi_i^T,
+beta_i > 0,
+```
 
-\[
-\boxed{
-\dim\mathcal E_2
-=
-\frac{d(d+1)}2-1
--
-\operatorname{rank}\operatorname{span}\{M_i\}.
-}
-\]
+then
 
-This dimension identity is the central M3 target.  It is more informative than
-only proving that the complete degree-two space is impossible.
+```text
+M_i = d beta_i/(d-1)
+      (Phi_i Phi_i^T-I/d).
+```
 
-## Covariance proof of the full no-go theorem
+Thus every constraint row is a positive scaling of the corresponding sampling
+row. Consequently
 
-If every trace-free quadratic form were exact, then every `M_i` would vanish,
-so
+```text
+E_form = K_X,
+E_sample = {0}.
+```
 
-\[
-C_i+2\Phi_i\Phi_i^T=c_i I.
-\]
+This applies to regular simplices in every dimension and to all five Platonic
+shortest-edge generators. Their exact form dimensions can be nonzero while
+their sampled exact dimensions are zero.
 
-For unit-sphere points and exact coordinate eigenvalue `d-1`,
+## 5. Status
 
-\[
-\operatorname{tr}C_i
-=
-\sum_j a_{ij}\|\Phi_j-\Phi_i\|^2
-=
-2(d-1).
-\]
+- covariance identity and target residual: `PROVED`;
+- sampling factorization and exact sampled-space formula: `PROVED`;
+- axial and equivariant rigidity: `PROVED`;
+- Platonic rank table: exact proof plus exact symbolic regression;
+- signed four-point restoration: `PROVED`;
+- general spectral-product hierarchy: `REJECTED` for this stage under its kill
+  criterion.
 
-Taking traces therefore gives `c_i=2`, and
-
-\[
-C_i=2(I-\Phi_i\Phi_i^T).
-\]
-
-The right side has zero radial component.  But
-
-\[
-\Phi_i^T C_i\Phi_i
-=
-\sum_j a_{ij}
-(\Phi_i\cdot\Phi_j-1)^2,
-\]
-
-which is strictly positive for any positive jump to a distinct point.  This is
-a contradiction.
-
-## Research questions
-
-1. Which dimensions of `E_2` are attainable under positivity, reversibility,
-   connectivity, and bounded degree?
-2. Which graph symmetries force the span of the `M_i` to be all of
-   `Sym_0(d)`?
-3. Can one bound `dim E_2` using active stencil size or covariance rank?
-4. How does global `Q=1` constrain the tensors `M_i`?
-5. Can negative conductances restore prescribed quadratic subspaces, and what
-   is the minimal sign violation required?
-6. Does the same construction extend to irreducible components of
-   `Sym^2(V_lambda)` for a general eigenspace?
-
-A publishable pure-math paper requires a sharp dimension, rigidity, or
-classification theorem beyond the displayed linear identity.
+The exact symbolic audit remains `COMPUTATIONAL` infrastructure and is not the
+proof of the general theorem.
