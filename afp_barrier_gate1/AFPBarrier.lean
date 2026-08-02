@@ -25,6 +25,9 @@ import AFPBarrier.DualCertificate
 import AFPBarrier.SharedEdgeEquilibrium
 import AFPBarrier.GroupAveraging
 import AFPBarrier.GlobalSharedEdgeDuality
+import AFPBarrier.SpectralProductAlgebra
+import AFPBarrier.QuadraticCovariance
+import AFPBarrier.QuadraticSampling
 import AFPBarrier.ImplementationConvention
 import AFPBarrier.ScalingCompatibility
 import AFPBarrier.NormalizationAudit

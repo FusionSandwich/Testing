@@ -8,6 +8,9 @@ import AFPBarrier.GlobalLossRigidity
 import AFPBarrier.SharedEdgeEquilibrium
 import AFPBarrier.GroupAveraging
 import AFPBarrier.GlobalSharedEdgeDuality
+import AFPBarrier.SpectralProductAlgebra
+import AFPBarrier.QuadraticCovariance
+import AFPBarrier.QuadraticSampling
 
 /-! Focused axiom audit for the pure-mathematics branch. -/
 
@@ -46,6 +49,17 @@ import AFPBarrier.GlobalSharedEdgeDuality
 #print axioms AFPBarrier.groupOrbitAverage_reconciliation_of_edgeRepresentative
 #print axioms AFPBarrier.sharedEdgeDualWork_radial
 #print axioms AFPBarrier.positiveLP_complementarySlackness
+#print axioms AFPBarrier.jumpGenerator_product_identity
+#print axioms AFPBarrier.spectralProduct_arbitraryTarget
+#print axioms AFPBarrier.spectralProduct_resonance_iff
+#print axioms AFPBarrier.spectralSquare_resonance_iff
+#print axioms AFPBarrier.jumpGenerator_sampledQuadratic
+#print axioms AFPBarrier.sampledQuadratic_arbitraryTarget
+#print axioms AFPBarrier.sampledQuadratic_eigen_iff
+#print axioms AFPBarrier.samplingKernel_subset_formExact
+#print axioms AFPBarrier.sampledExact_iff_range_inter_targetKernel
+#print axioms AFPBarrier.linear_samplingKernel_le_residualKernel
+#print axioms AFPBarrier.linearSampledResidual_finrank_le_sampling
 
 #print axioms AFPBarrier.rate_eq_of_symmetric_active_loss
 #print axioms AFPBarrier.rate_eq_of_active_reflTransGen
