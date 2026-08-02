@@ -1,16 +1,18 @@
-name: AFP spherical feasibility
+name: AFP Prompt 4 sharp barriers
 
 on:
   push:
     branches:
-      - agent/afp-spherical-feasibility-validation
-      - agent/afp-pure-math-p0-m1
-      - agent/afp-pure-math-p2-closeout-corrected
       - agent/afp-pure-math-p4-sharp-barriers-extremal-synthesis
+      - agent/afp-pure-math-p0-m1
   pull_request:
     branches:
       - agent/afp-pure-math-p0-m1
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
@@ -18,26 +20,49 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 55
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
 
-      - name: Assert exact spherical-stage checkout
+      - name: Assert exact Prompt 4 checkout
         shell: bash
         run: |
           set -euo pipefail
           expected='${{ github.event.pull_request.head.sha || github.sha }}'
           actual=$(git rev-parse HEAD)
+          tree=$(git show -s --format=%T HEAD)
           echo "expected_head=${expected}"
           echo "actual_head=${actual}"
-          echo "actual_tree=$(git show -s --format=%T HEAD)"
+          echo "actual_tree=${tree}"
+          echo "prompt4_baseline=47ef59b0463ecd4bd7a18a3301f29b14f9777c20"
           test "$actual" = "$expected"
+          git merge-base --is-ancestor \
+            47ef59b0463ecd4bd7a18a3301f29b14f9777c20 HEAD
 
-      - name: Run exact arithmetic regressions
-        run: python3 afp_barrier_gate1/pure_math/tests/test_spherical_feasibility.py
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install exact symbolic dependencies
+        run: |
+          python -m pip install --disable-pip-version-check --no-input \
+            'numpy==2.3.2' 'sympy==1.14.0'
+
+      - name: Run Prompt 4 and compatibility audits
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m compileall -q afp_barrier_gate1/pure_math
+          python afp_barrier_gate1/pure_math/barriers/prompt4_sharp_barrier_audit.py
+          python afp_barrier_gate1/pure_math/rigidity/prompt3_rigidity_audit.py
+          python afp_barrier_gate1/pure_math/covariance/quadratic_covariance_audit.py
+          python afp_barrier_gate1/pure_math/covariance/prompt2_closeout_audit.py
+          python afp_barrier_gate1/pure_math/falsification/claim_falsification_audit.py
+          python afp_barrier_gate1/pure_math/examples/exact_local_global_audit.py
+          python afp_barrier_gate1/pure_math/tests/test_spherical_feasibility.py
 
       - name: Reject proof placeholders and user axioms
         shell: bash
@@ -67,7 +92,7 @@ jobs:
           use-mathlib-cache: false
           use-github-cache: false
 
-      - name: Prepare pinned external checker
+      - name: Prepare pinned independent checker
         shell: bash
         run: |
           set -euo pipefail
@@ -90,25 +115,17 @@ jobs:
 
           python3 - <<'PY'
           from pathlib import Path
-
-          path = Path("_lean4export/Export.lean")
-          source = path.read_text(encoding="utf-8")
-          old = "e.updateLet! (← removeMData d) (← removeMData v) (← removeMData b)"
-          new = old + " false"
+          path = Path('_lean4export/Export.lean')
+          source = path.read_text(encoding='utf-8')
+          old = 'e.updateLet! (← removeMData d) (← removeMData v) (← removeMData b)'
+          new = old + ' false'
           if source.count(old) != 1:
-              raise SystemExit("Unexpected Lean exporter let-expression source")
-          path.write_text(source.replace(old, new), encoding="utf-8")
+              raise SystemExit('Unexpected Lean exporter let-expression source')
+          path.write_text(source.replace(old, new), encoding='utf-8')
           PY
 
-          grep -qF \
-            'e.updateLet! (← removeMData d) (← removeMData v) (← removeMData b) false' \
-            _lean4export/Export.lean
-
           cp lean-toolchain _lean4export/
-          (
-            cd _lean4export
-            lake build
-          )
+          (cd _lean4export && lake build)
 
           git init _nanoda_lib
           git -C _nanoda_lib remote add origin \
@@ -116,10 +133,7 @@ jobs:
           git -C _nanoda_lib fetch --depth 1 origin \
             e5438ac0a85a036b6dfe093aa457bc3448498014
           git -C _nanoda_lib checkout --detach FETCH_HEAD
-          (
-            cd _nanoda_lib
-            cargo build --release
-          )
+          (cd _nanoda_lib && cargo build --release)
 
       - name: Resolve dependencies and obtain Mathlib cache
         shell: bash
@@ -129,14 +143,20 @@ jobs:
           lake update
           lake exe cache get
 
-      - name: Build Lean package explicitly
+      - name: Build Lean package and run focused axiom audit
         shell: bash
         run: |
           set -euo pipefail
           cd afp_barrier_gate1
           lake build
+          lake env lean AFPBarrier/PureMathAxiomAudit.lean \
+            2>&1 | tee prompt4-axiom-audit.log
+          if grep -q 'sorryAx' prompt4-axiom-audit.log; then
+            echo "A Prompt 4 theorem depends on Lean's sorry axiom." >&2
+            exit 1
+          fi
 
-      - name: Independently type-check all spherical-stage declarations with nanoda
+      - name: Independently type-check Prompt 4 declarations with nanoda
         shell: bash
         run: |
           set -euo pipefail
@@ -148,71 +168,35 @@ jobs:
           }
           trap cleanup EXIT
 
-          modules=(
-            AFPBarrier.QuantitativeSphericalFeasibility
-            AFPBarrier.GlobalSharedEdgeDuality
-          )
-
           foundations=(
-            Nat
-            Nat.zero
-            Nat.succ
-            List
-            List.nil
-            List.cons
-            String
-            String.mk
-            Char
-            Char.ofNat
+            Nat Nat.zero Nat.succ
+            List List.nil List.cons
+            String String.mk Char Char.ofNat
           )
-
           declarations=(
-            AFPBarrier.scaledSphericalRowRate
-            AFPBarrier.tangentDependenceWeight
-            AFPBarrier.scaledSphericalRowRate_nonneg
-            AFPBarrier.scaledSphericalRowRate_pos
-            AFPBarrier.scaledSphericalRowRate_tangent_balance
-            AFPBarrier.scaledSphericalRowRate_normal_balance
-            AFPBarrier.tangentDependenceWeight_nonneg
-            AFPBarrier.tangentDependenceWeight_balance
-            AFPBarrier.tangentDependenceWeight_normal_scale
-            AFPBarrier.tangentNormalScale
-            AFPBarrier.tangentNormalScale_pos
-            AFPBarrier.commonScale_eq_two_div
-            AFPBarrier.commonScale_pos
-            AFPBarrier.scaledSphericalRowRate_eq_commonScale
-            AFPBarrier.antipodalTotalRate
-            AFPBarrier.mixedNormalBudget_identity
-            AFPBarrier.antipodalTotalRate_eq_of_mixedNormalBudget
-            AFPBarrier.antipodalTotalRate_nonneg_iff
-            AFPBarrier.antipodalTotalRate_pos_iff
-            AFPBarrier.antipodalOnly_normalBalance_iff
-            AFPBarrier.sphericalOutgoingRate
-            AFPBarrier.sphericalOutgoingRate_nonneg
-            AFPBarrier.normalBalance_lossUpper_crossBound
-            AFPBarrier.normalBalance_lossLower_crossBound
-            AFPBarrier.normalBalance_outgoingRate_lower
-            AFPBarrier.normalBalance_outgoingRate_upper
-            AFPBarrier.sharedEdgeDualWork
-            AFPBarrier.sharedEdgeDualWork_swap
-            AFPBarrier.sharedEdgeDualWork_constant
-            AFPBarrier.sharedEdgeDualWork_radial
-            AFPBarrier.sharedEdgeDualWork_radial_nonneg
-            AFPBarrier.positiveLPDualSlack
-            AFPBarrier.positiveLPDualSlack_nonneg
-            AFPBarrier.positiveLP_objectiveGap_eq_slackPairing
-            AFPBarrier.positiveLP_complementaritySum_eq_zero
-            AFPBarrier.positiveLP_complementarySlackness
-            AFPBarrier.positiveLP_active_forces_dualSaturation
-            AFPBarrier.positiveLP_strictDualSlack_forces_inactive
+            AFPBarrier.squarePolarQualityFromStep
+            AFPBarrier.squarePolarQualityFromStep_formula
+            AFPBarrier.squarePolar_rates_forced
+            AFPBarrier.squarePolar_totalRate_forced
+            AFPBarrier.squarePolar_forced_quartic_lower
+            AFPBarrier.cscSquaredTruncation
+            AFPBarrier.squarePolarRateMainStep
+            AFPBarrier.cscSquaredTruncation_rate_identity
+            AFPBarrier.squarePolarRateMainStep_grid
+            AFPBarrier.squarePolarQualityMainStep
+            AFPBarrier.squarePolarQualityMainStep_grid
+            AFPBarrier.universal_rate_lower_of_defect_upper
+            AFPBarrier.finiteExtremal_defect_lower
+            AFPBarrier.twoLossQuality_sub_one
+            AFPBarrier.biregular_interRing_incidence
+            AFPBarrier.perfectMatching_ringCounts_eq
           )
 
-          echo "Exporting ${#declarations[@]} spherical-stage declarations"
           lake env _lean4export/.lake/build/bin/lean4export \
-            "${modules[@]}" -- "${foundations[@]}" "${declarations[@]}" \
+            AFPBarrier.SharpProductBarriers -- \
+            "${foundations[@]}" "${declarations[@]}" \
             > _nanoda_export.txt
           test -s _nanoda_export.txt
-          echo "Exported $(wc -l < _nanoda_export.txt) lines"
 
           cat > _nanoda_config.json <<'EOF'
           {
@@ -234,11 +218,20 @@ jobs:
           RUST_BACKTRACE=1 \
             _nanoda_lib/target/release/nanoda_bin _nanoda_config.json
 
-      - name: Verify immutable archive
+      - name: Verify immutable archive and Prompt 4 scope
         shell: bash
         run: |
           set -euo pipefail
           git fetch --no-tags origin \
             archive/afp-gate6-spatial-multigroup-verified
           test "$(git rev-parse FETCH_HEAD)" = \
-            "515f1aae6c20bd85711c90b5c1c21b4905252d01"
+            '515f1aae6c20bd85711c90b5c1c21b4905252d01'
+          base=47ef59b0463ecd4bd7a18a3301f29b14f9777c20
+          bad=$(git diff --name-only "$base"...HEAD | \
+            grep -Ev '^(.github/workflows/afp-(prompt4-sharp-barriers|prompt3-rigidity|quadratic-covariance|pure-math|spherical-feasibility)\.yml|afp_barrier_gate1/(AFPBarrier(\.lean|/.*\.lean)|pure_math/.*|docs/.*))$' || true)
+          if test -n "$bad"; then
+            echo 'Out-of-scope Prompt 4 paths:' >&2
+            echo "$bad" >&2
+            exit 1
+          fi
+          git diff --check "$base"...HEAD

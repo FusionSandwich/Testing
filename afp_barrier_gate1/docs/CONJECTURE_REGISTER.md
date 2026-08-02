@@ -1,8 +1,9 @@
 # AFP pure-math conjecture register
 
 Every unresolved conjecture requires a precise hypothesis set, deterministic
-falsification search, literature status, and kill criterion. Resolved and
-rejected entries remain here as permanent regression controls.
+falsification search, literature status, and kill criterion. Resolved,
+blocked, deferred, and rejected entries remain here as permanent regression
+controls.
 
 ## C-M1. Strict local spherical feasibility — resolved
 
@@ -132,8 +133,8 @@ Delta=sqrt(eta/(r_min a_min)),
 with exact edge, path, diameter, and row-rate constants.
 
 **Status:** PROVED. The per-edge raw-gap estimate and shared-edge comparison
-lemmas are Lean-checked; the path and diameter arguments are ordinary finite
-graph induction.
+lemmas are Lean-checked; path and diameter arguments are ordinary finite graph
+induction.
 
 **Permanent necessity regression.** The exact rare-edge family
 
@@ -276,19 +277,260 @@ rejection does not rely on a centered-square impossibility theorem and does
 not rule out future theorems under stronger association-scheme or design
 hypotheses.
 
-## Verification-policy correction — resolved
+## C-M7. Exact square-product polar asymptotics — resolved
 
-The dedicated Prompt 2 workflow now scans the aggregate pure-math Lean source
-for both
+For the square equal-angle product family `M=2N`, the exact polar rate and
+quality satisfy, for every integer `N>=2`,
 
 ```text
+0 <= r_polar
+     - [(8/pi^4)N^4 + (10/(3pi^2))N^2 + 13/45]
+  <= pi^2/(48N^2),
+```
+
+and
+
+```text
+0 <= Q_pole - [N^2/pi^2 + 7/12]
+  <= pi^2/(12N^2).
+```
+
+The proof uses a positive differentiated cotangent Mittag--Leffler tail. The
+formal SymPy series is only an independent coefficient regression.
+
+**Status:** PROVED / ORDINARY ANALYSIS, with coefficient extraction Lean-checked.
+
+## C-M8. Fixed unreduced product-graph lower bound — resolved sharply
+
+At every polar-ring vertex, the three coordinate balance equations force
+
+```text
+inward meridional rate = 1/(2 sin^2 h),
+each azimuthal rate   = 1/(4 sin^4 h).
+```
+
+The proof begins with distinct left and right azimuthal rates; their equality is
+derived from the transverse coordinate equation. It assumes neither equal
+masses nor ring-symmetric conductances.
+
+The existing positive reversible construction attains the forced row and has
+its maximum at the poles. Therefore the exact graph-class minimax value is
+
+```text
+1/(2 sin^2(pi/(2N))) + 1/(2 sin^4(pi/(2N))),
+```
+
+with sharp leading constant `8/pi^4`.
+
+**Status:** PROVED / SHARP / LEAN FINITE CORE.
+
+**Rejected wording:** the quartic obstruction is merely an artifact of a bad
+symmetric conductance choice.
+
+## C-M9. Universal rate barrier and quasi-uniform transfer — resolved
+
+Degree-one exactness gives
+
+```text
+4 <= r_i epsilon_i.
+```
+
+Hence
+
+```text
+epsilon_i<=C h^2 => r_i>=4/(C h^2).
+```
+
+A loss window
+
+```text
+(2/pi^2)h^2 <= ell_ij <= 2h^2
+```
+
+transfers to
+
+```text
+1 <= h^2 r_i <= pi^2,
+(4/pi^2)h^2 <= epsilon_i <= 4h^2.
+```
+
+**Status:** PROVED / LEAN CONDITIONAL TRANSFER.
+
+Positive spherical-Delaunay existence and exact coordinate modes are EXTERNAL
+unless verified for the actual geometry. The claim that a fixed radial
+connectivity is Delaunay at every level is REJECTED AS UNSUPPORTED.
+
+## C-M10. Constrained extremal theory — resolved at the mandatory level
+
+The final extremal class controls:
+
+```text
+rate,
+degree,
+edge locality,
+separation,
+covering radius and mesh ratio,
+mass bounds,
+positivity,
+reversibility,
+degree-one exactness.
+```
+
+For every nonempty finite class,
+
+```text
+E_K>=4/(RK),
+```
+
+and
+
+```text
+C*=liminf K E_K >= 4/R.
+```
+
+Every nonempty fixed-`K` closed class has a minimizer. The square product
+family has quadratic stiffness in node count and is eventually excluded from
+every linear-rate class.
+
+**Status:** PROVED. The lower bound is Lean-checked; compactness is ordinary
+finite-dimensional analysis.
+
+## C-M11. A priori feasible-cone anisotropy — resolved
+
+For a nonempty tangent-balanced projective polytope,
+
+```text
+Q=s_2(p)/m(p)^2.
+```
+
+At fixed mean loss `m`, the minimum second moment is the finite LP
+
+```text
+Psi(m)=min sum p_j ell_j^2
+```
+
+subject to normalization, tangent balance, and mean loss. The best cone bound
+is
+
+```text
+A_i=min_m [Psi(m)/m^2-1]
+   =inf_{a in F_i}(Q_i(a)-1).
+```
+
+The exact dual is
+
+```text
+maximize alpha+beta m
+subject to
+alpha+beta ell_j+z dot v_j <= ell_j^2.
+```
+
+**Status:** PROVED USING STANDARD FINITE LP DUALITY.
+
+**Equality:** `A_i=0` exactly when a tangent-balanced projective row is
+supported on one loss level.
+
+**Sharp example:** for two opposite tangent directions,
+
+```text
+A=((ell_1-ell_2)/(ell_1+ell_2))^2.
+```
+
+**Rejected wording:** `Q` is determined by node geometry alone, without
+conductance optimization.
+
+## C-M12. Reduced-ring nearest-ring perfect matching — resolved negatively for the stated class
+
+A biregular adjacent-ring coupling satisfies
+
+```text
+p M_i=q M_j.
+```
+
+A one-to-one coupling has `p=q=1` and therefore requires `M_i=M_j`. Thus a
+varying population rule `M_i comparable to N sin(theta_i)` cannot use
+nearest-ring perfect matchings.
+
+**Status:** PROVED / LEAN FOR THE STATED COUPLING CLASS.
+
+General split/merge couplings remain outside this theorem and are numerical-
+analysis work.
+
+## C-M13. Delsarte/Gegenbauer sampled barrier — blocked
+
+The branch reduced candidate bounds to standard spherical-code LPs but produced
+no new dual certificate that survived sampling kernels, cross-degree aliases,
+and finite component identifiability.
+
+**Status:** BLOCKED FOR PROMPT 4.
+
+**Promotion criterion:** a solved explicit dual certificate yielding a new
+global sampled residual, valence, or efficiency theorem.
+
+## C-M14. Bakry--Émery curvature branch — killed for Prompt 4
+
+For an eigenfunction,
+
+```text
+Gamma_2(f)=1/2 L Gamma(f,f)+lambda Gamma(f,f).
+```
+
+At centered square resonance, this gives a constant one-function value. It does
+not establish a curvature-dimension inequality on the full function algebra.
+
+**Status:** KILLED UNDER THE STATED KILL CRITERION.
+
+The blanket claim that finite positive graphs cannot have useful positive
+Bakry--Émery curvature remains REJECTED.
+
+## C-M15. Compact homogeneous-space extension — deferred
+
+The Euclidean covariance identity is dimension-independent, but no additional
+compact homogeneous space materially strengthened the central theorem without
+substantial new representation-theoretic input.
+
+**Status:** DEFERRED.
+
+## C-M16. Discrete transport-metric branch — deferred
+
+Positivity does not select the continuum `W_2` geometry. Entropy-gradient-flow
+or contraction statements require a specified Maas/Erbar-type discrete metric
+and a separate curvature theorem.
+
+**Status:** DEFERRED.
+
+## C-M17. Final publication synthesis — accepted
+
+The central theorem is the sampled quadratic residual factorization and
+structural rigidity package, not the product-grid asymptotic result. The local
+feasibility, global shared-edge compatibility, exact/quantitative equality
+rigidity, sharp graph barrier, constrained extremal theory, and cone anisotropy
+form the supporting hierarchy.
+
+**Status:** ACCEPTED THEOREM PACKAGE, subject to final branch integration and
+workflow provenance.
+
+The central theorem survives the publication kill criterion: it is more than
+ambient dimension minus constraint rank because the residual factors through
+the actual sampling map, forces automatic kernel inclusion, and combines with
+positive structural hypotheses to yield sharp rigidity and exact alias/signed
+boundary classifications.
+
+## Verification-policy correction — resolved
+
+The dedicated workflows scan the aggregate pure-math Lean source for
+
+```text
+sorry
+admit
+sorryAx
 axiom
 axioms
 ```
 
-using an anchored declaration regex, includes deterministic singular/plural
-fixtures, keeps `sorryAx` outside the nanoda allowed list, runs the focused
-axiom audit, and asserts the literal checked-out head SHA.
+using token-aware and anchored declaration regexes, keep `sorryAx` outside the
+nanoda allowed list, run focused axiom reports, assert literal checkout heads,
+and independently check accepted declaration sets.
 
 ## Rejected statements retained as regression warnings
 
@@ -307,6 +549,14 @@ axiom audit, and asserts the literal checked-out head SHA.
 - every nonzero centered additive square is impossible;
 - centered resonance is Jensen equality;
 - a Pell arithmetic resonance alone produces a spectral-product hierarchy;
-- blanket finite-graph Bakry–Émery curvature collapse;
-- continuum `W_2` contraction from positivity alone; and
+- product-grid quartic stiffness is only a symmetric-conductance artifact;
+- formal series or fitted slopes prove all-order asymptotics;
+- an unconstrained defect infimum is a meaningful extremal invariant;
+- `Q` is geometry-only and independent of feasible rate weights;
+- varying reduced-ring populations admit nearest-ring perfect matchings;
+- a standard Delsarte LP reduction is a new theorem without a solved dual;
+- a one-function `Gamma_2` identity is a full curvature theorem;
+- blanket finite-graph Bakry--Émery curvature collapse;
+- continuum `W_2` contraction from positivity alone;
+- fixed radial connectivity is Delaunay at every level; and
 - general order independence of layered stopping maps.
