@@ -179,6 +179,7 @@ class PlatonicResult:
     dim_kernel: int
     dim_sample: int
     minor: sp.Expr
+    residual_minor: sp.Expr
     action_scalar: sp.Expr
 
 
@@ -198,10 +199,37 @@ def audit_platonic(spec: PlatonicSpec) -> PlatonicResult:
     n = len(spec.vertices)
     for x in spec.vertices:
         assert_zero((x.T * x)[0] - 1, f"{spec.name}: vertex is not unit")
+    for i in range(n):
+        for j in range(i + 1, n):
+            if spec.vertices[i] == spec.vertices[j]:
+                raise AssertionError(f"{spec.name}: repeated vertex")
+            dot = sp.simplify((spec.vertices[i].T * spec.vertices[j])[0])
+            if bool(sp.simplify(dot - spec.alpha) > 0):
+                raise AssertionError(
+                    f"{spec.name}: advertised shell is not the shortest-edge shell"
+                )
+    if not bool(sp.simplify(spec.rate) > 0):
+        raise AssertionError(f"{spec.name}: edge rate is not positive")
 
     L, neighbors = generator_from_shell(
         spec.vertices, spec.alpha, spec.degree, spec.rate
     )
+    seen = {0}
+    pending = [0]
+    while pending:
+        i = pending.pop()
+        for j in neighbors[i]:
+            if j not in seen:
+                seen.add(j)
+                pending.append(j)
+    if len(seen) != n:
+        raise AssertionError(f"{spec.name}: shortest-edge graph is disconnected")
+    for i, row in enumerate(neighbors):
+        for j in row:
+            if not bool(L[i, j] > 0):
+                raise AssertionError(f"{spec.name}: active edge is not positive")
+            assert_zero((spec.vertices[i].T * spec.vertices[j])[0] - spec.alpha,
+                        f"{spec.name}: active edge left the shortest shell")
     X = vertex_matrix(spec.vertices)
     assert_zero(L * X + 2 * X, f"{spec.name}: coordinate eigenmap failed")
     S = samples(spec.vertices)
@@ -261,6 +289,16 @@ def audit_platonic(spec: PlatonicSpec) -> PlatonicResult:
     assert_zero(minor - spec.expected_minor, f"{spec.name}: exact minor changed")
     if minor == 0:
         raise AssertionError(f"{spec.name}: rank minor vanished")
+    residual_minor = sp.simplify(
+        R_direct.extract(spec.minor_rows, spec.minor_cols).det()
+    )
+    expected_residual_minor = sp.simplify(
+        kappa ** spec.expected_rank * spec.expected_minor
+    )
+    assert_zero(residual_minor - expected_residual_minor,
+                f"{spec.name}: exact residual minor changed")
+    if residual_minor == 0:
+        raise AssertionError(f"{spec.name}: residual rank minor vanished")
 
     standard_kernel = tuple(sp.eye(5).col(i) for i in spec.kernel_indices)
     computed_kernel = S.nullspace(iszerofunc=lambda e: sp.simplify(e) == 0)
@@ -289,7 +327,8 @@ def audit_platonic(spec: PlatonicSpec) -> PlatonicResult:
         raise AssertionError("negative test: algebraic forms were counted as samples")
 
     return PlatonicResult(spec.name, n, rank_s, rank_r, dim_form,
-                          dim_kernel, dim_sample, minor, action_scalar)
+                          dim_kernel, dim_sample, minor, residual_minor,
+                          action_scalar)
 
 
 def hexagonal_prism_counterexample() -> tuple[int, int, int]:
@@ -308,6 +347,8 @@ def hexagonal_prism_counterexample() -> tuple[int, int, int]:
         for sign in (-1, 1) for c, s in trig
     )
     n = len(vertices)
+    for x in vertices:
+        assert_zero((x.T * x)[0] - 1, "prism vertex is not unit")
     L = sp.zeros(n)
     active: list[list[tuple[int, sp.Expr]]] = [[] for _ in range(n)]
     for layer in range(2):
@@ -322,16 +363,52 @@ def hexagonal_prism_counterexample() -> tuple[int, int, int]:
             L[i, i] = -5
     if L != L.T or L * sp.ones(n, 1) != sp.zeros(n, 1):
         raise AssertionError("prism is not a reversible conservative generator")
+    seen = {0}
+    pending = [0]
+    while pending:
+        i = pending.pop()
+        for j in range(n):
+            if i != j and L[i, j] > 0 and j not in seen:
+                seen.add(j)
+                pending.append(j)
+    if len(seen) != n:
+        raise AssertionError("prism graph is disconnected")
+
+    # Translations of Z/6 x Z/2 preserve the horizontal/vertical rates and
+    # already act transitively; no appeal to a picture is needed.
+    translations: list[tuple[int, ...]] = []
+    for shift in range(6):
+        for flip in range(2):
+            action = tuple(
+                6 * ((i // 6) ^ flip) + ((i % 6 + shift) % 6)
+                for i in range(n)
+            )
+            translations.append(action)
+            for i in range(n):
+                for j in range(n):
+                    assert_zero(L[action[i], action[j]] - L[i, j],
+                                "prism translation does not preserve rates")
+    if len(set(translations)) != 12:
+        raise AssertionError("prism translation action is not faithful")
+    if {action[0] for action in translations} != set(range(n)):
+        raise AssertionError("prism translation action is not vertex-transitive")
+
     X = vertex_matrix(vertices)
     if X.rank() != 3:
         raise AssertionError("prism embedding is not full-dimensional")
     assert_zero(L * X + 2 * X, "prism coordinate eigenmap failed")
+    undirected_active = set()
     for i, x in enumerate(vertices):
         for j, rate in active[i]:
             if rate <= 0:
                 raise AssertionError("prism is not positive")
             assert_zero((x.T * vertices[j])[0] - Q(3, 5),
                         "prism active edge left the common shell")
+            assert_zero(1 - (x.T * vertices[j])[0] - Q(2, 5),
+                        "prism active edge loss is not 2/5")
+            undirected_active.add((min(i, j), max(i, j)))
+    if len(undirected_active) != 18:
+        raise AssertionError("prism active-edge count changed")
 
     # Explicitly disprove tangent isotropy at a row.
     i = 0
@@ -342,7 +419,15 @@ def hexagonal_prism_counterexample() -> tuple[int, int, int]:
         u = (vertices[j] - alpha * x) / Q(4, 5)
         T += rate * u * u.T
     isotropic = Q(5, 2) * (sp.eye(3) - x * x.T)  # total rate 5, dim U=2
-    if (T - isotropic).applyfunc(sp.simplify) == sp.zeros(3):
+    anisotropy_witness = (T - isotropic).applyfunc(sp.simplify)
+    expected_witness = sp.Matrix((
+        (-Q(1, 4), 0, -Q(1, 2)),
+        (0, Q(5, 4), 0),
+        (-Q(1, 2), 0, -1),
+    ))
+    assert_zero(anisotropy_witness - expected_witness,
+                "prism tangent-anisotropy witness changed")
+    if anisotropy_witness == sp.zeros(3):
         raise AssertionError("negative test: anisotropic prism passed isotropy")
 
     S = samples(vertices)
@@ -352,6 +437,12 @@ def hexagonal_prism_counterexample() -> tuple[int, int, int]:
     dim_sample = rank_s - rank_r
     if (rank_s, rank_r, dim_sample) != (5, 3, 2):
         raise AssertionError("prism sharpness dimensions changed")
+    sampling_minor = sp.simplify(S.extract((0, 1, 2, 3, 4), range(5)).det())
+    residual_minor = sp.simplify(R.extract((0, 1, 2), (1, 3, 4)).det())
+    assert_zero(sampling_minor - Q(576, 3125),
+                "prism 5x5 sampling minor changed")
+    assert_zero(residual_minor + 96 * SQRT3 / 125,
+                "prism 3x3 residual minor changed")
     # x^2-y^2 and xy are exact, genuine, and linearly independent samples.
     for col in (0, 2):
         if S.col(col) == sp.zeros(n, 1):
@@ -372,6 +463,7 @@ def main() -> None:
             f"rankS={result.rank_s} rankR={result.rank_r} "
             f"dimEform={result.dim_form} dimK={result.dim_kernel} "
             f"dimEsample={result.dim_sample} minor={result.minor} "
+            f"residual-minor={result.residual_minor} "
             f"L|imS={result.action_scalar}"
         )
     rank_s, rank_r, dim_sample = hexagonal_prism_counterexample()
