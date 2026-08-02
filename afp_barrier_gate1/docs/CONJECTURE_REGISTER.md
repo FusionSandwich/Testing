@@ -31,42 +31,44 @@ PROVED.
 
 ## C-M2. Global equality propagation
 
-**Status:** CONJECTURE
+**Status:** PROVED
 
-**Statement under test:** in a connected reversible positive graph with a
+In a connected reversible positive graph with a
 symmetric spherical loss, equality in every local rate-defect row forces one
 global active loss and one row rate.
 
-**Work needed:** a complete propagation proof with zero-rate and repeated-node
-cases exposed. This is Prompt 3 scope, not part of Prompt 2.
-
-**Kill condition:** an exact connected reversible counterexample satisfying
-every row equality.
+**Resolution:** `GLOBAL_Q_RIGIDITY_THEOREM.md` §§1–2 proves the exact local
+variance identity and uses the shared-edge propagation theorem.  Loops, zero
+rates, repeated embedded vertices, inactive edges, and the separate antipodal
+case are explicit.
 
 ## C-M3. Triangulated global \(Q=1\) classification
 
-**Status:** CONJECTURE
+**Status:** PROVED
 
-**Candidate statement:** a connected nondegenerate geodesic triangulation of
-\(S^2\), positive on every edge and coordinate-exact with \(Q_i=1\), is one of
-the tetrahedral, octahedral, or icosahedral triangulations under a precise
-convex-embedding hypothesis.
+Under the exact ten simple, injective, minor-arc, noncrossing, convex-face,
+disjoint-interior, full-coverage, positive-edge hypotheses, a coordinate-exact
+global \(Q_i=1\) triangulation is tetrahedral, octahedral, or icosahedral up to
+\(O(3)\).
 
-**Warning:** without the triangulation restrictions, the cube and dodecahedron
-are counterexamples.
-
-**Kill condition:** one valid non-Platonic triangulated counterexample.
+**Resolution:** common side and round angle sum precede Euler; the 5-valent
+case has a direct separating-triangle/link proof; geometric uniqueness uses
+opposite-side face propagation.  Cube and dodecahedron remain the unrestricted
+kill examples.
 
 ## C-M4. Quantitative near-rigidity
 
-**Status:** CONJECTURE
+**Status:** PROVED
 
-**Statement under test:** under a positive normalized active-edge lower bound,
-\(\max_i(Q_i-1)\le\eta\) controls global active-loss variation by
-\(O(\sqrt\eta)\), with explicit graph-diameter and conductance dependence.
+Under a positive normalized active-edge lower bound,
+\(\max_i(Q_i-1)\le\eta\) gives the explicit pointwise, path, diameter,
+reference-loss, arc, Poincare, resistance, and closed triangulation-stability
+bounds in the Prompt 3 theorem.  No big-O or unnamed compactness constant is
+used.
 
-**Kill condition:** a family with \(Q\to1\) but no such concentration under all
-stated quantitative hypotheses.
+**Boundary:** long paths reject diameter-free wording under only a local floor;
+side lengths approaching zero or \(\pi\) make the displayed geometric margin
+degenerate, as the theorem records.
 
 ## C-M5. Attainable quadratic exactness
 
@@ -118,10 +120,16 @@ certificates.
 
 - unrestricted \(Q=1\) classification by \(K\in\{4,6,12\}\);
 - global \(Q>1\) for every finite spherical graph;
+- every equal-loss spherical graph is a triangulated Platonic graph;
 - blanket finite-graph Bakry--Émery curvature collapse;
 - continuum \(W_2\) contraction from positivity alone;
 - general order independence of layered stopping maps;
 - weighted centering as sparse global sufficiency;
 - symmetry scalarity without invariance;
-- distinct sampled degree labels without distinct target eigenvalues; and
-- a blanket positive doubled-square obstruction.
+- distinct sampled degree labels without distinct target eigenvalues;
+- a blanket positive doubled-square obstruction;
+- tangent normalization at exact global \(Q=1\) without `0<ell<2`;
+- axial covariance from \(Q=1\) alone;
+- form-space dimension equals sampled-space dimension;
+- diameter-free near-rigidity from only a local active-weight floor; and
+- finite enumeration as the all-orders classification proof.
