@@ -16,7 +16,8 @@
 | semigroup variance | finite differentiable semigroup, eigenfunction | variance formula iff constant (\Gamma) at derivative level | matrix exponential | Boolean positive variance | PROVED | expand ordinary proof |
 | Jensen equality | positive Markov kernel | equality iff constant on support; irreducible (t>0) gives global constant | uniformization | not resonance | EXTERNAL | state standard input exactly |
 | Pell hierarchy | continuous (S^2) harmonics | admissible doubled components are ((1+\sqrt2)^{4m+1}) | Clebsch--Gordan, Pell | first ((14,20)) | EXTERNAL | prove parity transfer and record recurrence |
-| sampling separation | exact sampled harmonic spaces | distinct targets iff internal directness for signed realization; rank bound | eigenspace independence | Platonic (H_2/H_4) aliases | PROVED | finite Lean direct-sum theorem and explicit aliases |
+| target-class sampling separation | finite sampled spaces; group all equal target eigenvalues before counting | distinct target-class sums are internally direct; exact signed conservative converse after adjoining constants once; weighted-reversible iff distinct classes, including constants versus nonzero targets, are weighted-orthogonal | polynomial eigenspace projections | Platonic (H_2/H_4) aliases | PROVED | finite Lean direct-sum theorem and explicit aliases |
+| unrestricted distinct-degree sampling separation | spherical formula used without (d\ge2) or a distinct-target hypothesis | rejected: distinct degree labels need not give distinct eigenvalues or direct sampled spaces | exact one-node evaluation | (d=1,I=\{*\},\Phi(*)=1,L=0,D=\{0,1\}) has (V_0=V_1=\mathbb R^I) and rank sum (2>1) | REJECTED | corrected by target classes; for (d\ge2), degrees give distinct targets |
 
 External inputs are standard finite rank-nullity, finite real representation
 semisimplicity/spectral theory, Clebsch--Gordan decomposition on (S^2), and

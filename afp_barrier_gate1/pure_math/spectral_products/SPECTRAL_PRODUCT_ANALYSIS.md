@@ -137,30 +137,101 @@ Besides the constant solution, the first pairs are
 This is an exact (\ell)-indexed component-availability classification, not a
 claim that one product isolates the component and not a positivity no-go.
 
-## Genuine sampled hierarchy: separation theorem
+## Genuine sampled hierarchy: corrected separation theorem
 
-Let (E_J:H_J\to\mathbb R^I) be evaluation and (V_J=\operatorname{im}E_J).
-If one operator satisfies
-
-\[
- L|_{V_J}=-J(J+1)I
-\]
-
-for distinct degrees in a set (D), then the (V_J) form an internal direct
-sum, since eigenspaces at distinct scalars are linearly independent.  Hence
+The linear-algebraic theorem is indexed by **target eigenvalues**, not merely
+by names or degrees.  Let (V_a\subseteq\mathbb R^I) be finitely many sampled
+spaces and let (\theta_a\in\mathbb R).  If one operator satisfies
 
 \[
- \boxed{\sum_{J\in D}\operatorname{rank}E_J\le |I|.}
+ L|_{V_a}=-\theta_a I
 \]
 
-For even harmonics on an antipodally symmetric sample, the right side sharpens
-to the number of antipodal orbits.  Conversely, if (V_0=\langle\mathbf1\rangle)
-and these sampled spaces form a direct sum, define (L) by the displayed
-scalars on their sum and extend it with (L\mathbf1=0).  Its off-diagonal
-matrix entries are signed jump rates.  A weighted reversible signed realization
-exists by the same construction when the distinct spaces are mutually
-orthogonal in the weighted inner product; orthogonality is also necessary for
-a self-adjoint (L).
+and the targets (\theta_a) are pairwise distinct, then the (V_a) form an
+internal direct sum.  Indeed, for a relation (\sum_a v_a=0), applying the
+Lagrange interpolation polynomial that is one at (-\theta_b) and zero at the
+other target scalars isolates (v_b=0).  Consequently
+
+\[
+ \boxed{\sum_a\dim V_a\le |I|.} \tag{S.1}
+\]
+
+More generally, collisions must be grouped before counting.  For every target
+(\theta), put
+
+\[
+ W_\theta=\sum_{a:\theta_a=\theta}V_a.
+\]
+
+Then the spaces (W_\theta) for the distinct target values form an internal
+direct sum and
+
+\[
+ \boxed{\sum_\theta\dim W_\theta\le |I|.} \tag{S.2}
+\]
+
+No directness, or sum of the individual dimensions, follows inside one
+equal-target class.
+
+For spherical harmonics on (S^{d-1}), let
+
+\[
+ E_\ell:H_\ell\to\mathbb R^I,\qquad
+ V_\ell=\operatorname{im}E_\ell,\qquad
+ \lambda_\ell=\ell(\ell+d-2).
+\]
+
+When (d\ge2), the map (\ell\mapsto\lambda_\ell) is strictly increasing for
+(\ell\ge0).  Thus pairwise distinct degrees have pairwise distinct targets,
+and (S.1) gives
+
+\[
+ \boxed{\sum_{\ell\in D}\operatorname{rank}E_\ell\le |I|.} \tag{S.3}
+\]
+
+For even harmonics on an antipodally symmetric sample, every sampled function
+is constant on each antipodal orbit, so the right side of (S.3) sharpens to
+the number of antipodal orbits.
+
+The unqualified distinct-degree statement is **REJECTED** in dimension one.
+Take (d=1), (I=\{*\}), (\Phi(*)=+1\in S^0), and (L=0).  With
+(D=\{0,1\}), one has (H_0=\operatorname{span}\{1\}),
+(H_1=\operatorname{span}\{x\}), and evaluation at (+1) gives
+
+\[
+ V_0=V_1=\mathbb R^I,\qquad r_0=r_1=1,
+ \qquad\lambda_0=\lambda_1=0.
+\]
+
+Both scalar-action hypotheses hold, but
+(V_0\cap V_1=\mathbb R^I) and
+(r_0+r_1=2>|I|=1).  The valid (d=1) theorem is (S.2): group degrees by their
+equal values of (\ell(\ell-1)) before making any direct-sum or rank count.
+
+The converse is also most cleanly stated by target classes and treats
+constants only once.  Let (C=\langle\mathbf1\rangle), enlarge the zero-target
+class to
+
+\[
+ \widetilde W_0=C+W_0,
+\]
+
+and put (\widetilde W_\theta=W_\theta) for (\theta\ne0).  A signed conservative
+operator with the prescribed scalar actions exists exactly when the
+(\widetilde W_\theta) for distinct targets form an internal direct sum.  For
+the constructive direction, set (L=-\theta I) on each class and set (L=0) on
+an arbitrary complementary space.  Then (L\mathbf1=0); in the standard basis,
+take (a_{ij}=L_{ij}) for (i\ne j), while the zero row sums supply the generator
+diagonal.  If degree zero is already in (D), its sampled space is (C), so it is
+not added or counted a second time.
+
+For positive weights (w_i), a weighted-reversible signed realization exists
+exactly when the distinct target-class spaces (\widetilde W_\theta) are
+mutually orthogonal in the weighted inner product.  Necessity is orthogonality
+of eigenspaces of a self-adjoint operator at distinct eigenvalues.  For
+sufficiency, use the scalar construction above and set (L=0) on the weighted
+orthogonal complement.  In particular, constants must be weighted-orthogonal
+to every nonzero-target sampled eigenspace; this condition cannot be omitted.
 
 The exact audit computes harmonic evaluation ranks over
 (\mathbb Q(\sqrt5)).  At (\ell=2), the rank sums for
@@ -172,9 +243,13 @@ eigenvalues simultaneously.
 
 ## Final hierarchy status
 
-`ACCEPTED`: the sampling-separation/rank theorem and the parity-filtered Pell
-classification give genuine indexed restrictions.  `REJECTED` as a universal
-positivity hierarchy: without added nonaliasing and component hypotheses, the
-positive statement reduces to the same pointwise carré-du-champ residual with
-different constants.  Finite sampling may kill or alias every continuous
-component, and one selected combination is not a complete irreducible module.
+`PROVED`: the target-eigenvalue-class separation/rank theorem gives a genuine
+finite-sampling restriction, and for (d\ge2) it specializes to pairwise
+distinct spherical-harmonic degrees.  `REJECTED`: the same distinct-degree
+wording in unrestricted dimension, by the exact (d=1) one-node example above.
+The parity-filtered Pell classification is `EXTERNAL`, with its first cases
+checked exactly.  `REJECTED` as a universal positivity hierarchy: without
+added nonaliasing and component hypotheses, the positive statement reduces to
+the same pointwise carré-du-champ residual with different constants.  Finite
+sampling may kill or alias every continuous component, and one selected
+combination is not a complete irreducible module.

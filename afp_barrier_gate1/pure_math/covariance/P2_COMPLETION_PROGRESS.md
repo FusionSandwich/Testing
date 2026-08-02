@@ -68,6 +68,40 @@ line-by-line audit demonstrates these gaps:
 No missing item above is treated as proved merely because a comment, numerical
 rank, or theorem-registry row says so.
 
+## Accepted correction to the spectral-sampling statement
+
+The literal implication from pairwise-distinct harmonic degrees is false
+without a dimension or distinct-target condition.  The exact rejected witness
+is
+
+```text
+d=1
+I={*}
+Phi(*)=+1 in S^0
+L=0
+D={0,1}
+V_0=V_1=R^I
+r_0=r_1=1
+lambda_0=lambda_1=0
+```
+
+Thus both requested scalar actions hold, while `V_0` and `V_1` are not an
+internal direct sum and `r_0+r_1=2>|I|=1`.  The unrestricted
+pairwise-distinct-degree claim is `REJECTED`.
+
+The corrected abstract theorem assumes pairwise-distinct **target
+eigenvalues**, or first replaces all spaces with the sum belonging to each
+equal-target class.  For spherical harmonics, `d>=2` makes
+`ell -> ell(ell+d-2)` strictly increasing, so the desired distinct-degree
+corollary is then valid.  In `d=1`, all direct-sum and rank counts are made only
+after grouping equal `ell(ell-1)` classes.
+
+The converse similarly works with target-class sums.  The zero-target class is
+enlarged by `span{1}` exactly once; when degree zero is already included, its
+sampled space is the constants and is not counted twice.  Weighted
+reversibility requires mutual weighted orthogonality of all distinct target
+classes, in particular constants against every nonzero-target sampled space.
+
 ## Mechanism-based audit state
 
 | mechanism | current evidence | completion gate |
@@ -79,7 +113,7 @@ rank, or theorem-registry row says so.
 | exact finite examples | WIP SymPy scripts | missing graph, `D_3`, alias, and LP certificates |
 | equivariant decomposition | ordinary outline | full multiplicity/isotypic proof and counterexample |
 | signed optimization | exact optimizer and piecewise bound | explicit averaging and dual/subgradient certificate |
-| spectral sampling | exact harmonic ranks and Pell recurrence | finite Lean direct-sum/rank theorem and full proof |
+| spectral sampling | exact harmonic ranks, Pell recurrence, and the exact rejected (d=1) one-node witness | formalize the target-eigenvalue-class theorem; state the (d\ge2) degree corollary and constants-safe converse |
 | semigroup/Jensen | correct outline and Boolean regression | complete separated proofs |
 | claim control and CI | WIP registries only | repository-wide synchronization and dedicated workflow |
 
@@ -88,4 +122,3 @@ rank, or theorem-registry row says so.
 This branch does not redo Prompt 1, begin Prompt 3 triangulation or
 near-rigidity, or alter transport, Radiant, HTS, multigroup, spatial-solver, or
 evaluated-material work.  The transport archive remains immutable.
-
