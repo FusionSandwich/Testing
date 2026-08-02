@@ -5,6 +5,7 @@ on:
     branches:
       - agent/afp-spherical-feasibility-validation
       - agent/afp-pure-math-p0-m1
+      - agent/afp-pure-math-p2-closeout-corrected
   pull_request:
     branches:
       - agent/afp-pure-math-p0-m1
@@ -16,23 +17,41 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    timeout-minutes: 50
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+
+      - name: Assert exact spherical-stage checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected='${{ github.event.pull_request.head.sha || github.sha }}'
+          actual=$(git rev-parse HEAD)
+          echo "expected_head=${expected}"
+          echo "actual_head=${actual}"
+          echo "actual_tree=$(git show -s --format=%T HEAD)"
+          test "$actual" = "$expected"
 
       - name: Run exact arithmetic regressions
         run: python3 afp_barrier_gate1/pure_math/tests/test_spherical_feasibility.py
 
-      - name: Reject proof placeholders in stage modules
+      - name: Reject proof placeholders and user axioms
         shell: bash
         run: |
-          files=(
-            afp_barrier_gate1/AFPBarrier/LocalSphericalFeasibility.lean
-            afp_barrier_gate1/AFPBarrier/SphericalFeasibilityAlgebra.lean
-            afp_barrier_gate1/AFPBarrier/QuantitativeSphericalFeasibility.lean
-            afp_barrier_gate1/AFPBarrier/GlobalSharedEdgeDuality.lean
-          )
-          if grep -nE '(^|[^[:alnum:]_])(sorry|admit|sorryAx|axiom)([^[:alnum:]_]|$)' "${files[@]}"; then
-            echo 'Forbidden Lean placeholder or user axiom found.' >&2
+          set -euo pipefail
+          if grep -RInE --include='*.lean' \
+            '(^|[^[:alnum:]_])(sorry|admit|sorryAx)([^[:alnum:]_]|$)' \
+            afp_barrier_gate1/AFPBarrier afp_barrier_gate1/AFPBarrier.lean; then
+            echo 'Forbidden proof placeholder found.' >&2
+            exit 1
+          fi
+          if grep -RInE --include='*.lean' \
+            '^[[:space:]]*(axiom|axioms)([[:space:]]|$)' \
+            afp_barrier_gate1/AFPBarrier afp_barrier_gate1/AFPBarrier.lean; then
+            echo 'User axiom declaration found.' >&2
             exit 1
           fi
 
@@ -61,8 +80,6 @@ jobs:
             source "$HOME/.cargo/env"
           fi
 
-          # Pin the paired 2.0.0 exporter/checker format for reproducible
-          # independent validation.
           git init _lean4export
           git -C _lean4export remote add origin \
             https://github.com/ammkrn/lean4export.git
@@ -70,10 +87,6 @@ jobs:
             f3cf6458a309d643dc586a80f9ab5a93c2304db9
           git -C _lean4export checkout --detach FETCH_HEAD
 
-          # Lean 4.30 let expressions contain a `nondep` bit, while export
-          # format 2.0.0 does not serialize that bit. Canonicalize it to false
-          # before hashing/export so semantically identical serialized nodes
-          # cannot receive two exporter indices.
           python3 - <<'PY'
           from pathlib import Path
 
@@ -139,9 +152,6 @@ jobs:
             AFPBarrier.GlobalSharedEdgeDuality
           )
 
-          # Nanoda's Nat/String literal extensions require these foundational
-          # declarations to be present even when the selected theorem slice
-          # reaches them only through literal nodes.
           foundations=(
             Nat
             Nat.zero
@@ -222,3 +232,12 @@ jobs:
 
           RUST_BACKTRACE=1 \
             _nanoda_lib/target/release/nanoda_bin _nanoda_config.json
+
+      - name: Verify immutable archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin \
+            archive/afp-gate6-spatial-multigroup-verified
+          test "$(git rev-parse FETCH_HEAD)" = \
+            "515f1aae6c20bd85711c90b5c1c21b4905252d01"
