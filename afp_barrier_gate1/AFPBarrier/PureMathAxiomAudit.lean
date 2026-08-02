@@ -11,6 +11,9 @@ import AFPBarrier.GlobalSharedEdgeDuality
 import AFPBarrier.SpectralProductAlgebra
 import AFPBarrier.QuadraticCovariance
 import AFPBarrier.QuadraticSampling
+import AFPBarrier.QuadraticSphereResidual
+import AFPBarrier.OneShellQuadraticRigidity
+import AFPBarrier.SpectralSamplingObstruction
 
 /-! Focused axiom audit for the pure-mathematics branch. -/
 
@@ -60,6 +63,44 @@ import AFPBarrier.QuadraticSampling
 #print axioms AFPBarrier.sampledExact_iff_range_inter_targetKernel
 #print axioms AFPBarrier.linear_samplingKernel_le_residualKernel
 #print axioms AFPBarrier.linearSampledResidual_finrank_le_sampling
+#print axioms AFPBarrier.weighted_sum_jumpGenerator_eq_zero_of_detailedBalance
+#print axioms AFPBarrier.detailedBalance_eigen_implies_weightedMean_zero
+#print axioms AFPBarrier.sampledQuadratic_center_eq_weightedMean
+#print axioms AFPBarrier.sampledQuadratic_zeroTarget_center_independent
+#print axioms AFPBarrier.linearSampledExactRange_eq_range_inf_targetKernel
+#print axioms AFPBarrier.linearSampledExactRange_finrank_eq_formExact_sub_samplingKernel
+#print axioms AFPBarrier.linearSampledExactRange_finrank_eq_samplingRank_sub_residualRank
+#print axioms AFPBarrier.matrixFrobeniusPairing_eq_trace_mul_of_isSymm_right
+#print axioms AFPBarrier.trace_sphereResidualMatrix_eq_zero
+#print axioms AFPBarrier.sphereResidualMatrix_isSymm
+#print axioms AFPBarrier.sphereResidual_factorization
+#print axioms AFPBarrier.matrixFrobeniusPairing_sphereResidualMatrix_eq_trace
+#print axioms AFPBarrier.sphereResidual_factorization_trace
+#print axioms AFPBarrier.sphereFormExact_eq_residualOrthogonal
+#print axioms AFPBarrier.sphereSamplingKernel_le_formExact
+#print axioms AFPBarrier.sphereSampledExact_eq_range_inf_targetKernel
+#print axioms AFPBarrier.sphereSampledExact_finrank_eq_form_sub_alias
+#print axioms AFPBarrier.sphereSampledExact_finrank_eq_samplingRank_sub_residualRank
+#print axioms AFPBarrier.oneShell_radial_rate
+#print axioms AFPBarrier.oneShell_tangent_balance
+#print axioms AFPBarrier.oneShell_covariance_decomposition
+#print axioms AFPBarrier.oneShell_actual_covariance_decomposition
+#print axioms AFPBarrier.oneShell_traceFree_residual_pairing
+#print axioms AFPBarrier.oneShell_sphereResidual_row
+#print axioms AFPBarrier.oneShell_sphereResidual_factorization
+#print axioms AFPBarrier.oneShell_sphereResidualKernel_eq_samplingKernel
+#print axioms AFPBarrier.oneShell_sphereResidualRank_eq_samplingRank
+#print axioms AFPBarrier.oneShell_sphereSampledExactRange_eq_bot
+#print axioms AFPBarrier.spectralSampledSpaces_iSupIndep
+#print axioms AFPBarrier.spectralSampledSpaces_pairwise_disjoint
+#print axioms AFPBarrier.spectralSampledSpaces_finrank_sum_le
+#print axioms AFPBarrier.spectralSampledFunctions_finrank_sum_le
+#print axioms AFPBarrier.sphericalEigenvalue_injective
+#print axioms AFPBarrier.harmonicSampledSpaces_iSupIndep
+#print axioms AFPBarrier.sphericalEigenvalue_dimension_one_collision
+#print axioms AFPBarrier.sphericalEigenvalue_dimension_one_not_injective
+#print axioms AFPBarrier.internalScalarOperator_apply_of_mem
+#print axioms AFPBarrier.internalScalarOperator_constants_eq_zero
 
 #print axioms AFPBarrier.rate_eq_of_symmetric_active_loss
 #print axioms AFPBarrier.rate_eq_of_active_reflTransGen

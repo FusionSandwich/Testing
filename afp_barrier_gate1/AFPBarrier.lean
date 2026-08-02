@@ -28,6 +28,9 @@ import AFPBarrier.GlobalSharedEdgeDuality
 import AFPBarrier.SpectralProductAlgebra
 import AFPBarrier.QuadraticCovariance
 import AFPBarrier.QuadraticSampling
+import AFPBarrier.QuadraticSphereResidual
+import AFPBarrier.OneShellQuadraticRigidity
+import AFPBarrier.SpectralSamplingObstruction
 import AFPBarrier.ImplementationConvention
 import AFPBarrier.ScalingCompatibility
 import AFPBarrier.NormalizationAudit
