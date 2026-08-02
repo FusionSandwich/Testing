@@ -68,19 +68,23 @@ jobs:
           import base64
           from pathlib import Path
 
-          def decode_text(path: str) -> bytes:
-              text = ''.join(Path(path).read_text(encoding='utf-8').split())
-              text += '=' * (-len(text) % 4)
-              return base64.b64decode(text, validate=False)
+          def clean(path: str) -> str:
+              return ''.join(Path(path).read_text(encoding='utf-8').split())
 
-          patch = b''.join(decode_text(path) for path in (
+          patch_text = ''.join(clean(path) for path in (
               '.github/p3p4-patch-00.b64',
               '.github/p3p4-patch-01.b64',
               '.github/p3p4-patch-02.b64',
           ))
-          Path('/tmp/p3p4.patch.xz').write_bytes(patch)
+          patch_text += '=' * (-len(patch_text) % 4)
+          Path('/tmp/p3p4.patch.xz').write_bytes(
+              base64.b64decode(patch_text, validate=False)
+          )
+
+          global_text = clean('.github/p3p4-global.b64')
+          global_text += '=' * (-len(global_text) % 4)
           Path('/tmp/afp-global-rigidity.yml.xz').write_bytes(
-              decode_text('.github/p3p4-global.b64')
+              base64.b64decode(global_text, validate=False)
           )
           PY
 
