@@ -4,6 +4,7 @@ import AFPBarrier.QuantitativeExactLocal
 import AFPBarrier.AntipodalFeasibility
 import AFPBarrier.SphericalFeasibilityAlgebra
 import AFPBarrier.QuantitativeSphericalFeasibility
+import AFPBarrier.QuadraticCovariance
 import AFPBarrier.GlobalLossRigidity
 import AFPBarrier.SharedEdgeEquilibrium
 import AFPBarrier.GroupAveraging
@@ -36,6 +37,17 @@ import AFPBarrier.GlobalSharedEdgeDuality
 #print axioms AFPBarrier.tangentNormalScale_pos
 #print axioms AFPBarrier.normalBalance_outgoingRate_lower
 #print axioms AFPBarrier.normalBalance_outgoingRate_upper
+
+#print axioms AFPBarrier.jumpGenerator_product_identity
+#print axioms AFPBarrier.jumpGenerator_quadratic_covariance_identity
+#print axioms AFPBarrier.quadratic_target_eigen_iff
+#print axioms AFPBarrier.finiteMatrixContraction_tracelessProjection
+#print axioms AFPBarrier.sampledRestriction_finrank
+#print axioms AFPBarrier.samplingKernel_le_residualKernel
+#print axioms AFPBarrier.sampledRange_exact_eq_range_inf_ker
+#print axioms AFPBarrier.zero_constraints_iff_zero_samples_of_row_scaling
+#print axioms AFPBarrier.axialCovariance_projectionCoefficient
+
 #print axioms AFPBarrier.sharedEdge_equilibrium_implies_weightedCentering
 #print axioms AFPBarrier.squareLocalRate_coordinate_exact
 #print axioms AFPBarrier.squareDual_transpose_zero
