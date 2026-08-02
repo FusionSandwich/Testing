@@ -7,6 +7,8 @@ on:
       - agent/afp-pure-math-p1-local-global-corrected
       - agent/afp-pure-math-p0-m1
       - agent/afp-pure-math-p2-closeout-corrected
+      - agent/afp-pure-math-p3-q1-rigidity
+      - agent/afp-pure-math-p4-sharp-barriers-extremal-synthesis
   pull_request:
     branches:
       - agent/afp-pure-math-p1-local-global-corrected
@@ -23,7 +25,7 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 55
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
         with:
@@ -299,7 +301,7 @@ jobs:
           set -euo pipefail
           base=1835918fe9d0b941395e9f00f6ac5514129cefa0
           bad=$(git diff --name-only "$base"...HEAD | \
-            grep -Ev '^(.github/workflows/afp-(quadratic-covariance|pure-math|spherical-feasibility)\.yml|afp_barrier_gate1/(AFPBarrier(\.lean|/.*\.lean)|pure_math/.*|docs/.*))$' || true)
+            grep -Ev '^(.github/workflows/afp-(prompt4-sharp-barriers|prompt3-rigidity|quadratic-covariance|pure-math|spherical-feasibility)\.yml|afp_barrier_gate1/(AFPBarrier(\.lean|/.*\.lean)|pure_math/.*|docs/.*))$' || true)
           if test -n "$bad"; then
             echo 'Out-of-scope closeout paths:' >&2
             echo "$bad" >&2

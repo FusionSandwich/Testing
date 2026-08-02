@@ -6,6 +6,8 @@ import AFPBarrier.SphericalFeasibilityAlgebra
 import AFPBarrier.QuantitativeSphericalFeasibility
 import AFPBarrier.QuadraticCovariance
 import AFPBarrier.GlobalLossRigidity
+import AFPBarrier.SphericalQOneRigidity
+import AFPBarrier.SharpProductBarriers
 import AFPBarrier.SphericalQEqualityRigidity
 import AFPBarrier.QuantitativeGlobalNearRigidity
 import AFPBarrier.QEqualityCovariance
@@ -74,7 +76,35 @@ import AFPBarrier.GlobalSharedEdgeDuality
 #print axioms AFPBarrier.rate_eq_of_active_reflTransGen
 #print axioms AFPBarrier.connected_active_loss_rigidity
 
+#print axioms AFPBarrier.jumpRate_pos_of_nonzero_eigenvalue_at_peak
+#print axioms AFPBarrier.sphericalQOne_active_loss
+#print axioms AFPBarrier.sphericalQOne_active_loss_pos
+#print axioms AFPBarrier.sphericalQOne_active_zero_loss_impossible
+#print axioms AFPBarrier.connected_sphericalQOne_rigidity
+#print axioms AFPBarrier.sphericalQOne_active_antipode_forces_rate_one
+#print axioms AFPBarrier.equilateral_tangent_cosine
+#print axioms AFPBarrier.regular_triangulation_euler_identity
+#print axioms AFPBarrier.degree_three_triangulation_counts
+#print axioms AFPBarrier.degree_four_triangulation_counts
+#print axioms AFPBarrier.degree_five_triangulation_counts
+#print axioms AFPBarrier.spherical_active_loss_deviation_sq_le_gap_div_rate
+#print axioms AFPBarrier.shared_edge_centers_close
+#print axioms AFPBarrier.shared_relative_center_cross_bounds
 
+#print axioms AFPBarrier.squarePolarQualityFromStep_formula
+#print axioms AFPBarrier.squarePolar_rates_forced
+#print axioms AFPBarrier.squarePolar_totalRate_forced
+#print axioms AFPBarrier.squarePolar_forced_quartic_lower
+#print axioms AFPBarrier.cscSquaredTruncation_rate_identity
+#print axioms AFPBarrier.squarePolarRateMainStep_grid
+#print axioms AFPBarrier.squarePolarQualityMainStep_grid
+#print axioms AFPBarrier.universal_rate_lower_of_defect_upper
+#print axioms AFPBarrier.finiteExtremal_defect_lower
+#print axioms AFPBarrier.twoLossQuality_sub_one
+#print axioms AFPBarrier.biregular_interRing_incidence
+#print axioms AFPBarrier.perfectMatching_ringCounts_eq
+
+-- Prompt 3 completion supplement.
 #print axioms AFPBarrier.jumpRate_pos_of_lossMoment_two
 #print axioms AFPBarrier.normalizedEdgeWeight_sum_one
 #print axioms AFPBarrier.normalizedLossScale_mean_one

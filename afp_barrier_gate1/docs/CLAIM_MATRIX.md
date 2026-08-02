@@ -2,7 +2,8 @@
 
 This document controls publication wording for the pure-mathematics track.
 Statuses distinguish ordinary proof, Lean verification, exact finite
-regression, external input, conjecture, and rejected wording.
+regression, external input, conjecture, blocked/deferred branches, and rejected
+wording.
 
 | Claim | Status | Current support | Publication treatment |
 |---|---|---|---|
@@ -10,18 +11,52 @@ regression, external input, conjecture, and rejected wording.
 | `lambda^2 <= rate * peakDefect` and the weighted edge-loss variance remainder | PROVED / Lean | `Quantitative.lean`, `LossVariance*.lean` | Foundational inequalities |
 | A finite positive generator cannot reproduce the complete coordinate and complete spherical degree-two spaces | PROVED in the stated spherical formulation | `NoGo.lean`, covariance package | Supporting no-go corollary |
 | A centered positive quadrature admits a dense reversible degree-one-exact operator | PROVED / Lean | `CompleteGraph.lean`; Prompt 1 theorem package | Supporting construction |
-| Positive spherical Delaunay families attain the natural `h^-2` scale | EXTERNAL specialization | Published spherical Delaunay theory plus project bounds | Cite as external input |
-| The project family is globally minimax or spectrally optimal | CONJECTURE / unsupported | No global minimax proof | Do not claim |
+| Positive spherical Delaunay families attain the natural `h^-2` scale | EXTERNAL specialization | Published spherical Delaunay theory plus project bounds | Verify the actual geometry and low-mode hypotheses before transfer |
+| One fixed radial icosphere connectivity is Delaunay at every refinement level | REJECTED AS UNSUPPORTED | No all-level proof in the repository | Never state |
+| The project family is globally minimax or spectrally optimal without a constrained class | REJECTED / ILL-POSED | Rate and geometry can degenerate | Use the Prompt 4 constrained extremal problem |
 | Only `K in {4,6,12}` can have global `Q=1` | REJECTED | Cube and dodecahedron counterexamples | Never state unrestricted |
 | Abstract local equality propagates one common rate and one common symmetric active-edge loss on a connected active graph | PROVED / Lean | `GlobalLossRigidity.lean`: `rate_eq_of_symmetric_active_loss`, `rate_eq_of_active_reflTransGen`, `connected_active_loss_rigidity` | Supporting abstract rigidity theorem already complete |
-| Complete spherical `Q=1` specialization of the abstract propagation theorem | PROVED / LEAN finite core | `GLOBAL_Q_RIGIDITY_THEOREM.md` §§1–2; `SphericalQEqualityRigidity.lean` | Uses positivity, shared conductances, symmetric spherical loss, and connected active graph exactly where stated |
-| Tetrahedral/octahedral/icosahedral classification under restricted geodesic-triangulation hypotheses | PROVED / restricted | `GLOBAL_Q_RIGIDITY_THEOREM.md` §3; direct combinatorial and geometric uniqueness; exact plantri adversary | Never drop minor-arc, convex-face, coverage/no-cone, injectivity, or all-edges-active hypotheses |
-| Quantitative near-rigidity from small equality defect | PROVED / explicit constants | `GLOBAL_Q_RIGIDITY_THEOREM.md` §§4–6; exact stress audits | Includes path/diameter, resistance/gap, angle, valence, and edge-distance bounds; no big-O wording |
-| Exact `Q=1` covariance decomposition separates fixed radial coefficient from tangent anisotropy | PROVED / LEAN finite core | `GLOBAL_Q_RIGIDITY_THEOREM.md` §7; `QEqualityCovariance.lean` | `Q=1` fixes radial covariance only |
-| `Q=1` alone forces axial covariance | REJECTED | Three-parameter positive reversible weighted octahedron | False even on a connected minor-arc geodesic triangulation with unequal masses |
-| Weighted octahedral family has genuine sampled degree-two exact space `{0}` for all positive parameters | PROVED EXACT | Sampling-map contraction `Pf=-2f`; `q1_covariance_audit.py` | Do not infer from form-space constraints alone |
-| Explicit effective-resistance and spectral-gap control of `log r` follows from near equality | PROVED | `GLOBAL_Q_RIGIDITY_THEOREM.md` §5 | Electrical normalization is stated; proof is independent of path multiplication |
-| Explicit defect threshold identifies Platonic type and bounds edge-length sup distance | PROVED under displayed reference/domain margins | `GLOBAL_Q_RIGIDITY_THEOREM.md` §6 | No uniform threshold survives approach to spherical degeneracy |
+| Complete spherical `Q=1` specialization of the abstract propagation theorem | PROVED / Lean | `SphericalQOneRigidity.lean`; Theorems 1.1–1.3 in the Prompt 3 theorem package | Requires nonnegative rates, symmetric connected activity, and coordinate eigenvalue `-2` |
+| Exact connected spherical `Q=1` forces one common active chord loss and one common total row rate | PROVED / Lean | `connected_sphericalQOne_rigidity` | Does not by itself force individual edge-rate equality |
+| An active zero-loss edge can occur in a nondegenerate exact spherical `Q=1` row | REJECTED / Lean contradiction | `sphericalQOne_active_zero_loss_impossible` | Coincident embedded endpoints cannot be active |
+| A connected injective exact `Q=1` support may contain one isolated antipodal active edge without global consequences | REJECTED | Antipodal loss is two; propagation forces every active loss to be two | Nondegenerate triangulations exclude this case |
+| Tetrahedral/octahedral/icosahedral classification under strict convex geodesic-triangulation hypotheses | PROVED / ordinary proof with Lean finite core | `SPHERICAL_Q1_RIGIDITY_THEOREM.md`, `ICOSAHEDRAL_GRAPH_LEMMA.md`, exact audit, Euler/count lemmas in Lean | State every support, triangulation, injectivity, convexity, and activity hypothesis |
+| Unrestricted connected equal-edge spherical `Q=1` supports are only tetrahedron, octahedron, and icosahedron | REJECTED | Exact cube and dodecahedron shortest-edge generators | Triangulation is essential |
+| The restricted classification fixes every individual active edge rate | REJECTED as a general conclusion | Geometry and first moment fix the total row rate; tangent dependences may be nonunique | Claim only common row rate and active edge metric |
+| `Q_i-1` is normalized weighted relative-loss variance | PROVED / exact | Prompt 3 Theorem 3.1 and exact symbolic audit | Principal quantitative identity |
+| Quantitative edge-loss and row-rate near-rigidity follows from small `Q_i-1`, a normalized active-weight floor, symmetric connectivity, and diameter | PROVED | Prompt 3 Theorem 4.1 | State `delta=sqrt(epsilon/p_*)<1` and every path/diameter exponent explicitly |
+| Additive near-rigidity follows from a raw gap bound plus lower total-rate and active-rate floors | PROVED / Lean local estimate | Prompt 3 Theorem 5.1; `spherical_active_loss_deviation_sq_le_gap_div_rate` | State `Delta=sqrt(eta/(r_min a_min))` and diameter dependence |
+| Small `Q_i-1` alone uniformly controls every active edge | REJECTED | Exact rare-active-edge counterfamily | A normalized active-weight floor or equivalent structure is necessary |
+| Local near-equality yields a diameter-free global bound on arbitrary connected supports | REJECTED | Interval-overlap ratios can accumulate along paths | Retain path length or graph diameter |
+| Edge-metric near-rigidity automatically yields coordinate-space closeness modulo rotations | CONDITIONAL / NOT PROMOTED | Requires an explicit gauge-fixed rigidity singular-value margin | No universal framework margin is claimed |
+| Shared-conductance floors transfer to raw and normalized active-rate floors | PROVED | Prompt 3 Corollary 5.2 and exact audit | Requires upper mass and row-rate bounds |
+| The square product-grid polar rate has coefficients `8/pi^4`, `10/(3pi^2)`, and `13/45` | PROVED WITH RIGOROUS REMAINDER | Prompt 4 Theorem 1.2; coefficient algebra in `SharpProductBarriers.lean` | Not a fitted slope or formal series |
+| For every integer `N>=2`, the polar-rate remainder lies in `[0,pi^2/(48N^2)]` | PROVED / ORDINARY ANALYSIS | Positive differentiated cotangent partial-fraction tail | State threshold and one-sided bound explicitly |
+| The square product-grid polar quality is `N^2/pi^2+7/12+O(N^-2)` | PROVED WITH RIGOROUS REMAINDER | Prompt 4 Theorem 1.3 | Remainder lies in `[0,pi^2/(12N^2)]` for `N>=2` |
+| The quartic polar rate is only an artifact of the previously chosen ring-symmetric conductances | REJECTED | Three polar coordinate equations force all rates uniquely, starting from asymmetric left/right rates | Permanent graph-class regression |
+| On the fixed unreduced square product graph, every degree-one-exact row has the exact forced polar rate | PROVED / SHARP / Lean finite core | Prompt 4 Theorem 2.1; `squarePolar_rates_forced` | Local lower bound does not require reversibility or equal masses |
+| The exact minimax maximum rate over positive reversible shared conductances on the fixed product graph is the polar formula | PROVED / SHARP | Forced lower bound plus existing attaining construction and exact polar maximum | Sharp leading constant `8/pi^4` |
+| In node count `K=2N^2`, the fixed product graph has `r_max >= (2/pi^4)K^2` | PROVED | Prompt 4 Corollary 2.2 | Structural stiffness separation |
+| Degree-one exactness plus `epsilon_i<=C h^2` forces `r_i>=4/(C h^2)` | PROVED / Lean | `universal_rate_lower_of_defect_upper`; inherited generator theorem | Universal rate barrier |
+| The maximal-net loss window transfers to `1<=h^2r_i<=pi^2` and `(4/pi^2)h^2<=epsilon_i<=4h^2` | PROVED CONDITIONAL TRANSFER / Lean | Prompt 4 Theorem 3.2; `SphericalNetScaling.lean` | Delaunay existence and coordinate modes remain external unless verified |
+| The Prompt 4 rate-capped extremal class is nondegenerate | PROVED DEFINITION | Separation, covering, mesh ratio, degree, locality, masses, positivity, reversibility, and rate cap all controlled | Use this or an equivalent Pareto class |
+| Every nonempty finite Prompt 4 extremal class satisfies `E_K>=4/(RK)` and `C*>=4/R` | PROVED / Lean finite inequality | Prompt 4 Theorem 4.1; `finiteExtremal_defect_lower` | Positive substantive lower bound |
+| Every nonempty fixed-`K` closed extremal class has a minimizer | PROVED / ORDINARY COMPACTNESS | Prompt 4 Theorem 4.2 | Zero conductances are handled by finite active-support unions |
+| The unreduced product family is eventually excluded from every linear-rate extremal class | PROVED | Prompt 4 Corollary 4.3 | Explicit threshold `N>(pi^2/2)sqrt(R)` |
+| Quasi-uniform positive families remain compatible with a linear rate cap | CONDITIONAL ON EXTERNAL FAMILY | Loss-window theorem plus `K comparable to h^-2` | Do not claim existence for an unverified fixed connectivity |
+| `Q` is determined by node geometry alone, independently of feasible conductance reweighting | REJECTED | Multiple tangent-balanced projective weights can produce different `Q` | Optimize over the feasible cone |
+| The projective feasible-cone formula is `Q=s_2(p)/m(p)^2` | PROVED | Prompt 4 Theorem 5.1 | Exact conductance-aware reduction |
+| The best a priori row anisotropy is a compact mean-loss minimization of a sliced LP | PROVED | Prompt 4 Theorem 5.2 | `A_i=inf_{a in F_i}(Q_i-1)` |
+| The sliced anisotropy LP has dual `alpha+beta ell_j+z dot v_j<=ell_j^2` | PROVED USING STANDARD FINITE LP DUALITY | Prompt 4 equation (5.7) | Every feasible dual triple is an explicit certificate |
+| The cone anisotropy constant vanishes exactly when a tangent-balanced row is supported on one loss level | PROVED | Prompt 4 Corollary 5.3 | Equality characterization |
+| For two opposite tangent directions, `A=((ell_1-ell_2)/(ell_1+ell_2))^2` | PROVED / Lean / SHARP | `twoLossQuality_sub_one` | Exact sharpness example |
+| At the product pole, the cone anisotropy constant equals `Q_pole-1` | PROVED | Unique projective tangent solution | A priori quadratic anisotropy growth |
+| A Delsarte/Gegenbauer reduction without a solved new dual certificate is a new theorem | REJECTED / BLOCKED | No candidate survived sampling-kernel and alias audits | Branch remains blocked |
+| The coordinate/quadratic `Gamma_2` calculation yields a full curvature-dimension theorem | REJECTED FOR PROMPT 4 | It reduces to the centered-resonance identity on one function | Blanket finite-graph curvature collapse remains rejected |
+| A compact-homogeneous-space extension materially strengthens the central theorem in the present package | DEFERRED | No second space survived the bounded search without major new representation theory | Do not claim |
+| Positivity alone gives continuum `W_2` contraction | REJECTED | A specified Maas/Erbar-type discrete metric is required | Deferred transport branch |
+| A varying reduced-ring population can use one-to-one nearest-ring perfect matchings | REJECTED FOR THAT COUPLING CLASS | Biregular incidence; `perfectMatching_ringCounts_eq` | General split/merge couplings remain unresolved |
+| Biregular adjacent-ring couplings satisfy `p M_i=q M_j` | PROVED / Lean | `biregular_interRing_incidence` | Precise coupling-class theorem |
 | Non-antipodal local feasibility is equivalent to `0` in the indexed tangent hull | PROVED | Corrected Prompt 1 package and Lean finite scaling | Sphere-specific transfer of standard positive-stencil geometry |
 | Strict positivity on every indexed non-antipodal edge is equivalent to relative-interior membership | PROVED | Corrected Prompt 1 theorem, repetitions and lower dimension included | State relative, not ambient, interior |
 | Tangent dependence and row uniqueness are controlled by the normalized dependence polytope/minimal face | PROVED | Prompt 1 package | Preserve indexed repetitions and redundancies |
@@ -59,17 +94,17 @@ regression, external input, conjecture, and rejected wording.
 | `S^2` pointwise product table for `ell=1,...,6` has no additive resonance | PROVED EXACT ARITHMETIC | Theorem table and `prompt2_closeout_audit.py` | Centering removes only degree zero; aliases still require audit |
 | Pell-type additive resonances occur in higher dimensions | PROVED ARITHMETIC / bounded computational search | Existing and closeout exact assertions | Arithmetic alone does not identify a sampled mode |
 | A nontrivial general spectral-product hierarchy follows from the present calculations | REJECTED FOR PROMPT 2 | No sampled dimension tradeoff, multiplicity obstruction, or new global consequence survived | Rejection does not rely on centered-square impossibility |
-| Dedicated Prompt 2 CI rejects both `axiom` and plural `axioms` declarations | VERIFIED POLICY | Aggregate source scan plus deterministic singular/plural fixtures | Verification control, not mathematics |
+| The final pure-math paper is only Cauchy--Schwarz, Jensen, or tautological rank bookkeeping | REJECTED AFTER SYNTHESIS AUDIT | Sampling factorization, automatic kernel inclusion, structural rigidity, exact aliases, signed boundaries, and global compatibility | Central contribution remains independent of project terminology |
+| Dedicated pure-math CI rejects both `axiom` and plural `axioms` declarations | VERIFIED POLICY | Aggregate source scan plus deterministic singular/plural fixtures | Verification control, not mathematics |
 | Constant-stopping layered final energy is order independent | PROVED for that model only | Additive decrement | Manufactured benchmark only |
-| General layered stopping is order independent | REJECTED | Noncommuting flows | Outside pure-math closeout |
-| Blanket positive Bakry–Émery curvature collapse on finite graphs | REJECTED | Known positive-curvature finite graphs | Do not claim |
-| Positivity alone gives continuum `W_2` contraction | REJECTED | A discrete transport metric is required | Deferred branch |
+| General layered stopping is order independent | REJECTED | Noncommuting flows | Outside pure-math synthesis |
+| Blanket positive Bakry--Émery curvature collapse on finite graphs | REJECTED | Known positive-curvature finite graphs | Do not claim |
 
 ## Claim-writing rules
 
 1. CI counts and hashes are provenance, not novelty evidence.
 2. Separate `PROVED`, `EXTERNAL`, `EXACT EXAMPLE`, `COMPUTATIONAL`,
-   `CONJECTURE`, and `REJECTED`.
+   `CONJECTURE`, `BLOCKED`, `DEFERRED`, and `REJECTED`.
 3. State positivity, reversibility, connectivity, embedding, masses, and
    relative-span assumptions explicitly.
 4. A nonzero quadratic matrix, nonzero exact form, nonzero sampled function,
@@ -80,6 +115,17 @@ regression, external input, conjecture, and rejected wording.
    carré du champ.
 7. Centered resonance is not Jensen equality.
 8. Algebraic harmonic decomposition does not imply sampled identifiability.
-9. The abstract equality-propagation theorem is proved; its spherical
-   classification and near-rigidity consequences remain Prompt 3 work.
-10. The immutable transport archive is outside the pure-math claim set.
+9. The abstract equality-propagation theorem and its complete spherical
+   `Q=1` specialization are proved. The Platonic classification is restricted
+   to strict convex geodesic triangulations; quantitative results require
+   explicit active-weight/rate floors and graph diameter.
+10. Edge-metric concentration is not coordinate-space rigidity without a
+    separately stated rigidity-operator margin.
+11. Product-grid sharpness is a graph-class theorem only because the polar
+    rates are derived from all three coordinate equations without a symmetry
+    assumption.
+12. `Q` is conductance-dependent; use the feasible-cone anisotropy constant
+    rather than a geometry-only claim.
+13. Formal series and finite regressions are not all-orders asymptotic proofs.
+14. External spherical-Delaunay results require exact hypothesis transfer.
+15. The immutable transport archive is outside the pure-math claim set.
