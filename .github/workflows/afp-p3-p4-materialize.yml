@@ -1,0 +1,109 @@
+name: AFP P3-P4 reconciliation materializer
+
+on:
+  push:
+    branches:
+      - agent/afp-pure-math-p3-p4-final-reconciliation
+    paths:
+      - '.github/p3p4-patch-00.b64'
+      - '.github/p3p4-patch-01.b64'
+      - '.github/p3p4-patch-02.b64'
+      - '.github/p3p4-global.b64'
+      - '.github/workflows/afp-p3-p4-materialize.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: afp-p3-p4-materialize-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  materialize:
+    if: ${{ github.actor != 'github-actions[bot]' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Check out literal payload head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Verify ancestry, decode, apply, audit, and publish
+        shell: bash
+        env:
+          TARGET_BRANCH: agent/afp-pure-math-p3-p4-final-reconciliation
+          TARGET_BASE: 94aebf6578a43516cce4bb7c042fc57681c93890
+          RICH_SOURCE: f1ef5b3c3107d2dfc835ed84c443eb82d752cb56
+          REPAIR_BASE: dc208de1cd9dca013dccf23276a60f2b7992cf15
+          ARCHIVE_SHA: 515f1aae6c20bd85711c90b5c1c21b4905252d01
+          PATCH_XZ_SHA256: dadc7dbd4a2dd564cd569ec2a7aef17fa0be9d5c8447993c74ce1a32424d2c11
+          PATCH_SHA256: 89fd3826109c67688b2bc69ac6c9cdd4a10ff36327745e3f7b487c6b4c39b1ec
+          GLOBAL_XZ_SHA256: 0ba9b2d5f1da4930c822e45b3dcac813fb25013acac44ad8396f31eed3838194
+        run: |
+          set -euo pipefail
+
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          git merge-base --is-ancestor "${TARGET_BASE}" HEAD
+          git merge-base --is-ancestor "${RICH_SOURCE}" HEAD
+          git merge-base --is-ancestor "${REPAIR_BASE}" HEAD
+
+          git fetch --no-tags origin archive/afp-gate6-spatial-multigroup-verified
+          test "$(git rev-parse FETCH_HEAD)" = "${ARCHIVE_SHA}"
+
+          cat \
+            .github/p3p4-patch-00.b64 \
+            .github/p3p4-patch-01.b64 \
+            .github/p3p4-patch-02.b64 \
+            | base64 --decode > /tmp/p3p4.patch.xz
+          echo "${PATCH_XZ_SHA256}  /tmp/p3p4.patch.xz" | sha256sum --check
+          xz --decompress --stdout /tmp/p3p4.patch.xz > /tmp/p3p4.patch
+          echo "${PATCH_SHA256}  /tmp/p3p4.patch" | sha256sum --check
+
+          base64 --decode .github/p3p4-global.b64 > /tmp/afp-global-rigidity.yml.xz
+          echo "${GLOBAL_XZ_SHA256}  /tmp/afp-global-rigidity.yml.xz" | sha256sum --check
+          xz --decompress --stdout /tmp/afp-global-rigidity.yml.xz \
+            > .github/workflows/afp-global-rigidity.yml
+
+          git apply --check --index /tmp/p3p4.patch
+          git apply --index /tmp/p3p4.patch
+          git add .github/workflows/afp-global-rigidity.yml
+
+          git rm -f \
+            .github/p3p4-patch-00.b64 \
+            .github/p3p4-patch-01.b64 \
+            .github/p3p4-patch-02.b64 \
+            .github/p3p4-global.b64 \
+            .github/workflows/afp-p3-p4-materialize.yml \
+            .github/workflows/afp-p3-p4-targeted-lean.yml
+
+          python -m compileall -q afp_barrier_gate1/pure_math
+          python afp_barrier_gate1/pure_math/rigidity/global_near_rigidity_audit.py
+          python afp_barrier_gate1/pure_math/rigidity/q1_covariance_audit.py
+          python afp_barrier_gate1/pure_math/barriers/prompt4_sharp_barrier_audit.py
+
+          git diff --cached --check
+
+          bad_generated=$(git diff --cached --name-only | grep -E \
+            '(^|/)(__pycache__|_lean4export|_nanoda_lib)(/|$)|\.pyc$|(^|/)plantri$|prompt3-triangulations-through-12\.jsonl$|\.b64$|afp-p3-p4-(materialize|targeted-lean)\.yml$' \
+            || true)
+          test -z "${bad_generated}" || {
+            echo 'Generated/bootstrap artifact remains staged:' >&2
+            echo "${bad_generated}" >&2
+            exit 1
+          }
+
+          test ! -e .github/p3p4-patch-00.b64
+          test ! -e .github/p3p4-patch-01.b64
+          test ! -e .github/p3p4-patch-02.b64
+          test ! -e .github/p3p4-global.b64
+          test ! -e .github/workflows/afp-p3-p4-materialize.yml
+          test ! -e .github/workflows/afp-p3-p4-targeted-lean.yml
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Complete Prompt 3–4 reconciliation candidate'
+          git push origin "HEAD:refs/heads/${TARGET_BRANCH}"
