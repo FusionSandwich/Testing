@@ -46,8 +46,10 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install exact symbolic dependency
-        run: python -m pip install --disable-pip-version-check --no-input 'sympy==1.14.0'
+      - name: Install exact symbolic dependencies
+        run: |
+          python -m pip install --disable-pip-version-check --no-input \
+            'numpy==2.3.2' 'sympy==1.14.0'
 
       - name: Run exact Prompt 3 and compatibility audits
         shell: bash
