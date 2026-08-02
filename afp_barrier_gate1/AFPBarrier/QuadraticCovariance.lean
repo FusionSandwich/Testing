@@ -294,15 +294,14 @@ theorem sampledRange_exact_eq_range_inf_ker
     LinearMap.range
         (S.domRestrict (LinearMap.ker (B.comp S)))
       = LinearMap.range S ⊓ LinearMap.ker B := by
-  ext y
-  constructor
-  · intro hy
+  apply le_antisymm
+  · intro y hy
     rcases hy with ⟨x, rfl⟩
-    constructor
-    · exact ⟨x.1, rfl⟩
-    · change B (S x.1) = 0
-      simpa using x.2
-  · intro hy
+    refine ⟨⟨x.1, rfl⟩, ?_⟩
+    change B (S x.1) = 0
+    change B (S x.1) = 0 at x.2
+    exact x.2
+  · intro y hy
     rcases hy.1 with ⟨x, hx⟩
     refine ⟨⟨x, ?_⟩, hx⟩
     change B (S x) = 0
