@@ -42,43 +42,78 @@ connected_active_loss_rigidity.
 
 This abstract propagation theorem is no longer a conjecture.
 
-## C-M2B. Complete spherical `Q=1` specialization — Prompt 3 target
+## C-M2B. Complete spherical `Q=1` specialization — resolved
 
-**Question.** Determine the exact spherical hypotheses under which the local
-rate-defect equality condition supplies the abstract theorem's active-edge
-formula, and audit all normalization and zero-edge cases.
+**Status:** PROVED / LEAN finite core.
 
-**Status:** PROMPT 3 TARGET. Do not call it proved merely because the abstract
-propagation theorem is formalized.
+For the exact spherical generator, coordinate exactness gives
 
-## C-M3. Restricted geodesic-triangulation classification — Prompt 3 target
+```text
+sum_j a_ij ell_ij=2,
+Q_i-1=sum_j p_ij(r_i ell_ij/2-1)^2.
+```
 
-**Candidate statement.** A connected nondegenerate geodesic triangulation of
-`S^2` with positive conductances on every edge, exact coordinate eigenmap, and
-`Q_i=1` at every vertex must be tetrahedral, octahedral, or icosahedral under a
-fully stated convex-embedding/equal-loss hypothesis.
+Thus local `Q_i=1` fixes every active loss to `2/r_i`.  Shared positive
+conductances make activity symmetric, spherical loss is symmetric, and a
+shared active edge forces equal endpoint rates.  Connectedness propagates one
+global rate and loss.  Loops, zero-rate rows, coincident active edges,
+antipodal `ell=2`, repeated embeddings, and inactive permitted edges are
+audited separately in `GLOBAL_Q_RIGIDITY_THEOREM.md` §§1–2.
 
-**Status:** CONJECTURE / PROMPT 3 TARGET.
+## C-M3. Restricted geodesic-triangulation classification — resolved
 
-**Known warning:** cube and dodecahedron embeddings defeat every unrestricted
-Platonic-only claim.
+**Status:** PROVED under the ten explicit hypotheses of Theorem P3-R.
 
-**Kill criterion:** one valid non-Platonic triangulated counterexample under
-the final hypotheses.
+An actual finite simple, injective, nondegenerate, convex-face, full-coverage
+minor-arc geodesic triangulation with every edge active and `Q_i=1` is, up to
+`O(3)`, the regular tetrahedral, octahedral, or icosahedral triangulation.
+The proof establishes common spherical side and angle, the round `2pi` angle
+sum, constant valence, Euler restriction, direct combinatorial uniqueness for
+all three maps, exact side/loss/rate constants, and geometric uniqueness by
+face propagation.
 
-## C-M4. Quantitative near-rigidity — Prompt 3 target
+The source-pinned plantri census through 12 vertices is a hostile falsification
+audit, not the proof.  Cube and dodecahedron remain permanent counterexamples
+to every unrestricted formulation.
 
-**Candidate statement.** Under explicit lower active-weight, connectivity, and
-rate-control hypotheses, small local equality defect forces global active-edge
-loss concentration with an explicit graph-dependent bound.
+## C-M4. Quantitative near-rigidity — resolved
 
-**Status:** CONJECTURE / PROMPT 3 TARGET.
+**Status:** PROVED with explicit constants.
 
-**Work needed:** propagate the local weighted-variance estimate while tracking
-minimum conductance, graph diameter/overlap, and row-rate variation.
+Under `p_ij>=kappa>0`, `Q_i<=1+eta`, and
+`delta=sqrt(eta/kappa)<1`, the theorem gives pointwise, adjacent, path,
+diameter, incident-edge, global edge-loss, graph-center reference, and
+minor-arclength bounds.  Detailed balance for
+`pi_i proportional w_i r_i` gives
 
-**Kill criterion:** a family with defect tending to zero but no controlled
-loss concentration under the stated hypotheses.
+```text
+E_P(log r)<=2eta/(1-delta)^2,
+Var_pi(log r)<=2eta/((1-delta)^2 lambda_P),
+|log r_i-log r_j|<=sqrt(2eta R_eff(i,j))/(1-delta).
+```
+
+For round geodesic triangulations, explicit side-domain, spherical-angle,
+integer-valence, and equilateral-angle derivative constants identify the
+Platonic type and bound the edge-length sup distance.  Section 6.5 supplies a
+single conservative `eta_*=kappa delta_*^2` under displayed reference margins.
+Long paths, small `kappa`, small spectral gap, and large resistance remain
+necessity tests.
+
+## C-M4C. `Q=1` covariance implication — resolved negatively and exactly
+
+`Q=1` gives
+
+```text
+C_i=2(2-ell_i)T_i+2ell_i Omega_iOmega_i^T,
+M_i=3ell_i(Omega_iOmega_i^T-I/3)
+    +2(2-ell_i)(T_i-P_i/2).
+```
+
+Axial covariance holds iff `T_i=P_i/2`.  The positive reversible weighted
+octahedral family has `Q=1` at every vertex but is axially isotropic at all
+vertices iff `g_12=g_13=g_23`.  Its genuine sampled degree-two exact space is
+`{0}` for all positive parameters.  Therefore `Q=1 =>` axial covariance is
+permanently REJECTED.
 
 ## C-M5. Genuine sampled quadratic exactness — resolved after corrective audit
 

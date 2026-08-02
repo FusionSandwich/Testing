@@ -206,21 +206,37 @@ declaration is permitted. The dedicated workflow scans the aggregate source,
 tests both axiom spellings, performs the full Lean build and focused axiom
 audit, and independently checks selected declarations with nanoda.
 
-## Global equality propagation and Prompt 3 boundary
+## Prompt 3 exact global rigidity and near-rigidity package
 
-The abstract equality-propagation result is already `PROVED / LEAN` in
-`GlobalLossRigidity.lean`: on a connected symmetric active graph, the local
-formula `loss=lambda/rate` propagates one common row rate and one common
-active-edge loss.
+The abstract equality-propagation theorem in `GlobalLossRigidity.lean` remains
+a foundational dependency.  Prompt 3 is now proved in
 
-Prompt 3 begins only from the verified closeout handoff and is limited to:
+```text
+rigidity/GLOBAL_Q_RIGIDITY_THEOREM.md.
+```
 
-1. complete spherical `Q=1` specialization audit;
-2. restricted geodesic-triangulation classification; and
-3. quantitative near-rigidity.
+The package contains:
 
-Those three items remain open targets. No graph enumeration, classification,
-or stability proof is performed in the Prompt 2 closeout.
+1. the exact spherical `Q=1` moment/variance transfer and all degeneracy cases;
+2. the restricted nondegenerate minor-arc round geodesic-triangulation
+   classification into tetrahedron, octahedron, and icosahedron;
+3. exact counts, sides, losses, rates, direct combinatorial uniqueness, and
+   geometric uniqueness;
+4. explicit pointwise, path, diameter, reference-loss, and arclength
+   near-rigidity bounds;
+5. independent Poincare and effective-resistance refinements;
+6. an explicit spherical-angle/valence threshold and edge-length sup distance
+   to the exact Platonic side; and
+7. the exact radial/tangential `Q=1` covariance decomposition plus the positive
+   reversible weighted-octahedron anisotropy example.
+
+The classification is not unrestricted.  Cube and dodecahedron remain exact
+`Q=1` regressions, and every embedding hypothesis is retained in claim
+control.  `Q=1` does not imply axial covariance.
+
+Verification artifacts are under `rigidity/`; stage and theorem maps are in
+`../docs/PROMPT3_GLOBAL_RIGIDITY_*`; the Prompt 4 boundary is frozen in
+`../docs/PROMPT4_READINESS_HANDOFF.md`.
 
 ## Claim discipline
 

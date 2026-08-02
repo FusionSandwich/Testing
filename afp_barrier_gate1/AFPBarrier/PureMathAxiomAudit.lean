@@ -6,6 +6,9 @@ import AFPBarrier.SphericalFeasibilityAlgebra
 import AFPBarrier.QuantitativeSphericalFeasibility
 import AFPBarrier.QuadraticCovariance
 import AFPBarrier.GlobalLossRigidity
+import AFPBarrier.SphericalQEqualityRigidity
+import AFPBarrier.QuantitativeGlobalNearRigidity
+import AFPBarrier.QEqualityCovariance
 import AFPBarrier.SharedEdgeEquilibrium
 import AFPBarrier.GroupAveraging
 import AFPBarrier.GlobalSharedEdgeDuality
@@ -70,3 +73,26 @@ import AFPBarrier.GlobalSharedEdgeDuality
 #print axioms AFPBarrier.rate_eq_of_symmetric_active_loss
 #print axioms AFPBarrier.rate_eq_of_active_reflTransGen
 #print axioms AFPBarrier.connected_active_loss_rigidity
+
+
+#print axioms AFPBarrier.jumpRate_pos_of_lossMoment_two
+#print axioms AFPBarrier.normalizedEdgeWeight_sum_one
+#print axioms AFPBarrier.normalizedLossScale_mean_one
+#print axioms AFPBarrier.normalizedLossScale_secondMoment
+#print axioms AFPBarrier.weightedSecondMoment_sub_one_eq_variance
+#print axioms AFPBarrier.sphericalQ_sub_one_eq_normalizedLossVariance
+#print axioms AFPBarrier.sphericalQ_eq_one_active_loss
+#print axioms AFPBarrier.active_symmetric_of_shared_conductance
+#print axioms AFPBarrier.connected_spherical_active_loss_rigidity
+#print axioms AFPBarrier.pointwise_delta_bound
+#print axioms AFPBarrier.adjacent_rate_cross_bounds
+#print axioms AFPBarrier.adjacent_rate_ratio_bounds
+#print axioms AFPBarrier.incident_loss_cross_bounds
+#print axioms AFPBarrier.radial_covariance_error_bounds
+#print axioms AFPBarrier.covarianceTrace_eq_four_of_normLoss
+#print axioms AFPBarrier.radialCovariance_eq_sphericalEpsilon
+#print axioms AFPBarrier.sphericalEpsilon_eq_four_mul_Q_div_rate
+#print axioms AFPBarrier.weighted_centered_affine_product_sum
+#print axioms AFPBarrier.qOne_covarianceEntry_decomposition
+#print axioms AFPBarrier.qOne_tangent_entry_isotropic_iff
+#print axioms AFPBarrier.weightedOctahedron_axis_axial_iff

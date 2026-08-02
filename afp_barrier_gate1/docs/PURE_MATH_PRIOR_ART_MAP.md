@@ -207,24 +207,75 @@ sampled dimension tradeoff, multiplicity obstruction, or new global theorem
 survived the identifiability and alias audits. It is not rejected by a false
 universal centered-square obstruction.
 
-## 10. Global equality propagation and Prompt 3 boundary
+## 10. Global `Q=1` rigidity, maps, and spherical tilings
 
-`GlobalLossRigidity.lean` already proves the abstract equal-rate/equal-loss
-propagation theorem on a connected symmetric active graph under the local
-equality formula. That abstract theorem is `PROVED / LEAN`.
+The abstract propagation lemma in `GlobalLossRigidity.lean` is standard
+finite equality propagation and remains foundational.  Prompt 3 adds the
+sphere-specific variance transfer, restricted round triangulation theorem,
+and quantitative graph-global control.
 
-Prompt 3 still must audit:
+Adjacent sources and tools include:
 
-- the complete spherical `Q=1` specialization;
-- the restricted geodesic-triangulation classification; and
-- quantitative near-rigidity.
+- G. Brinkmann and B. D. McKay, `plantri` and its guide, for canonical
+  generation of planar triangulations.  The project source-pins the generator
+  and uses it only for finite falsification through 12 vertices.
+- B. Datta and D. Maity, *Platonic solids, Archimedean solids and
+  semi-equivelar maps on the sphere*, arXiv:1804.06692, for adjacent
+  semi-equivelar-map classification context.  The needed triangular
+  `q=3,4,5` uniqueness is proved directly in the project.
+- classical spherical law of cosines and Girard excess.  These supply the
+  standard face formulas, not the combined generator theorem.
+- Cauchy, Alexandrov, and modern spherical/framework rigidity literature as
+  adjacent context.  The project does not invoke them as a hidden black box:
+  geometric uniqueness follows by direct adjacent-face propagation.
 
-No priority or completion claim is made for those three Prompt 3 targets.
+The ten embedding hypotheses are essential publication boundaries.  Equal
+chords without minor arcs, convex nondegenerate faces, noncrossing interiors,
+full coverage/no cone defect, injectivity, and all edges active do not imply
+the classification.
 
-## 11. Priority conclusion
+## 11. Reversible chains, Poincare inequalities, and resistance
+
+Standard electrical-network and reversible-chain references include D. Levin,
+Y. Peres, and E. Wilmer, *Markov Chains and Mixing Times*, second edition.
+The Poincare variational definition and Dirichlet principle are standard.  The
+new specialization is the explicit transfer
+
+```text
+Q_i-1 -> E_P(log r) -> Var_pi(log r), R_eff pointwise control,
+```
+
+with the exact constant `2eta/(1-delta)^2` and the conductance normalization
+`c_ij=pi_i p_ij`.
+
+## 12. Quantitative framework stability boundary
+
+M. Holmes-Cerfon, L. Theran, and S. J. Gortler,
+*Almost-rigidity of frameworks*, arXiv:1908.03802, provides adjacent
+quantitative framework context.  Prompt 3 does not import an inverse-function
+or rigidity-matrix theorem.  Its mandatory stability metric is only the
+edge-length sup norm, derived directly from explicit arccos and spherical-law
+of-cosines derivatives.  Coordinate-level stability is not claimed.
+
+## 13. Covariance and spherical designs boundary
+
+The radial/tangential decomposition of `C_i` is elementary tensor algebra.
+The publishable boundary is the exact identification of what `Q=1` fixes,
+the criterion `T_i=P_i/2`, and the positive reversible weighted-octahedron
+counterexample.  No general spherical-design or covariance-isotropy theorem is
+claimed from `Q=1` alone.
+
+## 14. Priority conclusion
 
 Defensible Prompt 2 novelty is the combined sampled covariance and positive
 rigidity package, not generic convexity, rank-nullity, product calculus,
 Jensen, harmonic decomposition, or representation theory. The corrective
 signed-pentagon and Boolean examples define the exact boundary of the positive
 and uncentered claims. Specialist review is still required before publication.
+
+
+Prompt 3's defensible new boundary is the restricted classification plus the
+explicit near-rigidity and covariance-interaction package.  The abstract
+variance identity, Euler formula, spherical trigonometry, Poincare inequality,
+and electrical principle are not claimed as novelty.  Specialist citation and
+priority review remains required before publication.

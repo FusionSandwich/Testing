@@ -54,7 +54,26 @@ The authoritative Prompt 2 proof is
 | `S^2` table `ell=1,...,6` | Prompt 2 Section 8 | not a Lean claim | closeout audit exact rows |
 | Pell arithmetic and hierarchy verdict | Prompt 2 Section 9 | ordinary arithmetic/kill-criterion analysis | existing and closeout assertions |
 | Abstract equal-rate/equal-loss propagation | `GlobalLossRigidity.lean` | three named Lean theorems | build and nanoda |
-| Prompt 3 spherical specialization/classification/near-rigidity | `PROMPT3_READINESS_HANDOFF.md` | not begun | not part of closeout |
+| Prompt 3 spherical specialization/classification/near-rigidity | `pure_math/rigidity/GLOBAL_Q_RIGIDITY_THEOREM.md` | three narrow Prompt 3 Lean modules | three dedicated exact/certified audits |
+
+
+## Prompt 3 exact global rigidity and stability
+
+The authoritative proof is
+`pure_math/rigidity/GLOBAL_Q_RIGIDITY_THEOREM.md`; the detailed mapping is
+`docs/PROMPT3_GLOBAL_RIGIDITY_THEOREM_MAP.md`.
+
+| Mandatory item | Mathematical proof | Lean support | Exact regression |
+|---|---|---|---|
+| spherical normal moment and variance identities | §§1–2 | `SphericalQEqualityRigidity.lean` | near-rigidity audit |
+| exact active-edge equality and global propagation | §2 | specialization plus existing `GlobalLossRigidity.lean` | all Platonic and deletion tests |
+| restricted triangulation classification | §3 | selected finite arithmetic | plantri, exact Gram/hull/isomorphism |
+| exact `q/V/E/F`, side/loss/rate table | §§3.3–3.5 | finite scalar core | SymPy exact table |
+| path/diameter/reference near-rigidity | §4 | `QuantitativeGlobalNearRigidity.lean` | long-path/small-`kappa` stress |
+| spectral-gap/effective-resistance refinement | §5 | finite detailed-balance boundary | exact rational resistance graphs |
+| quantitative triangulation stability | §6 | ordinary explicit calculus | derivative, interval, valence audits |
+| exact `Q=1` covariance decomposition | §7 | `QEqualityCovariance.lean` | weighted octahedron exact audit |
+| sampled-space conclusion and anisotropy separation | §7.4–7.5 | ordinary finite proof | exact linear system and limit |
 
 ## Verification and provenance
 
@@ -68,7 +87,9 @@ The authoritative Prompt 2 proof is
   `.github/workflows/afp-spherical-feasibility.yml`;
 - repository-wide workflow: `.github/workflows/afp-pure-math.yml`;
 - closeout audit: `docs/PROMPT2_CLOSEOUT_AUDIT.md`;
-- Prompt 3 handoff: `docs/PROMPT3_READINESS_HANDOFF.md`.
+- Prompt 3 starting handoff: `docs/PROMPT3_READINESS_HANDOFF.md`;
+- Prompt 3 stage/theorem maps: `docs/PROMPT3_GLOBAL_RIGIDITY_STAGE_REPORT.md`, `docs/PROMPT3_GLOBAL_RIGIDITY_THEOREM_MAP.md`;
+- Prompt 4 handoff: `docs/PROMPT4_READINESS_HANDOFF.md`.
 
 All workflows reject `sorry`, `admit`, and `sorryAx`; the closeout policy scans
 anchored declarations for both singular `axiom` and plural `axioms` and tests
