@@ -418,6 +418,15 @@ jobs:
             echo "toolchain=$(cat lean-toolchain)"
           } | tee "${RUNNER_TEMP}/p3-lean/toolchain.log"
 
+      - name: Install source-policy scanner
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install --no-install-recommends -y ripgrep \
+            2>&1 | tee "${RUNNER_TEMP}/p3-lean/ripgrep-install.log"
+          rg --version | tee "${RUNNER_TEMP}/p3-lean/ripgrep-version.log"
+
       - name: Resolve pinned dependencies and cache
         shell: bash
         working-directory: afp_barrier_gate1

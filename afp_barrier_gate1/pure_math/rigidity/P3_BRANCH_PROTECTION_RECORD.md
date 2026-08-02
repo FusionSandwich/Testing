@@ -31,7 +31,7 @@ the dedicated workflow independently re-queries every row.
 | `agent/afp-pure-math-p3-global-rigidity-near-rigidity` | `d9304b5d19a1bbe69fe4ac23736308f9efe9d694` | `f1ef5b3c3107d2dfc835ed84c443eb82d752cb56` | MOVED |
 | `archive/afp-gate6-spatial-multigroup-verified` | `515f1aae6c20bd85711c90b5c1c21b4905252d01` | `515f1aae6c20bd85711c90b5c1c21b4905252d01` | MATCH |
 
-The final observation was taken at `2026-08-02T22:44:30Z`.  The richer old
+The final observation was taken at `2026-08-02T22:52:18Z`.  The richer old
 Prompt 3 branch had been advanced independently from the recorded immutable
 source head `d9304b5d...` to `f1ef5b3c...`; the other four protected refs still
 matched.  This work did not restore, move, or redefine the expected SHA of that
