@@ -63,7 +63,10 @@ theorem sphericalQOne_active_loss
     zonalLoss zonal i j = 2 / jumpRate a i := by
   have hquality :
       jumpRate a i * peakDefect a (zonal i) i 2 = (2 : ℝ) ^ 2 := by
-    simpa [sphericalQOneAt] using hq
+    calc
+      jumpRate a i * peakDefect a (zonal i) i 2 = 4 := by
+        simpa [sphericalQOneAt] using hq
+      _ = (2 : ℝ) ^ 2 := by norm_num
   have hall :=
     (rate_mul_peakDefect_eq_eigenvalue_sq_iff_active_losses_eq_mean
       a (zonal i) i 2 ha hdiag hlinear
@@ -233,9 +236,12 @@ theorem spherical_active_loss_deviation_sq_le_gap_div_rate
       ≤ eta / jumpRate a i := by
   have hm : (2 / jumpRate a i) * jumpRate a i = (2 : ℝ) := by
     field_simp [ne_of_gt hrate]
+  have hgap' :
+      jumpRate a i * peakDefect a (zonal i) i 2 - (2 : ℝ) ^ 2 ≤ eta := by
+    convert hgap using 1 <;> norm_num
   have h := minActiveRate_mul_loss_deviation_sq_le_gap_div_rate
     a (zonal i) i j 2 (2 / jumpRate a i) eta amin
-    ha hji hamin hdiag hlinear hrate hm hgap
+    ha hji hamin hdiag hlinear hrate hm hgap'
   simpa [zonalLoss, hdiag] using h
 
 /-- Two local mean losses that are both within `Delta` of one shared symmetric
