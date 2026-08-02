@@ -15,6 +15,10 @@ import AFPBarrier.QuantitativeSphericalFeasibility
 -- Prompt 2 covariance, sampled exactness, and centered product resonance.
 import AFPBarrier.QuadraticCovariance
 import AFPBarrier.GlobalLossRigidity
+-- Prompt 3 exact equality, quantitative propagation, and covariance split.
+import AFPBarrier.SphericalQEqualityRigidity
+import AFPBarrier.QuantitativeGlobalNearRigidity
+import AFPBarrier.QEqualityCovariance
 import AFPBarrier.ExplicitEulerTransport
 import AFPBarrier.SpatialUpwindTransport
 import AFPBarrier.MultigroupTransfer

@@ -1,0 +1,360 @@
+name: AFP global rigidity
+
+on:
+  push:
+    branches:
+      - agent/afp-pure-math-p3-global-rigidity-near-rigidity
+      - agent/afp-pure-math-p0-m1
+  pull_request:
+    branches:
+      - agent/afp-pure-math-p0-m1
+    paths:
+      - 'afp_barrier_gate1/AFPBarrier/**'
+      - 'afp_barrier_gate1/AFPBarrier.lean'
+      - 'afp_barrier_gate1/pure_math/**'
+      - 'afp_barrier_gate1/docs/**'
+      - 'afp_barrier_gate1/lakefile.lean'
+      - 'afp_barrier_gate1/lean-toolchain'
+      - 'afp_barrier_gate1/lake-manifest.json'
+      - '.github/workflows/afp-global-rigidity.yml'
+      - '.github/workflows/afp-pure-math.yml'
+      - '.github/workflows/afp-quadratic-covariance.yml'
+      - '.github/workflows/afp-spherical-feasibility.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify-global-rigidity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 80
+
+    steps:
+      - name: Check out literal event head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+
+      - name: Assert exact Prompt 3 provenance and immutable archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected='${{ github.event.pull_request.head.sha || github.sha }}'
+          actual=$(git rev-parse HEAD)
+          tree=$(git show -s --format=%T HEAD)
+          baseline=c88b57533c3c8ad8fd819e4e52a74c4b5a245479
+          baseline_tree=92b3c0eaa45dd58befbc5af59790476d5c5d85b3
+          test "$actual" = "$expected"
+          test "$(git show -s --format=%T "$baseline")" = "$baseline_tree"
+          git merge-base --is-ancestor "$baseline" HEAD
+          git fetch --no-tags origin archive/afp-gate6-spatial-multigroup-verified
+          test "$(git rev-parse FETCH_HEAD)" = \
+            515f1aae6c20bd85711c90b5c1c21b4905252d01
+          {
+            echo "expected_head=$expected"
+            echo "actual_head=$actual"
+            echo "actual_tree=$tree"
+            echo "baseline=$baseline"
+            echo "baseline_tree=$baseline_tree"
+            echo "archive=515f1aae6c20bd85711c90b5c1c21b4905252d01"
+          } | tee prompt3-provenance.log
+
+      - name: Set up deterministic Python runtime
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install pinned audit dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check --no-input \
+            'numpy==2.3.2' 'sympy==1.14.0' 'networkx==3.5' \
+            2>&1 | tee prompt3-python-dependencies.log
+
+      - name: Python syntax audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd afp_barrier_gate1
+          python -m compileall -q pure_math \
+            2>&1 | tee prompt3-python-compile.log
+
+      - name: Run accepted Prompt 1 and Prompt 2 regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd afp_barrier_gate1
+          python pure_math/falsification/claim_falsification_audit.py \
+            2>&1 | tee prompt3-baseline-falsification.log
+          python pure_math/examples/exact_local_global_audit.py \
+            2>&1 | tee prompt3-baseline-local-global.log
+          python pure_math/tests/test_spherical_feasibility.py \
+            2>&1 | tee prompt3-baseline-spherical.log
+          python pure_math/covariance/quadratic_covariance_audit.py \
+            2>&1 | tee prompt3-baseline-covariance.log
+          python pure_math/covariance/prompt2_closeout_audit.py \
+            2>&1 | tee prompt3-baseline-prompt2-closeout.log
+
+      - name: Literal source-pinned triangulation enumeration
+        shell: bash
+        env:
+          P3_REQUIRE_PLANTRI: '1'
+        run: |
+          set -euo pipefail
+          cd afp_barrier_gate1
+          python pure_math/rigidity/triangulation_counterexample_audit.py \
+            --require-plantri \
+            --catalog prompt3-triangulations-through-12.jsonl \
+            2>&1 | tee prompt3-triangulation-audit.log
+          test "$(wc -l < prompt3-triangulations-through-12.jsonl)" -eq 9150
+
+      - name: Run quantitative and covariance adversarial audits
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd afp_barrier_gate1
+          python pure_math/rigidity/global_near_rigidity_audit.py \
+            2>&1 | tee prompt3-near-rigidity-audit.log
+          python pure_math/rigidity/q1_covariance_audit.py \
+            2>&1 | tee prompt3-q1-covariance-audit.log
+
+      - name: Verify singular and plural user-axiom fixtures
+        shell: bash
+        run: |
+          set -euo pipefail
+          tmp=$(mktemp -d)
+          trap 'rm -rf "$tmp"' EXIT
+          printf 'axiom forbidden : Prop\n' > "$tmp/singular.lean"
+          printf 'axioms forbidden1 forbidden2 : Prop\n' > "$tmp/plural.lean"
+          printf '#print axioms Existing.theorem\ntheorem axiomName : True := by trivial\n' \
+            > "$tmp/allowed.lean"
+          pattern='^[[:space:]]*(axiom|axioms)([[:space:]]|$)'
+          grep -qE "$pattern" "$tmp/singular.lean"
+          grep -qE "$pattern" "$tmp/plural.lean"
+          ! grep -qE "$pattern" "$tmp/allowed.lean"
+
+      - name: Reject placeholders and user-declared axioms
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd afp_barrier_gate1
+          if grep -RInE --include='*.lean' \
+            '(^|[^[:alnum:]_])(sorry|admit|sorryAx)([^[:alnum:]_]|$)' \
+            AFPBarrier AFPBarrier.lean; then
+            echo 'Forbidden proof placeholder found.' >&2
+            exit 1
+          fi
+          if grep -RInE --include='*.lean' \
+            '^[[:space:]]*(axiom|axioms)([[:space:]]|$)' \
+            AFPBarrier AFPBarrier.lean; then
+            echo 'User-declared axiom found.' >&2
+            exit 1
+          fi
+          echo 'aggregate placeholder and user-axiom audit: PASS' \
+            | tee prompt3-source-policy.log
+
+      - name: Install pinned Lean toolchain
+        uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: afp_barrier_gate1
+          build: false
+          test: false
+          lint: false
+          nanoda: false
+          use-mathlib-cache: false
+          use-github-cache: false
+
+      - name: Prepare pinned independent kernel checker
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd afp_barrier_gate1
+          rm -rf _lean4export _nanoda_lib
+          rm -f _nanoda_export.txt _nanoda_config.json
+
+          if ! command -v cargo >/dev/null 2>&1; then
+            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
+              | sh -s -- -y --default-toolchain stable --profile minimal
+            source "$HOME/.cargo/env"
+          fi
+
+          git init _lean4export
+          git -C _lean4export remote add origin \
+            https://github.com/ammkrn/lean4export.git
+          git -C _lean4export fetch --depth 1 origin \
+            f3cf6458a309d643dc586a80f9ab5a93c2304db9
+          git -C _lean4export checkout --detach FETCH_HEAD
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('_lean4export/Export.lean')
+          source = path.read_text(encoding='utf-8')
+          old = 'e.updateLet! (← removeMData d) (← removeMData v) (← removeMData b)'
+          new = old + ' false'
+          if source.count(old) != 1:
+              raise SystemExit('Unexpected Lean exporter let-expression source')
+          path.write_text(source.replace(old, new), encoding='utf-8')
+          PY
+          cp lean-toolchain _lean4export/
+          (cd _lean4export && lake build)
+
+          git init _nanoda_lib
+          git -C _nanoda_lib remote add origin \
+            https://github.com/ammkrn/nanoda_lib.git
+          git -C _nanoda_lib fetch --depth 1 origin \
+            e5438ac0a85a036b6dfe093aa457bc3448498014
+          git -C _nanoda_lib checkout --detach FETCH_HEAD
+          (cd _nanoda_lib && cargo build --release)
+
+      - name: Resolve pinned Mathlib and obtain compiled cache
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd afp_barrier_gate1
+          lake update 2>&1 | tee prompt3-lake-update.log
+          lake exe cache get 2>&1 | tee prompt3-mathlib-cache.log
+
+      - name: Full Lean 4.30 build
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd afp_barrier_gate1
+          lake build 2>&1 | tee prompt3-lean-build.log
+
+      - name: Focused pure-math axiom audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd afp_barrier_gate1
+          lake env lean AFPBarrier/PureMathAxiomAudit.lean \
+            2>&1 | tee prompt3-axiom-audit.log
+          if grep -q 'sorryAx' prompt3-axiom-audit.log; then
+            echo "A Prompt 3 theorem depends on Lean's sorry axiom." >&2
+            exit 1
+          fi
+
+      - name: Independently type-check Prompt 3 finite algebra with nanoda
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd afp_barrier_gate1
+          cleanup() {
+            rm -rf _lean4export _nanoda_lib
+            rm -f _nanoda_export.txt _nanoda_config.json
+          }
+          trap cleanup EXIT
+
+          modules=(
+            AFPBarrier.SphericalQEqualityRigidity
+            AFPBarrier.QuantitativeGlobalNearRigidity
+            AFPBarrier.QEqualityCovariance
+          )
+          foundations=(
+            Nat Nat.zero Nat.succ
+            List List.nil List.cons
+            String String.mk Char Char.ofNat
+          )
+          declarations=(
+            AFPBarrier.sphericalEpsilonAt
+            AFPBarrier.sphericalQAt
+            AFPBarrier.jumpRate_pos_of_lossMoment_two
+            AFPBarrier.normalizedEdgeWeight_sum_one
+            AFPBarrier.normalizedLossScale_mean_one
+            AFPBarrier.normalizedLossScale_secondMoment
+            AFPBarrier.weightedSecondMoment_sub_one_eq_variance
+            AFPBarrier.sphericalQ_sub_one_eq_normalizedLossVariance
+            AFPBarrier.sphericalQ_eq_one_active_loss
+            AFPBarrier.active_symmetric_of_shared_conductance
+            AFPBarrier.connected_spherical_active_loss_rigidity
+            AFPBarrier.abs_sub_one_le_of_sq_le_delta_sq
+            AFPBarrier.pointwise_delta_bound
+            AFPBarrier.normalized_scale_interval_of_abs
+            AFPBarrier.adjacent_rate_cross_bounds
+            AFPBarrier.adjacent_rate_ratio_bounds
+            AFPBarrier.incident_loss_cross_bounds
+            AFPBarrier.radial_covariance_error_bounds
+            AFPBarrier.covarianceTrace_eq_four_of_normLoss
+            AFPBarrier.radialCovariance_eq_sphericalEpsilon
+            AFPBarrier.sphericalEpsilon_eq_four_mul_Q_div_rate
+            AFPBarrier.weighted_centered_affine_product_sum
+            AFPBarrier.qOne_covarianceEntry_decomposition
+            AFPBarrier.qOne_tangent_entry_isotropic_iff
+            AFPBarrier.weightedOctahedron_tangentWeights_sum_one
+            AFPBarrier.weightedOctahedron_axis_axial_iff
+          )
+
+          lake env _lean4export/.lake/build/bin/lean4export \
+            "${modules[@]}" -- "${foundations[@]}" "${declarations[@]}" \
+            > _nanoda_export.txt
+          test -s _nanoda_export.txt
+
+          cat > _nanoda_config.json <<'JSON'
+          {
+            "export_file_path": "_nanoda_export.txt",
+            "use_stdin": false,
+            "permitted_axioms": [
+              "propext",
+              "Classical.choice",
+              "Quot.sound",
+              "Lean.trustCompiler"
+            ],
+            "unpermitted_axiom_hard_error": false,
+            "nat_extension": true,
+            "string_extension": true,
+            "print_success_message": true
+          }
+          JSON
+
+          RUST_BACKTRACE=1 \
+            _nanoda_lib/target/release/nanoda_bin _nanoda_config.json \
+            2>&1 | tee prompt3-nanoda.log
+
+      - name: Verify Prompt 3 diff is pure-math only
+        shell: bash
+        run: |
+          set -euo pipefail
+          baseline=c88b57533c3c8ad8fd819e4e52a74c4b5a245479
+          bad=$(git diff --name-only "$baseline"...HEAD | \
+            grep -Ev '^(.github/workflows/afp-(global-rigidity|quadratic-covariance|pure-math|spherical-feasibility)\.yml|afp_barrier_gate1/(AFPBarrier(\.lean|/.*\.lean)|pure_math/.*|docs/.*))$' || true)
+          if test -n "$bad"; then
+            echo 'Out-of-scope Prompt 3 paths:' >&2
+            echo "$bad" >&2
+            exit 1
+          fi
+          git diff --check "$baseline"...HEAD
+          echo 'Prompt 3 pure-math-only diff: PASS'
+
+      - name: Write exact-head checkpoint
+        if: always()
+        shell: bash
+        run: |
+          cd afp_barrier_gate1
+          {
+            echo 'AFP Prompt 3 global rigidity checkpoint'
+            echo "commit=${GITHUB_SHA}"
+            echo "tree=$(git -C .. show -s --format=%T HEAD)"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "run_attempt=${GITHUB_RUN_ATTEMPT}"
+            echo "toolchain=$(cat lean-toolchain)"
+            echo "timestamp_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } > prompt3-checkpoint.txt
+
+      - name: Upload Prompt 3 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: afp-global-rigidity-${{ github.run_id }}
+          path: |
+            prompt3-provenance.log
+            prompt3-python-dependencies.log
+            afp_barrier_gate1/prompt3-*.log
+            afp_barrier_gate1/prompt3-checkpoint.txt
+            afp_barrier_gate1/prompt3-triangulations-through-12.jsonl
+            afp_barrier_gate1/lake-manifest.json
+          if-no-files-found: warn
