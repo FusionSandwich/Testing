@@ -1,4 +1,4 @@
-import AFPBarrier.QuadraticCovariance
+import AFPBarrier.QuadraticCovarianceCompletion
 import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 import Mathlib.Tactic
 
@@ -6,7 +6,7 @@ import Mathlib.Tactic
 # Sampling kernels and exact sampled modes
 
 These definitions deliberately distinguish an algebraic form from its sampled
-function.  The residual factors through sampling, so every sampling alias is
+function. The residual factors through sampling, so every sampling alias is
 vacuously form-exact.
 -/
 
@@ -100,7 +100,7 @@ theorem linearSampledResidual_finrank_le_sampling
     (linear_samplingKernel_le_residualKernel T mu S)
   omega
 
-/-- The subspace of genuinely sampled exact functions.  Its domain is the
+/-- The subspace of genuinely sampled exact functions. Its domain is the
 residual kernel (exact algebraic forms), not the whole coefficient space. -/
 def linearSampledExactRange
     (T : W →ₗ[ℝ] W) (mu : ℝ) (S : V →ₗ[ℝ] W) : Submodule ℝ W :=
