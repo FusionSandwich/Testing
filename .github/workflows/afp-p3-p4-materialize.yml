@@ -64,18 +64,29 @@ jobs:
           git fetch --no-tags origin archive/afp-gate6-spatial-multigroup-verified
           test "$(git rev-parse FETCH_HEAD)" = "${ARCHIVE_SHA}"
 
-          : > /tmp/p3p4.patch.xz
-          for chunk in \
-            .github/p3p4-patch-00.b64 \
-            .github/p3p4-patch-01.b64 \
-            .github/p3p4-patch-02.b64; do
-            base64 --decode "${chunk}" >> /tmp/p3p4.patch.xz
-          done
+          python3 - <<'PY'
+          import base64
+          from pathlib import Path
+
+          def decode_text(path: str) -> bytes:
+              text = ''.join(Path(path).read_text(encoding='utf-8').split())
+              text += '=' * (-len(text) % 4)
+              return base64.b64decode(text, validate=False)
+
+          patch = b''.join(decode_text(path) for path in (
+              '.github/p3p4-patch-00.b64',
+              '.github/p3p4-patch-01.b64',
+              '.github/p3p4-patch-02.b64',
+          ))
+          Path('/tmp/p3p4.patch.xz').write_bytes(patch)
+          Path('/tmp/afp-global-rigidity.yml.xz').write_bytes(
+              decode_text('.github/p3p4-global.b64')
+          )
+          PY
+
           echo "${PATCH_XZ_SHA256}  /tmp/p3p4.patch.xz" | sha256sum --check
           xz --decompress --stdout /tmp/p3p4.patch.xz > /tmp/p3p4.patch
           echo "${PATCH_SHA256}  /tmp/p3p4.patch" | sha256sum --check
-
-          base64 --decode .github/p3p4-global.b64 > /tmp/afp-global-rigidity.yml.xz
           echo "${GLOBAL_XZ_SHA256}  /tmp/afp-global-rigidity.yml.xz" | sha256sum --check
           xz --decompress --stdout /tmp/afp-global-rigidity.yml.xz \
             > .github/workflows/afp-global-rigidity.yml
