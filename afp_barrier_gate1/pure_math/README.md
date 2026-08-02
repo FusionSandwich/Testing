@@ -1,221 +1,247 @@
 # AFP pure-mathematics track
 
-This branch separates the theorem-driven mathematics program from the frozen
-Gate 6 transport implementation.
+This directory separates theorem-driven mathematics from the frozen Gate 6
+transport implementation.
 
-## Frozen transport baseline
+## Immutable transport baseline
 
-The verified transport source is preserved on
-`archive/afp-gate6-spatial-multigroup-verified` at commit
-`515f1aae6c20bd85711c90b5c1c21b4905252d01`.
-
-Transport, Radiant integration, evaluated material data, spatial solvers, and
-physical HTS benchmarks are outside this stage. They are neither modified nor
-superseded here.
-
-## Pure-math objective
-
-The intended paper is not centered on the elementary inequality
+The transport archive remains
 
 ```text
-lambda^2 <= rate * defect.
+archive/afp-gate6-spatial-multigroup-verified
+515f1aae6c20bd85711c90b5c1c21b4905252d01.
 ```
 
-That inequality and its weighted-variance remainder are foundational lemmas.
-The publication target is a theorem package about finite positive generators
-that remains interesting without AFP terminology:
+Transport, Radiant, evaluated material data, HTS benchmarks, multigroup and
+spatial solvers, and production implementations are outside this track.
 
-1. local positive feasibility on spherical eigenmap embeddings;
-2. quantitative robustness and conditioning of positive spherical rows;
-3. global reversible shared-edge compatibility and duality;
-4. genuinely sampled quadratic spectral exactness; and
-5. global equality propagation and geometric rigidity.
+## Prompt 1 accepted package
 
-## Completed Prompt 1 package
+The corrected Prompt 1 baseline is
 
-`EXACT_LOCAL_GLOBAL_THEOREM_PACKAGE.md` and the independent
-`docs/SPHERICAL_FEASIBILITY_SHARED_EDGE_THEOREM.md` development establish:
+```text
+923dc47dae4f83dbea9cd56aa904164c6378e52d.
+```
 
-- exact non-antipodal convex-hull and relative-interior feasibility;
-- repeated/redundant indexed points and exact uniqueness;
-- the unique positive angular rescaling;
-- a division-free pure/mixed antipodal theorem;
-- explicit `rho`, `beta_*`, coefficient, rate, conditioning, perturbation, and
-  optimal-value constants;
+The package establishes:
+
+- exact indexed convex-hull and relative-interior local feasibility;
+- repeated, redundant, and lower-dimensional tangent configurations;
+- unique positive angular scaling and exact row-rate formulas;
+- division-free pure and mixed antipodal classifications;
+- explicit coefficient, rate, singular-value, perturbation, and LP margins;
 - global shared-edge cone, Farkas, LP, and complementary-slackness theory;
-- strict feasibility and compatible perturbation estimates;
-- exact centered local-but-not-global examples;
-- complete-graph, group-averaging, and centered-clique reconciliation.
+- exact centered local-but-not-global counterexamples; and
+- complete-graph, equivariant-averaging, and centered-clique reconciliation.
 
-The corrected Prompt 1 baseline used by Prompt 2 is commit
-`923dc47dae4f83dbea9cd56aa904164c6378e52d`.
+Primary Prompt 1 records are:
 
-## Completed Prompt 2 sampled-covariance package
+- `EXACT_LOCAL_GLOBAL_THEOREM_PACKAGE.md`;
+- `APPROACH_REGISTRY.md`;
+- `../docs/THEOREM_TO_FILE_MAP.md`;
+- `examples/exact_local_global_audit.py`; and
+- `tests/test_spherical_feasibility.py`.
 
-The paper-style proof is
-`covariance/SAMPLED_QUADRATIC_EXACTNESS_THEOREM.md`.
+## Prompt 2 accepted covariance package
 
-For
+The authoritative proof is
 
 ```text
-L Phi = -lambda Phi,
-C_i = sum_j a_ij (Phi_j-Phi_i)(Phi_j-Phi_i)^T,
-Q_A(i) = Phi_i^T A Phi_i,
+covariance/SAMPLED_QUADRATIC_EXACTNESS_THEOREM.md.
 ```
 
-it proves
+For a coordinate eigenmap,
 
 ```text
-L Q_A(i)
-  = -2 lambda Q_A(i) + tr(A^T C_i),
+L(Phi^T A Phi)
+ =-2lambda Phi^T A Phi+tr(A^T C_i).
 ```
 
-and the exact shifted target residual.
-
-For the trace-free degree-two sphere specialization, define
+In the spherical degree-two specialization,
 
 ```text
-S_X(A)_i = Phi_i^T A Phi_i,
-R_X(A)_i = <A,P_0(C_i+2 Phi_i Phi_i^T)>_F.
-```
-
-The key structural relation is
-
-```text
-R_X = (L+2d I) S_X.
+S_X(A)_i=Phi_i^T A Phi_i,
+R_X(A)_i=<A,P_0(C_i+2Phi_iPhi_i^T)>_F,
+R_X=(L+2dI)S_X.
 ```
 
 Therefore
 
 ```text
-K_X = ker S_X subset E_form = ker R_X,
-E_sample = S_X(E_form)
-         = im(S_X) intersect ker(L+2d I),
-dim E_sample = rank(S_X)-rank(R_X).
+K_X=ker S_X subset E_form=ker R_X,
+E_sample=im(S_X) intersect ker(L+2dI),
+dim E_sample=rank(S_X)-rank(R_X).
 ```
 
-The principal sharp theorem states that positive axially isotropic covariance
-at every node forces
+Positive axial covariance at every node gives
 
 ```text
-E_form = K_X,
-E_sample = {0}.
+E_form=K_X,
+E_sample={0}.
 ```
 
-This is attained by regular simplices in every dimension. An independent
-transitive-irreducibility theorem forces `E_form={0}` under a different
-symmetry mechanism.
+Regular simplices attain this theorem in every dimension. The five Platonic
+shortest-edge generators have exact form dimensions `2,3,2,0,0` and sampled
+dimensions all zero.
 
-Exact proofs for the five Platonic shortest-edge generators give:
+### Corrected equivariant boundary
 
-| Graph | rank `R_X` | rank `S_X` | dim `E_form` | dim `K_X` | dim `E_sample` |
-|---|---:|---:|---:|---:|---:|
-| tetrahedron | 3 | 3 | 2 | 2 | 0 |
-| octahedron | 2 | 2 | 3 | 3 | 0 |
-| cube | 3 | 3 | 2 | 2 | 0 |
-| icosahedron | 5 | 5 | 0 | 0 | 0 |
-| dodecahedron | 5 | 5 | 0 | 0 | 0 |
+The independent equivariant irreducibility theorem requires
 
-The tetrahedral, octahedral, and cubical nonzero form spaces consist entirely
-of sampling aliases. The exact audit uses rational and
-`Q(sqrt(5))` arithmetic, not floating rank thresholds.
+```text
+a_ij>=0 for every i!=j.
+```
 
-A signed four-point circle generator with adjacent rates `1` and antipodal
-rates `-1/2` restores one genuine sampled quadratic mode. The local coordinate
-and quadratic equations force the negative antipodal rate on that fixed
-support.
+Together with a transitive equivariant unit-sphere coordinate eigenmap,
+irreducibility of the real conjugation action on `Sym_0(d)`, and one positive
+jump between distinct embedded points, this gives `E_form={0}`. Reversibility
+is not required.
 
-Two independent positive-generator product obstructions are retained:
-carre-du-champ and semigroup/Jensen. After parity, maximizing-set, sampling,
-aliasing, and Pell-resonance checks, the proposed general spectral-product
-hierarchy is `REJECTED` for Prompt 2 under its kill criterion; no new
-`l`-indexed dimension tradeoff survived beyond the sampled-square identity.
+The signed regular pentagon is the permanent counterexample if global
+nonnegativity is omitted. With exact distance-one and distance-two rates
 
-## Lean verification boundary
+```text
+(5+3sqrt(5))/10,
+(5-3sqrt(5))/10,
+```
 
-Lean 4.30 / Mathlib 4.30 formalizes Prompt 1 finite consequences in:
+it has coordinate eigenvalue `-1`, full trace-free quadratic eigenvalue `-4`,
+`E_form=Sym_0(2)`, and `dim E_sample=2`, despite irreducible `C_5`
+conjugation.
 
-- `AFPBarrier/LocalSphericalFeasibility.lean`;
-- `AFPBarrier/ExactLocalRows.lean`;
-- `AFPBarrier/QuantitativeExactLocal.lean`;
-- `AFPBarrier/AntipodalFeasibility.lean`;
-- `AFPBarrier/SharedEdgeEquilibrium.lean`;
-- `AFPBarrier/GroupAveraging.lean`;
-- `AFPBarrier/GlobalSharedEdgeDuality.lean`; and related modules.
+### Centered product resonance
 
-Prompt 2 finite algebra is in
-`AFPBarrier/QuadraticCovariance.lean`. It formalizes:
+`AFPBarrier/QuadraticCovariance.lean` now proves
 
-- the finite product and covariance identities;
-- the shifted target residual;
-- trace-free projection contraction;
-- restricted-map rank-nullity;
-- `ker S subset ker(B comp S)`;
-- `range(S|ker(BS)) = range(S) intersect ker(B)`;
-- row-scaled constraint/sample equivalence; and
-- the axial trace coefficient.
+```text
+L(fg-c)+mu(fg-c)
+ =2Gamma(f,g)+(mu-lambda-nu)fg-mu c
+```
 
-The general semigroup equality theorem and real representation irreducibility
-remain precisely stated ordinary inputs. No placeholder proofs or
-user-declared axioms are permitted.
+for eigenfunctions `Lf=-lambda f`, `Lg=-nu g`. At additive resonance,
 
-## Scientific gates
+```text
+L(fg-c)=-(lambda+nu)(fg-c)
+iff
+2Gamma(f,g)=(lambda+nu)c.
+```
 
-### P0 — claim reset and falsification
+For a square,
 
-- frozen transport source remains untouched;
-- claim matrix, conjecture register, and prior-art map are active controls;
-- exact deterministic counterexamples are retained;
-- unrestricted classifications contradicted by examples remain rejected;
-- novelty is separated from standard convexity, LP, carré-du-champ, Jensen,
-  and rank-nullity theory.
+```text
+L(f^2-c)=-2lambda(f^2-c)
+iff
+Gamma(f,f)=lambda c.
+```
 
-### M1 — local spherical feasibility and global compatibility
+The uncentered `c=0` case forces zero carré du champ. A centered square may be
+nonzero. The permanent positive regression is the Boolean square
+`f=x_1+x_2` on the four-state cube:
 
-**Status: resolved.** The corrected package includes exact local and antipodal
-theorems, quantitative margins, global cone/duality, two exact obstructions,
-group and clique reconciliation, and compatible sensitivity.
+```text
+Lf=-2f,
+f^2-2=2x_1x_2!=0,
+L(f^2-2)=-4(f^2-2),
+Gamma(f,f)=4.
+```
 
-### M2 — global equality propagation
+Centered resonance gives semigroup variance
 
-**Status: separate conjectural branch.** Equality propagation remains outside
-Prompt 2 unless it produces a new classified consequence.
+```text
+c(1-exp(-2lambda t)),
+```
 
-### M3 — sampled quadratic covariance
+which is distinct from Jensen equality. The Boolean variance is strictly
+positive for `t>0`.
 
-**Status: resolved for the Prompt 2 theorem package.** The exact covariance
-identity, sampling factorization, genuine sampled-space formula, axial and
-equivariant rigidity, all-dimensional equality family, exact Platonic cases,
-and signed restoration are complete.
+### Spherical product boundary
+
+On `S^(d-1)`, the coordinate, doubled-coordinate, and degree-two eigenvalues
+are respectively
+
+```text
+d-1,
+2(d-1),
+2d.
+```
+
+The covariance problem therefore has shift `2` and is not additive square
+resonance.
+
+The exact `S^2` pointwise-product table for `ell=1,...,6` contains no additive
+resonance. The generalized higher-dimensional equation is Pell-type, but no
+sampled dimension tradeoff, multiplicity obstruction, or new global
+consequence survives the kernel and alias audits. The general hierarchy is
+`REJECTED FOR PROMPT 2` for that reason, not because centered squares are
+impossible.
+
+## Exact verification
+
+Prompt 2 exact regressions are:
+
+- `covariance/quadratic_covariance_audit.py`;
+- `covariance/prompt2_closeout_audit.py`.
+
+Together they check:
+
+- covariance/factorization and all Platonic ranks;
+- regular-simplex formulas;
+- four-point signed restoration;
+- signed regular-pentagon failure of unsigned equivariant rigidity;
+- centered product algebra and the Boolean example;
+- semigroup variance;
+- the `S^2` `ell=1,...,6` table;
+- bounded and Pell resonance assertions; and
+- singular/plural user-axiom policy fixtures.
+
+Lean support is concentrated in:
+
+- `AFPBarrier/QuadraticCovariance.lean`;
+- `AFPBarrier/PureMathAxiomAudit.lean`;
+- `AFPBarrier/GlobalLossRigidity.lean`; and
+- the aggregate `AFPBarrier.lean`.
+
+No `sorry`, `admit`, `sorryAx`, singular `axiom`, or plural `axioms`
+declaration is permitted. The dedicated workflow scans the aggregate source,
+tests both axiom spellings, performs the full Lean build and focused axiom
+audit, and independently checks selected declarations with nanoda.
+
+## Global equality propagation and Prompt 3 boundary
+
+The abstract equality-propagation result is already `PROVED / LEAN` in
+`GlobalLossRigidity.lean`: on a connected symmetric active graph, the local
+formula `loss=lambda/rate` propagates one common row rate and one common
+active-edge loss.
+
+Prompt 3 begins only from the verified closeout handoff and is limited to:
+
+1. complete spherical `Q=1` specialization audit;
+2. restricted geodesic-triangulation classification; and
+3. quantitative near-rigidity.
+
+Those three items remain open targets. No graph enumeration, classification,
+or stability proof is performed in the Prompt 2 closeout.
 
 ## Claim discipline
 
-Every statement is labeled one of:
+Use the following labels:
 
-- `PROVED` — complete proof under stated assumptions;
-- `EXTERNAL` — direct use or specialization of a cited theorem;
-- `COMPUTATIONAL` — finite deterministic verification only;
-- `CONJECTURE` — survived current tests but is unproved;
-- `REJECTED` — false, ill posed, redundant, or strategically unsuitable.
+- `PROVED` — complete proof under stated hypotheses;
+- `LEAN` — selected finite algebra checked in Lean;
+- `EXACT EXAMPLE` — finite symbolic certificate;
+- `EXTERNAL` — cited standard theorem;
+- `COMPUTATIONAL` — finite deterministic search only;
+- `CONJECTURE` — open statement with a kill criterion; and
+- `REJECTED` — false or strategically unsupported wording.
 
-Lean and CI are verification infrastructure, not mathematical novelty.
-Algebraic form exactness and genuine sampled exactness must never be
-conflated.
+CI counts and hashes are provenance, not mathematical novelty. Algebraic form
+exactness and genuine sampled exactness must never be conflated. Centered
+resonance and Jensen equality must never be conflated.
 
-## Records
+## Closeout and handoff records
 
-Prompt 1:
-
-- `EXACT_LOCAL_GLOBAL_THEOREM_PACKAGE.md`;
-- `APPROACH_REGISTRY.md`;
-- `../docs/THEOREM_TO_FILE_MAP.md`;
-- `examples/exact_local_global_audit.py`;
-- `tests/test_spherical_feasibility.py`.
-
-Prompt 2:
-
-- `covariance/SAMPLED_QUADRATIC_EXACTNESS_THEOREM.md`;
-- `covariance/QUADRATIC_COVARIANCE_DERIVATION.md`;
-- `covariance/quadratic_covariance_audit.py`;
-- `../docs/PROMPT2_QUADRATIC_COVARIANCE_THEOREM_MAP.md`;
-- `../docs/PROMPT2_QUADRATIC_COVARIANCE_STAGE_REPORT.md`.
+- `../docs/PROMPT2_QUADRATIC_COVARIANCE_STAGE_REPORT.md`
+- `../docs/PROMPT2_QUADRATIC_COVARIANCE_THEOREM_MAP.md`
+- `../docs/PROMPT2_QUADRATIC_COVARIANCE_INTEGRATION_RECORD.md`
+- `../docs/PROMPT2_CLOSEOUT_AUDIT.md`
+- `../docs/PROMPT3_READINESS_HANDOFF.md`
