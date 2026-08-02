@@ -127,11 +127,39 @@ def anisotropy_no_control() -> dict[str, str]:
     }
 
 
+def antipodal_boundary() -> dict[str, str]:
+    """Two-state Q=1 boundary: covariance is purely radial.
+
+    At loss ell=2 the tangential coefficient is zero, so no geometrically
+    determined unit tangent direction should be inferred from the decomposition.
+    """
+    omega = sp.Matrix([1, 0, 0])
+    other = -omega
+    rate = sp.Integer(1)
+    loss = sp.Integer(2)
+    epsilon = rate * loss**2
+    quality = sp.simplify(rate * epsilon / 4)
+    covariance = sp.simplify(rate * (other - omega) * (other - omega).T)
+    assert quality == 1
+    assert covariance == 4 * (omega * omega.T)
+    assert sp.sqrt(loss * (2 - loss)) == 0
+    return {
+        "vertices": "{+e1,-e1}",
+        "row_rate": "1",
+        "loss": "2",
+        "Q": "1",
+        "covariance": str(covariance),
+        "tangent_coefficient": "0",
+        "regression": "no geometrically determined unit tangent frame",
+    }
+
+
 def main() -> None:
     report = {
         "weighted_octahedron": weighted_octahedron_symbolic(),
         "platonic_regressions": platonic_q1_regressions(),
         "anisotropy_separation": anisotropy_no_control(),
+        "antipodal_boundary": antipodal_boundary(),
         "status": "PASS",
     }
     print(json.dumps(report, indent=2, sort_keys=True))
