@@ -1,0 +1,102 @@
+name: AFP P3-P4 targeted Lean repair
+
+on:
+  push:
+    branches:
+      - agent/afp-pure-math-p3-p4-final-reconciliation
+    paths:
+      - 'afp_barrier_gate1/AFPBarrier/SphericalQEqualityRigidity.lean'
+      - 'afp_barrier_gate1/AFPBarrier/QuantitativeGlobalNearRigidity.lean'
+      - 'afp_barrier_gate1/AFPBarrier/QEqualityCovariance.lean'
+      - 'afp_barrier_gate1/AFPBarrier/PureMathAxiomAudit.lean'
+      - 'afp_barrier_gate1/AFPBarrier.lean'
+      - 'afp_barrier_gate1/lakefile.lean'
+      - 'afp_barrier_gate1/lean-toolchain'
+      - 'afp_barrier_gate1/lake-manifest.json'
+      - '.github/workflows/afp-p3-p4-targeted-lean.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  targeted-kernel:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+
+    steps:
+      - name: Check out literal repair head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Assert exact repair checkout and protected ancestry
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          git merge-base --is-ancestor \
+            94aebf6578a43516cce4bb7c042fc57681c93890 HEAD
+          git merge-base --is-ancestor \
+            f1ef5b3c3107d2dfc835ed84c443eb82d752cb56 HEAD
+          git fetch --no-tags origin \
+            archive/afp-gate6-spatial-multigroup-verified
+          test "$(git rev-parse FETCH_HEAD)" = \
+            515f1aae6c20bd85711c90b5c1c21b4905252d01
+          echo "actual_head=$(git rev-parse HEAD)"
+          echo "actual_tree=$(git show -s --format=%T HEAD)"
+
+      - name: Install pinned Lean toolchain
+        uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: afp_barrier_gate1
+          build: false
+          test: false
+          lint: false
+          nanoda: false
+          use-mathlib-cache: false
+          use-github-cache: false
+
+      - name: Resolve pinned dependencies and cache
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd afp_barrier_gate1
+          lake update
+          lake exe cache get
+
+      - name: Compile repaired modules in dependency order
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd afp_barrier_gate1
+          lake env lean AFPBarrier/QuantitativeGlobalNearRigidity.lean
+          lake env lean AFPBarrier/SphericalQEqualityRigidity.lean
+          lake env lean AFPBarrier/QEqualityCovariance.lean
+          lake build
+          lake env lean AFPBarrier/PureMathAxiomAudit.lean
+
+      - name: Reject placeholders and user axioms
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd afp_barrier_gate1
+          if grep -RInE --include='*.lean' \
+            '(^|[^[:alnum:]_])(sorry|admit|sorryAx)([^[:alnum:]_]|$)' \
+            AFPBarrier AFPBarrier.lean; then
+            echo 'Forbidden proof placeholder found.' >&2
+            exit 1
+          fi
+          if grep -RInE --include='*.lean' \
+            '^[[:space:]]*(axiom|axioms)([[:space:]]|$)' \
+            AFPBarrier AFPBarrier.lean; then
+            echo 'User-declared axiom found.' >&2
+            exit 1
+          fi
+          git -C .. diff --check \
+            94aebf6578a43516cce4bb7c042fc57681c93890...HEAD
