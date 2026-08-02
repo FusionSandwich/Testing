@@ -1,5 +1,11 @@
 # Prompt 2 approach registry
 
+Completion audit note: this registry came from the saved WIP commit.  An
+`ACCEPTED` route records a mathematically viable mechanism, not completion of
+the mandatory Lean, exact-regression, documentation, or CI gate.  The durable
+gate state is tracked in `P2_COMPLETION_PROGRESS.md` and
+`docs/P2_THEOREM_TO_FILE_MAP.md`.
+
 Routes are grouped by mechanism.  `BLOCKED` means a theorem-strength missing
 lemma or exact counterexample ended that route; it is not partial completion.
 
@@ -21,6 +27,10 @@ lemma or exact counterexample ended that route; it is not partial completion.
 | sampled hierarchy | distinct desired eigenvalues force direct sampled sum | ACCEPTED | (\sum_J\operatorname{rank}E_J\le |I|) |
 | universal positive hierarchy | repeat product residual at each degree | BLOCKED/REJECTED | no new restriction beyond (\Gamma) without extra hypotheses |
 | Lean architecture | finite sums, functions, pointwise predicates | ACCEPTED | three narrow no-positivity modules, no placeholders |
+| weighted centering | reversible weighted conservation | BLOCKED | WIP has no formal corollary |
+| explicit sphere/one-shell formalization | coordinate-indexed finite matrices | BLOCKED | required residual and `R=DS_X` modules absent |
+| exact invariance counterexample | two-layer `D_3` graph | BLOCKED | theorem draft names it but no tracked implementation exists |
+| final verification | dedicated Prompt-2 workflow and exact-head artifact | BLOCKED | no WIP workflow or successful run |
 
 Adversarial checks explicitly covered sampling aliases, coincident nodes,
 antipodes, signed rates, hidden equal weights, real representation types,
