@@ -5,7 +5,7 @@ import Mathlib.Tactic
 # Covariance consequences of spherical `Q=1`
 
 The module formalizes the finite scalar/entrywise algebra behind the exact
-radial--tangential decomposition.  Matrix and sampling-map conclusions are
+radial--tangential decomposition. Matrix and sampling-map conclusions are
 stated and proved in the ordinary theorem document.
 -/
 
@@ -69,6 +69,21 @@ theorem weighted_centered_affine_product_sum
     (hcenterV : s.sum (fun j => p j * v j) = 0) :
     s.sum (fun j => p j * ((A + B * u j) * (C + D * v j)))
       = A * C + B * D * s.sum (fun j => p j * u j * v j) := by
+  have hAC :
+      s.sum (fun j => p j * A * C) = (s.sum p) * A * C := by
+    rw [← Finset.sum_mul, ← Finset.sum_mul]
+  have hAD :
+      s.sum (fun j => (A * D) * (p j * v j)) =
+        (A * D) * s.sum (fun j => p j * v j) := by
+    rw [Finset.mul_sum]
+  have hBC :
+      s.sum (fun j => (B * C) * (p j * u j)) =
+        (B * C) * s.sum (fun j => p j * u j) := by
+    rw [Finset.mul_sum]
+  have hBD :
+      s.sum (fun j => (B * D) * (p j * u j * v j)) =
+        (B * D) * s.sum (fun j => p j * u j * v j) := by
+    rw [Finset.mul_sum]
   calc
     s.sum (fun j => p j * ((A + B * u j) * (C + D * v j)))
         = s.sum (fun j =>
@@ -88,16 +103,12 @@ theorem weighted_centered_affine_product_sum
           + (A * D) * s.sum (fun j => p j * v j)
           + (B * C) * s.sum (fun j => p j * u j)
           + (B * D) * s.sum (fun j => p j * u j * v j) := by
-            congr 1
-            · rw [← Finset.sum_mul, ← Finset.sum_mul]
-            · rw [Finset.mul_sum]
-            · rw [Finset.mul_sum]
-            · rw [Finset.mul_sum]
+            rw [hAC, hAD, hBC, hBD]
     _ = A * C + B * D * s.sum (fun j => p j * u j * v j) := by
           rw [hsum, hcenterU, hcenterV]
           ring
 
-/-- Entrywise exact `Q=1` covariance decomposition.  The displacement is
+/-- Entrywise exact `Q=1` covariance decomposition. The displacement is
 `-ell*omega + sigma*u`; centered tangent directions remove the mixed blocks. -/
 theorem qOne_covarianceEntry_decomposition
     (s : Finset ι) (p : ι → ℝ) (u : ι → κ → ℝ)
@@ -119,8 +130,9 @@ theorem qOne_covarianceEntry_decomposition
     (A := -ell * omega k) (B := sigma)
     (C := -ell * omega l) (D := sigma)
     hsum hcenterK hcenterL
-  rw [hcentered]
-  rw [hsigma]
+  have hsigmaMul : sigma * sigma = ell * (2 - ell) := by
+    simpa [pow_two] using hsigma
+  rw [hcentered, hsigmaMul]
   calc
     rate *
         ((-ell * omega k) * (-ell * omega l)
