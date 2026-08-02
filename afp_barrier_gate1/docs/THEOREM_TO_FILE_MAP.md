@@ -1,45 +1,76 @@
-# Exact feasibility theorem-to-file map
+# Exact feasibility and covariance theorem-to-file map
 
-The complete mathematical proof source is
-`pure_math/EXACT_LOCAL_GLOBAL_THEOREM_PACKAGE.md`.  “Lean support” identifies
+The complete Prompt 1 mathematical proof is
+`pure_math/EXACT_LOCAL_GLOBAL_THEOREM_PACKAGE.md`. “Lean support” identifies
 the finite algebra formalized in the project; standard finite convex geometry,
-Farkas, LP strong duality, and SVD facts are transferred explicitly in the
-proof document rather than misrepresented as locally formalized.
-The non-antipodal and quantitative entries (Sections 1 and 3) assume
-`J` is nonempty; the empty-`J` case belongs exclusively to the pure-antipodal
-Theorem 2.1.
+Farkas, LP strong duality, semigroup, and representation facts are transferred
+explicitly rather than misrepresented as project axioms.
+
+## Prompt 1 local and global feasibility
 
 | Mandatory item | Mathematical proof | Lean support | Exact regression |
 |---|---|---|---|
-| 1.1 feasibility iff `0 in P` | Theorem 1.1 | `LocalSphericalFeasibility.lean`, `ExactLocalRows.lean` | outside/boundary cases |
-| 1.2 strict iff relative interior | Theorems 1.1, 3.1 | indexed positivity in `ExactLocalRows.lean` | lower/full-dimensional cases |
-| 1.3 repetitions and lower dimension | Theorem 1.1, Section 5 | indexed functions require no injectivity | repeated-direction case |
-| 1.4 scaling and converse | Theorem 1.2 | `LocalSphericalFeasibility.lean`, `ExactLocalRows.lean`, `SphericalFeasibilityAlgebra.lean` | all local exact rows |
-| 1.5 outgoing rate | Corollary 1.3 | `ExactLocalRows.lean` | equilateral rate |
-| 1.6 uniqueness | Corollary 1.3 | inverse normalization/scaling algebra | singleton boundary case |
-| 2.1 antipodal simplex | Theorem 2.1 | `AntipodalFeasibility.lean` | pure antipodes |
-| 2.2 mixed feasibility | Theorem 2.1 | zero-tangent construction | mixed outside case |
-| 2.3 mixed strict criterion | Theorem 2.1 | strict budget algebra plus convex transfer | mixed interior |
-| 2.4 mixed parameterization | Theorem 2.2 | packaged iff and both directions in `AntipodalFeasibility.lean` | boundary/interior cases |
-| 2.5 boundary case | Theorem 2.1 | finite balance algebra | forced zero coefficient |
-| 2.6 no antipodal division | Theorem 2.2 | disjoint `J`/`A` types | source audit |
-| 3.1 margin equivalence | Theorem 3.1 | standard compact convex transfer | exact strict/boundary margins |
-| 3.2 constructive bound | Theorem 3.1 | finite uniform-mixture normalization and coefficient margin in `QuantitativeExactLocal.lean`; geometric inball selection in the proof | triangle/square margins |
-| 3.3 rate/coefficient bounds | Theorem 3.3 | exact identity in `ExactLocalRows.lean`; weighted/two-factor bounds in `QuantitativeExactLocal.lean`; independent loss-window bounds in `QuantitativeSphericalFeasibility.lean` | equilateral rate |
-| 3.4 dual and LP formulas | Theorem 3.2 | weak dual algebra plus exact strong-duality transfer | exact optima |
-| 3.5 perturbation | Theorem 3.4 | finite column estimates where practical | boundary crossing/robust hull |
-| 3.6 local matrix conditioning | Theorem 3.5 | finite algebra plus transferred SVD | explicit `1/sigma` bounds |
-| 4.1 cone/polytope/Farkas | Theorem 4.1 | `DualCertificate.lean`, `SharedEdgeEquilibrium.lean` | exact square matrix |
-| 4.2 centering | Theorem 4.2 | `ReversibleConductance.lean`, `SharedEdgeEquilibrium.lean` | centered obstruction |
-| 4.3 complete graph | Theorem 4.2 | `CompleteGraph.lean` at eigenvalue two | symmetric strict cases |
-| 4.4 full Farkas alternative | Theorem 4.1 | certificate soundness plus transferred separation | exact certificate |
-| 4.5 LP duality/complementarity | Theorem 4.3 | `DualCertificate.lean`, objective-gap and componentwise complementarity in `GlobalSharedEdgeDuality.lean`; precise standard transfer | sign audit |
-| 4.6 local-not-global | Theorem 4.4 | exact `Fin` proof in `SharedEdgeEquilibrium.lean` | four-cycle certificate |
-| 4.7 averaging reconciliation | Theorem 4.5 | `GroupAveraging.lean`: invariant orbit average, unordered-edge transitivity, representative orientation propagation, off-edge support, nonnegativity, and exact balance | equal-mass square |
-| 4.8 global perturbation | Theorem 4.6 | pseudoinverse/range transfer | explicit radius |
-| 5 examples and claim control | Section 5 | exact finite examples where practical | `exact_local_global_audit.py`; independent rational `test_spherical_feasibility.py` cube and boundary suite |
+| Non-antipodal feasibility iff `0` in tangent hull | Prompt 1 Theorem 1.1 | `LocalSphericalFeasibility.lean`, `ExactLocalRows.lean` | outside/boundary cases |
+| Strict feasibility iff relative interior | Prompt 1 Theorems 1.1, 3.1 | indexed positivity in `ExactLocalRows.lean` | lower/full-dimensional cases |
+| Repetitions, redundancies, lower dimension | Prompt 1 Section 5 | indexed function formulation | repeated-direction cases |
+| Exact scaling, converse, outgoing rate, uniqueness | Prompt 1 Theorem 1.2 and corollaries | `LocalSphericalFeasibility.lean`, `ExactLocalRows.lean`, `SphericalFeasibilityAlgebra.lean` | exact local rows |
+| Pure and mixed antipodal simplex | Prompt 1 Theorems 2.1–2.2 | `AntipodalFeasibility.lean` | pure/mixed antipodes |
+| Relative margin, rate, coefficient, LP formulas | Prompt 1 Section 3 | `QuantitativeExactLocal.lean`, `QuantitativeSphericalFeasibility.lean` | exact optima and margins |
+| Perturbation and conditioning | Prompt 1 Theorems 3.4–3.5 | finite column estimates plus stated SVD transfer | boundary crossing |
+| Shared-edge cone/polytope/Farkas | Prompt 1 Theorem 4.1 | `DualCertificate.lean`, `SharedEdgeEquilibrium.lean` | exact square/cube certificates |
+| Centering and complete graph | Prompt 1 Theorem 4.2 | `ReversibleConductance.lean`, `CompleteGraph.lean` | centered constructions |
+| LP duality and complementarity | Prompt 1 Theorem 4.3 | `GlobalSharedEdgeDuality.lean` plus standard transfer | sign audit |
+| Local-not-global obstructions | Prompt 1 Section 5 | `SharedEdgeEquilibrium.lean` | four-cycle and cube |
+| Averaging and clique reconciliation | Prompt 1 Theorem 4.5 | `GroupAveraging.lean` plus ordinary clique proof | symmetric examples |
+| Global compatible perturbation | Prompt 1 Theorem 4.6 | pseudoinverse/range transfer | explicit radius |
 
-The focused axiom report is `AFPBarrier/PureMathAxiomAudit.lean`.  CI builds
-the aggregate library, runs the exact symbolic certificates, scans for proof
-placeholders and user axioms, and checks the focused axiom output for
-`sorryAx`.
+## Prompt 2 covariance and product closeout
+
+The authoritative Prompt 2 proof is
+`pure_math/covariance/SAMPLED_QUADRATIC_EXACTNESS_THEOREM.md`.
+
+| Mandatory item | Mathematical proof | Lean support | Exact regression |
+|---|---|---|---|
+| Quadratic covariance identity | Prompt 2 Theorem 1.1 | `jumpGenerator_quadratic_covariance_identity` | Platonic direct residuals |
+| Shifted quadratic target | Prompt 2 Theorem 1.2 | `quadratic_target_eigen_iff` | exact target checks |
+| Trace-free form space | Prompt 2 Theorem 2.1 | trace-free contraction | exact constraint matrices |
+| Sampling factorization | Prompt 2 Theorem 2.2 | covariance identity, kernel/range lemmas | `R=(G+2dI)S` |
+| Genuine sampled space and dimension | Prompt 2 Theorem 2.2 | `sampledRestriction_finrank`, `sampledRange_exact_eq_range_inf_ker` | exact ranks and kernels |
+| Positive axial rigidity | Prompt 2 Theorems 3.1–3.2 | axial coefficient, row-scaling iff | Platonic row scaling |
+| Regular-simplex sharpness | Prompt 2 Corollary 3.3 | ordinary exact construction | closeout audit, `d=2,...,10` |
+| Corrected positive equivariant rigidity | Prompt 2 Theorem 4.1 | ordinary representation proof using formalized covariance algebra | signed pentagon adversary |
+| Signed pentagon counterexample | Prompt 2 Counterexample 4.2 | not separately formalized | exact `Q(sqrt(5))` generator, rank, discriminant |
+| Exact Platonic classifications | Prompt 2 Section 5.1 | general finite algebra | existing exact audit |
+| Four-point signed restoration | Prompt 2 Section 5.2 | ordinary matrix proof | exact sampled dimension and forced rate |
+| Bilinear product identity | Prompt 2 Theorem 6.1 | `jumpGenerator_product_identity_gamma` | exact algebra audit |
+| Arbitrary shifted product residual | Prompt 2 Theorem 6.2 | `jumpGenerator_shifted_product_residual`, `shifted_product_target_iff` | exact symbolic identity |
+| Additive product resonance | Prompt 2 Theorem 6.2 | `additive_product_resonance_iff` | exact symbolic identity |
+| Centered square resonance | Prompt 2 Theorem 6.2 | `centered_square_resonance_iff` | exact symbolic identity |
+| Uncentered positive obstruction | Prompt 2 Theorem 6.2 consequences | `uncentered_square_resonance_iff_zero_gamma`, `uncentered_square_resonance_forces_value_zero` | `c=0` assertion |
+| Boolean centered square | Prompt 2 Counterexample 6.3 | general resonance theorem applies | exact four-state matrix |
+| Semigroup variance and converse | Prompt 2 Theorem 7.1 | ordinary finite matrix-semigroup proof | Boolean exact identity |
+| Jensen equality support | Prompt 2 Theorem 7.2 | standard external theorem | positive Boolean variance |
+| Spherical eigenvalue shift | Prompt 2 Section 8 | arithmetic | exact integer assertion |
+| `S^2` table `ell=1,...,6` | Prompt 2 Section 8 | not a Lean claim | closeout audit exact rows |
+| Pell arithmetic and hierarchy verdict | Prompt 2 Section 9 | ordinary arithmetic/kill-criterion analysis | existing and closeout assertions |
+| Abstract equal-rate/equal-loss propagation | `GlobalLossRigidity.lean` | three named Lean theorems | build and nanoda |
+| Prompt 3 spherical specialization/classification/near-rigidity | `PROMPT3_READINESS_HANDOFF.md` | not begun | not part of closeout |
+
+## Verification and provenance
+
+- focused axiom report: `AFPBarrier/PureMathAxiomAudit.lean`;
+- existing covariance audit:
+  `pure_math/covariance/quadratic_covariance_audit.py`;
+- corrective closeout audit:
+  `pure_math/covariance/prompt2_closeout_audit.py`;
+- Prompt 2 workflow: `.github/workflows/afp-quadratic-covariance.yml`;
+- Prompt 1 compatibility workflow:
+  `.github/workflows/afp-spherical-feasibility.yml`;
+- repository-wide workflow: `.github/workflows/afp-pure-math.yml`;
+- closeout audit: `docs/PROMPT2_CLOSEOUT_AUDIT.md`;
+- Prompt 3 handoff: `docs/PROMPT3_READINESS_HANDOFF.md`.
+
+All workflows reject `sorry`, `admit`, and `sorryAx`; the closeout policy scans
+anchored declarations for both singular `axiom` and plural `axioms` and tests
+both spellings deterministically. `sorryAx` is absent from the independent
+nanoda permitted-axiom list.
