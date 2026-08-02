@@ -57,8 +57,7 @@ theorem sphericalEpsilon_eq_four_mul_Q_div_rate
       = 4 * sphericalQAt a loss i / jumpRate a i := by
   have hrne : jumpRate a i ≠ 0 := ne_of_gt hrate
   unfold sphericalQAt
-  field_simp [hrne]
-  ring
+  field_simp [hrne] <;> ring
 
 /-- A centered weighted affine product has only its constant and second-moment
 terms. -/
@@ -134,16 +133,16 @@ theorem qOne_covarianceEntry_decomposition
             rw [hrateLoss]
             ring
 
-/-- Because the tangential coefficient is positive for `ell<2`, equality with
-an axially isotropic tangent entry is equivalent to tangent isotropy itself. -/
+/-- For a genuine non-antipodal edge (`0<ell<2`), the positive tangential
+coefficient makes axial covariance equivalent to tangent isotropy. -/
 theorem qOne_tangent_entry_isotropic_iff
     (ell T target radial : ℝ)
-    (hell : ell < 2) :
+    (hell : 0 < ell ∧ ell < 2) :
     2 * (2 - ell) * T + radial =
         2 * (2 - ell) * target + radial ↔ T = target := by
   constructor
   · intro h
-    have hcoeff : 0 < 2 * (2 - ell) := by nlinarith
+    have hcoeff : 0 < 2 * (2 - ell) := by nlinarith [hell.2]
     nlinarith
   · intro h
     rw [h]
@@ -152,8 +151,7 @@ theorem qOne_tangent_entry_isotropic_iff
 theorem weightedOctahedron_tangentWeights_sum_one
     (g₁ g₂ : ℝ) (hsum : 0 < g₁ + g₂) :
     g₁ / (g₁ + g₂) + g₂ / (g₁ + g₂) = 1 := by
-  field_simp [ne_of_gt hsum]
-  ring
+  field_simp [ne_of_gt hsum] <;> ring
 
 /-- At one weighted octahedral axis, equal tangent weights are equivalent to
 equal conductances. -/
