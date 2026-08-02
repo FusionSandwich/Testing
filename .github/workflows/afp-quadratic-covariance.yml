@@ -1,0 +1,226 @@
+name: AFP quadratic covariance
+
+on:
+  push:
+    branches:
+      - agent/afp-quadratic-covariance-p2-corrected
+      - agent/afp-pure-math-p1-local-global-corrected
+      - agent/afp-pure-math-p0-m1
+  pull_request:
+    branches:
+      - agent/afp-pure-math-p1-local-global-corrected
+      - agent/afp-pure-math-p0-m1
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Record checked-out Prompt 2 head
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "checked_out_head=$(git rev-parse HEAD)"
+          echo "event=${GITHUB_EVENT_NAME}"
+          echo "ref=${GITHUB_REF}"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install exact symbolic dependencies
+        run: python -m pip install --disable-pip-version-check --no-input 'sympy==1.14.0'
+
+      - name: Run exact covariance and sampled-space audit
+        run: python afp_barrier_gate1/pure_math/covariance/quadratic_covariance_audit.py
+
+      - name: Reject proof placeholders and user axioms
+        shell: bash
+        run: |
+          files=(
+            afp_barrier_gate1/AFPBarrier/QuadraticCovariance.lean
+          )
+          if grep -nE '(^|[^[:alnum:]_])(sorry|admit|sorryAx|axiom)([^[:alnum:]_]|$)' "${files[@]}"; then
+            echo 'Forbidden Lean placeholder or user axiom found.' >&2
+            exit 1
+          fi
+
+      - name: Install Lean toolchain
+        uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: afp_barrier_gate1
+          build: false
+          test: false
+          lint: false
+          nanoda: false
+          use-mathlib-cache: false
+          use-github-cache: false
+
+      - name: Prepare pinned external checker
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd afp_barrier_gate1
+          rm -rf _lean4export _nanoda_lib
+          rm -f _nanoda_export.txt _nanoda_config.json
+
+          if ! command -v cargo >/dev/null 2>&1; then
+            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
+              | sh -s -- -y --default-toolchain stable --profile minimal
+            source "$HOME/.cargo/env"
+          fi
+
+          git init _lean4export
+          git -C _lean4export remote add origin \
+            https://github.com/ammkrn/lean4export.git
+          git -C _lean4export fetch --depth 1 origin \
+            f3cf6458a309d643dc586a80f9ab5a93c2304db9
+          git -C _lean4export checkout --detach FETCH_HEAD
+
+          # Export format 2.0.0 does not serialize Lean 4.30's let-expression
+          # `nondep` bit. Canonicalize the bit before exporter hashing.
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path("_lean4export/Export.lean")
+          source = path.read_text(encoding="utf-8")
+          old = "e.updateLet! (← removeMData d) (← removeMData v) (← removeMData b)"
+          new = old + " false"
+          if source.count(old) != 1:
+              raise SystemExit("Unexpected Lean exporter let-expression source")
+          path.write_text(source.replace(old, new), encoding="utf-8")
+          PY
+
+          grep -qF \
+            'e.updateLet! (← removeMData d) (← removeMData v) (← removeMData b) false' \
+            _lean4export/Export.lean
+
+          cp lean-toolchain _lean4export/
+          (
+            cd _lean4export
+            lake build
+          )
+
+          git init _nanoda_lib
+          git -C _nanoda_lib remote add origin \
+            https://github.com/ammkrn/nanoda_lib.git
+          git -C _nanoda_lib fetch --depth 1 origin \
+            e5438ac0a85a036b6dfe093aa457bc3448498014
+          git -C _nanoda_lib checkout --detach FETCH_HEAD
+          (
+            cd _nanoda_lib
+            cargo build --release
+          )
+
+      - name: Resolve dependencies and obtain Mathlib cache
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd afp_barrier_gate1
+          lake update
+          lake exe cache get
+
+      - name: Build Lean package explicitly
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd afp_barrier_gate1
+          lake build
+
+      - name: Run focused pure-math axiom audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd afp_barrier_gate1
+          lake env lean AFPBarrier/PureMathAxiomAudit.lean \
+            2>&1 | tee prompt2-axiom-audit.log
+          if grep -q 'sorryAx' prompt2-axiom-audit.log; then
+            echo "A Prompt 2 theorem depends on Lean's sorry axiom." >&2
+            exit 1
+          fi
+
+      - name: Independently type-check Prompt 2 declarations with nanoda
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd afp_barrier_gate1
+
+          cleanup() {
+            rm -rf _lean4export _nanoda_lib
+            rm -f _nanoda_export.txt _nanoda_config.json
+          }
+          trap cleanup EXIT
+
+          foundations=(
+            Nat
+            Nat.zero
+            Nat.succ
+            List
+            List.nil
+            List.cons
+            String
+            String.mk
+            Char
+            Char.ofNat
+          )
+
+          declarations=(
+            AFPBarrier.jumpCrossVariation
+            AFPBarrier.jumpGenerator_product_identity
+            AFPBarrier.jumpGenerator_const_mul
+            AFPBarrier.jumpGenerator_fintype_sum
+            AFPBarrier.finiteQuadraticSample
+            AFPBarrier.jumpCovarianceEntry
+            AFPBarrier.quadraticCovarianceContraction
+            AFPBarrier.jumpGenerator_quadratic_covariance_identity
+            AFPBarrier.quadratic_target_eigen_iff
+            AFPBarrier.finiteMatrixTrace
+            AFPBarrier.finiteMatrixContraction
+            AFPBarrier.subtractScalarDiagonal
+            AFPBarrier.finiteMatrixContraction_subtractScalarDiagonal
+            AFPBarrier.finiteTracelessProjection
+            AFPBarrier.finiteMatrixContraction_tracelessProjection
+            AFPBarrier.sampledRestriction_finrank
+            AFPBarrier.samplingKernel_le_residualKernel
+            AFPBarrier.sampledRange_exact_eq_range_inf_ker
+            AFPBarrier.zero_constraints_iff_zero_samples_of_row_scaling
+            AFPBarrier.axialCovariance_projectionCoefficient
+          )
+
+          echo "Exporting ${#declarations[@]} Prompt 2 declarations"
+          lake env _lean4export/.lake/build/bin/lean4export \
+            AFPBarrier.QuadraticCovariance -- \
+            "${foundations[@]}" "${declarations[@]}" \
+            > _nanoda_export.txt
+          test -s _nanoda_export.txt
+          echo "Exported $(wc -l < _nanoda_export.txt) lines"
+
+          cat > _nanoda_config.json <<'EOF'
+          {
+            "export_file_path": "_nanoda_export.txt",
+            "use_stdin": false,
+            "permitted_axioms": [
+              "propext",
+              "Classical.choice",
+              "Quot.sound",
+              "Lean.trustCompiler"
+            ],
+            "unpermitted_axiom_hard_error": false,
+            "nat_extension": true,
+            "string_extension": true,
+            "print_success_message": true
+          }
+          EOF
+
+          RUST_BACKTRACE=1 \
+            _nanoda_lib/target/release/nanoda_bin _nanoda_config.json
