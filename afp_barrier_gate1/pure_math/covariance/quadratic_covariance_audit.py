@@ -288,6 +288,16 @@ def signed_square_restoration() -> None:
     assert generator * quadratic == -4 * quadratic
     assert generator == generator.T
 
+    # Sym_0(2) has basis x^2-y^2 and 2xy. The second basis function samples
+    # to zero on the four cardinal points, while the first is restored at -4.
+    sampling = sp.Matrix.hstack(quadratic, sp.zeros(4, 1))
+    constraints = (generator + 4 * sp.eye(4)) * sampling
+    assert sampling.rank() == 1
+    assert constraints.rank() == 0
+    assert 2 - constraints.rank() == 2          # dim E_form
+    assert 2 - sampling.rank() == 1             # dim K_X
+    assert sampling.rank() - constraints.rank() == 1  # dim E_sample
+
     # At (1,0), write rates to (0,1), (-1,0), (0,-1) as u,b,v.
     u, b, v = sp.symbols("u b v")
     solution = sp.solve(
@@ -354,7 +364,10 @@ def main() -> None:
 
     factorization_rank_test()
     signed_square_restoration()
-    print("signed square restoration: PASS (adjacent rates 1, antipodal rate -1/2)")
+    print(
+        "signed square restoration: PASS "
+        "(rank S=1, rank R=0, sampled exact dimension=1)"
+    )
 
     hits = spectral_product_resonance_search()
     pell_family = pell_resonance_family_dimension_four()
