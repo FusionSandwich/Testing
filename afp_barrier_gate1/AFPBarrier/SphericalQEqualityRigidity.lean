@@ -21,7 +21,7 @@ def sphericalEpsilonAt
   (offdiag i).sum (fun j => a i j * (loss i j) ^ 2)
 
 /-- Prompt 3 local quality factor `Q_i=r_i epsilon_i/4`. -/
-def sphericalQAt
+noncomputable def sphericalQAt
     (a loss : ι → ι → ℝ) (i : ι) : ℝ :=
   jumpRate a i * sphericalEpsilonAt a loss i / 4
 
@@ -75,8 +75,7 @@ theorem normalizedLossScale_mean_one
         = (offdiag i).sum (fun j => (1 / 2 : ℝ) * (a i j * loss i j)) := by
             apply Finset.sum_congr rfl
             intro j hj
-            field_simp [hrne]
-            ring
+            field_simp [hrne] <;> ring
     _ = (1 / 2 : ℝ) *
           (offdiag i).sum (fun j => a i j * loss i j) := by
             rw [Finset.mul_sum]
@@ -99,8 +98,7 @@ theorem normalizedLossScale_secondMoment
             (jumpRate a i / 4) * (a i j * (loss i j) ^ 2)) := by
               apply Finset.sum_congr rfl
               intro j hj
-              field_simp [hrne]
-              ring
+              field_simp [hrne] <;> ring
     _ = (jumpRate a i / 4) *
           (offdiag i).sum (fun j => a i j * (loss i j) ^ 2) := by
             rw [Finset.mul_sum]
@@ -197,12 +195,14 @@ theorem active_symmetric_of_shared_conductance
     {i j : ι} (hactive : 0 < a i j) :
     0 < a j i := by
   have hgi : gamma i j = a i j * w i := by
-    rw [ha]
-    field_simp [ne_of_gt (hw i)]
+    calc
+      gamma i j = (gamma i j / w i) * w i := by
+        field_simp [ne_of_gt (hw i)]
+      _ = a i j * w i := by rw [← ha i j]
   have hgpos : 0 < gamma i j := by
     rw [hgi]
     exact mul_pos hactive (hw i)
-  rw [ha, ← hgamma i j]
+  rw [ha j i, ← hgamma i j]
   exact div_pos hgpos (hw j)
 
 /-- Symmetry of the pairing gives symmetry of the spherical loss. -/
