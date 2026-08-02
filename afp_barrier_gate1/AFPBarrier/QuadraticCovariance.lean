@@ -29,7 +29,7 @@ def jumpCrossVariation
     a i j * (f j - f i) * (g j - g i))
 
 /-- The bilinear carré du champ with the conventional factor `1/2`. -/
-def jumpGamma
+noncomputable def jumpGamma
     (a : ι → ι → ℝ) (f g : ι → ℝ) (i : ι) : ℝ :=
   (1 / 2 : ℝ) * jumpCrossVariation a f g i
 
