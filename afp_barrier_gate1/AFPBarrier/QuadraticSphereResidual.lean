@@ -6,7 +6,7 @@ import Mathlib.Tactic
 /-!
 # Unit-sphere quadratic residual
 
-This is a deliberately coordinate-indexed formalization.  It defines the
+This is a deliberately coordinate-indexed formalization. It defines the
 symmetric trace-free coefficient space, the sampling and residual maps, and
 the projected covariance matrices without introducing a tensor library.
 -/
@@ -207,7 +207,7 @@ def quadraticSamplingLinear (x : I → K → ℝ) :
   map_add' A B := by
     funext i
     classical
-    unfold sampledQuadratic
+    unfold sampledQuadratic finiteQuadraticSample
     change (∑ p, ∑ q, (A p q + B p q) * x i p * x i q) =
       (∑ p, ∑ q, A p q * x i p * x i q) +
         ∑ p, ∑ q, B p q * x i p * x i q
@@ -221,7 +221,7 @@ def quadraticSamplingLinear (x : I → K → ℝ) :
   map_smul' c A := by
     funext i
     classical
-    unfold sampledQuadratic
+    unfold sampledQuadratic finiteQuadraticSample
     change (∑ p, ∑ q, (c * A p q) * x i p * x i q) =
       c * ∑ p, ∑ q, A p q * x i p * x i q
     rw [Finset.mul_sum]
@@ -256,22 +256,20 @@ theorem matrixFrobeniusPairing_covariance_add_outer
         2 * sampledQuadratic A x i := by
   classical
   unfold matrixFrobeniusPairing jumpCovarianceMatrix
-    quadraticCovariancePairing sampledQuadratic
-  simp only [Matrix.add_apply, Pi.smul_apply, Matrix.vecMulVec_apply,
-    smul_eq_mul]
+    quadraticCovariancePairing sampledQuadratic finiteQuadraticSample
+  simp only [Matrix.add_apply]
   simp_rw [mul_add, Finset.sum_add_distrib]
   apply congrArg₂ (fun u v : ℝ => u + v)
   · rfl
-  · rw [Finset.mul_sum]
+  · change
+      (∑ p, ∑ q, A p q * (2 * (x i p * x i q))) =
+        2 * ∑ p, ∑ q, A p q * x i p * x i q
+    rw [Finset.mul_sum]
     apply Finset.sum_congr rfl
     intro p hp
     rw [Finset.mul_sum]
     apply Finset.sum_congr rfl
     intro q hq
-    have hsmul :
-        ((2 : ℝ) • Matrix.vecMulVec (x i) (x i)) p q =
-          2 * (x i p * x i q) := rfl
-    rw [hsmul]
     ring
 
 /-- Explicit unit-sphere residual factorization
@@ -332,7 +330,7 @@ theorem sphereResidual_factorization_trace
   rw [sphereResidual_factorization a x hx A i]
   exact matrixFrobeniusPairing_sphereResidualMatrix_eq_trace a x A i
 
-/-- The explicit pairing-orthogonal form space.  This is the coordinate
+/-- The explicit pairing-orthogonal form space. This is the coordinate
 meaning of `span {M_i}^⊥`. -/
 def sphereResidualOrthogonal
     (a : I → I → ℝ) (x : I → K → ℝ) :
