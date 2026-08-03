@@ -21,3 +21,10 @@ candidate.
 The final map will also bind the synthesis package, assumptions table,
 counterexample catalogue, abstract, claim matrix, prior-art map, stage report,
 salvage ledger, workflow, run, and artifacts.
+
+The formal declaration map is recorded exactly in
+`pure_math/barriers/P4_SALVAGE_LEDGER.md`. In particular, the current port
+strengthens the polar solve to retain the raw transverse factor and adds
+`projectiveQuality_from_fixedMoment` and
+`twoLossWeightedQuality_sub_one` for the two adversarially corrected
+boundaries.

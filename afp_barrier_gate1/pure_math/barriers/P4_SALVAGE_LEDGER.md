@@ -36,9 +36,9 @@ All blob identifiers below are from the accepted old snapshot `ae5b4c...`.
 
 | Old path | Old blob | Current Prompt-3 dependency/API | Independent proof audit | Adversarial audit | Port | Formal | Exact regression | Claim |
 |---|---|---|---|---|---|---|---|---|
-| `AFPBarrier/SharpProductBarriers.lean` | `bf5dddca9c5f7080f1675a4f1b015b86abe1a229` | `JumpGenerator`, `EqualAngle*`, `SphereSpecialization`, P2/P3 aggregate exports | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
+| `AFPBarrier/SharpProductBarriers.lean` | `bf5dddca9c5f7080f1675a4f1b015b86abe1a229` | byte-identical `EqualAngleRateMaximum` and `SphericalNetScaling`; current aggregate | finite algebra PASS | symmetry-assumption/API audit PASS | PORTED; stale unused import removed; raw transverse factor retained | source scan PASS; exact CI elaboration pending | Prompt-4 exact audit PASS | selected finite cores PROVED |
 | `pure_math/barriers/SHARP_PRODUCT_GRAPH_BARRIERS.md` | `b443ac147599c8109ec6b5eb256e28a77935d84e` | verified P1--P3 notation and equal-angle construction | §§0--7 PASS after normalization repair | asymmetric-rate, compactness, cone, dual-sign, opposite-ray, and endpoint audits PASS | PORTED selectively with registered corrections | n/a | historical source rerun PASS; enhanced audit pending | P4.1--P4.10 PROVED; external/rejected boundaries explicit |
-| `pure_math/barriers/prompt4_sharp_barrier_audit.py` | `bdde1e448f04fa63fff38c17bdc66d0a81ed982a` | retained P1--P3 exact suite | PENDING | PENDING | PENDING | n/a | PENDING | COMPUTATIONAL candidate |
+| `pure_math/barriers/prompt4_sharp_barrier_audit.py` | `bdde1e448f04fa63fff38c17bdc66d0a81ed982a` | retained P1--P3 exact suite | exact identities PASS | nonunit-`lambda`, LP-dual, unequal-ray, and incidence adversaries PASS | PORTED AND STRENGTHENED | n/a | local PASS; exact CI rerun pending | COMPUTATIONAL |
 | `pure_math/FINAL_PURE_MATH_THEOREM_PACKAGE.md` | `000c4980b091eb79a7e760584510a4093dc9263e` | verified P2/P3 theorem maps and claim controls | PENDING | PENDING | PENDING | n/a | PENDING | PENDING |
 | `docs/PROMPT4_APPROACH_REGISTRY.md` | `909c2d8f9b4e312fa50191a01e6a2c2a95e641ca` | replaced by this branch's `P4_APPROACH_REGISTRY.md` | PENDING | PENDING | REIMPLEMENT | n/a | n/a | PENDING |
 | `docs/PROMPT4_STAGE_REPORT.md` | `bc15cb4f59862f46c7171c7f8bfc22df7b3109c0` | current P2/P3 finalization record | PENDING | PENDING | PENDING | n/a | PENDING | PENDING |
@@ -96,3 +96,30 @@ The old final-package shorthand without the equal-weight hypothesis is
 `REJECTED` by an exact spherical two-neighbour counterexample. The old
 fixed-`lambda` normalization is likewise `REJECTED`; neither false wording is
 salvaged.
+
+## Lean old-to-new declaration map
+
+| Old declaration | Current declaration | Port decision |
+|---|---|---|
+| `squarePolarQualityFromStep` | same | direct current-API port |
+| `squarePolarQualityFromStep_formula` | same | direct current-API port |
+| `squarePolar_rates_forced` | same | strengthened signature accepts the raw nonzero transverse factor and derives rate equality |
+| `squarePolar_totalRate_forced` | same | strengthened consistently with the raw transverse equation |
+| `squarePolar_forced_quartic_lower` | same | direct current-API port |
+| `cscSquaredTruncation` | same | direct current-API port |
+| `squarePolarRateMainStep` | same | direct current-API port |
+| `cscSquaredTruncation_rate_identity` | same | direct current-API port |
+| `squarePolarRateMainStep_grid` | same | direct current-API port |
+| `squarePolarQualityMainStep` | same | direct current-API port |
+| `squarePolarQualityMainStep_grid` | same | direct current-API port |
+| `universal_rate_lower_of_defect_upper` | same | direct current-API port |
+| `finiteExtremal_defect_lower` | same | direct current-API port |
+| none | `projectiveQuality_from_fixedMoment` | new formal normalization repair |
+| none | `twoLossWeightedQuality_sub_one` | new unequal-magnitude strengthening |
+| `twoLossQuality_sub_one` | same | retained mandatory equal-weight corollary |
+| `biregular_interRing_incidence` | same | arithmetic incidence core only |
+| `perfectMatching_ringCounts_eq` | same | arithmetic perfect-matching core only |
+
+The current aggregate adds one Prompt-4 import. The focused axiom audit
+retains every baseline line in order and appends exact prints for every row in
+this table.
