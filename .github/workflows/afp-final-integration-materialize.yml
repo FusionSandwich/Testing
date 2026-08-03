@@ -1,0 +1,124 @@
+name: AFP final integration materializer
+
+on:
+  push:
+    branches:
+      - agent/afp-pure-math-final-integration-20260802
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: afp-final-integration-materializer
+  cancel-in-progress: false
+
+jobs:
+  integrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out isolated integration branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/afp-pure-math-final-integration-20260802
+          fetch-depth: 0
+
+      - name: Merge verified Prompt 2 completion without changing source branches
+        shell: bash
+        run: |
+          set -euo pipefail
+          branch=agent/afp-pure-math-final-integration-20260802
+          source=agent/afp-pure-math-final-completion-20260802
+
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git fetch --no-tags origin "$source"
+
+          set +e
+          git merge --no-ff --no-commit "origin/$source"
+          merge_status=$?
+          set -e
+
+          if test "$merge_status" -ne 0; then
+            conflicts=$(git diff --name-only --diff-filter=U)
+            test -n "$conflicts"
+            printf '%s\n' "$conflicts"
+            while IFS= read -r path; do
+              test -n "$path" || continue
+              git checkout --ours -- "$path"
+              git add "$path"
+            done <<< "$conflicts"
+          fi
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import subprocess
+
+          aggregate = Path('afp_barrier_gate1/AFPBarrier.lean')
+          text = aggregate.read_text(encoding='utf-8')
+          required = [
+              'import AFPBarrier.QuadraticSampling',
+              'import AFPBarrier.QuadraticSphereResidual',
+              'import AFPBarrier.OneShellQuadraticRigidity',
+              'import AFPBarrier.SpectralSamplingObstruction',
+          ]
+          lines = text.splitlines()
+          insert_at = lines.index('import AFPBarrier.QuadraticCovariance') + 1
+          for item in reversed(required):
+              if item not in lines:
+                  lines.insert(insert_at, item)
+          aggregate.write_text('\n'.join(lines) + '\n', encoding='utf-8')
+
+          audit = Path('afp_barrier_gate1/AFPBarrier/PureMathAxiomAudit.lean')
+          ours = audit.read_text(encoding='utf-8').splitlines()
+          theirs = subprocess.check_output(
+              [
+                  'git', 'show',
+                  'origin/agent/afp-pure-math-final-completion-20260802:'
+                  'afp_barrier_gate1/AFPBarrier/PureMathAxiomAudit.lean',
+              ],
+              text=True,
+          ).splitlines()
+
+          first_nonimport = next(
+              i for i, line in enumerate(ours)
+              if line and not line.startswith('import ')
+          )
+          existing_imports = {line for line in ours if line.startswith('import ')}
+          missing_imports = [
+              line for line in theirs
+              if line.startswith('import ') and line not in existing_imports
+          ]
+          ours[first_nonimport:first_nonimport] = missing_imports
+
+          existing_prints = {line for line in ours if line.startswith('#print axioms ')}
+          missing_prints = [
+              line for line in theirs
+              if line.startswith('#print axioms ') and line not in existing_prints
+          ]
+          if missing_prints:
+              ours.extend([
+                  '',
+                  '-- Verified Prompt 2 completion declarations imported during final integration.',
+                  *missing_prints,
+              ])
+          audit.write_text('\n'.join(ours) + '\n', encoding='utf-8')
+          PY
+
+          rm -f .github/p3p4*.b64
+          rm -f .github/workflows/afp-p3-p4-materialize.yml
+          rm -f .github/workflows/afp-p3-p4-targeted-lean.yml
+          rm -f .github/workflows/afp-final-integration-materialize.yml
+
+          unresolved=$(git diff --name-only --diff-filter=U)
+          if test -n "$unresolved"; then
+            echo 'Unresolved merge paths:' >&2
+            echo "$unresolved" >&2
+            exit 1
+          fi
+
+          git add -A
+          git diff --cached --check
+          git commit -m 'Merge verified Prompt 2 completion into final integration'
+          git push origin "HEAD:$branch"
