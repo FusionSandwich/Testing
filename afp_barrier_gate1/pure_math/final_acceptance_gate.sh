@@ -113,11 +113,14 @@ printf 'placeholder and singular/plural user-axiom scans: PASS\n' | tee "$EVIDEN
 
 run_logged lake-update lake update
 run_logged mathlib-cache lake exe cache get
+# Project-local source files import other AFPBarrier modules. Build the package
+# once to populate the project module search path, then compile each repaired
+# source file directly and retain the aggregate build as separate evidence.
+run_logged lean-full-build lake build
 run_logged lean-quantitative lake env lean ./AFPBarrier/QuantitativeGlobalNearRigidity.lean
 run_logged lean-spherical-equality lake env lean ./AFPBarrier/SphericalQEqualityRigidity.lean
 run_logged lean-q-covariance lake env lean ./AFPBarrier/QEqualityCovariance.lean
 run_logged lean-sharp-barriers lake env lean ./AFPBarrier/SharpProductBarriers.lean
-run_logged lean-full-build lake build
 run_logged lean-axiom-audit lake env lean ./AFPBarrier/PureMathAxiomAudit.lean
 if grep -q 'sorryAx' "$EVIDENCE_DIR/lean-axiom-audit.log"; then
   fail "focused axiom report contains sorryAx"

@@ -25,6 +25,9 @@ The target and PR #30 source were re-resolved before the closeout branch was cre
 | Prompt 4 development branch | `94aebf6578a43516cce4bb7c042fc57681c93890` at closeout inspection | accepted Prompt 4 history plus final records | read-only |
 | Prompt 4 integration branch | `83bf04b99a060658b0177f3373ea0869cb4f3447` | provenance-only | untouched |
 | Alternate Prompt 2 completion | `31ea6a49f006df10ca633eafd6848ad43b51ac3f` | protected alternate history | untouched |
+| Prompt 2+3 exact-candidate closeout | `agent/afp-pure-math-p2-p3-final-closeout-c66f3229` at `8de4b94835137d1eaf32c14b626424f87d2e176d` | concurrent divergent closeout history | untouched; no ancestry imported |
+| Prompt 2 verified archive | `archive/afp-pure-math-p2-quadratic-covariance-verified-31ea6a49` at `31ea6a49f006df10ca633eafd6848ad43b51ac3f` | protected archive | untouched |
+| Prompt 3 rigidity verified archive | `archive/afp-pure-math-p3-rigidity-verified` at `8de4b94835137d1eaf32c14b626424f87d2e176d` | protected archive | untouched |
 | PR #29 final-completion line | `b11b7406e229f6fc8d018b36fa11b5506bd9d419` | concurrent independent final-completion work | untouched; no commits imported into this closeout |
 | PR #32 temporary integration | merged commit `fbb482455dd51a961dbcbd897141c22f0ef57a15` | concurrent isolated integration history | untouched; not used as ancestry here |
 | PR #33 final-integration line | `e5455c3bc82d5c2792fe2aeaa8b13a28f6f3e2c4` | concurrent independent final-integration work | untouched; no branch movement or merge by this closeout |
@@ -32,7 +35,7 @@ The target and PR #30 source were re-resolved before the closeout branch was cre
 
 PR #28 had advanced beyond the earlier audit-only checkpoint recorded in the supplied specification. That movement was external to this closeout. The current ref was recorded, but no part of its divergent ancestry entered the acceptance branch.
 
-PRs #29, #32, and #33 and the final-certification branch were discovered during exact-head runner fetches after this branch had already been created. They are treated as independently mutable, protected external work. Their existence does not authorize merging, resetting, rebasing, force-pushing, deleting, or superseding them. The accepted target remained unchanged while they were recorded.
+The later Prompt 2+3 closeout branch and the Prompt 2/Prompt 3 archives were discovered during exact-head runner fetches. Like PRs #29, #32, and #33, they are independently mutable protected external work. Their existence does not authorize merging, resetting, rebasing, force-pushing, deleting, or superseding them. The accepted target remained unchanged while they were recorded.
 
 ## Accepted historical commits retained as ancestors or protected inputs
 

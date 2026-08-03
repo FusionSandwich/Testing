@@ -33,6 +33,8 @@ The immutable archive was still:
 | PR #25 source branch rewritten | NO |
 | PR #28 divergent branch rewritten | NO |
 | PR #23 provenance branch rewritten | NO |
+| Prompt 2+3 closeout branch rewritten | NO |
+| Prompt 2 or Prompt 3 verified archive rewritten | NO |
 | PR #29 final-completion branch rewritten | NO |
 | PR #32 integration history rewritten | NO |
 | PR #33 final-integration branch rewritten | NO |
@@ -44,8 +46,8 @@ The immutable archive was still:
 | Protected branch force-pushed | NO |
 | Protected branch deleted or repurposed | NO |
 | PR #28 commit merged or cherry-picked | NO |
-| PR #29, #32, or #33 commit merged or cherry-picked into this branch | NO |
-| Archive branch changed | NO |
+| Any concurrently discovered closeout commit merged or cherry-picked into this branch | NO |
+| Archive branch changed by this closeout | NO |
 | Target changed before exact tested integration | NO |
 
 The closeout branch retains the source commit in its ancestry. Temporary materialization files are removed only from the new descendant tree; their historical commits remain reachable through the preserved PR #30 history.
@@ -54,9 +56,18 @@ The closeout branch retains the source commit in its ancestry. Temporary materia
 
 The accepted target and PR #30 source did not move between the supplied checkpoint and closeout branch creation. PR #28 moved externally to `c66f3229d0a89d97559535810c4ba09daf6e4e42`. That movement is recorded but is not treated as an immutable invariant and does not enter this branch's ancestry.
 
-During exact-head runner fetches, additional independent closeout histories were discovered:
+During exact-head runner fetches, additional independent histories were discovered:
 
 ```text
+agent/afp-pure-math-p2-p3-final-closeout-c66f3229:
+    8de4b94835137d1eaf32c14b626424f87d2e176d
+
+archive/afp-pure-math-p2-quadratic-covariance-verified-31ea6a49:
+    31ea6a49f006df10ca633eafd6848ad43b51ac3f
+
+archive/afp-pure-math-p3-rigidity-verified:
+    8de4b94835137d1eaf32c14b626424f87d2e176d
+
 PR #29 / agent/afp-pure-math-final-completion-20260802:
     b11b7406e229f6fc8d018b36fa11b5506bd9d419
 
@@ -70,7 +81,7 @@ agent/afp-pure-math-final-certification-20260802:
     b11b7406e229f6fc8d018b36fa11b5506bd9d419 at discovery
 ```
 
-These are independently mutable protected refs. This closeout does not move them, does not claim them as immutable baselines, and does not incorporate their commits. They are recorded so that concurrent work cannot be silently overwritten or mistaken for this branch's own changes.
+These are independently mutable protected refs. This closeout does not move them, does not claim mutable branch observations as immutable baselines, and does not incorporate their commits. The two archive refs are recorded at the exact observed archive objects and likewise remain untouched.
 
 ## Manual correction provenance
 
