@@ -23,7 +23,7 @@ The accepted target at `94aebf6578a43516cce4bb7c042fc57681c93890` is authoritati
 | `AFPBarrier/PureMathAxiomAudit.lean` | MANUAL_UNION_REQUIRED | `430ac9de9e999ca8b566f83be37a02c7921182ea` | all prior reports retained; new finite declarations included |
 | `AFPBarrier/SphericalQEqualityRigidity.lean` | RICH_P3_ADDITIVE | `d2bef33b5383aef234717dbf718c50625515f743` | retained |
 | `AFPBarrier/QuantitativeGlobalNearRigidity.lean` | RICH_P3_ADDITIVE | `e6f4dc26113047915a5cb0563852d2cb77b75f31` | repaired source retained |
-| `AFPBarrier/QEqualityCovariance.lean` | RICH_P3_ADDITIVE | `c5a8e48477e83cfa0bc30dae792db4a264533763` | non-antipodal theorem and antipodal boundary retained |
+| `AFPBarrier/QEqualityCovariance.lean` | MANUAL_UNION_REQUIRED | `75d61ed0912fdc4d51aec8f2424d9b622eee3a86` | PR #30 theorem statements retained; finite-sum and `pow_two` proof repairs manually re-derived and independently audited against blob `dee3e1e9625010c82174aeb43976c1a3e208ae52` without importing divergent ancestry |
 | `pure_math/rigidity/GLOBAL_Q_RIGIDITY_THEOREM.md` | RICH_P3_ADDITIVE | `f419a9749aff58bb66248b120e0bd96dbe65637f` | Gram/Heron route retained; old endpoint-product route rejected |
 | `pure_math/rigidity/global_near_rigidity_audit.py` | RICH_P3_ADDITIVE | `b43cd8988c98b2a83d42cb535101b8122543e60d` | strengthened zero-defect and positive-width checks retained |
 | `pure_math/rigidity/q1_covariance_audit.py` | RICH_P3_ADDITIVE | `a5e60028ea036d0f3973b44af9f194bbb4b65415` | antipodal and sampled-space checks retained |
@@ -51,7 +51,7 @@ The accepted target at `94aebf6578a43516cce4bb7c042fc57681c93890` is authoritati
 
 ## Manually re-derived corrections
 
-No PR #28 commit is merged or cherry-picked. The following corrections were independently re-derived and are present in the PR #30 source blobs above:
+No PR #28, concurrent closeout, or archive commit is merged or cherry-picked. The following corrections were independently re-derived:
 
 1. `simpa [mul_comm]` resolves the weighted-product orientation in `pointwise_deviation_sq_le_eta_div_kappa`.
 2. Adjacent-rate and incident-loss bounds are proved by multiplying numerator inequalities by nonnegative inverses rather than applying a mismatched division lemma.
@@ -59,6 +59,11 @@ No PR #28 commit is merged or cherry-picked. The following corrections were inde
 4. Tangent-frame covariance is restricted to `0 < ell < 2`; `ell=2` is a separate antipodal radial boundary.
 5. The endpoint-product angle enclosure is rejected on the required icosahedral box and replaced by a positive spherical Gram/Heron determinant certificate.
 6. The weighted-octahedral sampled degree-two space is certified as `{0}` through the exact determinant of `P+2I`, not form-space rank alone.
+7. The centered affine-product proof factors finite sums with `simp only [Finset.sum_mul, Finset.mul_sum]`.
+8. The covariance decomposition converts `sigma ^ 2` to `sigma * sigma` via `simpa only [pow_two] using hsigma`.
+9. Demonstrated unreachable `ring` tails after `field_simp` are removed.
+
+The last three repairs were audited against the independently verified divergent blob `dee3e1e9625010c82174aeb43976c1a3e208ae52`, but only the manually re-derived minimal proof changes appear in this branch.
 
 ## Target-authoritative content
 
@@ -81,6 +86,6 @@ _nanoda_lib/
 local log files
 ```
 
-The six final workflow files are newly committed, read-only verification wrappers. They do not mutate repository refs or workflow files.
+The six final workflow files are committed, read-only verification wrappers. They do not mutate repository refs or workflow files.
 
 The literal final candidate SHA/tree, workflow run/job identifiers, artifact IDs/digests, final target SHA/tree, and post-integration workflow identifiers are recorded in the authoritative acceptance comment on the final reconciliation PR.

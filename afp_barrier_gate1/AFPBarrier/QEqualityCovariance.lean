@@ -57,7 +57,7 @@ theorem sphericalEpsilon_eq_four_mul_Q_div_rate
       = 4 * sphericalQAt a loss i / jumpRate a i := by
   have hrne : jumpRate a i ≠ 0 := ne_of_gt hrate
   unfold sphericalQAt
-  field_simp [hrne] <;> ring
+  field_simp [hrne]
 
 /-- A centered weighted affine product has only its constant and second-moment
 terms. -/
@@ -88,11 +88,7 @@ theorem weighted_centered_affine_product_sum
           + (A * D) * s.sum (fun j => p j * v j)
           + (B * C) * s.sum (fun j => p j * u j)
           + (B * D) * s.sum (fun j => p j * u j * v j) := by
-            congr 1
-            · rw [← Finset.sum_mul, ← Finset.sum_mul]
-            · rw [Finset.mul_sum]
-            · rw [Finset.mul_sum]
-            · rw [Finset.mul_sum]
+            simp only [Finset.sum_mul, Finset.mul_sum]
     _ = A * C + B * D * s.sum (fun j => p j * u j * v j) := by
           rw [hsum, hcenterU, hcenterV]
           ring
@@ -119,8 +115,9 @@ theorem qOne_covarianceEntry_decomposition
     (A := -ell * omega k) (B := sigma)
     (C := -ell * omega l) (D := sigma)
     hsum hcenterK hcenterL
-  rw [hcentered]
-  rw [hsigma]
+  have hsigmaMul : sigma * sigma = ell * (2 - ell) := by
+    simpa only [pow_two] using hsigma
+  rw [hcentered, hsigmaMul]
   calc
     rate *
         ((-ell * omega k) * (-ell * omega l)
@@ -169,7 +166,7 @@ theorem qOne_antipodal_covarianceEntry
 theorem weightedOctahedron_tangentWeights_sum_one
     (g₁ g₂ : ℝ) (hsum : 0 < g₁ + g₂) :
     g₁ / (g₁ + g₂) + g₂ / (g₁ + g₂) = 1 := by
-  field_simp [ne_of_gt hsum] <;> ring
+  field_simp [ne_of_gt hsum]
 
 /-- At one weighted octahedral axis, equal tangent weights are equivalent to
 equal conductances. -/
