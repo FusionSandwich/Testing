@@ -300,3 +300,18 @@ Any future theorem that removes a hypothesis must be tested against every
 relevant catalogue entry. A computational example may be retired only when a
 stronger exact proof subsumes its falsification role; its historical record
 should remain in provenance.
+
+## Rich Prompt 3 reconciliation counterexamples
+
+| Rejected strengthening | Exact witness | Permanent lesson |
+|---|---|---|
+| unrestricted Platonic `Q=1` classification | cube and dodecahedron shortest-edge generators | triangulation support is essential |
+| tangent normalization at `ell=2` | two-state `+/-e_1` generator with `r=1`, `Q=1` | covariance is `4e_1e_1^T`, with no unit tangent frame |
+| `Q=1` forces axial covariance | positive three-parameter weighted octahedron | tangent second moment is independent data |
+| scalar `eta` controls tangent anisotropy | let one weighted-octahedron conductance ratio tend to infinity at `eta=0` | anisotropy norm tends to `1/2` |
+| form constraints determine sampled modes | octahedral off-diagonal quadratic aliases | use the sampling map |
+| small defect controls every active edge without a floor | rare-active-edge probability family | require `p_ij>=kappa` or equivalent structure |
+| diameter-free global control | long alternating paths | local ratio errors accumulate |
+| endpoint `C_A<1` certifies every required angle box | prescribed fixed icosahedral neighborhood | use the positive Gram/Heron determinant |
+| finite census is an all-orders proof | plantri through twelve vertices | enumeration is falsification only |
+| inactive triangulation edges inherit equality | cube faces triangulated by zero-conductance diagonals | equality controls active support only |

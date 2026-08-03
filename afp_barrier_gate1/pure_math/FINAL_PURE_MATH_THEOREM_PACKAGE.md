@@ -853,3 +853,31 @@ positive stencils, Farkas duality, spherical designs, association schemes,
 weighted variance, Cauchy rigidity, curvature frameworks, or discrete
 transport metrics. Those are precise adjacent inputs recorded in the prior-art
 map.
+
+## Reconciled stronger Prompt 3 companion theorem
+
+The final hierarchy remains unchanged at the top: the sampled quadratic
+covariance factorization is the candidate central theorem.  It is now joined by
+a stronger accepted Prompt 3 companion theorem.
+
+For a connected positive reversible coordinate eigenmap on `S^2`, exact
+`Q_i=1` fixes every active loss and propagates one row rate.  If the active
+support is exactly an injective, noncrossing, nondegenerate minor-arc
+triangulation covering the round sphere without cone defect, the realization
+is the regular tetrahedral, octahedral, or icosahedral triangulation.  Under
+`p_ij>=kappa` and `Q_i<=1+eta`, the package gives explicit local, path,
+diameter, graph-center, Poincaré, effective-resistance, loss, and geodesic
+bounds.  The Gram/Heron determinant supplies an explicit positive angle
+certificate and closed threshold `eta_*=kappa delta_*^2` for Platonic type and
+edge-length sup-distance.
+
+The covariance theorem is restricted to `0<ell<2`; the valid antipodal
+boundary `ell=2`, `r=1`, `C=4 Omega Omega^T` is separate.  The weighted
+octahedron proves that exact scalar quality does not control tangential
+anisotropy, while an exact determinant certificate still gives genuine sampled
+degree-two space `{0}`.
+
+Prompt 4 remains supporting sharp-barrier and extremal theory.  Its exact
+remainder constants, fixed-graph obstruction, universal rate bound,
+constrained extremal class, feasible-cone formula, dual anisotropy certificate,
+and reduced-ring obstruction are preserved without theorem-level rewrite.

@@ -217,3 +217,16 @@ Each applicable workflow must establish:
 
 Prompt 4 is not certified closed until these final-head gates and target
 integration provenance are recorded.
+
+## Revalidation after richer Prompt 3 reconciliation
+
+Prompt 4 was already closed on target
+`94aebf6578a43516cce4bb7c042fc57681c93890`.  The richer Prompt 3 work is
+integrated additively after that history; no accepted Prompt 4 theorem,
+remainder constant, extremal definition, feasible-cone formula, or reduced-ring
+statement is replaced.  The combined exact-head gate reruns
+`prompt4_sharp_barrier_audit.py`, `SharpProductBarriers.lean`, the aggregate
+build, axiom scans, independent checker, archive equality, and pure-math scope.
+Final run and job identifiers are recorded in
+`PROMPT4_REACCEPTANCE_AFTER_P3_RECONCILIATION.md` and the reconciliation PR
+discussion.

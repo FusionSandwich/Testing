@@ -560,3 +560,33 @@ and independently check accepted declaration sets.
 - continuum `W_2` contraction from positivity alone;
 - fixed radial connectivity is Delaunay at every level; and
 - general order independence of layered stopping maps.
+
+## C-M3R. Rich global-rigidity reconciliation — resolved
+
+**Status:** PROVED after non-destructive reconciliation, subject to the literal
+exact-head acceptance record.
+
+The accepted strengthened package consists of:
+
+```text
+exact spherical equality transfer;
+restricted round geodesic-triangulation classification;
+explicit path/diameter/reference-loss stability;
+Poincaré and effective-resistance refinement;
+explicit Gram/Heron-certified triangulation threshold;
+non-antipodal covariance decomposition;
+separate antipodal radial boundary;
+weighted-octahedral anisotropy and sampled-space certificate.
+```
+
+The endpoint-product angle enclosure is `REJECTED` for the required fixed
+icosahedral box.  The replacement is the exact factorization
+
+```text
+D=4 sin(S) sin(S-a) sin(S-b) sin(S-c),
+```
+
+which yields a positive angle-sine floor and an explicit `C_ang` on every
+certified side box.  Tangent normalization at `ell=2`, scalar defect control of
+tangent anisotropy, unrestricted Platonic classification, and enumeration as
+an all-orders proof remain permanently rejected.

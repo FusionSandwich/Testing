@@ -301,7 +301,7 @@ jobs:
           set -euo pipefail
           base=1835918fe9d0b941395e9f00f6ac5514129cefa0
           bad=$(git diff --name-only "$base"...HEAD | \
-            grep -Ev '^(.github/workflows/afp-(prompt4-sharp-barriers|prompt3-rigidity|quadratic-covariance|pure-math|spherical-feasibility)\.yml|afp_barrier_gate1/(AFPBarrier(\.lean|/.*\.lean)|pure_math/.*|docs/.*))$' || true)
+            grep -Ev '^(.github/workflows/afp-(global-rigidity|prompt4-sharp-barriers|prompt3-rigidity|quadratic-covariance|pure-math|spherical-feasibility)\.yml|afp_barrier_gate1/(AFPBarrier(\.lean|/.*\.lean)|pure_math/.*|docs/.*))$' || true)
           if test -n "$bad"; then
             echo 'Out-of-scope closeout paths:' >&2
             echo "$bad" >&2

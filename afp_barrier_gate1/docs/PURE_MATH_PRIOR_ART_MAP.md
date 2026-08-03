@@ -461,3 +461,48 @@ The Prompt 4 sharp-barrier results strengthen the numerical-analysis
 consequences but are not used to inflate the central novelty claim. Specialist
 review remains required before any priority assertion is made in a submitted
 manuscript.
+
+## 19. Reversible Markov energy and effective resistance
+
+The Poincaré variational inequality, reversible Dirichlet forms, the electrical
+Dirichlet principle, and effective resistance are standard.  The reconciliation
+therefore does not claim those tools in isolation.  Its contribution is the
+explicit transfer from the spherical normalized variance to
+
+```text
+E_P(log r)<=2eta/(1-delta)^2,
+Var_pi(log r)<=2eta/((1-delta)^2 lambda_P),
+|log r_i-log r_j|<=sqrt(2eta R_eff(i,j))/(1-delta),
+```
+
+with the stationary measure and edge-conductance normalization derived from
+shared conductances.  The path/diameter proof is retained independently because
+it has different hypotheses and sharpness behavior.
+
+## 20. Quantitative spherical-angle certification
+
+Differentiating the spherical cosine law is standard.  An endpoint interval
+bound for `cos A` is not accepted merely because it works near some reference
+points: the prior candidate fails on the required fixed icosahedral
+neighborhood.  The accepted proof instead uses the exact spherical Gram/Heron
+factorization
+
+```text
+sin^2(b)sin^2(c)-(cos a-cos b cos c)^2
+ =4 sin(S)sin(S-a)sin(S-b)sin(S-c)
+```
+
+to produce a positive angle-sine lower bound throughout the complete side box.
+The new statement is the combined explicit transfer from graph defect to a
+closed side box, integer valence separation, and edge-distance bound—not the
+classical identity itself.
+
+## 21. Reconciled publication boundary
+
+The Prompt 2 sampled covariance factorization remains the candidate central
+paper theorem.  The richer Prompt 3 restricted classification and explicit
+graph-global near-rigidity form a strong companion theorem.  Prompt 4 retains
+its accepted sharp product-grid barriers, constrained extremal problem, and
+feasible-cone anisotropy theory as supporting results.  The final package does
+not claim an optimal near-rigidity constant, coordinate-space stability without
+a rigidity margin, or finite enumeration as proof.

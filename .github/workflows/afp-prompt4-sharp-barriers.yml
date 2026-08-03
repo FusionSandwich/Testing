@@ -228,7 +228,7 @@ jobs:
             '515f1aae6c20bd85711c90b5c1c21b4905252d01'
           base=47ef59b0463ecd4bd7a18a3301f29b14f9777c20
           bad=$(git diff --name-only "$base"...HEAD | \
-            grep -Ev '^(.github/workflows/afp-(prompt4-sharp-barriers|prompt3-rigidity|quadratic-covariance|pure-math|spherical-feasibility)\.yml|afp_barrier_gate1/(AFPBarrier(\.lean|/.*\.lean)|pure_math/.*|docs/.*))$' || true)
+            grep -Ev '^(.github/workflows/afp-(global-rigidity|prompt4-sharp-barriers|prompt3-rigidity|quadratic-covariance|pure-math|spherical-feasibility)\.yml|afp_barrier_gate1/(AFPBarrier(\.lean|/.*\.lean)|pure_math/.*|docs/.*))$' || true)
           if test -n "$bad"; then
             echo 'Out-of-scope Prompt 4 paths:' >&2
             echo "$bad" >&2

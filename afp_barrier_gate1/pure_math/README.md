@@ -564,3 +564,24 @@ proofs.
 - `../docs/PURE_MATH_COUNTEREXAMPLE_CATALOGUE.md`
 - `../docs/PURE_MATH_MANUSCRIPT_ABSTRACT.md`
 - `../docs/THEOREM_TO_FILE_MAP.md`
+
+## Rich Prompt 3–Prompt 4 reconciliation
+
+The accepted target already contained the narrow Prompt 3 package and the full
+Prompt 4 sharp-barrier synthesis.  The additive reconciliation retains those
+files and adds the stronger Prompt 3 companion package under
+`pure_math/rigidity/` and the three narrow Lean modules:
+
+```text
+SphericalQEqualityRigidity.lean
+QuantitativeGlobalNearRigidity.lean
+QEqualityCovariance.lean
+```
+
+The strengthened package proves the restricted round-triangulation
+classification, explicit graph-global near-rigidity, Poincaré/effective-
+resistance refinements, a Gram/Heron-certified quantitative threshold, the
+non-antipodal covariance split, the antipodal radial boundary, and the
+weighted-octahedral anisotropy/sampling result.  The 9,150-map plantri census is
+computational falsification only.  Prompt 4 theorem statements and remainder
+constants are preserved and rerun on the combined head.

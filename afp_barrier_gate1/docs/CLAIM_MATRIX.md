@@ -100,6 +100,29 @@ wording.
 | General layered stopping is order independent | REJECTED | Noncommuting flows | Outside pure-math synthesis |
 | Blanket positive Bakry--Émery curvature collapse on finite graphs | REJECTED | Known positive-curvature finite graphs | Do not claim |
 
+## Rich Prompt 3–4 reconciliation claims
+
+The following entries are the canonical strengthened Prompt 3 statements after
+non-destructive reconciliation with the accepted Prompt 4 target.  They refine,
+but do not delete, the earlier narrow Prompt 3 rows above.
+
+| Claim | Status | Current support | Publication treatment |
+|---|---|---|---|
+| Exact spherical `Q=1` equality transfer, including the normalized identity `Q_i-1=sum_j p_ij(x_ij-1)^2` | PROVED / LEAN | `GLOBAL_Q_RIGIDITY_THEOREM.md` §§1–2; `SphericalQEqualityRigidity.lean` | Foundational transfer used by the global theorem |
+| The round minor-arc triangulation is tetrahedral, octahedral, or icosahedral under the complete displayed embedding, activity, convex-face, no-crossing, full-coverage, and no-cone-defect hypotheses | PROVED UNDER EXPLICIT TRIANGULATION HYPOTHESES | theorem §3; direct `q=3,4,5` map uniqueness; exact Gram/hull regressions | Never state without the full support and round-sphere hypotheses |
+| Enumeration through twelve vertices proves the all-orders Platonic classification | REJECTED | `plantri` census is finite | Treat the 9,150 maps only as hostile computational falsification |
+| Source-pinned `plantri` enumerates exactly `1,1,2,5,14,50,233,1249,7595` simple triangulations for `V=4,...,12` | COMPUTATIONAL / EXACT CENSUS | `triangulation_counterexample_audit.py`; workflow artifact | Regression and counterexample search, not proof |
+| Pointwise, path, diameter, graph-center, Poincaré, and effective-resistance near-rigidity hold with the displayed `delta`, `q_delta`, `B_delta`, `lambda_P`, and `R_eff` constants | PROVED | theorem §§4–5; deterministic exact/stress audit; finite Lean algebra | State all connectivity, reversibility, and active-weight-floor hypotheses |
+| Quantitative triangulation stability identifies the Platonic type and bounds edge-length sup distance below the explicit `eta_*=kappa delta_*^2` threshold | PROVED WITH EXPLICIT SMALLNESS CONDITIONS | theorem §6; positive Gram/Heron determinant certificate; zero-defect and positive-width box regressions | Edge metric only; no automatic coordinate-level framework bound |
+| The endpoint-product `C_A<1` angle enclosure is a valid mandatory certificate on every required Platonic fixed box | REJECTED | It fails the required fixed icosahedral neighborhood | Replaced by the positive Gram/Heron determinant factorization |
+| At exact `Q=1` and `0<ell<2`, covariance splits into the stated radial term plus the tangent second moment `T_i` | PROVED / LEAN FINITE CORE | theorem §7; `QEqualityCovariance.lean`; exact covariance audit | Tangent normalization is restricted to the genuine non-antipodal range |
+| The antipodal equality boundary has `ell=2`, `r=1`, and `C=4 Omega Omega^T` | PROVED BOUNDARY CASE / LEAN SCALAR CORE | theorem §7.4; antipodal Lean declarations and exact two-state audit | No unit tangent direction is geometrically determined |
+| Tangent normalization at `ell=2` | REJECTED | denominator `sqrt(ell(2-ell))` vanishes | Keep the boundary separate |
+| `Q=1` forces axial covariance | REJECTED BY EXACT POSITIVE REVERSIBLE FAMILY | weighted octahedron | Axial covariance holds iff `T_i=P_i/2` |
+| Scalar `eta` control bounds tangential anisotropy | REJECTED | weighted-octahedron anisotropy tends to operator norm `1/2` while `eta=0` | Requires a separate tangent-isotropy hypothesis |
+| Every positive weighted-octahedron member has genuine sampled degree-two exact space `{0}` | PROVED EXACTLY | determinant certificate for `P+2I`; sampling-map argument | Do not replace this with form-space rank |
+| The accepted Prompt 4 sharp-barrier, extremal, and feasible-cone theorems survive the richer Prompt 3 integration unchanged at theorem level | REVALIDATED | Prompt 4 audit, Lean module, and six-workflow combined-head gate | Prompt 4 remains supporting theory in the final hierarchy |
+
 ## Claim-writing rules
 
 1. CI counts and hashes are provenance, not novelty evidence.

@@ -58,3 +58,17 @@ Do not silently assume:
 - an active-weight floor in near-rigidity;
 - coordinate rigidity from edge-metric concentration; or
 - positivity for signed counterexamples.
+
+## Rich Prompt 3 assumption boundary
+
+| Result | Mandatory assumptions | What fails without them |
+|---|---|---|
+| Global exact equality transfer | nonnegative rates, positive masses, shared conductances, connected active graph, coordinate eigenvalue `-2` | signed cancellation, asymmetric activity, or disconnected rates |
+| Restricted Platonic classification | finite simple sphere triangulation; active support exactly its one-skeleton; injective minor-arc embedding; noncrossing edges; convex nondegenerate faces; disjoint interiors; complete round-sphere coverage; no cone defect; positive conductance on every edge | cube/dodecahedron, major arcs, cones, inactive diagonals, duplicated states |
+| Pointwise/global near-rigidity | `p_ij>=kappa>0`, `delta=sqrt(eta/kappa)<1`, symmetric connected activity | rare edges and long paths defeat uniform control |
+| Spectral/resistance refinement | reversible `P`, positive Poincaré gap or finite effective resistance on the connected component | no global energy-to-pointwise transfer |
+| Triangulation stability | certified loss interval in `(0,2)`, positive Gram/Heron side box, explicit angle and integer-gap smallness | angle derivatives or valence identification can degenerate |
+| Tangent covariance decomposition | exact local `Q=1` and `0<ell<2` | at `ell=2` the tangent denominator vanishes |
+| Antipodal boundary | `ell=2`, hence `r=1` | separate purely radial case, not tangent normalization |
+| Axial covariance | additional `T_i=P_i/2` | weighted octahedron keeps `Q=1` but is anisotropic |
+| Sampled degree-two conclusion | actual sampling map and generator action | form-space rank alone is insufficient |

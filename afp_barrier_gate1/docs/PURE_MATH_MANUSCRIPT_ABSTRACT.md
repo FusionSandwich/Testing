@@ -59,3 +59,16 @@ quality is determined by node geometry alone.
 The main statements are independent of any discretization acronym. Selected
 finite algebra is formalized in Lean, and deterministic rational or algebraic
 computations are used only for independent falsification and reproducibility.
+
+## Reconciliation addendum
+
+The combined package also proves a restricted global rigidity theorem for
+positive reversible spherical generators: sharp normalized loss variance on a
+round minor-arc geodesic triangulation forces the regular tetrahedral,
+octahedral, or icosahedral framework.  Near equality yields explicit path,
+diameter, spectral-gap, effective-resistance, and edge-metric bounds, together
+with a computable Gram/Heron-certified threshold for identifying the Platonic
+type.  Exact scalar quality fixes only the radial covariance component; a
+weighted-octahedral family shows tangential anisotropy can remain order one,
+and the antipodal equality boundary is purely radial.  The finite plantri
+census is used only as falsification evidence.
