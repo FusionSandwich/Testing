@@ -20,6 +20,8 @@ on:
       - '.github/workflows/afp-pure-math.yml'
       - '.github/workflows/afp-quadratic-covariance.yml'
       - '.github/workflows/afp-spherical-feasibility.yml'
+      - '.github/workflows/afp-prompt3-rigidity.yml'
+      - '.github/workflows/afp-prompt4-sharp-barriers.yml'
   workflow_dispatch:
 
 concurrency:
@@ -321,7 +323,7 @@ jobs:
           set -euo pipefail
           baseline=c88b57533c3c8ad8fd819e4e52a74c4b5a245479
           bad=$(git diff --name-only "$baseline"...HEAD | \
-            grep -Ev '^(.github/workflows/afp-(global-rigidity|quadratic-covariance|pure-math|spherical-feasibility)\.yml|afp_barrier_gate1/(AFPBarrier(\.lean|/.*\.lean)|pure_math/.*|docs/.*))$' || true)
+            grep -Ev '^(.github/workflows/afp-(global-rigidity|prompt4-sharp-barriers|prompt3-rigidity|quadratic-covariance|pure-math|spherical-feasibility)\.yml|afp_barrier_gate1/(AFPBarrier(\.lean|/.*\.lean)|pure_math/.*|docs/.*))$' || true)
           if test -n "$bad"; then
             echo 'Out-of-scope Prompt 3 paths:' >&2
             echo "$bad" >&2
