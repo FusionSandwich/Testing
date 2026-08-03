@@ -41,3 +41,11 @@ The minimal corrected formulation is registered for P4.7--P4.9 and will be
 used in the port.  The mandatory equal-weight two-direction formula is retained
 only under its stated hypothesis that the unique balanced probability is
 `(1/2,1/2)`.
+
+The old downstream shorthand “two opposite tangent directions” is
+`REJECTED` without an equal-magnitude or explicit half-weight hypothesis. A
+literal spherical counterexample has colatitudes `pi/6` and `pi/2` on
+opposite tangent rays, forcing weights `(2/3,1/3)`. The accepted stronger
+formula for `v_2=-kappa v_1` is
+`kappa*(ell_1-ell_2)^2/(kappa*ell_1+ell_2)^2`; the mandatory displayed formula
+is its `kappa=1` corollary.

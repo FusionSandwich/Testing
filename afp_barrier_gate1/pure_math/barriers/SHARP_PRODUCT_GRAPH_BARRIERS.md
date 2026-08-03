@@ -523,3 +523,561 @@ a separate geometric proof. No claim is made that one fixed radial icosphere
 connectivity is Delaunay at every refinement level.
 
 ---
+## 4. A nondegenerate constrained extremal problem
+
+For a labeled \(K\)-point set \(X=(x_1,\ldots,x_K)\subset S^2\), let
+
+\[
+q_X=\frac12\min_{i\ne j}d(x_i,x_j),
+\qquad
+h_X=\sup_{y\in S^2}\min_i d(y,x_i).
+\]
+
+Fix an integer \(K\ge2\) and positive constants
+
+\[
+R,D_{\max},\rho,\sigma,m_-,m_+.
+\]
+
+Let \(\mathcal A_K\) consist of tuples \((X,G,w,\gamma)\) such that:
+
+1. \(x_i\in S^2\), \(q_X\ge\sigma K^{-1/2}\), and
+   \(h_X/q_X\le\rho\);
+2. \(G\) is a simple graph on the labels, of maximum degree at most
+   \(D_{\max}\), and every edge has geodesic length at most \(2h_X\);
+3. \(m_-/K\le w_i\le m_+/K\) and \(\sum_iw_i=1\);
+4. \(\gamma_{ij}=\gamma_{ji}\ge0\), supported on \(G\);
+5. the shared equilibrium equations hold;
+6. with \(a_{ij}=\gamma_{ij}/w_i\), one has \(r_i\le RK\) for every \(i\).
+
+Zero conductances are interpreted by deleting the corresponding edge, so the
+class is a finite union over active support graphs. Define
+
+\[
+E_K(R,D_{\max},\rho,\sigma,m_-,m_+)
+=\inf_{\mathcal A_K}\max_i\varepsilon_i,
+\tag{4.1}
+\]
+
+with value \(+\infty\) when \(\mathcal A_K\) is empty, and
+
+\[
+C^*(R,D_{\max},\rho,\sigma,m_-,m_+)
+=\liminf_{K\to\infty}K E_K.
+\tag{4.2}
+\]
+
+This controls rate, degree, locality, separation, covering, mesh ratio, masses,
+and reversibility. Dense or collapsed degeneracies are excluded.
+
+### Theorem 4.1 — positive lower bound
+
+For every nonempty \(\mathcal A_K\),
+
+\[
+\boxed{E_K\ge\frac4{RK}.}
+\tag{4.3}
+\]
+
+Therefore
+
+\[
+\boxed{C^*(R,D_{\max},\rho,\sigma,m_-,m_+)\ge\frac4R.}
+\tag{4.4}
+\]
+
+#### Proof
+
+Theorem 3.1 gives \(4\le r_i\varepsilon_i\). Since
+\(r_i\le RK\),
+
+\[
+\varepsilon_i\ge\frac4{r_i}\ge\frac4{RK}
+\]
+
+for every state. \(\square\)
+
+### Theorem 4.2 — finite-\(K\) existence in the closed class
+
+For fixed \(K\) and fixed parameters, if \(\mathcal A_K\ne\varnothing\), the
+infimum in (4.1) is attained.
+
+#### Proof
+
+There are finitely many labeled simple graphs of degree at most
+\(D_{\max}\). Fix one of them. The sphere product \((S^2)^K\) is compact. The separation, covering,
+mesh-ratio, and edge-locality constraints are closed because minimum distance
+and covering radius are continuous functions of the labeled configuration.
+The mass box with \(\sum_iw_i=1\) is compact.
+
+The rate cap gives
+
+\[
+0\le\gamma_{ij}\le\sum_j\gamma_{ij}=w_i r_i
+\le\frac{m_+}{K}RK=m_+R.
+\]
+
+Thus all conductances lie in a fixed compact box. Use one nonnegative
+conductance slot for each edge of the fixed graph; a zero value simply deletes
+that edge from the active support. Symmetry and support are built into these
+slots. Equilibrium, locality, and rate-cap constraints are closed because the
+masses stay uniformly positive, and \(\max_i\varepsilon_i\) is continuous.
+The feasible subset for the fixed graph is therefore compact. Taking the
+finite union over labeled graphs preserves compactness and proves attainment.
+\(\square\)
+
+### Corollary 4.3 — strict product/quasi-uniform separation
+
+For the square product family, \(K=2N^2\) and (2.4) gives
+
+\[
+r_{\max}\ge\frac8{\pi^4}N^4.
+\]
+
+The linear rate cap \(r_{\max}\le RK=2RN^2\) fails whenever
+
+\[
+\boxed{N>\frac{\pi^2}{2}\sqrt R.}
+\tag{4.5}
+\]
+
+Thus the fixed unreduced product family is eventually absent from every
+linear-rate extremal class (4.1). By contrast, the loss window (3.6), together
+with \(K\asymp h^{-2}\), implies only compatibility with a sufficiently large
+linear rate cap. Membership in the full class additionally requires the
+stated separation, covering, degree, locality, mass, reversibility, and exact
+equilibrium hypotheses. Under those external hypotheses a quasi-uniform
+family remains admissible. This is a structural separation, not a fitted
+numerical slope.
+
+---
+
+## 5. A priori anisotropy over the feasible rate family
+
+Fix one spherical node and a finite candidate set \(J\). Write
+
+\[
+v_j=P_{T_{\Omega_i}S^2}(\Omega_j-\Omega_i),
+\qquad
+\ell_j=1-\Omega_i\cdot\Omega_j>0.
+\]
+
+The nonzero tangent-balanced rate cone and its normalized section are
+
+\[
+\mathcal C_i=
+\left\{b\in\mathbb R_+^J\setminus\{0\}:
+\sum_jb_jv_j=0\right\},
+\tag{5.1}
+\]
+
+\[
+\mathcal P_i=
+\left\{p\in\mathbb R_+^J:
+\sum_jp_j=1,
+\quad
+\sum_jp_jv_j=0
+\right\}.
+\tag{5.2}
+\]
+
+Assume throughout this section that \(\mathcal P_i\ne\varnothing\). This
+nonemptiness is necessary: without it there is no feasible row and the
+displayed minimum over attainable means is not defined.
+
+For a prescribed normal moment \(\lambda>0\), the fixed-moment feasible set is
+the affine slice
+
+\[
+\mathcal F_i(\lambda)=
+\left\{a\in\mathbb R_+^J:
+\sum_ja_jv_j=0,
+\quad
+\sum_ja_j\ell_j=\lambda
+\right\}.
+\tag{5.3}
+\]
+
+It is not itself a cone. For \(p\in\mathcal P_i\), put
+
+\[
+m(p)=\sum_jp_j\ell_j,
+\qquad
+s_2(p)=\sum_jp_j\ell_j^2.
+\tag{5.4}
+\]
+
+Because every \(\ell_j>0\), \(m(p)>0\).
+
+For \(a\in\mathcal F_i(\lambda)\), write
+
+\[
+r(a)=\sum_ja_j,
+\qquad
+\varepsilon(a)=\sum_ja_j\ell_j^2,
+\]
+
+and define the scale-invariant quality
+
+\[
+Q_\lambda(a)
+=\frac{r(a)\varepsilon(a)}{\lambda^2}
+=\frac{\left(\sum_ja_j\right)
+       \left(\sum_ja_j\ell_j^2\right)}
+      {\left(\sum_ja_j\ell_j\right)^2}.
+\tag{5.5}
+\]
+
+For the spherical coordinate equation in (0.3), \(\lambda=2\), so
+\(Q_2=r\varepsilon/4\) is exactly the global quality \(Q_i\) in (0.4).
+This normalization is essential when \(\lambda\) is allowed to vary.
+
+### Theorem 5.1 — exact projective and fixed-moment reductions
+
+Normalization gives a bijection
+
+\[
+\mathcal C_i/\mathbb R_{>0}\longleftrightarrow\mathcal P_i,
+\qquad
+[b]\longmapsto \frac{b}{\sum_qb_q}.
+\tag{5.6}
+\]
+
+For every fixed \(\lambda>0\), the maps
+
+\[
+p_j=\frac{a_j}{\sum_qa_q},
+\qquad
+a_j=\frac{\lambda p_j}{m(p)}
+\tag{5.7}
+\]
+
+are inverse bijections between \(\mathcal F_i(\lambda)\) and
+\(\mathcal P_i\). For corresponding points,
+
+\[
+\boxed{
+Q_\lambda(a)=\frac{s_2(p)}{m(p)^2}
+=1+\frac{\operatorname{Var}_p(\ell)}{m(p)^2}.
+}
+\tag{5.8}
+\]
+
+#### Proof
+
+Normalization preserves nonnegativity and tangent balance and selects exactly
+one probability vector from every positive ray in \(\mathcal C_i\).
+If \(a\in\mathcal F_i(\lambda)\), let \(r=\sum a_j>0\) and \(p=a/r\).
+Then \(p\in\mathcal P_i\) and \(m(p)=\lambda/r\). Conversely, (5.7)
+is nonnegative, tangent-balanced, and has normal moment \(\lambda\).
+Thus the two maps are inverse. Finally,
+
+\[
+r=\frac{\lambda}{m},
+\qquad
+\varepsilon=\frac{\lambda}{m}s_2,
+\]
+
+so (5.5) gives \(Q_\lambda=s_2/m^2\). The second equality is the
+finite identity \(s_2=m^2+\operatorname{Var}_p(\ell)\). \(\square\)
+
+### Theorem 5.2 — sliced LP and exact dual anisotropy constant
+
+The image
+
+\[
+I_i=\{m(p):p\in\mathcal P_i\}
+\]
+
+is a nonempty compact interval. For \(m\in I_i\), define the attained linear
+program
+
+\[
+\Psi_i(m)=
+\min\left\{
+\sum_jp_j\ell_j^2:
+ p\ge0,
+ \sum_jp_j=1,
+ \sum_jp_jv_j=0,
+ \sum_jp_j\ell_j=m
+\right\}.
+\tag{5.9}
+\]
+
+Then
+
+\[
+\boxed{
+A_i:=\min_{m\in I_i}
+\left(\frac{\Psi_i(m)}{m^2}-1\right)
+=
+\inf_{a\in\mathcal F_i(\lambda)}
+\bigl(Q_\lambda(a)-1\bigr).
+}
+\tag{5.10}
+\]
+
+The right side is independent of the chosen \(\lambda>0\). Hence every
+feasible row satisfies the genuinely a priori inequality
+
+\[
+\boxed{Q_\lambda(a)-1\ge A_i.}
+\tag{5.11}
+\]
+
+#### Proof
+
+The polytope \(\mathcal P_i\) is nonempty and compact, and \(m\) is linear,
+so \(I_i\) is a compact interval. Every fixed-\(m\) slice is a nonempty compact
+polytope and the linear objective attains \(\Psi_i(m)\).
+
+Since \(m(p)\ge\min_j\ell_j>0\), the function
+
+\[
+p\longmapsto\frac{s_2(p)}{m(p)^2}-1
+\]
+
+is continuous on \(\mathcal P_i\) and has a minimizer \(p_*\). On the slice
+with \(m=m(p_*)\), replacing \(p_*\) by a minimizer for \(\Psi_i(m)\) cannot
+increase the value; global minimality gives equality. This proves the first
+minimum in (5.10). Theorem 5.1 transfers it bijectively to every
+\(\mathcal F_i(\lambda)\), proving the second equality and (5.11).
+\(\square\)
+
+For each fixed \(m\), standard finite-dimensional LP strong duality, with the
+equality constraints written in the displayed primal signs, gives
+
+\[
+\boxed{
+\Psi_i(m)=
+\max_{\alpha,\beta,z}
+\left\{
+\alpha+\beta m:
+\alpha+\beta\ell_j+z\cdot v_j\le\ell_j^2
+\quad\forall j
+\right\}.
+}
+\tag{5.12}
+\]
+
+Thus every dual-feasible triple is an explicit certificate:
+
+\[
+\boxed{
+Q_\lambda(a)-1\ge
+\frac{\alpha+\beta m-m^2}{m^2}.
+}
+\tag{5.13}
+\]
+
+Only finite-dimensional LP strong duality is external here; the reduction,
+sign transfer, and certificate are proved above.
+
+### Corollary 5.3 — equality characterization
+
+\[
+\boxed{A_i=0}
+\]
+
+if and only if some \(p\in\mathcal P_i\) is supported on a single loss level.
+
+Indeed, (5.8) shows that equality is equivalent to zero weighted loss
+variance, which is equivalent to constancy of \(\ell_j\) on the positive
+support. This is exactly the local \(Q=1\) equality condition.
+
+### Example 5.4 — two opposed tangent vectors
+
+More generally, suppose \(J=\{1,2\}\), \(v_1\ne0\), and
+
+\[
+v_2=-\kappa v_1,\qquad \kappa>0.
+\]
+
+Tangent balance uniquely forces
+
+\[
+p_1=\frac{\kappa}{1+\kappa},
+\qquad
+p_2=\frac1{1+\kappa},
+\]
+
+and hence
+
+\[
+\boxed{
+A_i=
+\frac{\kappa(\ell_1-\ell_2)^2}
+     {(\kappa\ell_1+\ell_2)^2}.
+}
+\tag{5.14}
+\]
+
+In the required equal-magnitude case \(v_2=-v_1\), equivalently when the only
+balanced probability is \((1/2,1/2)\), this becomes
+
+\[
+\boxed{
+A_i=\frac{(\ell_1-\ell_2)^2}{(\ell_1+\ell_2)^2}.
+}
+\tag{5.15}
+\]
+
+The equal-weight hypothesis cannot be replaced by the statement that the
+vectors merely lie on opposite rays: unequal tangent magnitudes force unequal
+weights. The exact counterexample is retained in the counterexample catalogue.
+The symmetric identity (5.15) is Lean-checked.
+
+### Example 5.5 — the polar product family
+
+Put \(t=\sin^2h\). The forced polar rates give the unique projective weights
+
+\[
+p_v=\frac{t}{1+t},
+\qquad
+p_+=p_-=\frac1{2(1+t)}.
+\tag{5.16}
+\]
+
+Therefore the feasible-family constant equals the actual spherical quality
+gap:
+
+\[
+\boxed{
+A_{\rm pole}=Q_{\rm pole}-1
+=\frac1{4\sin^2h}-\frac12+\frac{\sin^2h}{4}.
+}
+\tag{5.17}
+\]
+
+Using the controlled expansion from Section 1,
+
+\[
+\boxed{
+A_{\rm pole}
+=\frac{N^2}{\pi^2}-\frac5{12}+O(N^{-2}).
+}
+\tag{5.18}
+\]
+
+The quadratic growth is an a priori consequence of the fixed polar tangent
+family and its loss levels, not an artifact of rates chosen after the fact.
+
+---
+## 6. Bounded high-ambition branches
+
+### 6.1 Delsarte/Gegenbauer — blocked for this stage
+
+Positive-definite zonal kernels and spherical-code LPs were tested as possible
+sources of a global sampled-quadratic or valence obstruction. No new dual
+certificate survived the sampling-kernel audit. The branch produced only a
+reduction to standard spherical-code LPs and did not improve Theorems 2.1,
+4.1, or 5.2. It is therefore `BLOCKED`, not promoted as a theorem.
+
+### 6.2 Bakry--Émery \(\Gamma_2\) — computed, then killed
+
+With
+
+\[
+\Gamma_2(f)=\frac12L\Gamma(f,f)-\Gamma(f,Lf),
+\]
+
+an eigenfunction \(Lf=-\lambda f\) satisfies
+
+\[
+\Gamma_2(f)=\frac12L\Gamma(f,f)+\lambda\Gamma(f,f).
+\tag{6.1}
+\]
+
+For a centered resonant square, \(\Gamma(f,f)=\lambda c\) is constant, so
+
+\[
+\Gamma_2(f)=\lambda^2c.
+\]
+
+This is a useful consistency check but only rewrites the centered-resonance
+identity on one function. It supplies no curvature-dimension inequality on
+the full function algebra. Known finite graphs have nonnegative or positive
+Bakry--Émery curvature, so the blanket collapse claim remains `REJECTED`.
+The branch meets its kill criterion and stops here.
+
+### 6.3 Compact homogeneous spaces — deferred
+
+The covariance identity already holds in every Euclidean eigenmap dimension,
+and the sphere specialization is complete. No additional compact homogeneous
+space produced a stronger central theorem without importing substantial new
+representation theory. The optional extension is `DEFERRED`.
+
+### 6.4 Discrete transport metrics — deferred
+
+No continuum \(W_2\) statement is made. Entropy-gradient-flow or contraction
+claims require a specified Maas/Erbar-type discrete metric and a separate
+curvature proof. This branch is `DEFERRED`.
+
+### 6.5 Reduced-ring graphs — a precise coupling-class impossibility
+
+Consider two adjacent rings with \(M_i\) and \(M_{i+1}\) vertices. If their
+inter-ring coupling is biregular with degrees \(p\) and \(q\), incidence
+counting gives
+
+\[
+pM_i=qM_{i+1}.
+\tag{6.2}
+\]
+
+In particular, a rotation-equivariant one-to-one meridional coupling is a
+perfect matching and forces
+
+\[
+\boxed{M_i=M_{i+1}.}
+\tag{6.3}
+\]
+
+Therefore no varying population rule \(M_i\asymp N\sin\theta_i\) can be
+implemented within the nearest-ring perfect-matching coupling class. This
+finite obstruction is Lean-checked. More general split/merge couplings are not
+settled here and remain numerical-analysis work.
+
+### 6.6 Formal discrete geometry — bounded
+
+Only the finite rate identities, polar uniqueness algebra, coefficient
+extraction, universal extremal bound, anisotropy example, and incidence count
+are formalized. No general discrete exterior-calculus library is introduced.
+
+---
+
+## 7. Theorem hierarchy and publication boundary
+
+The sharp product-grid result is supporting theory. It is stronger than a
+finite regression because it proves the exact graph-class minimax value and a
+uniform analytic expansion. It is not the central paper theorem.
+
+The central theorem remains the sampled quadratic exactness and rigidity
+package for finite positive eigenmap generators:
+
+\[
+E_{\rm sample}
+=\operatorname{im}S_X\cap\ker(L+2dI),
+\qquad
+\dim E_{\rm sample}=\operatorname{rank}S_X-\operatorname{rank}R_X,
+\]
+
+with positive axial and positive equivariant rigidity mechanisms, exact alias
+classifications, and signed boundary examples.
+
+The local spherical feasibility, global shared-edge compatibility, exact and
+quantitative \(Q=1\) rigidity, product-graph obstruction, extremal lower bound,
+and cone anisotropy theorem form the supporting hierarchy.
+
+Standard inputs that are not claimed as new include:
+
+- Mittag--Leffler expansions and zeta values;
+- Cauchy--Schwarz and weighted variance;
+- finite LP strong duality;
+- compactness of finite-dimensional closed feasible sets;
+- positive-stencil convex geometry;
+- spherical Delaunay existence results;
+- Euler and convex-polyhedron rigidity; and
+- Maas/Erbar discrete transport theory.
+
+The exact symbolic audits are falsification and regression tools. They are not
+substitutes for the proofs above.

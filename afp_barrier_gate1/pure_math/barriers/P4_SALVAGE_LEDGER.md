@@ -37,7 +37,7 @@ All blob identifiers below are from the accepted old snapshot `ae5b4c...`.
 | Old path | Old blob | Current Prompt-3 dependency/API | Independent proof audit | Adversarial audit | Port | Formal | Exact regression | Claim |
 |---|---|---|---|---|---|---|---|---|
 | `AFPBarrier/SharpProductBarriers.lean` | `bf5dddca9c5f7080f1675a4f1b015b86abe1a229` | `JumpGenerator`, `EqualAngle*`, `SphereSpecialization`, P2/P3 aggregate exports | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
-| `pure_math/barriers/SHARP_PRODUCT_GRAPH_BARRIERS.md` | `b443ac147599c8109ec6b5eb256e28a77935d84e` | verified P1--P3 notation and equal-angle construction | §§0--3 PASS; constants independently derived | asymmetric-rate and endpoint audit PASS | §§0--3 PORTED with current-API citations | n/a | historical source rerun PASS | P4.1--P4.5 PROVED ordinary boundary |
+| `pure_math/barriers/SHARP_PRODUCT_GRAPH_BARRIERS.md` | `b443ac147599c8109ec6b5eb256e28a77935d84e` | verified P1--P3 notation and equal-angle construction | §§0--7 PASS after normalization repair | asymmetric-rate, compactness, cone, dual-sign, opposite-ray, and endpoint audits PASS | PORTED selectively with registered corrections | n/a | historical source rerun PASS; enhanced audit pending | P4.1--P4.10 PROVED; external/rejected boundaries explicit |
 | `pure_math/barriers/prompt4_sharp_barrier_audit.py` | `bdde1e448f04fa63fff38c17bdc66d0a81ed982a` | retained P1--P3 exact suite | PENDING | PENDING | PENDING | n/a | PENDING | COMPUTATIONAL candidate |
 | `pure_math/FINAL_PURE_MATH_THEOREM_PACKAGE.md` | `000c4980b091eb79a7e760584510a4093dc9263e` | verified P2/P3 theorem maps and claim controls | PENDING | PENDING | PENDING | n/a | PENDING | PENDING |
 | `docs/PROMPT4_APPROACH_REGISTRY.md` | `909c2d8f9b4e312fa50191a01e6a2c2a95e641ca` | replaced by this branch's `P4_APPROACH_REGISTRY.md` | PENDING | PENDING | REIMPLEMENT | n/a | n/a | PENDING |
@@ -75,3 +75,24 @@ constant `352/30375 < 1/80`, rate-transfer constant
 azimuthal rates, unequal masses, and nonreversible local rows.  No constant or
 hypothesis failure was found.  The old obsolete Lean import
 `SphericalQOneRigidity` is rejected; the Prompt-4 module uses nothing from it.
+
+## Accepted-family audit: extremals and anisotropy
+
+The rate-capped lower bound, fixed-`K` compactness argument, LP dual signs,
+polar anisotropy, and incidence count survived independent derivation. The
+port repairs rather than repeats these old wording defects:
+
+- `Q_lambda=r*epsilon/lambda^2` for arbitrary normal moment, recovering the
+  spherical quality at `lambda=2`;
+- projectivization of the nonzero tangent-balanced cone, plus an exact
+  bijection (not a scaling quotient) for each fixed-moment affine slice;
+- an explicit nonempty-polytope hypothesis for the sliced minimum;
+- the general tangent-magnitude-ratio formula, with the required half-weight
+  result only at equal magnitudes; and
+- quasi-uniform compatibility with the rate cap distinguished from membership
+  in the complete constrained class.
+
+The old final-package shorthand without the equal-weight hypothesis is
+`REJECTED` by an exact spherical two-neighbour counterexample. The old
+fixed-`lambda` normalization is likewise `REJECTED`; neither false wording is
+salvaged.

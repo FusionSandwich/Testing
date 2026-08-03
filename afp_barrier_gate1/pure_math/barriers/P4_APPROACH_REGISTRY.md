@@ -30,3 +30,15 @@ nonreversible local rows, formal-series remainders, collapsed/dense/nonlocal
 extremal sequences, conductance reweighting, sampling aliases, positive graph
 curvature, split/merge ring couplings, old-commit ancestry contamination, and
 mutable read-only branch movement.
+
+## Boundary corrections from adversarial audit
+
+- The nonzero tangent-balanced cone modulo scaling is projective; the
+  fixed-normal-moment family is an affine slice and is bijective, without a
+  scaling quotient, to the balanced probability polytope.
+- For arbitrary normal moment `lambda`, the invariant quality is
+  `Q_lambda=r*epsilon/lambda^2`. It agrees with the spherical `Q=r*epsilon/4`
+  at `lambda=2`.
+- The sliced minimum is stated only for a nonempty balanced polytope.
+- Opposite rays alone do not force half weights. The unqualified route is
+  `REJECTED`; the accepted route records the tangent-magnitude ratio.
