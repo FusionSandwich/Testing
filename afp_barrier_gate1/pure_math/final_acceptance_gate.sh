@@ -244,11 +244,13 @@ run_logged nanoda-check env RUST_BACKTRACE=1 _nanoda_lib/target/release/nanoda_b
 
 rm -rf _lean4export _nanoda_lib
 rm -f _nanoda_export.txt _nanoda_config.json
+rm -rf "$ROOT/afp_barrier_gate1/.lake"
 find pure_math -type d -name __pycache__ -prune -exec rm -rf {} +
 find pure_math -type f -name '*.pyc' -delete
 
 git -C "$ROOT" diff --check "$BASE_SHA"...HEAD
-test -z "$(git -C "$ROOT" status --porcelain)" || fail "verification left a dirty worktree"
+dirty=$(git -C "$ROOT" status --porcelain)
+test -z "$dirty" || fail "verification left a dirty worktree:\n$dirty"
 
 cat > "$EVIDENCE_DIR/checkpoint.txt" <<EOF
 AFP Prompt 3-4 final acceptance checkpoint
