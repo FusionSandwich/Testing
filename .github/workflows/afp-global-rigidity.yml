@@ -60,7 +60,7 @@ jobs:
         id: gate
         env:
           GATE_NAME: afp-global-rigidity
-        run: bash afp_barrier_gate1/pure_math/final_acceptance_gate.sh
+        run: env GITHUB_SHA='${{ github.event.pull_request.head.sha || github.sha }}' bash afp_barrier_gate1/pure_math/final_acceptance_gate.sh
       - name: Upload exact-head evidence
         if: always()
         uses: actions/upload-artifact@v4
