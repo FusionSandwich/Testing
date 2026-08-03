@@ -108,3 +108,37 @@ novelty evidence.
 | Every equal-loss spherical graph is a triangulated Platonic graph | REJECTED | cube and dodecahedron have equal active loss and are not triangulations |
 | Near-rigidity is diameter-free under only a local active-weight floor | REJECTED | long-path accumulation |
 | Finite enumeration through 12 vertices proves the classification | REJECTED | fixed-cutoff COMPUTATIONAL falsification only |
+
+## Prompt 4 sharp barrier, extremal, and anisotropy claims
+
+| Claim | Status | Support and publication boundary |
+|---|---|---|
+| The controlled cosecant expansion has `0<=e(x)<=x^4/80` on `0<x<=pi/4` | PROVED | differentiated paired cotangent expansion with explicit positive tail in `SHARP_PRODUCT_GRAPH_BARRIERS.md` §1 |
+| The displayed polar-rate and polar-quality remainders hold for every integer `N>=2` | PROVED | ordinary analytic proof; exact rational transfer is an independent regression, not the proof |
+| The polar asymptotic coefficients follow from a fitted or merely formal series | REJECTED | the uniform one-sided remainder is essential |
+| Three asymmetric polar coordinate equations uniquely force `a_v=1/(2sin^2 h)` and `a_+=a_-=1/(4sin^4 h)` | PROVED | direct solve; no mass equality, reversibility, ring symmetry, or optimizer symmetry in the local theorem |
+| The exact fixed unreduced product-graph minimax is the forced polar expression | PROVED | universal local lower bound plus the verified positive reversible attaining construction at every `N>=2` |
+| The fixed product family satisfies `r_max>=(8/pi^4)N^4=(2/pi^4)K^2` for `K=2N^2` | PROVED | sharp graph-class stiffness theorem |
+| Degree-one exactness gives `4<=r_i epsilon_i` and the stated inverse-quadratic implication | PROVED | self-contained weighted Cauchy--Schwarz transfer |
+| An active loss window `[Lh^2,Uh^2]` gives the exact rate and defect windows | PROVED | first-moment comparison; shared-conductance normalization transferred exactly |
+| The loss window and `K` comparable to `h^-2` alone prove full constrained-class membership | REJECTED | they prove linear-rate-cap compatibility only; all geometric, mass, support, reversibility, and equilibrium hypotheses remain necessary |
+| Positive spherical-Delaunay existence and exact low modes under their published hypotheses | EXTERNAL | used conditionally; no fixed radial connectivity is asserted Delaunay at every refinement |
+| Every nonempty rate-capped constrained class has `E_K>=4/(RK)` and `C*>=4/R` | PROVED | exact finite inequality, with all class controls stated |
+| Every nonempty fixed-`K>=2` constrained class has a minimizer | PROVED | finite support-graph union and compactness of configurations, masses, and conductances |
+| The product family violates `r_max<=RK` when `N>(pi^2/2)sqrt(R)` | PROVED | exact comparison, not numerical fitting |
+| A fixed-normal-moment feasible family is a cone modulo positive scaling | REJECTED | it is an affine slice; only the nonzero tangent-balanced family before moment normalization is projective |
+| For arbitrary `lambda>0`, the scale-invariant quality is `Q_lambda=r epsilon/lambda^2=s_2/m^2` | PROVED | exact normalization; it equals spherical `r epsilon/4` at `lambda=2` |
+| The formula `r epsilon/4=s_2/m^2` holds for arbitrary `lambda` | REJECTED | it differs by the factor `lambda^2/4` |
+| For nonempty `P_i`, the attainable-mean interval and sliced-LP anisotropy minimum are compact and attained | PROVED | finite polytope reduction; nonemptiness is explicit |
+| The fixed-mean dual is `alpha+beta ell_j+z dot v_j<=ell_j^2` with value `alpha+beta m` | EXTERNAL | finite LP strong duality is standard; project sign transfer and every explicit certificate are PROVED |
+| `A_i=0` exactly when a balanced row is supported on one loss level | PROVED | exact weighted-variance equality |
+| If `v_2=-kappa v_1`, then `A=kappa(ell_1-ell_2)^2/(kappa ell_1+ell_2)^2` | PROVED | unique two-point balanced probability; exact symbolic and Lean special-case support |
+| Opposite rays alone force half weights and the symmetric two-loss formula | REJECTED | exact unequal-colatitude spherical counterexample; symmetric formula requires `kappa=1` |
+| The product-pole feasible-family invariant is `A_pole=1/(4sin^2h)-1/2+sin^2h/4` | PROVED | unique projective polar solution; conductance-aware a priori result |
+| Biregular adjacent-ring incidence gives `pM_i=qM_{i+1}`; a perfect matching forces equal populations | PROVED | ordinary double count; Lean checks the arithmetic consequence from supplied edge counts |
+| The Lean incidence declaration alone formalizes bipartite handshaking | REJECTED | formal boundary is deliberately narrower |
+| A standard Delsarte/Gegenbauer reduction without a solved new certificate is a Prompt-4 theorem | REJECTED | sampled-component and alias audit produced no new certificate |
+| A one-function `Gamma_2` identity proves a full curvature-dimension theorem | REJECTED | known positive/nonnegative graph-curvature examples also reject blanket collapse |
+| A useful general reduced-ring split/merge construction | CONJECTURE | future numerical-analysis track; no general impossibility is claimed |
+| Exact finite matrices, LP fixtures, incidence enumeration, and the pinned 9,150-map census | COMPUTATIONAL | deterministic falsification/reproducibility only |
+| The final central contribution is the sampling-residual factorization plus positive structural rigidity | PROVED | independent of project terminology; Prompt-4 results are sharp supporting theorems |

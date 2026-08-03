@@ -133,3 +133,124 @@ certificates.
 - form-space dimension equals sampled-space dimension;
 - diameter-free near-rigidity from only a local active-weight floor; and
 - finite enumeration as the all-orders classification proof.
+
+## C-M7. Exact product-graph polar minimax
+
+**Status:** PROVED
+
+For every integer `N>=2`, the three coordinate equations at a polar-ring node
+force the meridional and both azimuthal rates without symmetry assumptions.
+The verified positive reversible construction attains that row and has its
+maximum there, so the fixed-graph minimax is the exact polar expression with
+sharp leading constant `8/pi^4`.
+
+## C-M8. Uniform polar analytic expansion
+
+**Status:** PROVED
+
+The paired differentiated cotangent expansion has a positive tail bounded by
+`x^4/80` on `0<x<=pi/4`.  The displayed rate and quality remainders therefore
+hold at every grid order `N>=2`.  Formal-series or fitted-slope wording is
+`REJECTED` in the claim matrix.
+
+## C-M9. Rate-capped constrained extremal class
+
+**Status:** PROVED
+
+For the fully specified nonempty class controlling geometry, degree, locality,
+masses, reversibility, exact equilibrium, and `r_i<=RK`,
+
+```text
+E_K>=4/(RK),
+C*=liminf K E_K>=4/R.
+```
+
+Each nonempty fixed-`K>=2` class has a minimizer.  The product family is
+eventually excluded from every fixed linear-rate class.  A loss window and
+`K` comparable to `h^-2` give only conditional rate-cap compatibility.
+
+## C-M10. Conductance-aware feasible-family anisotropy
+
+**Status:** PROVED
+
+For `lambda>0` and nonempty tangent-balanced `P_i`, each fixed-moment affine
+slice is bijective with `P_i`, and
+
+```text
+Q_lambda=r epsilon/lambda^2=s_2(p)/m(p)^2.
+```
+
+The attainable-mean sliced LP defines the exact a priori constant `A_i`; its
+finite dual has the recorded signs, and zero anisotropy is equivalent to
+support on one loss level.  The old arbitrary-`lambda` use of `r epsilon/4`
+and the description of the fixed slice as a projective cone are `REJECTED`.
+
+## C-M11. Two-ray anisotropy boundary
+
+**Status:** PROVED
+
+If `v_2=-kappa v_1`, the unique balanced probability gives
+
+```text
+A=kappa(ell_1-ell_2)^2/(kappa ell_1+ell_2)^2.
+```
+
+The half-weight formula is the `kappa=1` corollary.  The unqualified
+opposite-ray statement is `REJECTED` by the exact unequal-colatitude example.
+
+## C-M12. Reduced-ring nearest-ring incidence
+
+**Status:** PROVED
+
+A biregular adjacent-ring coupling satisfies `pM_i=qM_{i+1}`; a perfect
+matching forces equal populations.  The theorem does not exclude general
+split/merge couplings.
+
+## C-M13. General reduced-ring split/merge construction
+
+**Status:** CONJECTURE
+
+A stable, positive, reversible varying-population construction may exist with
+non-biregular split/merge couplings.  This is numerical-analysis work and no
+existence, convergence, or optimality conclusion is made here.
+
+## C-M14. Delsarte/Gegenbauer upgrade
+
+**Status:** REJECTED
+
+No solved new dual certificate survived the sampling-kernel and alias audit.
+A reduction to standard spherical-code linear programming is not a theorem of
+this package.
+
+## C-M15. Bakry--Émery collapse or one-function curvature theorem
+
+**Status:** REJECTED
+
+The eigenfunction `Gamma_2` identity is a one-function consistency relation,
+not a curvature-dimension inequality on the full algebra.  Positivity does not
+force curvature collapse.
+
+## C-M16. Additional compact homogeneous-space theorem
+
+**Status:** CONJECTURE
+
+The Euclidean covariance identity is dimension-independent, but no additional
+space produced a material theorem without a separate representation-theory
+project.  No extension is claimed in the completed package.
+
+## C-M17. Metric-free transport contraction
+
+**Status:** REJECTED
+
+Positive rates do not select continuum `W_2`.  Any future claim must specify a
+discrete transport metric and prove its own curvature or contraction theorem.
+
+## C-M18. Final publication hierarchy
+
+**Status:** PROVED
+
+The central candidate contribution is the actual-sampling residual
+factorization and positive structural rigidity.  Prompt-1 feasibility,
+Prompt-3 exact/quantitative rigidity, and Prompt-4 sharp barriers, extremals,
+and feasible-family anisotropy form the supporting hierarchy.  Workflow and
+Lean counts are provenance, never novelty.

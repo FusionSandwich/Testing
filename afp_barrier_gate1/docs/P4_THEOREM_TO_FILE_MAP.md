@@ -1,8 +1,9 @@
 # Prompt 4 theorem-to-file map
 
-This map is initialized before selective salvage.  It will be resolved to
-exact declarations and successful regression evidence at the final Prompt-4
-candidate.
+This map resolves the accepted Prompt-4 candidate to ordinary proofs, exact
+current-API declarations, and deterministic falsification support.  Workflow
+run and artifact identifiers are supplied by the resolved finalization record
+because a tracked source file cannot contain its own commit hash.
 
 | Theorem family | Claim status target | Ordinary proof | Lean support | Deterministic support |
 |---|---|---|---|---|
@@ -16,11 +17,15 @@ candidate.
 | biregular/perfect-matching incidence | PROVED | sharp-barrier theorem reduced-ring section | incidence declarations | integer incidence checks |
 | Delaunay/maximal-net existence and exact coordinate modes | EXTERNAL | assumptions table | no project axiom | not claimed computationally |
 | Plantri 9,150-map census | COMPUTATIONAL | falsification boundary only | not applicable | pinned Prompt-3 census retained in CI |
-| broad Delsarte, curvature, homogeneous-space, and transport upgrades | REJECTED or EXTERNAL/CONJECTURE as specified | approach registry and counterexample catalogue | no false declarations | hostile boundary regressions where applicable |
+| Delsarte reduction as a new barrier | REJECTED | approach registry and counterexample catalogue | no false declaration | sampling/alias audit |
+| blanket graph-curvature collapse | REJECTED | prior-art and counterexample boundary | no false declaration | one-function identity boundary |
+| established graph-curvature and discrete-transport frameworks | EXTERNAL | primary-source prior-art map | no project axiom | not claimed computationally |
+| new compact-space or split/merge construction | CONJECTURE | numerical-analysis handoff only | no declaration | no theorem claimed |
 
-The final map will also bind the synthesis package, assumptions table,
-counterexample catalogue, abstract, claim matrix, prior-art map, stage report,
-salvage ledger, workflow, run, and artifacts.
+The synthesis package, assumptions table, counterexample catalogue, abstract,
+claim matrix, prior-art map, stage report, salvage ledger, and workflow are all
+bound by the dedicated path allowlist.  The final run and artifact manifests
+bind their exact blobs at the tested remote head.
 
 The formal declaration map is recorded exactly in
 `pure_math/barriers/P4_SALVAGE_LEDGER.md`. In particular, the current port
@@ -28,3 +33,30 @@ strengthens the polar solve to retain the raw transverse factor and adds
 `projectiveQuality_from_fixedMoment` and
 `twoLossWeightedQuality_sub_one` for the two adversarially corrected
 boundaries.
+
+## Exact Lean declaration set
+
+```text
+squarePolarQualityFromStep
+squarePolarQualityFromStep_formula
+squarePolar_rates_forced
+squarePolar_totalRate_forced
+squarePolar_forced_quartic_lower
+cscSquaredTruncation
+squarePolarRateMainStep
+cscSquaredTruncation_rate_identity
+squarePolarRateMainStep_grid
+squarePolarQualityMainStep
+squarePolarQualityMainStep_grid
+universal_rate_lower_of_defect_upper
+finiteExtremal_defect_lower
+projectiveQuality_from_fixedMoment
+twoLossWeightedQuality_sub_one
+twoLossQuality_sub_one
+biregular_interRing_incidence
+perfectMatching_ringCounts_eq
+```
+
+`squarePolar_rates_forced` accepts the raw transverse nonzero factor and
+derives left/right equality.  `projectiveQuality_from_fixedMoment` formalizes
+the corrected arbitrary-`lambda` normalization.

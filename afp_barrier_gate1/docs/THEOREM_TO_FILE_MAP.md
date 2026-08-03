@@ -57,3 +57,20 @@ topological/variational inputs, COMPUTATIONAL finite certificates, and
 REJECTED unrestricted formulations.  In particular, source-pinned Plantri
 enumeration is not the classification proof, and the antipodal `ell=2` model
 rejects tangent normalization without the corrected `0<ell<2` hypothesis.
+
+## Prompt 4 and final synthesis extensions
+
+Prompt 4's controlled polar expansion, asymmetric polar solve, fixed-graph
+minimax, universal and constrained extremal bounds, corrected arbitrary-moment
+feasible-family anisotropy, and reduced-ring incidence theorem are mapped in
+`P4_THEOREM_TO_FILE_MAP.md`.  Its authoritative ordinary proof is
+`pure_math/barriers/SHARP_PRODUCT_GRAPH_BARRIERS.md`; the finite Lean core is
+`AFPBarrier/SharpProductBarriers.lean`; and the exact falsification suite is
+`pure_math/barriers/prompt4_sharp_barrier_audit.py`.
+
+The complete publication hierarchy is synthesized in
+`pure_math/FINAL_PURE_MATH_THEOREM_PACKAGE.md`.  Normative hypothesis and
+counterexample boundaries are in `PURE_MATH_ASSUMPTIONS_TABLE.md` and
+`PURE_MATH_COUNTEREXAMPLE_CATALOGUE.md`.  The central theorem remains the
+Prompt-2 actual-sampling residual factorization; Prompt-4 results are sharp
+supporting theory.
