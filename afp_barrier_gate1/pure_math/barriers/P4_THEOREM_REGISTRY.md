@@ -25,3 +25,19 @@ one of `PROVED`, `EXTERNAL`, `COMPUTATIONAL`, `CONJECTURE`, or `REJECTED`.
 
 No theorem is accepted from the old snapshot merely because it appeared in a
 previously green workflow.  Each family is re-audited on the current API.
+
+## Checkpoint resolution
+
+P4.1--P4.5 now have accepted ordinary proofs and independent exact/adversarial
+audits in `SHARP_PRODUCT_GRAPH_BARRIERS.md` §§0--3.  Their work state remains
+`ACTIVE` until the current-API Lean module and final exact-head suite pass.
+
+The feasible-cone audit found three literal boundary defects in the old
+wording that must not be propagated: the fixed-`lambda` feasible set is an
+affine slice rather than a cone modulo scaling; the scale-invariant quality is
+`Q_lambda = r*epsilon/lambda^2` (equal to the global `Q` when `lambda=2`);
+and the minimization theorem requires a nonempty tangent-balanced polytope.
+The minimal corrected formulation is registered for P4.7--P4.9 and will be
+used in the port.  The mandatory equal-weight two-direction formula is retained
+only under its stated hypothesis that the unique balanced probability is
+`(1/2,1/2)`.
