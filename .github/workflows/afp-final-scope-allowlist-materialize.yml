@@ -1,0 +1,72 @@
+name: AFP final scope allowlist materializer
+
+on:
+  push:
+    branches:
+      - agent/afp-pure-math-final-integration-20260802
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: afp-final-scope-allowlist-materializer
+  cancel-in-progress: false
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out isolated integration branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/afp-pure-math-final-integration-20260802
+          fetch-depth: 0
+
+      - name: Extend only the legacy pure-math workflow allowlists
+        shell: bash
+        run: |
+          set -euo pipefail
+          branch=agent/afp-pure-math-final-integration-20260802
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          common = [
+              Path('.github/workflows/afp-quadratic-covariance.yml'),
+              Path('.github/workflows/afp-prompt3-rigidity.yml'),
+              Path('.github/workflows/afp-prompt4-sharp-barriers.yml'),
+          ]
+          old = (
+              'prompt4-sharp-barriers|prompt3-rigidity|quadratic-covariance|'
+              'pure-math|spherical-feasibility'
+          )
+          new = 'global-rigidity|' + old
+          for path in common:
+              text = path.read_text(encoding='utf-8')
+              count = text.count(old)
+              if count < 1:
+                  raise SystemExit(f'expected legacy allowlist not found in {path}')
+              path.write_text(text.replace(old, new), encoding='utf-8')
+
+          path = Path('.github/workflows/afp-global-rigidity.yml')
+          text = path.read_text(encoding='utf-8')
+          old = 'global-rigidity|quadratic-covariance|pure-math|spherical-feasibility'
+          new = (
+              'global-rigidity|prompt4-sharp-barriers|prompt3-rigidity|'
+              'quadratic-covariance|pure-math|spherical-feasibility'
+          )
+          count = text.count(old)
+          if count < 1:
+              raise SystemExit(f'expected global-rigidity allowlist not found in {path}')
+          path.write_text(text.replace(old, new), encoding='utf-8')
+          PY
+
+          rm -f .github/workflows/afp-final-scope-allowlist-materialize.yml
+          git add -A
+          git diff --cached --check
+          git commit -m 'Allow companion pure-math verification workflows'
+          git push origin "HEAD:$branch"
