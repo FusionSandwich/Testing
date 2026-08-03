@@ -1,5 +1,7 @@
 name: AFP final scope allowlist materializer
 
+# This second branch-only commit activates the workflow introduced in the
+# preceding commit; the workflow deletes itself after the atomic scope repair.
 on:
   push:
     branches:
