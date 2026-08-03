@@ -9,3 +9,7 @@ __pycache__/
 *.log
 p2-*-report.txt
 afp-prompt2-source-*.tar.gz
+p3-*-report.txt
+prompt3-*.jsonl
+afp-prompt3-source-*.tar.gz
+afp-prompt3-source-*.tar.gz.sha256

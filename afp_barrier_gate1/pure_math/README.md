@@ -203,6 +203,32 @@ must never be conflated.
 - spectral_products/exact_spectral_product_audit.py — products, corrected
   hierarchy, aliases, antipodal bounds, and Pell cases.
 
+## Prompt 3 records
+
+- rigidity/GLOBAL_Q_RIGIDITY_THEOREM.md — exact equality transfer, fixed
+  ten-hypothesis classification, graph/spectral/resistance near-rigidity,
+  corrected closed threshold, and covariance anisotropy boundary;
+- rigidity/ICOSAHEDRAL_GRAPH_LEMMA.md — direct separating-triangle/link/collar
+  proof for the 5-valent 12-vertex case;
+- rigidity/P3_BRANCH_PROTECTION_RECORD.md and P3_SALVAGE_LEDGER.md — immutable
+  ancestry, protected-ref, and selective-source provenance;
+- rigidity/P3_APPROACH_REGISTRY.md and P3_THEOREM_REGISTRY.md — independent
+  mechanism and controlled theorem labels;
+- ../docs/P3_THEOREM_TO_FILE_MAP.md and P3_STAGE_REPORT.md — artifact map and
+  exact-head handoff record;
+- rigidity/triangulation_counterexample_audit.py — source-pinned finite hostile
+  enumeration, labeled COMPUTATIONAL;
+- rigidity/global_near_rigidity_audit.py — exact/deterministic constant and
+  stress certificates; and
+- rigidity/q1_covariance_audit.py — weighted-octahedron, sampling-kernel, and
+  five-Platonic regressions.
+
+The literal tangent-normalization formulation without `0<ell<2` is REJECTED
+by the exact antipodal equality chain.  The corrected non-antipodal covariance
+theorem is PROVED.  The old endpoint-product angle enclosure and an old
+incident-loss Lean statement are also REJECTED; Prompt 3 uses the explicit
+spherical Gram/Heron certificate and the corrected `delta<1` lemma.
+
 Rank-nullity, real semisimplicity, self-adjoint spectral theory,
 Clebsch--Gordan, Pell completeness, Jensen/uniformization, and convex KKT are
 EXTERNAL. Exact finite matrices are COMPUTATIONAL support. No priority claim

@@ -314,3 +314,67 @@ submission, perform targeted MathSciNet/zbMATH and citation-chain review in
 finite frames and designs, discrete spherical Laplacians, association schemes,
 signed inverse-eigenvalue problems, and invariant convex optimization, followed
 by specialist review.
+
+## 16. Prompt 3 equality and triangulation boundary
+
+The weighted variance identity and equality in a finite nonnegative sum are
+foundational PROVED algebra, not novelty.  Spherical cosine laws and excess,
+Euler incidence identities, disk-curvature identities, links/collars in a
+triangulated surface, and the classification of the three regular triangular
+spherical maps are standard or EXTERNAL background.
+
+Prompt 3 does not claim a new Platonic-solids classification in isolation.  Its
+project-specific transfer is the hypothesis-audited chain from a positive
+reversible coordinate eigenmap through exact `Q=1` edge-loss propagation to a
+round minor-geodesic cellular triangulation, followed by a direct
+separating-triangle/link proof and opposite-side face propagation.  Every use
+of Euler or angle sum is confined to the ten embedded-triangulation premises.
+
+Cube and dodecahedron remain decisive association-scheme/distance-regular
+counterexamples to unrestricted wording.  The two-state antipodal model is the
+separate degeneracy that prevents tangent normalization at `ell=2`.
+
+## 17. Quantitative graph-analysis boundary
+
+Poincare variational inequalities, reversible Dirichlet forms, and effective
+resistance are EXTERNAL standard finite Markov-chain/electrical-network tools.
+The spherical arccos derivative, the general spherical cosine formula, and its
+Gram/Heron determinant factorization are standard trigonometry.
+
+The Prompt 3 contribution boundary is the explicit defect transfer with its
+fixed normalization:
+
+```text
+Q_i-1 -> pointwise x_ij -> shared-edge log r cocycle
+      -> path/diameter/reference-loss bounds
+      -> exact energy factor 2
+      -> closed side-angle and integer-valence threshold.
+```
+
+No diameter-free theorem follows from only a local active-weight floor.  No
+coordinate-space framework stability is claimed from edge-length control
+without a separately proved rigidity-operator margin.
+
+## 18. Covariance anisotropy and sampling boundary
+
+The radial/tangent outer-product expansion is direct algebra and the one-shell
+full-tangent-isotropy theorem is part of the verified Prompt 2 package.  Prompt
+3 identifies their exact equality specialization: the Prompt 2 moment becomes
+`T_i=P_i/2`, while global `Q=1` alone fixes only the radial coefficient.
+
+The weighted-octahedron family is an exact boundary example, not a claim that
+anisotropic weighted Platonic Laplacians are new.  Its role is to prevent two
+false transfers: `Q=1` does not imply tangent isotropy, and a nonzero quadratic
+form kernel is not a nonzero sampled exact space.
+
+## 19. Plantri and computation boundary
+
+Plantri (Brinkmann--McKay) is an EXTERNAL program.  The Prompt 3 workflow pins
+an immutable source commit and blob, compiles that verified source in a fresh
+temporary directory, and labels all counts through twelve vertices
+COMPUTATIONAL.  The census is hostile falsification and regression only; the
+all-orders proof is the direct ordinary argument.
+
+No priority claim follows from a Plantri count, exact graph6 record,
+automorphism order, finite minor, Lean job count, workflow status, or artifact
+digest.

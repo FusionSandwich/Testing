@@ -43,3 +43,17 @@ The focused axiom report is `AFPBarrier/PureMathAxiomAudit.lean`.  CI builds
 the aggregate library, runs the exact symbolic certificates, scans for proof
 placeholders and user axioms, and checks the focused axiom output for
 `sorryAx`.
+
+## Prompt 2 and Prompt 3 extensions
+
+Prompt 2's sampling-aware covariance and spectral-product package is mapped in
+`P2_THEOREM_TO_FILE_MAP.md`.  Prompt 3's exact equality, fixed
+ten-hypothesis classification, explicit graph/spectral/resistance
+near-rigidity, corrected closed threshold, and covariance anisotropy package is
+mapped in `P3_THEOREM_TO_FILE_MAP.md`.
+
+The Prompt 3 map explicitly separates PROVED ordinary results, EXTERNAL
+topological/variational inputs, COMPUTATIONAL finite certificates, and
+REJECTED unrestricted formulations.  In particular, source-pinned Plantri
+enumeration is not the classification proof, and the antipodal `ell=2` model
+rejects tangent normalization without the corrected `0<ell<2` hypothesis.

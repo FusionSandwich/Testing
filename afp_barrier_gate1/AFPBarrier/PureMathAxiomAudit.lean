@@ -14,6 +14,9 @@ import AFPBarrier.QuadraticSampling
 import AFPBarrier.QuadraticSphereResidual
 import AFPBarrier.OneShellQuadraticRigidity
 import AFPBarrier.SpectralSamplingObstruction
+import AFPBarrier.SphericalQEqualityRigidity
+import AFPBarrier.QuantitativeGlobalNearRigidity
+import AFPBarrier.QEqualityCovariance
 
 /-! Focused axiom audit for the pure-mathematics branch. -/
 
@@ -105,3 +108,68 @@ import AFPBarrier.SpectralSamplingObstruction
 #print axioms AFPBarrier.rate_eq_of_symmetric_active_loss
 #print axioms AFPBarrier.rate_eq_of_active_reflTransGen
 #print axioms AFPBarrier.connected_active_loss_rigidity
+
+/-! Prompt 3: exact spherical equality and global propagation. -/
+
+#print axioms AFPBarrier.sphericalChordLoss_symmetric
+#print axioms AFPBarrier.jumpGenerator_sphericalPairing
+#print axioms AFPBarrier.coordinateEigenmap_lossMoment_two
+#print axioms AFPBarrier.normalizedOmega_barycenter_of_coordinateEigenmap
+#print axioms AFPBarrier.jumpRate_pos_of_lossMoment_two
+#print axioms AFPBarrier.normalizedEdgeWeight_sum_one
+#print axioms AFPBarrier.normalizedLossScale_mean_one
+#print axioms AFPBarrier.normalizedLossScale_secondMoment
+#print axioms AFPBarrier.weightedSecondMoment_sub_one_eq_variance
+#print axioms AFPBarrier.sphericalQ_sub_one_eq_normalizedLossVariance
+#print axioms AFPBarrier.one_le_sphericalQAt
+#print axioms AFPBarrier.sphericalQ_eq_one_active_loss
+#print axioms AFPBarrier.active_symmetric_of_shared_conductance
+#print axioms AFPBarrier.connected_spherical_active_loss_rigidity
+#print axioms AFPBarrier.finite_spherical_qOne_global_rigidity
+
+/-! Prompt 3: explicit graph-global near-rigidity. -/
+
+#print axioms AFPBarrier.abs_sub_one_le_of_sq_le_delta_sq
+#print axioms AFPBarrier.pointwise_delta_bound
+#print axioms AFPBarrier.sphericalQ_pointwise_delta_bound
+#print axioms AFPBarrier.normalized_scale_interval_of_abs
+#print axioms AFPBarrier.normalized_scale_qDelta_cross_bounds
+#print axioms AFPBarrier.one_le_qDelta
+#print axioms AFPBarrier.adjacent_rate_cross_bounds
+#print axioms AFPBarrier.adjacent_rate_ratio_bounds
+#print axioms AFPBarrier.adjacent_rate_relative_error_bound
+#print axioms AFPBarrier.adjacent_rate_qDelta_cross_bounds
+#print axioms AFPBarrier.incident_loss_cross_bounds
+#print axioms AFPBarrier.incident_loss_ratio_bounds
+#print axioms AFPBarrier.path_rate_cross_bounds
+#print axioms AFPBarrier.path_rate_ratio_bounds
+#print axioms AFPBarrier.path_loss_ratio_bounds
+#print axioms AFPBarrier.abs_log_rate_sub_le_of_cross_bounds
+#print axioms AFPBarrier.adjacent_log_rate_bound
+#print axioms AFPBarrier.path_log_rate_bound
+#print axioms AFPBarrier.abs_log_normalized_scale_le_hDelta
+#print axioms AFPBarrier.reference_loss_log_bound
+#print axioms AFPBarrier.diameter_log_rate_bound
+#print axioms AFPBarrier.pow_le_pow_of_one_le_of_nat_le
+#print axioms AFPBarrier.diameter_rate_ratio_bounds
+#print axioms AFPBarrier.radial_covariance_error_bounds
+
+/-! Prompt 3: covariance and anisotropy boundary. -/
+
+#print axioms AFPBarrier.covarianceTrace_eq_four_of_normLoss
+#print axioms AFPBarrier.radialCovariance_eq_sphericalEpsilon
+#print axioms AFPBarrier.sphericalEpsilon_eq_four_mul_Q_div_rate
+#print axioms AFPBarrier.normalizedTangent_centered_of_barycenter
+#print axioms AFPBarrier.normalizedTangentSecondMoment_trace_one
+#print axioms AFPBarrier.weighted_centered_affine_product_sum
+#print axioms AFPBarrier.qOne_covarianceEntry_decomposition
+#print axioms AFPBarrier.jumpCovariance_eq_rate_mul_normalized
+#print axioms AFPBarrier.qOne_jumpCovariance_decomposition
+#print axioms AFPBarrier.qOne_covariance_axial_iff_tangentHalf
+#print axioms AFPBarrier.oneShellSecondMoment_eq_rate_mul_normalized
+#print axioms AFPBarrier.normalizedTangentHalf_iff_d3_oneShellSecondMoment
+#print axioms AFPBarrier.qOne_residual_entry_algebra
+#print axioms AFPBarrier.sphereResidualMatrix_entry_of_trace_six
+#print axioms AFPBarrier.qOne_sphereResidual_entry_decomposition
+#print axioms AFPBarrier.weightedOctahedron_axis_axial_iff
+#print axioms AFPBarrier.weightedOctahedron_all_axes_axial_iff

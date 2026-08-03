@@ -16,8 +16,8 @@ novelty evidence.
 | Positive spherical Delaunay families attain the natural inverse-square rate scale | EXTERNAL | published spherical Delaunay Laplacian theory plus project loss bounds |
 | The project's quasi-uniform family is globally minimax or spectrally optimal | CONJECTURE | no minimax theorem; do not claim |
 | Only \(K\in\{4,6,12\}\) can have global \(Q=1\) | REJECTED | cube and dodecahedron |
-| Connected reversible equality rows propagate one common active loss and row rate | CONJECTURE | reserved for Prompt 3; requires its complete propagation proof |
-| Only tetrahedral, octahedral, and icosahedral triangulations satisfy global \(Q=1\) | CONJECTURE | only under future explicit triangulation and embedding hypotheses |
+| Connected reversible equality rows propagate one common active loss and row rate | PROVED | Prompt 3 exact variance equality plus `GlobalLossRigidity.lean`; connected active graph and shared positive conductances required |
+| A global \(Q=1\) embedding under the fixed ten round minor-geodesic triangulation hypotheses is tetrahedral, octahedral, or icosahedral | PROVED | Prompt 3 spherical angle sum, Euler, direct link/collar uniqueness, and face propagation; no unrestricted classification |
 | Non-antipodal local feasibility is equivalent to origin membership in the indexed tangent hull | PROVED | Prompt 1 exact local/global package |
 | Strict positivity on every indexed non-antipodal edge is equivalent to tangent-hull relative interior | PROVED | Prompt 1, including repetitions and lower-dimensional span |
 | Local row uniqueness is equivalent to a singleton normalized dependence polytope | PROVED | exact dependence/row bijection |
@@ -86,3 +86,25 @@ novelty evidence.
    certificates.
 7. No priority claim follows from a covariance identity, Lean job count, CI
    hash, rank table, or standard theorem alone.
+
+## Prompt 3 global rigidity and near-rigidity claims
+
+| Claim | Status | Support and publication boundary |
+|---|---|---|
+| The exact spherical normal moment gives `Q_i-1=sum_j p_ij(r_i ell_ij/2-1)^2` | PROVED | `GLOBAL_Q_RIGIDITY_THEOREM.md` §1 and `SphericalQEqualityRigidity.lean` |
+| Connected equality rows with positive shared conductances have one active loss and total row rate | PROVED | exact local equality plus `GlobalLossRigidity.lean`; inactive edges and disconnected components excluded |
+| The fixed ten-hypothesis round minor-geodesic triangulation is tetrahedral, octahedral, or icosahedral up to `O(3)` | PROVED | spherical cosine/angle sum, Euler, direct link/collar uniqueness, and face propagation; finite enumeration is not the proof |
+| The exact Platonic side, loss, and total row-rate table is forced | PROVED | common valence and spherical cosine law; individual conductances are not claimed equal |
+| A local active probability floor and `Q_i<=1+eta` give the displayed pointwise, path, diameter, reference-loss, and arccos bounds | PROVED | explicit `delta,q_delta,s_delta,h_delta,B_delta`; connected-component boundary stated |
+| The reversible stationary law gives the displayed Poincare and effective-resistance refinements | PROVED | exact energy factor `2`; EXTERNAL finite variational principles with one-edge energy convention |
+| The fixed triangulation hypotheses admit the displayed closed `eta_*` and Platonic edge-length sup bound | PROVED | corrected fixed-box Gram/Heron lower bound and explicit `C_ang,0,m_eq,g_kappa` |
+| Exact `Q=1` permits tangent normalization without `ell<2` | REJECTED | two-state antipodal equality has `ell=2` and zero denominator |
+| For `0<ell<2`, exact equality has the displayed radial/tangent covariance split and Prompt-2 axial condition iff `T_i=P_i/2` | PROVED | `GLOBAL_Q_RIGIDITY_THEOREM.md` §7 and `QEqualityCovariance.lean` |
+| `Q=1` forces axial covariance | REJECTED | positive reversible three-parameter weighted octahedron |
+| The weighted octahedron's genuine sampled degree-two exact space is nonzero because its form kernel is nonzero | REJECTED | stochastic contraction gives sampled exact space `{0}`; off-diagonal forms lie in the sampling kernel |
+| Form-space dimension equals sampled-space dimension | REJECTED | the octahedral off-diagonal form kernel samples to zero and must be quotiented out |
+| Only `K in {4,6,12}` can have `Q=1` | REJECTED | exact cube and dodecahedron regressions |
+| Every finite spherical graph has `Q>1` | REJECTED | all five Platonic equal-edge rows have exact `Q=1` |
+| Every equal-loss spherical graph is a triangulated Platonic graph | REJECTED | cube and dodecahedron have equal active loss and are not triangulations |
+| Near-rigidity is diameter-free under only a local active-weight floor | REJECTED | long-path accumulation |
+| Finite enumeration through 12 vertices proves the classification | REJECTED | fixed-cutoff COMPUTATIONAL falsification only |
