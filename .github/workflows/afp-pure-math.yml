@@ -301,6 +301,7 @@ jobs:
         run: |
           set -euo pipefail
           rm -f afp_barrier_gate1/prompt3-triangulations-through-12.tsv
+          git clean -fdx
           git fetch --no-tags origin archive/afp-gate6-spatial-multigroup-verified
           test "$(git rev-parse FETCH_HEAD)" = "$ARCHIVE_SHA"
           git diff --check
