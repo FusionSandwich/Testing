@@ -12,11 +12,18 @@ import AFPBarrier.QuantitativeExactLocal
 import AFPBarrier.AntipodalFeasibility
 import AFPBarrier.SphericalFeasibilityAlgebra
 import AFPBarrier.QuantitativeSphericalFeasibility
--- Prompt 2 covariance, sampled exactness, and centered product resonance.
+-- Prompt 2 covariance, sampled exactness, centered products, and spectral sampling.
 import AFPBarrier.QuadraticCovariance
+import AFPBarrier.QuadraticSampling
+import AFPBarrier.QuadraticSphereResidual
+import AFPBarrier.OneShellQuadraticRigidity
+import AFPBarrier.SpectralSamplingObstruction
 import AFPBarrier.GlobalLossRigidity
--- Prompt 3 spherical Q=1 specialization and quantitative rigidity.
+-- Prompt 3 spherical equality, classification support, covariance, and near-rigidity.
 import AFPBarrier.SphericalQOneRigidity
+import AFPBarrier.SphericalQEqualityRigidity
+import AFPBarrier.QuantitativeGlobalNearRigidity
+import AFPBarrier.QEqualityCovariance
 -- Prompt 4 sharp product barriers and finite extremal algebra.
 import AFPBarrier.SharpProductBarriers
 -- Prompt 3 completion supplement: normalized Q-rigidity, graph-global

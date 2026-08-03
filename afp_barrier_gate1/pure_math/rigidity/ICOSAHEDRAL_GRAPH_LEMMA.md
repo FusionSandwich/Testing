@@ -1,5 +1,9 @@
 # The five-regular spherical-triangulation graph lemma
 
+**Status: PROVED.**  Euler's identity, the triangulated-disk curvature identity,
+and elementary planar/link topology used below are labeled EXTERNAL standard
+inputs; every specialization to the 5-regular 12-vertex map is proved here.
+
 ## Statement
 
 Let `G` be a finite simple graph cellularly embedded in `S^2`. Assume:
@@ -66,7 +70,9 @@ and hence
 E_int=2n.
 ```
 
-For `n<=2` this already exceeds the number of edges in a simple graph. For
+The case `n=0` would make this side of `T` the single triangular face, contrary
+to the choice of a nonfacial triangular cycle. For `1<=n<=2`, the equality
+`E_int=2n` exceeds the number of edges in a simple graph. For
 `3<=n<=5`, planarity gives `E_int<=3n-6<2n`. Thus each side of a separating
 triangle contains at least six interior vertices.
 
@@ -195,5 +201,5 @@ The graph lemma uses only:
 
 The Prompt 3 theorem establishes all four hypotheses before invoking this
 lemma. The subsequent geometric identification with the regular icosahedron
-uses equal chord-triangle faces and convex Cauchy rigidity, which is a separate
-step.
+uses equal spherical faces and the direct opposite-side face-propagation proof
+in `GLOBAL_Q_RIGIDITY_THEOREM.md`; no Cauchy/Alexandrov black box is needed.
