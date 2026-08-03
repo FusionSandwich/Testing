@@ -23,7 +23,7 @@ This registry records distinct mathematical, formal, computational, repository-s
 | Universal rate and extremal barriers | PROVED | accepted Prompt 4 rate, minimax, compactness, and feasible-cone statements preserved |
 | Source-pinned plantri census | COMPUTATIONAL | all 9,150 simple triangulations through 12 vertices; falsification only |
 | Lean finite-algebra boundary | PROVED | targeted modules, full build, focused axiom audit, and aggregate scans |
-| Independent lean4export/nanoda boundary | PROVED | selected Prompt 1–4 finite declarations checked with `sorryAx` forbidden |
+| Independent lean4export/nanoda boundary | PROVED | selected Prompt 1–4 finite declarations checked with `sorryAx` forbidden; `Lean.trustCompiler` and its `Lean.ofReduceBool` bridge are permitted only at the native-export boundary |
 | Clean-tree reconstruction | PROVED | accepted target tree plus vetted source blobs; no history rewrite and no bootstrap artifacts |
 
 ## Rejected routes
@@ -42,6 +42,7 @@ This registry records distinct mathematical, formal, computational, repository-s
 | Untested synthetic merge as final target | REJECTED | final target must equal a literal six-green commit |
 | Self-materializing workflow | REJECTED | workflow-token mutation is unnecessary and violates clean closeout policy |
 | Equality of mutable protected refs as an acceptance invariant | REJECTED | external read-only refs may move without implying overwrite or ancestry use |
+| Disabling nanoda’s unpermitted-axiom hard error | REJECTED | the boundary remains strict; required compiler bridge declarations are named explicitly instead |
 
 ## Prompt 4 bounded high-ambition routes
 

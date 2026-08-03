@@ -231,7 +231,8 @@ cat > _nanoda_config.json <<'JSON'
     "propext",
     "Classical.choice",
     "Quot.sound",
-    "Lean.trustCompiler"
+    "Lean.trustCompiler",
+    "Lean.ofReduceBool"
   ],
   "unpermitted_axiom_hard_error": true,
   "nat_extension": true,

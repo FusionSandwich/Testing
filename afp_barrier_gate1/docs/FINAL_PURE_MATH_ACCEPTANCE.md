@@ -123,7 +123,14 @@ Classical.choice
 Quot.sound
 ```
 
-`Lean.trustCompiler` is permitted only at the independent exporter boundary. `sorryAx` is forbidden both in source and in the nanoda permitted-axiom list.
+At the independent native-export boundary only, nanoda also permits the explicitly named compiler-trust bridge declarations:
+
+```text
+Lean.trustCompiler
+Lean.ofReduceBool
+```
+
+`Lean.ofReduceBool` is the native Boolean-reduction bridge and indirectly references `Lean.trustCompiler`; neither appears in the focused project theorem axiom report. `sorryAx` is forbidden both in source and in the nanoda permitted-axiom list.
 
 ## Dynamic metadata authority
 
