@@ -378,3 +378,117 @@ all-orders proof is the direct ordinary argument.
 No priority claim follows from a Plantri count, exact graph6 record,
 automorphism order, finite minor, Lean job count, workflow status, or artifact
 digest.
+
+## 20. Prompt 4 targeted adjacent-field audit
+
+This bounded audit rechecks the old Prompt-4 comparison against primary
+sources; it is not an exhaustive MathSciNet/zbMATH priority search.  Every
+literature input in this section is `EXTERNAL`.  Every project-specific theorem
+named here is `PROVED`; finite exact fixtures are `COMPUTATIONAL`.
+
+### Finite generator product calculus
+
+Carré-du-champ product identities, Jensen inequalities for Markov semigroups,
+and one-function `Gamma_2` calculations are `EXTERNAL` foundational calculus.
+The Prompt-4 rate barrier is an exact specialization of weighted
+Cauchy--Schwarz and is not presented as novelty.  The project-specific
+contribution boundary is the combination with actual sampling, graph-class
+polar uniqueness, and the constrained extremal/anisotropy structures.
+
+### Positive and minimal stencils
+
+Seibold's positive-stencil Farkas and half-space criteria (DOI
+[`10.1016/j.cma.2008.09.001`](https://doi.org/10.1016/j.cma.2008.09.001),
+arXiv [`0802.2674`](https://arxiv.org/abs/0802.2674)) remain the principal
+`EXTERNAL` comparator.  Prompt 4 does not claim local cone feasibility as new.
+Its distinct result is a sharp obstruction on one fixed spherical product
+graph plus a conductance-aware optimization over every feasible local row.
+
+### Discrete spherical Laplacians and eigenmaps
+
+Izmestiev--Lam's spherical/hyperbolic discrete Laplacians
+([arXiv `2408.04877`](https://arxiv.org/abs/2408.04877)) are `EXTERNAL`: their
+spherical Delaunay positivity and exact low-mode conclusions must be invoked
+only under their hypotheses.  The present package does not assert that a fixed
+radial icosphere connectivity is Delaunay at every level.  The Prompt-4
+product theorem instead fixes the unreduced adjacency and derives its polar
+rates directly from the coordinate equations.
+
+### Spherical designs, association schemes, and code LPs
+
+Delsarte's association-scheme linear programming method (DOI
+[`10.1007/BF03187604`](https://doi.org/10.1007/BF03187604)) and its
+Gegenbauer/spherical-code descendants are `EXTERNAL`.  Platonic harmonic
+aliases and finite ranks in this repository are `COMPUTATIONAL`.  The
+proposition that a standard Delsarte reduction without a solved new dual is a
+new Prompt-4 theorem is `REJECTED`: no candidate certificate survived the
+sampling-kernel and cross-degree alias audit.
+
+Unit-distance spherical graphs and association schemes supply exact examples,
+not the graph-class minimax proof.  The latter begins with arbitrary polar
+rates, proves uniqueness, and uses a separate positive reversible attaining
+construction at every `N>=2`.
+
+### Constrained weighted graph Laplacians
+
+Fallat--Gupta--Lin study spectra and variance-type optimization for weighted
+Laplacians with fixed support ([arXiv `2411.00292`](https://arxiv.org/abs/2411.00292));
+this is an `EXTERNAL` adjacent comparator rather than a source of the present
+theorems.  Prompt 4 fixes an eigenmap equilibrium, controls geometry, masses,
+locality, degree, and a linear rate cap, and minimizes a defect rather than a
+free support spectrum.  The lower bound `4/R` and finite-order attainment are
+`PROVED`, but optimal upper bounds and convergence remain `CONJECTURE`.
+
+### Finite-dimensional convex duality
+
+Farkas alternatives, compact polytope minima, finite LP strong duality, and
+complementary slackness are `EXTERNAL`.  What is `PROVED` here is the exact
+spherical normalization, the affine-slice/projective distinction, the
+arbitrary-moment invariant `Q_lambda`, the sign-correct sliced primal/dual,
+and the transfer of every feasible dual triple to a rowwise certificate.
+
+### Graph curvature
+
+Cushing--Liu--Peyerimhoff's curvature functions
+([arXiv `1606.01496`](https://arxiv.org/abs/1606.01496)) and
+Cushing--Kamtue--Liu--Peyerimhoff's curvature-gap work
+([arXiv `2102.08687`](https://arxiv.org/abs/2102.08687)) provide `EXTERNAL`
+finite examples and rigidity frameworks.  They reject a blanket claim that
+positive finite graphs have no useful positive/nonnegative curvature.  The
+Prompt-4 one-function eigenmode identity is therefore a consistency check, not
+a curvature-dimension theorem; the stronger formulation is `REJECTED`.
+
+### Discrete transport metrics
+
+Maas's finite-state transport metric ([arXiv `1102.5238`](https://arxiv.org/abs/1102.5238))
+and Erbar--Maas's discrete Ricci-curvature theory
+([arXiv `1111.2687`](https://arxiv.org/abs/1111.2687)) are `EXTERNAL`.
+Positivity alone neither selects continuum `W_2` nor proves contraction, so
+that metric-free claim is `REJECTED`.  A future theorem must name the discrete
+metric and establish its curvature hypotheses.
+
+## 21. Prompt 4 priority conclusion
+
+The following are `EXTERNAL` or foundational and are not candidate novelty:
+partial fractions and zeta values, weighted Cauchy--Schwarz, finite
+compactness, LP duality, positive-stencil cone criteria, spherical-Delaunay
+theory, spherical-code LPs, association-scheme examples, graph-curvature
+frameworks, and discrete transport metrics.
+
+The defensible `PROVED` supporting contributions are:
+
+- direct asymmetric polar uniqueness and exact fixed-product-graph minimax;
+- uniform polar rate and quality bounds valid for every `N>=2`;
+- the fully constrained extremal lower bound, attainment, and product-family
+  exclusion;
+- the corrected conductance-aware `Q_lambda` feasible-family reduction,
+  sliced dual certificates, equality classification, and sharp polar/two-ray
+  examples; and
+- the precise reduced-ring biregular/perfect-matching obstruction.
+
+The central candidate contribution remains the Prompt-2 actual-sampling
+quadratic residual factorization and positive structural rigidity.  No
+unqualified first, novel, or globally optimal priority wording is authorized.
+Before submission, specialist citation-chain review remains necessary in
+positive stencils, discrete spherical geometry, finite frames/designs,
+weighted graph inverse problems, and constrained Laplacian optimization.

@@ -17,6 +17,7 @@ import AFPBarrier.SpectralSamplingObstruction
 import AFPBarrier.SphericalQEqualityRigidity
 import AFPBarrier.QuantitativeGlobalNearRigidity
 import AFPBarrier.QEqualityCovariance
+import AFPBarrier.SharpProductBarriers
 
 /-! Focused axiom audit for the pure-mathematics branch. -/
 
@@ -173,3 +174,24 @@ import AFPBarrier.QEqualityCovariance
 #print axioms AFPBarrier.qOne_sphereResidual_entry_decomposition
 #print axioms AFPBarrier.weightedOctahedron_axis_axial_iff
 #print axioms AFPBarrier.weightedOctahedron_all_axes_axial_iff
+
+/-! Prompt 4: sharp product barriers, extremal algebra, and incidence. -/
+
+#print axioms AFPBarrier.squarePolarQualityFromStep
+#print axioms AFPBarrier.squarePolarQualityFromStep_formula
+#print axioms AFPBarrier.squarePolar_rates_forced
+#print axioms AFPBarrier.squarePolar_totalRate_forced
+#print axioms AFPBarrier.squarePolar_forced_quartic_lower
+#print axioms AFPBarrier.cscSquaredTruncation
+#print axioms AFPBarrier.squarePolarRateMainStep
+#print axioms AFPBarrier.cscSquaredTruncation_rate_identity
+#print axioms AFPBarrier.squarePolarRateMainStep_grid
+#print axioms AFPBarrier.squarePolarQualityMainStep
+#print axioms AFPBarrier.squarePolarQualityMainStep_grid
+#print axioms AFPBarrier.universal_rate_lower_of_defect_upper
+#print axioms AFPBarrier.finiteExtremal_defect_lower
+#print axioms AFPBarrier.projectiveQuality_from_fixedMoment
+#print axioms AFPBarrier.twoLossWeightedQuality_sub_one
+#print axioms AFPBarrier.twoLossQuality_sub_one
+#print axioms AFPBarrier.biregular_interRing_incidence
+#print axioms AFPBarrier.perfectMatching_ringCounts_eq

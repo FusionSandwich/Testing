@@ -234,3 +234,40 @@ Clebsch--Gordan, Pell completeness, Jensen/uniformization, and convex KKT are
 EXTERNAL. Exact finite matrices are COMPUTATIONAL support. No priority claim
 follows from the covariance identity, a rank table, Lean job count, or CI
 result alone.
+
+## Prompt 4 records and final synthesis
+
+- `barriers/SHARP_PRODUCT_GRAPH_BARRIERS.md` — controlled polar asymptotics,
+  direct asymmetric polar uniqueness, exact fixed-graph minimax, universal and
+  constrained extremal barriers, corrected arbitrary-moment feasible-family
+  anisotropy, and reduced-ring incidence;
+- `barriers/P4_SALVAGE_LEDGER.md` — immutable old-object provenance and
+  file-level manual-port audit;
+- `barriers/P4_APPROACH_REGISTRY.md` and `barriers/P4_THEOREM_REGISTRY.md` —
+  mechanism and theorem controls, including every adversarial correction;
+- `barriers/prompt4_sharp_barrier_audit.py` — exact coefficient, LP,
+  anisotropy, counterexample, and incidence regressions;
+- `../AFPBarrier/SharpProductBarriers.lean` — finite coefficient, polar,
+  universal-bound, projective, two-loss, and incidence algebra;
+- `FINAL_PURE_MATH_THEOREM_PACKAGE.md` — final Prompt-1 through Prompt-4
+  publication hierarchy and numerical-analysis handoff;
+- `../docs/P4_THEOREM_TO_FILE_MAP.md` and `../docs/P4_STAGE_REPORT.md` — exact
+  implementation map and stage record;
+- `../docs/PURE_MATH_ASSUMPTIONS_TABLE.md` — normative theorem hypotheses;
+- `../docs/PURE_MATH_COUNTEREXAMPLE_CATALOGUE.md` — permanent rejected literal
+  formulations and exact boundary witnesses; and
+- `../docs/PURE_MATH_MANUSCRIPT_ABSTRACT.md` — terminology-independent abstract.
+
+The fixed-normal-moment set is an affine slice, not a cone modulo scaling.  At
+arbitrary normal moment `lambda>0`, the correct invariant is
+`Q_lambda=r*epsilon/lambda^2`; it becomes the spherical global
+`Q=r*epsilon/4` at `lambda=2`.  Opposite tangent rays force the symmetric
+two-loss formula only when their magnitudes force half weights; the general
+`v_2=-kappa v_1` formula is retained.
+
+The sharp product-grid result is a graph-class theorem valid at every integer
+`N>=2`, not a fitted example.  The constrained quasi-uniform comparison is
+conditional on every class hypothesis, not merely a loss window.  Future
+numerical analysis owns optimizer computation, convergence and upper bounds,
+verified Delaunay-family construction, split/merge ring designs, and
+coordinate-space framework stability.
