@@ -95,7 +95,10 @@ prove the all-orders classification or any unrestricted claim.
 
 ## Verification status
 
-The prepublication verification on the pinned local toolchain is complete:
+The mathematical candidate is the immutable object
+`c66f3229d0a89d97559535810c4ba09daf6e4e42`, tree
+`29d5e7f8f55479513a71dd457f9bd64c11b6df0f`.  Run `30771073146`
+established the complete mathematical verification:
 
 - all retained Prompt 1 and Prompt 2 deterministic regressions pass;
 - all three Prompt 3 audits pass, including the source-pinned Plantri counts
@@ -105,19 +108,48 @@ The prepublication verification on the pinned local toolchain is complete:
 - the focused axiom audit reports only `propext`, `Classical.choice`, and
   `Quot.sound`.
 
-The protected-ref table is populated from a fresh remote observation immediately
-before the final candidate is committed and is re-queried by CI.  The exact
-candidate commit/tree, exact-head workflow/jobs, artifact IDs/digests, and
-post-commit results are reported from that workflow and the final handoff; they
-cannot be embedded self-referentially in the commit being verified.  Until the
-dedicated final gate passes, the PR remains draft and this stage is not a
-Prompt 4 baseline.
+The exact-regressions job in that run completed every mathematical and
+deterministic step successfully.  Its sole failing step, and the sole reason
+the old final-state job failed, was the policy that treated a changed mutable
+source-branch observation as candidate corruption.  The observed branch was:
 
-The prepublication observation found four protected heads unchanged and one
-independently moved head:
 `agent/afp-pure-math-p3-global-rigidity-near-rigidity` advanced from the
-recorded `d9304b5d...` source head to `f1ef5b3c...`.  The initial SHA remains
-the required comparison value, and this work neither moved nor restored that
-read-only ref.  Consequently the dedicated workflow is intentionally
-fail-closed at its protection gate unless that external condition is resolved;
-this is a provenance blocker, not a suppressed theorem or regression failure.
+recorded `d9304b5d...` source snapshot to `f1ef5b3c...`.  This work neither
+moved nor restored that read-only ref.  The historical result remains
+`MOVED_EXTERNALLY`.
+
+## Prompt 2+3 closeout correction
+
+Closeout branch
+`agent/afp-pure-math-p2-p3-final-closeout-c66f3229` was created remotely at
+the literal `c66f3229...` object before any edit.  Draft PR #31 targets the
+create-if-absent Prompt-2 archive
+`archive/afp-pure-math-p2-quadratic-covariance-verified-31ea6a49` at exact
+commit `31ea6a49...`.
+
+The corrected workflow separates:
+
+1. immutable commit/tree, ancestry, allowlist, source-identity, archive, and
+   exact remote-candidate bindings, which are fatal;
+2. immutable old salvage snapshot objects, which must exist and remain absent
+   from candidate ancestry; and
+3. current heads of old source branches, whose ordinary movement is recorded
+   but is not a candidate failure.
+
+The final closeout reruns every retained exact regression, the pinned
+9,150-map Plantri census, the full Lean build, the focused axiom audit, both
+source-policy scans, checkout-cleanliness checks, and exact source archiving.
+The terminal `final-candidate-integrity` job has ordinary success-gated
+dependencies on both `exact-regressions` and `lean-kernel`; it does not use an
+always-running prerequisite bypass.
+
+The final commit SHA, tree, workflow run, job conclusions, artifact identities,
+Lean job count, and source digest are values created by committing and running
+this record.  The tracked record therefore binds them normatively to the exact
+`GITHUB_SHA` satisfying remote-head equality; the workflow materializes their
+literal values in a resolved finalization-record artifact.  After the run is
+fully green, the immutable Prompt-3 archive and PR #31 bind that same literal
+commit externally.  This avoids a false self-reference: a blob cannot contain
+the not-yet-computed tree/commit hash to which it contributes, and a commit
+cannot contain workflow/artifact identifiers that do not exist until after it
+is pushed.
