@@ -3,6 +3,8 @@ name: AFP Prompt 3 rigidity
 on:
   push:
     branches:
+      - agent/afp-pure-math-p3-q1-rigidity
+      - agent/afp-pure-math-p4-sharp-barriers-extremal-synthesis
       - agent/afp-pure-math-p0-m1
       - 'agent/afp-pure-math-p3-p4-final-acceptance*'
   pull_request:
@@ -41,7 +43,7 @@ jobs:
           nanoda: false
           use-mathlib-cache: false
           use-github-cache: false
-      - name: Run complete Prompt 1-4 exact-head gate
+      - name: Run retained compatibility and complete Prompt 1-4 exact-head gate
         id: gate
         env:
           GATE_NAME: afp-prompt3-rigidity

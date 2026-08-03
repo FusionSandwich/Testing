@@ -3,10 +3,16 @@ name: AFP quadratic covariance
 on:
   push:
     branches:
+      - agent/afp-quadratic-covariance-p2-corrected
+      - agent/afp-pure-math-p1-local-global-corrected
       - agent/afp-pure-math-p0-m1
+      - agent/afp-pure-math-p2-closeout-corrected
+      - agent/afp-pure-math-p3-q1-rigidity
+      - agent/afp-pure-math-p4-sharp-barriers-extremal-synthesis
       - 'agent/afp-pure-math-p3-p4-final-acceptance*'
   pull_request:
     branches:
+      - agent/afp-pure-math-p1-local-global-corrected
       - agent/afp-pure-math-p0-m1
   workflow_dispatch:
 
@@ -41,7 +47,7 @@ jobs:
           nanoda: false
           use-mathlib-cache: false
           use-github-cache: false
-      - name: Run complete Prompt 1-4 exact-head gate
+      - name: Run retained compatibility and complete Prompt 1-4 exact-head gate
         id: gate
         env:
           GATE_NAME: afp-quadratic-covariance

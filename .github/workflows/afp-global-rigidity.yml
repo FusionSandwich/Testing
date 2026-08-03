@@ -3,11 +3,26 @@ name: AFP global rigidity
 on:
   push:
     branches:
+      - agent/afp-pure-math-p3-global-rigidity-near-rigidity
       - agent/afp-pure-math-p0-m1
       - 'agent/afp-pure-math-p3-p4-final-acceptance*'
   pull_request:
     branches:
       - agent/afp-pure-math-p0-m1
+    paths:
+      - 'afp_barrier_gate1/AFPBarrier/**'
+      - 'afp_barrier_gate1/AFPBarrier.lean'
+      - 'afp_barrier_gate1/pure_math/**'
+      - 'afp_barrier_gate1/docs/**'
+      - 'afp_barrier_gate1/lakefile.lean'
+      - 'afp_barrier_gate1/lean-toolchain'
+      - 'afp_barrier_gate1/lake-manifest.json'
+      - '.github/workflows/afp-global-rigidity.yml'
+      - '.github/workflows/afp-prompt3-rigidity.yml'
+      - '.github/workflows/afp-prompt4-sharp-barriers.yml'
+      - '.github/workflows/afp-pure-math.yml'
+      - '.github/workflows/afp-quadratic-covariance.yml'
+      - '.github/workflows/afp-spherical-feasibility.yml'
   workflow_dispatch:
 
 concurrency:
@@ -41,7 +56,7 @@ jobs:
           nanoda: false
           use-mathlib-cache: false
           use-github-cache: false
-      - name: Run complete Prompt 1-4 exact-head gate
+      - name: Run retained compatibility and complete Prompt 1-4 exact-head gate
         id: gate
         env:
           GATE_NAME: afp-global-rigidity

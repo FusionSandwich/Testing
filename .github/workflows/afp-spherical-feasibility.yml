@@ -3,16 +3,15 @@ name: AFP spherical feasibility
 on:
   push:
     branches:
+      - agent/afp-spherical-feasibility-validation
       - agent/afp-pure-math-p0-m1
+      - agent/afp-pure-math-p2-closeout-corrected
+      - agent/afp-pure-math-p4-sharp-barriers-extremal-synthesis
       - 'agent/afp-pure-math-p3-p4-final-acceptance*'
   pull_request:
     branches:
       - agent/afp-pure-math-p0-m1
   workflow_dispatch:
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
 
 permissions:
   contents: read
@@ -41,7 +40,7 @@ jobs:
           nanoda: false
           use-mathlib-cache: false
           use-github-cache: false
-      - name: Run complete Prompt 1-4 exact-head gate
+      - name: Run retained compatibility and complete Prompt 1-4 exact-head gate
         id: gate
         env:
           GATE_NAME: afp-spherical-feasibility
