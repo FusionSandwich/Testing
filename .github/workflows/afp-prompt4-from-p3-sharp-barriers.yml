@@ -739,9 +739,9 @@ jobs:
           test "${EXACT_RESULT}" = success
           test "${LEAN_RESULT}" = success
           test -n "${EXACT_ARTIFACT_ID}"
-          [[ "${EXACT_ARTIFACT_DIGEST}" =~ ^sha256:[0-9a-f]{64}$ ]]
+          [[ "${EXACT_ARTIFACT_DIGEST}" =~ ^(sha256:)?[0-9a-f]{64}$ ]]
           test -n "${LEAN_ARTIFACT_ID}"
-          [[ "${LEAN_ARTIFACT_DIGEST}" =~ ^sha256:[0-9a-f]{64}$ ]]
+          [[ "${LEAN_ARTIFACT_DIGEST}" =~ ^(sha256:)?[0-9a-f]{64}$ ]]
           [[ "${SOURCE_SHA256}" =~ ^[0-9a-f]{64}$ ]]
           [[ "${LEAN_JOBS}" =~ ^[0-9]+[[:space:]]jobs$ ]]
 

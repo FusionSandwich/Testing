@@ -186,7 +186,6 @@ theorem projectiveQuality_from_fixedMoment
     rate * defect / lambda ^ 2 = s2 / m ^ 2 := by
   rw [hrate, hdefect]
   field_simp [hlambda, hm]
-  ring
 
 /-- Sharp anisotropy for two opposed tangent vectors whose magnitudes have
 ratio `kappa`. The equal-magnitude result below is the case `kappa = 1`. -/
