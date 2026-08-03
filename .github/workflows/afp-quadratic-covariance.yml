@@ -3,15 +3,10 @@ name: AFP quadratic covariance
 on:
   push:
     branches:
-      - agent/afp-quadratic-covariance-p2-corrected
-      - agent/afp-pure-math-p1-local-global-corrected
       - agent/afp-pure-math-p0-m1
-      - agent/afp-pure-math-p2-closeout-corrected
-      - agent/afp-pure-math-p3-q1-rigidity
-      - agent/afp-pure-math-p4-sharp-barriers-extremal-synthesis
+      - 'agent/afp-pure-math-p3-p4-final-acceptance*'
   pull_request:
     branches:
-      - agent/afp-pure-math-p1-local-global-corrected
       - agent/afp-pure-math-p0-m1
   workflow_dispatch:
 
@@ -23,102 +18,20 @@ permissions:
   contents: read
 
 jobs:
-  verify:
+  final-acceptance:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 100
     steps:
-      - uses: actions/checkout@v4
+      - name: Check out literal event head
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
-
-      - name: Assert exact Prompt 2 checkout and record provenance
-        shell: bash
-        run: |
-          set -euo pipefail
-          expected='${{ github.event.pull_request.head.sha || github.sha }}'
-          actual=$(git rev-parse HEAD)
-          tree=$(git show -s --format=%T HEAD)
-          start_head=1835918fe9d0b941395e9f00f6ac5514129cefa0
-          start_tree=$(git show -s --format=%T "$start_head")
-          echo "expected_head=${expected}"
-          echo "actual_head=${actual}"
-          echo "actual_tree=${tree}"
-          echo "closeout_start_head=${start_head}"
-          echo "closeout_start_tree=${start_tree}"
-          echo "event=${GITHUB_EVENT_NAME}"
-          echo "ref=${GITHUB_REF}"
-          test "${actual}" = "${expected}"
-          if git cat-file -e 694b913c99364bb0032a8ffbd7008b549b491af0^{commit} 2>/dev/null; then
-            echo "reported_final_head_resolves=yes"
-            exit 1
-          else
-            echo "reported_final_head_resolves=no"
-          fi
-          git fetch --no-tags origin \
-            archive/afp-gate6-spatial-multigroup-verified
-          test "$(git rev-parse FETCH_HEAD)" = \
-            "515f1aae6c20bd85711c90b5c1c21b4905252d01"
-          echo "immutable_archive=515f1aae6c20bd85711c90b5c1c21b4905252d01"
-
-      - uses: actions/setup-python@v5
+      - name: Set up deterministic Python runtime
+        uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-
-      - name: Install exact symbolic dependencies
-        run: python -m pip install --disable-pip-version-check --no-input 'sympy==1.14.0'
-
-      - name: Run exact covariance and sampled-space audits
-        shell: bash
-        run: |
-          set -euo pipefail
-          python afp_barrier_gate1/pure_math/covariance/quadratic_covariance_audit.py
-          python afp_barrier_gate1/pure_math/covariance/prompt2_closeout_audit.py
-
-      - name: Verify axiom-regex policy fixtures
-        shell: bash
-        run: |
-          set -euo pipefail
-          tmp=$(mktemp -d)
-          trap 'rm -rf "$tmp"' EXIT
-          cat > "$tmp/singular.lean" <<'EOF'
-          axiom forbidden : Prop
-          EOF
-          cat > "$tmp/plural.lean" <<'EOF'
-          axioms forbidden1 forbidden2 : Prop
-          EOF
-          cat > "$tmp/allowed.lean" <<'EOF'
-          #print axioms Existing.theorem
-          theorem axiomName : True := by trivial
-          EOF
-          pattern='^[[:space:]]*(axiom|axioms)([[:space:]]|$)'
-          grep -qE "$pattern" "$tmp/singular.lean"
-          grep -qE "$pattern" "$tmp/plural.lean"
-          if grep -qE "$pattern" "$tmp/allowed.lean"; then
-            echo 'Axiom regex produced a false positive.' >&2
-            exit 1
-          fi
-          echo 'axiom and axioms fixtures rejected: PASS'
-
-      - name: Reject proof placeholders and user axioms
-        shell: bash
-        run: |
-          set -euo pipefail
-          if grep -RInE --include='*.lean' \
-            '(^|[^[:alnum:]_])(sorry|admit|sorryAx)([^[:alnum:]_]|$)' \
-            afp_barrier_gate1/AFPBarrier afp_barrier_gate1/AFPBarrier.lean; then
-            echo 'Forbidden proof placeholder found.' >&2
-            exit 1
-          fi
-          if grep -RInE --include='*.lean' \
-            '^[[:space:]]*(axiom|axioms)([[:space:]]|$)' \
-            afp_barrier_gate1/AFPBarrier afp_barrier_gate1/AFPBarrier.lean; then
-            echo 'User axiom declaration found.' >&2
-            exit 1
-          fi
-          echo 'aggregate proof-placeholder and user-axiom scan: PASS'
-
-      - name: Install Lean toolchain
+      - name: Install pinned Lean toolchain
         uses: leanprover/lean-action@v1
         with:
           lake-package-directory: afp_barrier_gate1
@@ -128,184 +41,15 @@ jobs:
           nanoda: false
           use-mathlib-cache: false
           use-github-cache: false
-
-      - name: Prepare pinned external checker
-        shell: bash
-        run: |
-          set -euo pipefail
-          cd afp_barrier_gate1
-          rm -rf _lean4export _nanoda_lib
-          rm -f _nanoda_export.txt _nanoda_config.json
-
-          if ! command -v cargo >/dev/null 2>&1; then
-            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
-              | sh -s -- -y --default-toolchain stable --profile minimal
-            source "$HOME/.cargo/env"
-          fi
-
-          git init _lean4export
-          git -C _lean4export remote add origin \
-            https://github.com/ammkrn/lean4export.git
-          git -C _lean4export fetch --depth 1 origin \
-            f3cf6458a309d643dc586a80f9ab5a93c2304db9
-          git -C _lean4export checkout --detach FETCH_HEAD
-
-          python3 - <<'PY'
-          from pathlib import Path
-
-          path = Path("_lean4export/Export.lean")
-          source = path.read_text(encoding="utf-8")
-          old = "e.updateLet! (← removeMData d) (← removeMData v) (← removeMData b)"
-          new = old + " false"
-          if source.count(old) != 1:
-              raise SystemExit("Unexpected Lean exporter let-expression source")
-          path.write_text(source.replace(old, new), encoding="utf-8")
-          PY
-
-          grep -qF \
-            'e.updateLet! (← removeMData d) (← removeMData v) (← removeMData b) false' \
-            _lean4export/Export.lean
-
-          cp lean-toolchain _lean4export/
-          (
-            cd _lean4export
-            lake build
-          )
-
-          git init _nanoda_lib
-          git -C _nanoda_lib remote add origin \
-            https://github.com/ammkrn/nanoda_lib.git
-          git -C _nanoda_lib fetch --depth 1 origin \
-            e5438ac0a85a036b6dfe093aa457bc3448498014
-          git -C _nanoda_lib checkout --detach FETCH_HEAD
-          (
-            cd _nanoda_lib
-            cargo build --release
-          )
-
-      - name: Resolve dependencies and obtain Mathlib cache
-        shell: bash
-        run: |
-          set -euo pipefail
-          cd afp_barrier_gate1
-          lake update
-          lake exe cache get
-
-      - name: Build Lean package explicitly
-        shell: bash
-        run: |
-          set -euo pipefail
-          cd afp_barrier_gate1
-          lake build
-
-      - name: Run focused pure-math axiom audit
-        shell: bash
-        run: |
-          set -euo pipefail
-          cd afp_barrier_gate1
-          lake env lean AFPBarrier/PureMathAxiomAudit.lean \
-            2>&1 | tee prompt2-axiom-audit.log
-          if grep -q 'sorryAx' prompt2-axiom-audit.log; then
-            echo "A Prompt 2 theorem depends on Lean's sorry axiom." >&2
-            exit 1
-          fi
-
-      - name: Independently type-check Prompt 2 declarations with nanoda
-        shell: bash
-        run: |
-          set -euo pipefail
-          cd afp_barrier_gate1
-
-          cleanup() {
-            rm -rf _lean4export _nanoda_lib
-            rm -f _nanoda_export.txt _nanoda_config.json
-          }
-          trap cleanup EXIT
-
-          foundations=(
-            Nat
-            Nat.zero
-            Nat.succ
-            List
-            List.nil
-            List.cons
-            String
-            String.mk
-            Char
-            Char.ofNat
-          )
-
-          declarations=(
-            AFPBarrier.jumpCrossVariation
-            AFPBarrier.jumpGamma
-            AFPBarrier.jumpGenerator_product_identity
-            AFPBarrier.jumpGenerator_product_identity_gamma
-            AFPBarrier.jumpGenerator_shifted_product_residual
-            AFPBarrier.shifted_product_target_iff
-            AFPBarrier.additive_product_resonance_iff
-            AFPBarrier.centered_square_resonance_iff
-            AFPBarrier.uncentered_square_resonance_iff_zero_gamma
-            AFPBarrier.jumpCrossVariation_self_eq_carreDuChamp
-            AFPBarrier.uncentered_square_resonance_forces_value_zero
-            AFPBarrier.jumpGenerator_const_mul
-            AFPBarrier.jumpGenerator_fintype_sum
-            AFPBarrier.finiteQuadraticSample
-            AFPBarrier.jumpCovarianceEntry
-            AFPBarrier.quadraticCovarianceContraction
-            AFPBarrier.jumpGenerator_quadratic_covariance_identity
-            AFPBarrier.quadratic_target_eigen_iff
-            AFPBarrier.finiteMatrixTrace
-            AFPBarrier.finiteMatrixContraction
-            AFPBarrier.subtractScalarDiagonal
-            AFPBarrier.finiteMatrixContraction_subtractScalarDiagonal
-            AFPBarrier.finiteTracelessProjection
-            AFPBarrier.finiteMatrixContraction_tracelessProjection
-            AFPBarrier.sampledRestriction_finrank
-            AFPBarrier.samplingKernel_le_residualKernel
-            AFPBarrier.sampledRange_exact_eq_range_inf_ker
-            AFPBarrier.zero_constraints_iff_zero_samples_of_row_scaling
-            AFPBarrier.axialCovariance_projectionCoefficient
-          )
-
-          echo "Exporting ${#declarations[@]} Prompt 2 declarations"
-          lake env _lean4export/.lake/build/bin/lean4export \
-            AFPBarrier.QuadraticCovariance -- \
-            "${foundations[@]}" "${declarations[@]}" \
-            > _nanoda_export.txt
-          test -s _nanoda_export.txt
-          echo "Exported $(wc -l < _nanoda_export.txt) lines"
-
-          cat > _nanoda_config.json <<'EOF'
-          {
-            "export_file_path": "_nanoda_export.txt",
-            "use_stdin": false,
-            "permitted_axioms": [
-              "propext",
-              "Classical.choice",
-              "Quot.sound",
-              "Lean.trustCompiler"
-            ],
-            "unpermitted_axiom_hard_error": false,
-            "nat_extension": true,
-            "string_extension": true,
-            "print_success_message": true
-          }
-          EOF
-
-          RUST_BACKTRACE=1 \
-            _nanoda_lib/target/release/nanoda_bin _nanoda_config.json
-
-      - name: Verify closeout diff is pure-math only
-        shell: bash
-        run: |
-          set -euo pipefail
-          base=1835918fe9d0b941395e9f00f6ac5514129cefa0
-          bad=$(git diff --name-only "$base"...HEAD | \
-            grep -Ev '^(.github/workflows/afp-(prompt4-sharp-barriers|prompt3-rigidity|quadratic-covariance|pure-math|spherical-feasibility)\.yml|afp_barrier_gate1/(AFPBarrier(\.lean|/.*\.lean)|pure_math/.*|docs/.*))$' || true)
-          if test -n "$bad"; then
-            echo 'Out-of-scope closeout paths:' >&2
-            echo "$bad" >&2
-            exit 1
-          fi
-          git diff --check "$base"...HEAD
-          echo 'pure-math-only closeout diff: PASS'
+      - name: Run complete Prompt 1-4 exact-head gate
+        id: gate
+        env:
+          GATE_NAME: afp-quadratic-covariance
+        run: bash afp_barrier_gate1/pure_math/final_acceptance_gate.sh
+      - name: Upload exact-head evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: afp-quadratic-covariance-${{ github.run_id }}
+          path: ${{ steps.gate.outputs.evidence_dir }}
+          if-no-files-found: error
