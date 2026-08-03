@@ -30,9 +30,9 @@ Q_i-1=sum_j p_ij(x_ij-1)^2.
 
 At `Q_i=1`, every active incident edge has `ell_ij=2/r_i`. Positive shared conductances make activity symmetric; connectedness propagates one global row rate and active-edge loss.
 
-**Proof source:** `pure_math/rigidity/GLOBAL_Q_RIGIDITY_THEOREM.md` §§1–2.  
-**Lean:** `SphericalQEqualityRigidity.lean`.  
-**Exact audit:** `global_near_rigidity_audit.py`.  
+**Proof source:** `pure_math/rigidity/GLOBAL_Q_RIGIDITY_THEOREM.md` §§1–2.
+**Lean:** `SphericalQEqualityRigidity.lean`.
+**Exact audit:** `global_near_rigidity_audit.py`.
 **Deleted hypotheses:** without positivity, reversibility, or connectedness, propagation fails componentwise or directionally. Loops and zero-conductance permitted edges are inactive.
 
 ## T2. Restricted geodesic-triangulation classification
@@ -49,10 +49,10 @@ The proof establishes common side length, congruent equilateral faces, common an
 | 4 | 6 | 12 | 8 | `0` | `1` | `2` |
 | 5 | 12 | 30 | 20 | `1/sqrt(5)` | `1-1/sqrt(5)` | `(5+sqrt(5))/2` |
 
-**Proof source:** theorem package §3.  
-**Lean:** selected spherical algebra and Euler identities in the accepted narrow and rich modules; the complete geometric classification remains an ordinary proof.  
-**Exact audit:** exact Platonic Gram/hull regressions and source-pinned plantri hostile search.  
-**External input:** only standard spherical trigonometry and verified finite planar-map facts; enumeration is not the proof.  
+**Proof source:** theorem package §3.
+**Lean:** selected spherical algebra and Euler identities in the accepted narrow and rich modules; the complete geometric classification remains an ordinary proof.
+**Exact audit:** exact Platonic Gram/hull regressions and source-pinned plantri hostile search.
+**External input:** only standard spherical trigonometry and verified finite planar-map facts; enumeration is not the proof.
 **Deleted hypotheses:** cube and dodecahedron kill unrestricted graph claims; major arcs, cone defects, incomplete coverage, inactive triangulation edges, repeated states, and nonreversible/signed systems kill the transfer.
 
 ## T3. Pointwise and pathwise near-rigidity
@@ -85,9 +85,9 @@ For graph center `o`, radius `R_G`, `ell_ref=2/r_o`, and `B_delta=h_delta+R_G s_
 |log(ell_e/ell_ref)|<=B_delta.
 ```
 
-**Proof source:** theorem package §4.  
-**Lean:** `weight_floor_mul_deviation_sq_le`, `pointwise_deviation_sq_le_eta_div_kappa`, `pointwise_delta_bound`, adjacent-rate and incident-loss declarations.  
-**Exact audit:** 174,816 path stress cases and exact variance examples.  
+**Proof source:** theorem package §4.
+**Lean:** `weight_floor_mul_deviation_sq_le`, `pointwise_deviation_sq_le_eta_div_kappa`, `pointwise_delta_bound`, adjacent-rate and incident-loss declarations.
+**Exact audit:** 174,816 path stress cases and exact variance examples.
 **Deleted hypotheses:** `delta<1` is required for positive lower factors; small `kappa` and long paths demonstrate necessary dependence.
 
 ## T4. Spectral-gap refinement
@@ -117,9 +117,9 @@ E_P(log r)<=2 eta/(1-delta)^2,
 Var_pi(log r)<=2 eta/((1-delta)^2 lambda_P).
 ```
 
-**Proof source:** theorem package §5.  
-**Lean:** finite edge inequalities; variational step ordinary.  
-**Exact audit:** reversible small-graph and path checks.  
+**Proof source:** theorem package §5.
+**Lean:** finite edge inequalities; variational step ordinary.
+**Exact audit:** reversible small-graph and path checks.
 **Deleted hypotheses:** without reversibility the symmetric conductance normalization and stated Poincaré form do not follow.
 
 ## T5. Effective-resistance refinement
@@ -133,8 +133,8 @@ For the undirected conductances `c_ij`, with effective resistance normalized by 
   <=sqrt(2 eta R_eff(i,j))/(1-delta).
 ```
 
-**Proof source:** theorem package §5.4, Dirichlet principle.  
-**Exact audit:** exact rational path resistance and endpoint slack.  
+**Proof source:** theorem package §5.4, Dirichlet principle.
+**Exact audit:** exact rational path resistance and endpoint slack.
 **Deleted hypotheses:** large resistance examples show that a metric-free uniform pointwise bound is false.
 
 ## T6. Explicit angle and valence stability
@@ -170,8 +170,8 @@ q=5: eta_* = 7.942143600537101e-10
 
 for the reference `kappa` values encoded by the audit. Positive-width Gram determinant floors are approximately `0.3818972454`, `0.3810797447`, and `0.0217243113`.
 
-**Proof source:** theorem package §6.  
-**Exact audit:** zero-defect and positive-width boxes, nonzero threshold tests, arc conversion, exact valence gaps.  
+**Proof source:** theorem package §6.
+**Exact audit:** zero-defect and positive-width boxes, nonzero threshold tests, arc conversion, exact valence gaps.
 **Deleted hypotheses:** coordinate-level framework stability is not inferred from edge-metric stability; the old endpoint-product angle certificate is rejected.
 
 ## T7. Non-antipodal `Q=1` covariance decomposition
@@ -199,9 +199,9 @@ M_i=3ell_i(Omega_i Omega_i^T-I/3)
 
 Axial covariance holds iff `T_i=P_i/2`.
 
-**Proof source:** theorem package §7.  
-**Lean:** `QEqualityCovariance.lean`.  
-**Exact audit:** symbolic covariance decomposition.  
+**Proof source:** theorem package §7.
+**Lean:** `QEqualityCovariance.lean`.
+**Exact audit:** symbolic covariance decomposition.
 **Sampling boundary:** axial form-space rigidity implies the accepted sampled conclusion only through the explicit sampling map and kernel theorem.
 
 ## T8. Antipodal radial boundary
@@ -217,8 +217,8 @@ C=4 Omega Omega^T,
 
 There is no geometrically determined unit tangent direction because `sqrt(ell(2-ell))=0`.
 
-**Lean:** `qOne_antipodal_tangent_coefficient_zero` and `qOne_antipodal_covarianceEntry`.  
-**Exact audit:** two-state antipodal regression.  
+**Lean:** `qOne_antipodal_tangent_coefficient_zero` and `qOne_antipodal_covarianceEntry`.
+**Exact audit:** two-state antipodal regression.
 **Deleted hypothesis warning:** the tangent-frame theorem is false as written if extended to `ell=2`.
 
 ## T9. Weighted-octahedral anisotropy
@@ -235,8 +235,8 @@ w_3=g_13+g_23.
 
 Then `L Omega=-2 Omega`, `r_i=2`, `ell_e=1`, and `Q_i=1`. Global axial covariance holds iff `g_12=g_13=g_23`; tangential anisotropy approaches operator norm `1/2` while `eta=0`.
 
-**Lean:** selected tangent-weight and axial-iff identities.  
-**Exact audit:** `q1_covariance_audit.py`.  
+**Lean:** selected tangent-weight and axial-iff identities.
+**Exact audit:** `q1_covariance_audit.py`.
 **Killed claim:** `Q=1` or scalar `eta` control alone forces axial covariance.
 
 ## T10. Weighted-octahedral sampled degree-two space
@@ -251,8 +251,8 @@ det(P+2I)=
 /((g_12+g_13)(g_12+g_23)(g_13+g_23)) > 0.
 ```
 
-**Proof source:** sampling-map argument in theorem §7.5.  
-**Exact audit:** symbolic determinant and explicit unequal specialization.  
+**Proof source:** sampling-map argument in theorem §7.5.
+**Exact audit:** symbolic determinant and explicit unequal specialization.
 **Sampling boundary:** this conclusion is not a form-space rank calculation.
 
 ## T11. Prompt 4 polar remainder bounds
@@ -274,9 +274,9 @@ and
   <= pi^2/(12N^2).
 ```
 
-**Proof source:** `SHARP_PRODUCT_GRAPH_BARRIERS.md`.  
-**Lean:** `SharpProductBarriers.lean`.  
-**Exact audit:** `prompt4_sharp_barrier_audit.py`.  
+**Proof source:** `SHARP_PRODUCT_GRAPH_BARRIERS.md`.
+**Lean:** `SharpProductBarriers.lean`.
+**Exact audit:** `prompt4_sharp_barrier_audit.py`.
 **Final treatment:** theorem statement and constants preserved unchanged by reconciliation.
 
 ## T12. Prompt 4 fixed-graph minimax obstruction
@@ -285,7 +285,7 @@ and
 
 The polar coordinate equations uniquely force the inward meridional rate `1/(2 sin^2 h)` and each azimuthal rate `1/(4 sin^4 h)` on the fixed unreduced square product graph. The exact graph-class minimax maximum rate has sharp leading constant `8/pi^4`.
 
-**Proof, Lean, audit:** accepted Prompt 4 package.  
+**Proof, Lean, audit:** accepted Prompt 4 package.
 **Deleted hypotheses:** no ring-symmetry assumption is used; changing the graph class changes the statement.
 
 ## T13. Prompt 4 universal rate and extremal bounds
@@ -302,7 +302,7 @@ C*>=4/R,
 
 fixed-`K` minimizer existence, and strict exclusion of the unreduced product family from linear-rate classes at large order.
 
-**Proof, Lean, audit:** accepted Prompt 4 theorem, `SharpProductBarriers.lean`, exact regression.  
+**Proof, Lean, audit:** accepted Prompt 4 theorem, `SharpProductBarriers.lean`, exact regression.
 **Final treatment:** preserved unchanged.
 
 ## T14. Prompt 4 feasible-cone and reduced-ring results
@@ -311,7 +311,7 @@ fixed-`K` minimizer existence, and strict exclusion of the unreduced product fam
 
 The accepted package contains the projective feasible-cone formula for `Q`, the fixed-mean sliced LP, an explicit dual anisotropy certificate, sharp equality examples, and the stated biregular/perfect-matching reduced-ring incidence obstruction.
 
-**Boundary:** no general split/merge reduced-ring theorem is claimed.  
+**Boundary:** no general split/merge reduced-ring theorem is claimed.
 **Final treatment:** preserved and revalidated.
 
 ## Computational and external status summary
