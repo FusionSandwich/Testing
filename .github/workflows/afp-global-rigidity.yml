@@ -1,0 +1,70 @@
+name: AFP global rigidity
+
+on:
+  push:
+    branches:
+      - agent/afp-pure-math-p3-global-rigidity-near-rigidity
+      - agent/afp-pure-math-p0-m1
+      - 'agent/afp-pure-math-p3-p4-final-acceptance*'
+  pull_request:
+    branches:
+      - agent/afp-pure-math-p0-m1
+    paths:
+      - 'afp_barrier_gate1/AFPBarrier/**'
+      - 'afp_barrier_gate1/AFPBarrier.lean'
+      - 'afp_barrier_gate1/pure_math/**'
+      - 'afp_barrier_gate1/docs/**'
+      - 'afp_barrier_gate1/lakefile.lean'
+      - 'afp_barrier_gate1/lean-toolchain'
+      - 'afp_barrier_gate1/lake-manifest.json'
+      - '.github/workflows/afp-global-rigidity.yml'
+      - '.github/workflows/afp-prompt3-rigidity.yml'
+      - '.github/workflows/afp-prompt4-sharp-barriers.yml'
+      - '.github/workflows/afp-pure-math.yml'
+      - '.github/workflows/afp-quadratic-covariance.yml'
+      - '.github/workflows/afp-spherical-feasibility.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  final-acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 100
+    steps:
+      - name: Check out literal event head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - name: Set up deterministic Python runtime
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned Lean toolchain
+        uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: afp_barrier_gate1
+          build: false
+          test: false
+          lint: false
+          nanoda: false
+          use-mathlib-cache: false
+          use-github-cache: false
+      - name: Run retained compatibility and complete Prompt 1-4 exact-head gate
+        id: gate
+        env:
+          GATE_NAME: afp-global-rigidity
+        run: env GITHUB_SHA='${{ github.event.pull_request.head.sha || github.sha }}' bash afp_barrier_gate1/pure_math/final_acceptance_gate.sh
+      - name: Upload exact-head evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: afp-global-rigidity-${{ github.run_id }}
+          path: ${{ steps.gate.outputs.evidence_dir }}
+          if-no-files-found: error

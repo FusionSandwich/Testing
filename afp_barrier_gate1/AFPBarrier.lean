@@ -1,0 +1,51 @@
+import AFPBarrier.JumpGenerator
+import AFPBarrier.DiffusionProperty
+import AFPBarrier.NoGo
+import AFPBarrier.Quantitative
+import AFPBarrier.QuasiUniformLossBounds
+import AFPBarrier.SphericalNetScaling
+import AFPBarrier.LossVariance
+import AFPBarrier.LossVarianceSharpness
+import AFPBarrier.LocalSphericalFeasibility
+import AFPBarrier.ExactLocalRows
+import AFPBarrier.QuantitativeExactLocal
+import AFPBarrier.AntipodalFeasibility
+import AFPBarrier.SphericalFeasibilityAlgebra
+import AFPBarrier.QuantitativeSphericalFeasibility
+-- Prompt 2 covariance, sampled exactness, and centered product resonance.
+import AFPBarrier.QuadraticCovariance
+import AFPBarrier.GlobalLossRigidity
+-- Prompt 3 spherical Q=1 specialization and quantitative rigidity.
+import AFPBarrier.SphericalQOneRigidity
+-- Prompt 4 sharp product barriers and finite extremal algebra.
+import AFPBarrier.SharpProductBarriers
+-- Prompt 3 completion supplement: normalized Q-rigidity, graph-global
+-- near-rigidity, effective-resistance control, and Q=1 covariance.
+import AFPBarrier.SphericalQEqualityRigidity
+import AFPBarrier.QuantitativeGlobalNearRigidity
+import AFPBarrier.QEqualityCovariance
+import AFPBarrier.ExplicitEulerTransport
+import AFPBarrier.SpatialUpwindTransport
+import AFPBarrier.MultigroupTransfer
+import AFPBarrier.ForwardPeakedHeatKernel
+import AFPBarrier.EnergyLossAngularDiffusion
+import AFPBarrier.ForwardAdjoint
+import AFPBarrier.ReversibleConductance
+import AFPBarrier.CompleteGraph
+import AFPBarrier.DualCertificate
+import AFPBarrier.SharedEdgeEquilibrium
+import AFPBarrier.GroupAveraging
+import AFPBarrier.GlobalSharedEdgeDuality
+import AFPBarrier.ImplementationConvention
+import AFPBarrier.ScalingCompatibility
+import AFPBarrier.NormalizationAudit
+import AFPBarrier.EqualAngleProduct
+import AFPBarrier.EqualAngleGeometry
+import AFPBarrier.EqualAngleGrid
+import AFPBarrier.EqualAngleEdges
+import AFPBarrier.EqualAngleConnectivity
+import AFPBarrier.EqualAngleDotProducts
+import AFPBarrier.EqualAngleQuadrature
+import AFPBarrier.EqualAngleAsymptotics
+import AFPBarrier.EqualAngleRateMaximum
+import AFPBarrier.SphereSpecialization
