@@ -219,6 +219,7 @@ theorem frobeniusRowRemainder_pairing
     rw [Finset.mul_sum]
     apply Finset.sum_congr rfl
     intro q hq
+    change (c * Z p q) * Z p q = Z p q ^ 2 * c
     ring
 
 /-- Squared norm of a row remainder. -/
