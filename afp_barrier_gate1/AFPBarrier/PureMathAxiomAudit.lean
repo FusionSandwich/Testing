@@ -13,6 +13,7 @@ import AFPBarrier.QuadraticCovariance
 import AFPBarrier.QuadraticSampling
 import AFPBarrier.QuadraticSphereResidual
 import AFPBarrier.QuadraticFidelityFoundation
+import AFPBarrier.QuadraticFidelityLowerBound
 import AFPBarrier.OneShellQuadraticRigidity
 import AFPBarrier.SpectralSamplingObstruction
 import AFPBarrier.SphericalQEqualityRigidity
@@ -209,3 +210,11 @@ import AFPBarrier.SharpProductBarriers
 #print axioms AFPBarrier.twoLossQuality_sub_one
 #print axioms AFPBarrier.biregular_interRing_incidence
 #print axioms AFPBarrier.perfectMatching_ringCounts_eq
+
+/-! P1B: sharp genuinely sampled quadratic-defect bound. -/
+
+#print axioms AFPBarrier.coordinateRowAnalysis_coordinateUnit
+#print axioms AFPBarrier.weightedCoordinateTrace_le_of_energy_domination
+#print axioms AFPBarrier.quadraticDefect_twoDefect_lower_sq
+#print axioms AFPBarrier.quadraticDefect_rate_product_lower
+#print axioms AFPBarrier.sTwo_quadraticDefect_rate_product_lower
