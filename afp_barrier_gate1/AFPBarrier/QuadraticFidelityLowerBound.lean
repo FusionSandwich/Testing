@@ -89,11 +89,9 @@ theorem quadraticDefect_twoDefect_lower_sq
         d / (d - 1) * EB =
         d / (d - 1) * (d / (d - 1) * Eepsilon + EB) := by
           field_simp [ne_of_gt hdpos, ne_of_gt hdm1pos]
-          ring
     _ ≤ d / (d - 1) * (Dsq * ((d - 1) / d)) := hmul
     _ = Dsq := by
           field_simp [ne_of_gt hdpos, ne_of_gt hdm1pos]
-          ring
 
 /-- The scalar final step of the universal rate--defect product bound. -/
 theorem quadraticDefect_rate_product_lower
@@ -114,7 +112,6 @@ theorem quadraticDefect_rate_product_lower
       d / (d - 1) * ((d - 1) ^ 2 / rmax) =
         d * (d - 1) / rmax := by
     field_simp [ne_of_gt hdpos, ne_of_gt hdm1pos, ne_of_gt hrmax]
-    ring
   rw [hrewrite] at hchain
   calc
     d * (d - 1) = (d * (d - 1) / rmax) * rmax := by
@@ -129,11 +126,18 @@ theorem sTwo_quadraticDefect_rate_product_lower
     (hradial : (3 : ℝ) / 2 * rms ≤ D)
     (hrms : (4 : ℝ) / rmax ≤ rms) :
     6 ≤ D * rmax := by
+  have hradial3 :
+      (3 : ℝ) / ((3 : ℝ) - 1) * rms ≤ D := by
+    norm_num
+    exact hradial
+  have hrms3 :
+      ((3 : ℝ) - 1) ^ 2 / rmax ≤ rms := by
+    norm_num
+    exact hrms
   have h := quadraticDefect_rate_product_lower
     (d := (3 : ℝ)) (D := D) (rms := rms) (rmax := rmax)
-    (by norm_num) hrmax hradial
-    (by norm_num at hrms ⊢; exact hrms)
-  norm_num at h ⊢
+    (by norm_num) hrmax hradial3 hrms3
+  norm_num at h
   exact h
 
 end AFPBarrier
