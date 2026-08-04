@@ -40,7 +40,8 @@ theorem projectedTangentIncrement_orthogonal
     (hzz : oneShellFiniteDot z z = 1)
     (hzy : oneShellFiniteDot z y = 1 - ell) :
     oneShellFiniteDot z (projectedTangentIncrement z y ell) = 0 := by
-  unfold oneShellFiniteDot projectedTangentIncrement at hzz hzy ⊢
+  unfold oneShellFiniteDot at hzz hzy ⊢
+  unfold projectedTangentIncrement
   calc
     (∑ p, z p * (y p - z p + ell * z p)) =
         (∑ p, z p * y p) - (∑ p, z p * z p) +
@@ -63,7 +64,8 @@ theorem projectedTangentIncrement_normSq
         (projectedTangentIncrement z y ell)
         (projectedTangentIncrement z y ell) =
       ell * (2 - ell) := by
-  unfold oneShellFiniteDot projectedTangentIncrement at hzz hyy hzy ⊢
+  unfold oneShellFiniteDot at hzz hyy hzy ⊢
+  unfold projectedTangentIncrement
   calc
     (∑ p,
         (y p - z p + ell * z p) *
@@ -233,7 +235,7 @@ theorem scaledTangentTightFrame_iff_normalized
     rw [oneShellSecondMoment_scaled,
       oneShellSecondMoment_eq_rate_mul_normalized
         J row u rate hrate p q] at hpq
-    rw [mul_assoc, hcoefficient] at hpq
+    rw [← mul_assoc, hcoefficient] at hpq
     calc
       normalizedTangentSecondMoment J
           (fun j => row j / rate) u p q =
@@ -250,7 +252,7 @@ theorem scaledTangentTightFrame_iff_normalized
     rw [oneShellSecondMoment_scaled,
       oneShellSecondMoment_eq_rate_mul_normalized
         J row u rate hrate p q, hnormalized p q]
-    rw [mul_assoc, hcoefficient]
+    rw [← mul_assoc, hcoefficient]
     field_simp [hd]
 
 /-- Geometric wrapper with the explicit positive-rate, `d>1`, and
