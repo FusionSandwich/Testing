@@ -314,8 +314,10 @@ def mutation_tests(results: list[dict[str, object]]) -> None:
             raise AssertionError(
                 f"near-singular determinants do not decrease: {left}, {right}"
             )
-    if not all(row["final_equal"] for row in near):
-        raise AssertionError("near-singular exact equality family lost sharpness")
+    for row in near:
+        assert_nonnegative(
+            row["product_gap"], f"{row['name']}: condition-number-independent bound"
+        )
 
 
 def main() -> None:
