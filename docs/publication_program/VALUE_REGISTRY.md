@@ -1,0 +1,67 @@
+# Publication value registry
+
+Normalization version `AFP-SPHERE-v1` means `sum w=1`, symmetric conductance
+`gamma`, negative-semidefinite generator `L`, and coordinate target `d-1`.
+Accepted-source rows are from `6bac46ce1a34ffba53f0003b876e57c4d747feaf`.
+Rows labeled future are definitions from the publication-program specification,
+not claims that a corresponding source blob or theorem already exists.
+
+| ID | Exact definition / domain | Representation and recomputation | Consumer |
+|---|---|---|---|
+| W | `w_i>0`, `sum_i w_i=1` | exact rational/algebraic; normalization audit | all |
+| G | `gamma_ij=gamma_ji>=0`, `a_ij=gamma_ij/w_i` | conductance and directed-rate matrices; reversibility residual `||WL-L^TW||` | I/II/III |
+| L | `(Lf)_i=sum_j a_ij(f_j-f_i)` | zero rows, nonnegative off-diagonal, negative semidefinite in `l2(w)` | all |
+| EV-l | `lambda_l=l(l+d-2)` | target eigenvalue; group sampled spaces by equal value | I/III |
+| LOSS | `ell_ij=1-Omega_i.Omega_j`; `r_i=sum a_ij`; `epsilon_i=sum a_ij ell_ij^2` | exact algebraic where possible | I/II |
+| Q | `Q_i=r_i epsilon_i/(d-1)^2` | dimensionless; `r epsilon/4` only at d=3 | I |
+| COV | `C_i=sum a_ij (Omega_j-Omega_i)(...)^T` | exact matrix; radial/anisotropic split | I |
+| S2 | `S_X(A)_i=Omega_i^T A Omega_i`, `A in Sym_0(d)` | rational/algebraic basis, exact rank and kernel | I/III |
+| KX | `K_X=ker S_X` | exact nullspace; quotient boundary | I/III |
+| MBZ | `M_i=P_0(C_i+2 Omega_i Omega_i^T)`, `Z_i=Omega_i Omega_i^T-I/d`, `B_i=M_i-d epsilon_i Z_i/(d-1)` | accepted exact covariance decomposition | I |
+| R2 | `(L+2d I)S_X` | exact residual matrix | I/II |
+| D2 | `sup_(A notin K_X) ||R2 A||_w/||S_X A||_w`, when the sampled quotient is nonzero | future program definition; generalized spectrum on sampled quotient; undefined/handled separately if `K_X=Sym_0(d)`; never divide by `||A||_F` | I/II |
+| DEF | equality/stability deficits from loss variance, covariance anisotropy, path propagation and rigidity margin | exact constants in P3/P4 packages | I |
+| LIFT | linear moment/reversibility constraints with `gamma>=0` and nonempty balanced probability polytope | affine slice at fixed target; projective family only after scale quotient | III |
+| NEG | total negative conductance and its dual certificate | FUTURE program value; future exact LP/conic certificate | III |
+| DESIGN | fixed-quadrature objective combining D2, rate/locality and regularization | FUTURE program value; certified convex value required | II |
+| SEMI | semigroup/resolvent response norms | FUTURE program value with domain and conditioning | II |
+| TRAN | equal-cost response errors split into angular, spatial, energy and model parts | FUTURE benchmark value with units/tolerances | II |
+| HTS | layer/tensor angular response values | FUTURE layer-resolved physical data; not pure-math evidence | II |
+
+## Immutable exact regression dataset: five Platonic examples
+
+All use equal `w=1/N`, shortest-edge support, `L Omega=-2 Omega`, and have
+`Q=1`.  `alpha` is the adjacent dot product and `gamma=w a`.
+
+| Example | N | q | alpha | ell | a | r | epsilon | gamma | rank S/R | dim E_form / dim K_X / dim E_sample |
+|---|---:|---:|---|---|---|---|---|---|---|---|
+| tetrahedron | 4 | 3 | `-1/3` | `4/3` | `1/2` | `3/2` | `8/3` | `1/8` | 3/3 | 2/2/0 |
+| octahedron | 6 | 4 | `0` | `1` | `1/2` | `2` | `2` | `1/12` | 2/2 | 3/3/0 |
+| cube | 8 | 3 | `1/3` | `2/3` | `1` | `3` | `4/3` | `1/8` | 3/3 | 2/2/0 |
+| icosahedron | 12 | 5 | `sqrt(5)/5` | `1-sqrt(5)/5` | `(5+sqrt(5))/10` | `(5+sqrt(5))/2` | `2-2sqrt(5)/5` | `(5+sqrt(5))/120` | 5/5 | 0/0/0 |
+| dodecahedron | 20 | 3 | `sqrt(5)/3` | `1-sqrt(5)/3` | `(3+sqrt(5))/2` | `(9+3sqrt(5))/2` | `2-2sqrt(5)/3` | `(3+sqrt(5))/40` | 5/5 | 0/0/0 |
+
+Recompute with:
+
+```text
+cd afp_barrier_gate1
+python pure_math/covariance/exact_quadratic_covariance_audit.py
+```
+
+Arithmetic is exact over rationals and `Q(sqrt(5))`; no tolerance is used.
+The baseline output also fixes `L|imS` as `-2`, `-3`, `-4`,
+`-3-3sqrt(5)/5`, and `-3-sqrt(5)` respectively.
+
+## Frozen exact constants and counts
+
+| Value | Exact value | Source / command |
+|---|---|---|
+| Plantri counts through 12 vertices | `1,1,2,5,14,50,233,1249,7595`; total `9150` | `triangulation_counterexample_audit.py --require-plantri` with source pin |
+| opposite-ray anisotropy | `kappa(ell1-ell2)^2/(kappa ell1+ell2)^2` | P4 theorem/audit |
+| P4 Lean declarations built | `3111 jobs` | run `30780693332` |
+| allowed focused axioms | `propext`, `Classical.choice`, `Quot.sound` | `PureMathAxiomAudit.lean` |
+| exact inventory line count/digest | `121`; `090365d15dab7053643cae6c7adf6ee1aae95d5c2a3eadcf97bd207fd4c542cb` | `git ls-tree` command in `PROGRAM_BASELINE.md` |
+
+Future numerical entries must add units, tolerance, number field, proof or data
+source, recomputation command, consumer, and the exact baseline blob.  A fitted
+slope is never recorded as an all-orders rate theorem.
