@@ -14,6 +14,7 @@ import AFPBarrier.QuadraticSampling
 import AFPBarrier.QuadraticSphereResidual
 import AFPBarrier.QuadraticFidelityFoundation
 import AFPBarrier.QuadraticFidelityLowerBound
+import AFPBarrier.QuadraticEqualityGeometry
 import AFPBarrier.OneShellQuadraticRigidity
 import AFPBarrier.SpectralSamplingObstruction
 import AFPBarrier.SphericalQEqualityRigidity
@@ -218,3 +219,17 @@ import AFPBarrier.SharpProductBarriers
 #print axioms AFPBarrier.quadraticDefect_twoDefect_lower_sq
 #print axioms AFPBarrier.quadraticDefect_rate_product_lower
 #print axioms AFPBarrier.sTwo_quadraticDefect_rate_product_lower
+
+/-! P1C: exact equality geometry and guarded tangent-frame normalization. -/
+
+#print axioms AFPBarrier.increment_radial_tangent_decomposition
+#print axioms AFPBarrier.projectedTangentIncrement_orthogonal
+#print axioms AFPBarrier.projectedTangentIncrement_normSq
+#print axioms AFPBarrier.equalityRemainderEntry_zero_iff_axialCovariance
+#print axioms AFPBarrier.oneShell_axialCovariance_iff_tangentSecondMoment
+#print axioms AFPBarrier.oneShellSecondMoment_scaled
+#print axioms AFPBarrier.normalizedTangentTightFrame_iff_oneShellSecondMoment
+#print axioms AFPBarrier.oneShell_normalizedWeights_sum_one
+#print axioms AFPBarrier.scaledTangentTightFrame_iff_normalized
+#print axioms AFPBarrier.scaledTangentTightFrame_iff_normalized_of_nonantipodal
+#print axioms AFPBarrier.quadraticEquality_rate_product

@@ -20,3 +20,15 @@ Global guardrails: operator conventions are not interchangeable; multiplicity
 and sampled kernels must be explicit; none of M1–M9 proves unrestricted
 Platonic classification, sampling injectivity, the future sharp AFP frontier,
 or a global positive reversible lift for prescribed spherical geometry.
+
+## P1C transfer additions
+
+| ID / source | Exact external content used and hypotheses | Source convention / AFP conversion | Overlap and non-overlap boundary | Transfer status / paper |
+|---|---|---|---|---|
+| M10 — [Ahrens–Beylkin, Rotationally Invariant Quadratures for the Sphere](https://royalsocietypublishing.org/doi/10.1098/rspa.2009.0104) | Rotation-group-invariant spherical quadrature constructions, including icosahedral symmetry, under the paper's quadrature conventions. | Uniform rotational orbits are separate from AFP jump rates, shared conductances and sampled-quotient normalization. | Motivates symmetric exact checks. It does not prove the P1C local tight-frame equality theorem, reversible-generator existence, sampling aliases or global classification. | HYPOTHESES_AUDITED / I,III |
+
+For P1C, M4 and M8–M10 supply adjacent special operators,
+association-scheme structure, design/frame language and invariant-quadrature
+examples. Every local block identity, rate normalization, sampled-kernel
+statement, family construction and restricted classification is proved
+internally; no external theorem is transferred as the equality result.

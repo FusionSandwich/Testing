@@ -34,3 +34,18 @@ Adversarial controls applied to every future route: sign and weight
 normalization, sampled-kernel aliasing, eigenvalue multiplicity, degenerate
 supports, conditioning, external-theorem hypotheses, exact arithmetic, and
 the distinction between computational evidence and proof.
+
+## P1C equality-geometry mechanisms
+
+P1C is an additive descendant of frozen P1B commit
+`58b4fd93ea2bc95c4f1aee909a298e3a64a4d4fd`, tree
+`4b715d6999a3b69baf9c08062cc5ea01f60a5498`.
+
+| Family / mechanism | Target | Status | Concrete output | Exact blocker or adversarial test | Reopen condition | Paper |
+|---|---|---|---|---|---|---|
+| local radial/tangent block algebra | P1C equality geometry | PROVED_P1C | exact increment split, mixed-covariance/tangent-isotropy norm square, weighted-tight-frame equivalence | antipodal `ell=2` has zero tangent length and cannot be normalized | none for the division-free theorem | I |
+| global Markov/Gram assembly | connected equality generators | PROVED_P1C_SCOPED | common-angle reversible kernel, two conditional moments, Gram completion and cycle/detailed-balance criterion | independent local tight frames do not solve shared-edge compatibility | none for the algebraic criterion | I/III |
+| equality-family algebra | all-dimensional and Platonic sharpness | PROVED_P1C | simplex, cross-polytope, hypercube and five exact Platonic families with kernels and aliases | finite dimension checks cannot replace family proofs | none | I |
+| global equality classification | geometry | PROVED_RESTRICTED | degree-`d`, complete-support and strict-convex `S^2` polyhedral classifications under explicit hypotheses | covers, blowups, long-chord shells and weighted frames reject an unrestricted Platonic claim | stronger explicit graph/embedding hypotheses only | I/III |
+| exact symbolic P1C audit | regression | COMPUTATIONAL_CANDIDATE | rational/algebraic block, family, minor, alias and counterfamily fixtures | no numerical rank thresholds; computation is not the all-orders proof | exact-head execution | all |
+| Lean equality geometry | finite algebra kernel | IMPLEMENTATION_P1C | `QuadraticEqualityGeometry.lean` over accepted P1B/P3 algebra | compilation and axiom audit remain acceptance gates | exact-head build | I |

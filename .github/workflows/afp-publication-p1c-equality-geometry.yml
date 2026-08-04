@@ -1,0 +1,343 @@
+name: AFP publication P1C equality geometry
+
+on:
+  push:
+    branches:
+      - agent/afp-publication-p1c-equality-geometry-58b4fd93
+      - archive/afp-publication-p1c-equality-geometry-verified
+  pull_request:
+    branches:
+      - archive/afp-publication-p1b-sharp-defect-bound-verified
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  actions: read
+  contents: read
+
+env:
+  EXPECTED_REPOSITORY: FusionSandwich/Testing
+  PR_HEAD_REPOSITORY: ${{ github.event.pull_request.head.repo.full_name || '' }}
+  CANDIDATE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+  P1C_BRANCH: agent/afp-publication-p1c-equality-geometry-58b4fd93
+  P1C_ARCHIVE: archive/afp-publication-p1c-equality-geometry-verified
+  P1B_COMMIT: 58b4fd93ea2bc95c4f1aee909a298e3a64a4d4fd
+  P1B_TREE: 4b715d6999a3b69baf9c08062cc5ea01f60a5498
+  P1B_ARCHIVE: archive/afp-publication-p1b-sharp-defect-bound-verified
+  P1A_COMMIT: 5ef6bf3335f72e38987df6b06e30d712de4b86c7
+  P1A_TREE: dc54b3e9d3e95eaa702a09eb74784b4a5027cd8f
+  P1A_ARCHIVE: archive/afp-publication-p1a-quadratic-foundation-verified
+  P4_COMMIT: 6bac46ce1a34ffba53f0003b876e57c4d747feaf
+  P4_ARCHIVE: archive/afp-pure-math-p4-sharp-barriers-verified
+  P3_COMMIT: 8de4b94835137d1eaf32c14b626424f87d2e176d
+  P3_ARCHIVE: archive/afp-pure-math-p3-rigidity-verified
+  P2_COMMIT: 31ea6a49f006df10ca633eafd6848ad43b51ac3f
+  P2_ARCHIVE: archive/afp-pure-math-p2-quadratic-covariance-verified-31ea6a49
+  P1_COMMIT: 01a592301978ab184fc7969d9f54592eddad742c
+  P1_ARCHIVE: archive/afp-spherical-feasibility-validation-accepted
+  TRANSPORT_COMMIT: 515f1aae6c20bd85711c90b5c1c21b4905252d01
+  TRANSPORT_ARCHIVE: archive/afp-gate6-spatial-multigroup-verified
+  GIT_NO_REPLACE_OBJECTS: '1'
+
+jobs:
+  exact-regressions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 110
+    outputs:
+      artifact-id: ${{ steps.upload.outputs.artifact-id }}
+      artifact-digest: ${{ steps.upload.outputs.artifact-digest }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          ref: ${{ env.CANDIDATE_SHA }}
+          persist-credentials: false
+      - name: Verify exact head, scope, ancestry, and archives
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/p1c-exact"; mkdir -p "${out}"
+          test "${GITHUB_REPOSITORY}" = "${EXPECTED_REPOSITORY}"
+          if [[ "${GITHUB_EVENT_NAME}" = pull_request ]]; then
+            test "${GITHUB_HEAD_REF}" = "${P1C_BRANCH}"
+            test "${PR_HEAD_REPOSITORY}" = "${EXPECTED_REPOSITORY}"
+          fi
+          test "$(git rev-parse HEAD)" = "${CANDIDATE_SHA}"
+          test "$(git rev-parse "${P1B_COMMIT}^{tree}")" = "${P1B_TREE}"
+          git merge-base --is-ancestor "${P1B_COMMIT}" "${CANDIDATE_SHA}"
+          test "$(git rev-list --count --merges "${P1B_COMMIT}..${CANDIDATE_SHA}")" -eq 0
+          python - "${P1B_COMMIT}" "${CANDIDATE_SHA}" <<'PY' | tee "${out}/scope.log"
+          import os, subprocess, sys
+          base, head = sys.argv[1:]
+          allowed = {
+              ".github/workflows/afp-publication-p1c-equality-geometry.yml",
+              "afp_barrier_gate1/AFPBarrier.lean",
+              "afp_barrier_gate1/AFPBarrier/PureMathAxiomAudit.lean",
+              "afp_barrier_gate1/AFPBarrier/QuadraticEqualityGeometry.lean",
+              "afp_barrier_gate1/pure_math/covariance/P1C_EQUALITY_GEOMETRY.md",
+              "afp_barrier_gate1/pure_math/covariance/p1c_equality_geometry_audit.py",
+              "docs/publication_program/APPROACH_REGISTRY.md",
+              "docs/publication_program/PAPER_BOUNDARY_MATRIX.md",
+              "docs/publication_program/P1C_APPROACH_REGISTRY.md",
+              "docs/publication_program/P1C_STAGE_REPORT.md",
+              "docs/publication_program/PRIOR_ART_MATRIX.md",
+              "docs/publication_program/THEOREM_REGISTRY.md",
+              "docs/publication_program/VALUE_REGISTRY.md",
+          }
+          raw = subprocess.check_output(["git", "diff", "--no-renames", "--name-only", "-z", base, head])
+          changed = {os.fsdecode(p) for p in raw.split(b"\0") if p}
+          if changed != allowed:
+              raise SystemExit(f"P1C scope mismatch; missing={sorted(allowed-changed)} outside={sorted(changed-allowed)}")
+          for path in sorted(changed):
+              row = subprocess.check_output(["git", "ls-tree", head, "--", path], text=True).strip()
+              if not row.startswith("100644 blob "):
+                  raise SystemExit(f"not a regular blob: {path}: {row!r}")
+              subprocess.check_output(["git", "show", f"{head}:{path}"]).decode("utf-8")
+          print(f"P1C allowlist PASS: {len(changed)} paths")
+          PY
+          git diff --check "${P1B_COMMIT}" "${CANDIDATE_SHA}"
+          printf 'ref expected observed result\n' > "${out}/immutable-refs.log"
+          exact_ref() {
+            local ref=$1 expected=$2 actual
+            actual=$(git ls-remote --exit-code --heads origin "refs/heads/${ref}" | awk 'NR==1 {print $1}')
+            test "${actual}" = "${expected}"
+            printf '%s %s %s EXACT\n' "${ref}" "${expected}" "${actual}" >> "${out}/immutable-refs.log"
+          }
+          exact_ref "${P1C_BRANCH}" "${CANDIDATE_SHA}"
+          exact_ref "${P1B_ARCHIVE}" "${P1B_COMMIT}"
+          exact_ref "${P1A_ARCHIVE}" "${P1A_COMMIT}"
+          exact_ref "${P1_ARCHIVE}" "${P1_COMMIT}"
+          exact_ref "${P2_ARCHIVE}" "${P2_COMMIT}"
+          exact_ref "${P3_ARCHIVE}" "${P3_COMMIT}"
+          exact_ref "${P4_ARCHIVE}" "${P4_COMMIT}"
+          exact_ref "${TRANSPORT_ARCHIVE}" "${TRANSPORT_COMMIT}"
+          set +e
+          archive_line=$(git ls-remote --exit-code --heads origin "refs/heads/${P1C_ARCHIVE}"); archive_status=$?
+          set -e
+          if [[ ${archive_status} -eq 0 ]]; then
+            archive_head=$(awk 'NR==1 {print $1}' <<<"${archive_line}")
+            test "${archive_head}" = "${CANDIDATE_SHA}"
+            echo "${P1C_ARCHIVE} ${archive_head} PRESENT_EXACT" > "${out}/p1c-archive.log"
+          elif [[ ${archive_status} -eq 2 && "${GITHUB_REF}" != "refs/heads/${P1C_ARCHIVE}" ]]; then
+            echo "${P1C_ARCHIVE} ABSENT_BEFORE_CREATE_ONLY_FREEZE" > "${out}/p1c-archive.log"
+          else
+            exit 1
+          fi
+          cat "${out}/immutable-refs.log" "${out}/p1c-archive.log"
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Run P1C and retained exact regressions
+        working-directory: afp_barrier_gate1
+        shell: bash
+        env:
+          P3_REQUIRE_PLANTRI: '1'
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/p1c-exact"
+          export PYTHONPYCACHEPREFIX="${RUNNER_TEMP}/p1c-pycache"
+          python -m pip install --disable-pip-version-check --no-input 'numpy==2.3.2' 'sympy==1.14.0' 'mpmath==1.3.0' | tee "${out}/dependencies.log"
+          python -m compileall -q pure_math
+          python pure_math/covariance/p1c_equality_geometry_audit.py | tee "${out}/p1c.log"
+          grep -Fxq 'equality-fixtures=20' "${out}/p1c.log"
+          grep -Fxq 'all-dimensional family identities: EXACT_SYMBOLIC' "${out}/p1c.log"
+          grep -Fxq 'nonantipodal weighted tight-frame equivalence: PASS' "${out}/p1c.log"
+          grep -Fxq 'antipodal zero-frame exception: PASS' "${out}/p1c.log"
+          grep -Fxq 'Platonic algebraic rank and alias certificates: PASS' "${out}/p1c.log"
+          grep -Fxq 'P1C exact equality-geometry audit: PASS' "${out}/p1c.log"
+          python pure_math/covariance/p1b_sharp_quadratic_defect_audit.py | tee "${out}/p1b.log"
+          grep -Fxq 'fixtures=24' "${out}/p1b.log"
+          grep -Fxq 'P1B sharp quadratic-defect audit: PASS' "${out}/p1b.log"
+          python pure_math/covariance/p1a_quadratic_fidelity_audit.py | tee "${out}/p1a.log"
+          grep -Fxq 'P1A exact quadratic-fidelity audit: PASS' "${out}/p1a.log"
+          python pure_math/falsification/claim_falsification_audit.py | tee "${out}/p1-falsification.log"
+          python pure_math/covariance/quadratic_covariance_audit.py | tee "${out}/p1-covariance.log"
+          python pure_math/examples/exact_local_global_audit.py | tee "${out}/p1-local-global.log"
+          python pure_math/tests/test_spherical_feasibility.py | tee "${out}/p1-feasibility.log"
+          python pure_math/covariance/exact_quadratic_covariance_audit.py | tee "${out}/p2-covariance.log"
+          python pure_math/covariance/exact_signed_restoration_audit.py | tee "${out}/p2-signed.log"
+          python pure_math/covariance/exact_d3_invariance_counterexample.py | tee "${out}/p2-d3.log"
+          python pure_math/spectral_products/exact_spectral_product_audit.py | tee "${out}/p2-spectral.log"
+          catalog="${out}/triangulations-through-12.jsonl"
+          python pure_math/rigidity/triangulation_counterexample_audit.py --require-plantri --catalog "${catalog}" | tee "${out}/p3-plantri.log"
+          test "$(wc -l < "${catalog}")" -eq 9150
+          python pure_math/rigidity/global_near_rigidity_audit.py | tee "${out}/p3-near.log"
+          python pure_math/rigidity/q1_covariance_audit.py | tee "${out}/p3-covariance.log"
+          python pure_math/barriers/prompt4_sharp_barrier_audit.py | tee "${out}/p4.log"
+          grep -Fq 'Prompt 4 exact audit: PASS' "${out}/p4.log"
+          git diff --check
+          test -z "$(git status --short)"
+      - name: Hash exact records
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/p1c-exact"
+          printf 'commit=%s\ntree=%s\nrun=%s\nattempt=%s\n' "${CANDIDATE_SHA}" "$(git rev-parse HEAD^{tree})" "${GITHUB_RUN_ID}" "${GITHUB_RUN_ATTEMPT}" > "${out}/report.txt"
+          (cd "${out}" && find . -maxdepth 1 -type f ! -name records.sha256 -print0 | sort -z | xargs -0 sha256sum > records.sha256)
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        id: upload
+        with:
+          name: afp-publication-p1c-exact-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/p1c-exact
+          if-no-files-found: error
+
+  lean-kernel:
+    runs-on: ubuntu-latest
+    timeout-minutes: 110
+    outputs:
+      artifact-id: ${{ steps.upload.outputs.artifact-id }}
+      artifact-digest: ${{ steps.upload.outputs.artifact-digest }}
+      source-sha256: ${{ steps.pack.outputs.source-sha256 }}
+      lean-jobs: ${{ steps.pack.outputs.lean-jobs }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          ref: ${{ env.CANDIDATE_SHA }}
+          persist-credentials: false
+      - name: Verify Lean checkout
+        run: |
+          set -euo pipefail
+          test "${GITHUB_REPOSITORY}" = "${EXPECTED_REPOSITORY}"
+          test "$(git rev-parse HEAD)" = "${CANDIDATE_SHA}"
+          test "$(git rev-parse "${P1B_COMMIT}^{tree}")" = "${P1B_TREE}"
+          git merge-base --is-ancestor "${P1B_COMMIT}" "${CANDIDATE_SHA}"
+          test "$(git ls-remote --exit-code --heads origin "refs/heads/${P1C_BRANCH}" | awk 'NR==1 {print $1}')" = "${CANDIDATE_SHA}"
+          mkdir -p "${RUNNER_TEMP}/p1c-lean"
+      - uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9
+        with:
+          lake-package-directory: afp_barrier_gate1
+          build: false
+          test: false
+          lint: false
+          nanoda: false
+          use-mathlib-cache: false
+          use-github-cache: false
+      - name: Build and audit Lean 4.30
+        working-directory: afp_barrier_gate1
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/p1c-lean"
+          lean --version | tee "${out}/lean-version.log"
+          lake --version | tee "${out}/lake-version.log"
+          lake update | tee "${out}/lake-update.log"
+          lake exe cache get | tee "${out}/cache.log"
+          lake build | tee "${out}/lean-build.log"
+          lake env lean AFPBarrier/QuadraticEqualityGeometry.lean | tee "${out}/p1c-focused.log"
+          lake env lean AFPBarrier/PureMathAxiomAudit.lean | tee "${out}/axiom-audit.log"
+          python - "${out}/axiom-audit.log" <<'PY'
+          import re, sys
+          text = open(sys.argv[1], encoding="utf-8").read()
+          groups = re.findall(r"depends on axioms:\s*\[(.*?)\]", text, re.S)
+          if not groups:
+              raise SystemExit("focused axiom audit produced no records")
+          observed = {x.strip() for g in groups for x in g.split(",") if x.strip()}
+          allowed = {"propext", "Classical.choice", "Quot.sound"}
+          if observed != allowed:
+              raise SystemExit(f"unexpected axioms: {sorted(observed)}")
+          print("focused axiom dependency set: EXACT", sorted(observed))
+          PY
+          sudo apt-get update -qq
+          sudo apt-get install --no-install-recommends -y ripgrep
+          ! rg --glob '*.lean' '(^|[^[:alnum:]_])(sorry|admit|sorryAx)([^[:alnum:]_]|$)' AFPBarrier AFPBarrier.lean
+          ! rg --glob '*.lean' '^[[:space:]]*(@\[[^]]*\][[:space:]]*)*((private|protected|noncomputable|unsafe|scoped|local)[[:space:]]+)*(axiom|axioms)([[:space:]]|$)' AFPBarrier AFPBarrier.lean
+          ! rg '^[[:space:]]*(@\[[^]]*\][[:space:]]*)*((private|protected|noncomputable|unsafe|scoped|local)[[:space:]]+)*(constant|constants)([[:space:]]|$)' AFPBarrier.lean AFPBarrier/PureMathAxiomAudit.lean AFPBarrier/QuadraticFidelityFoundation.lean AFPBarrier/QuadraticFidelityLowerBound.lean AFPBarrier/QuadraticEqualityGeometry.lean
+          git diff --check
+          test -z "$(git status --short)"
+      - name: Pack exact source
+        id: pack
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/p1c-lean"
+          name="afp-publication-p1c-source-${CANDIDATE_SHA}.tar.gz"
+          git archive --format=tar.gz --output="${out}/${name}" "${CANDIDATE_SHA}" -- .gitignore .github/workflows/afp-publication-p1c-equality-geometry.yml docs/publication_program afp_barrier_gate1
+          sha256sum "${out}/${name}" > "${out}/${name}.sha256"
+          jobs=$(grep -Eo '[0-9]+ jobs' "${out}/lean-build.log" | tail -n 1); test -n "${jobs}"
+          digest=$(awk 'NR==1 {print $1}' "${out}/${name}.sha256")
+          echo "lean-jobs=${jobs}" >> "${GITHUB_OUTPUT}"
+          echo "source-sha256=${digest}" >> "${GITHUB_OUTPUT}"
+          (cd "${out}" && find . -maxdepth 1 -type f ! -name records.sha256 -print0 | sort -z | xargs -0 sha256sum > records.sha256)
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        id: upload
+        with:
+          name: afp-publication-p1c-lean-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/p1c-lean
+          if-no-files-found: error
+
+  final-candidate-integrity:
+    needs: [exact-regressions, lean-kernel]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          ref: ${{ env.CANDIDATE_SHA }}
+          persist-credentials: false
+      - name: Recheck exact final state
+        shell: bash
+        env:
+          EXACT_RESULT: ${{ needs.exact-regressions.result }}
+          LEAN_RESULT: ${{ needs.lean-kernel.result }}
+          EXACT_ID: ${{ needs.exact-regressions.outputs.artifact-id }}
+          EXACT_DIGEST: ${{ needs.exact-regressions.outputs.artifact-digest }}
+          LEAN_ID: ${{ needs.lean-kernel.outputs.artifact-id }}
+          SOURCE_SHA: ${{ needs.lean-kernel.outputs.source-sha256 }}
+          LEAN_JOBS: ${{ needs.lean-kernel.outputs.lean-jobs }}
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/p1c-final"; mkdir -p "${out}"
+          test "${EXACT_RESULT}" = success
+          test "${LEAN_RESULT}" = success
+          [[ "${EXACT_DIGEST}" =~ ^(sha256:)?[0-9a-f]{64}$ ]]
+          [[ "${LEAN_DIGEST}" =~ ^(sha256:)?[0-9a-f]{64}$ ]]
+          [[ "${SOURCE_SHA}" =~ ^[0-9a-f]{64}$ ]]
+          [[ "${LEAN_JOBS}" =~ ^[0-9]+[[:space:]]jobs$ ]]
+          test "$(git rev-parse HEAD)" = "${CANDIDATE_SHA}"
+          git merge-base --is-ancestor "${P1B_COMMIT}" "${CANDIDATE_SHA}"
+          branch_head=$(git ls-remote --exit-code --heads origin "refs/heads/${P1C_BRANCH}" | awk 'NR==1 {print $1}')
+          test "${branch_head}" = "${CANDIDATE_SHA}"
+          set +e
+          line=$(git ls-remote --exit-code --heads origin "refs/heads/${P1C_ARCHIVE}"); status=$?
+          set -e
+          if [[ ${status} -eq 0 ]]; then
+            archive_head=$(awk 'NR==1 {print $1}' <<<"${line}"); test "${archive_head}" = "${CANDIDATE_SHA}"; archive=PRESENT_EXACT
+          elif [[ ${status} -eq 2 && "${GITHUB_REF}" != "refs/heads/${P1C_ARCHIVE}" ]]; then
+            archive_head=ABSENT; archive=ABSENT_BEFORE_CREATE_ONLY_FREEZE
+          else
+            exit 1
+          fi
+          cat > "${out}/resolved.txt" <<EOF
+          commit=${CANDIDATE_SHA}
+          tree=$(git rev-parse HEAD^{tree})
+          workflow-blob=$(git rev-parse HEAD:.github/workflows/afp-publication-p1c-equality-geometry.yml)
+          run=${GITHUB_RUN_ID}
+          exact-artifact=${EXACT_ID}
+          exact-digest=${EXACT_DIGEST}
+          lean-artifact=${LEAN_ID}
+          lean-digest=${LEAN_DIGEST}
+          source-tar-sha256=${SOURCE_SHA}
+          lean-build=${LEAN_JOBS}
+          p1b-baseline=${P1B_COMMIT}
+          p1c-fixtures=20
+          plantri-total=9150
+          p1c-branch-head=${branch_head}
+          p1c-archive=${archive}
+          p1c-archive-head=${archive_head}
+          EOF
+          git diff --check
+          test -z "$(git status --short)"
+          sha256sum "${out}/resolved.txt" > "${out}/records.sha256"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        id: upload
+        with:
+          name: afp-publication-p1c-final-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/p1c-final
+          if-no-files-found: error
+      - name: Report final artifact
+        run: |
+          echo "final_artifact_id=${{ steps.upload.outputs.artifact-id }}" >> "${GITHUB_STEP_SUMMARY}"
+          echo "final_artifact_digest=${{ steps.upload.outputs.artifact-digest }}" >> "${GITHUB_STEP_SUMMARY}"
