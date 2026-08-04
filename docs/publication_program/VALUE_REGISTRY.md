@@ -22,6 +22,7 @@ not claims that a corresponding source blob or theorem already exists.
 | D2 | `sup_(A notin K_X) ||R2 A||_w/||S_X A||_w` | P1A-proved quotient norm; `S_2` is automatically nonzero for unit nodes and `d>=2`; compute only after deflating `K_X`, never divide by `||A||_F` | I/II |
 | GS | `G_S=S_2^*S_2=sum_i w_i Z_i tensor Z_i` | weighted row Gram; `tr G_S=(d-1)/d`; coordinate operator matrix is `F^-1 S^TWS` in basis Gram `F` | I/II |
 | GR | `G_R=R_2^*R_2=sum_i w_i M_i tensor M_i=S_2^*(L+2dI)^2S_2` | `tr G_R=d sum_iw_i epsilon_i^2/(d-1)+sum_iw_i||B_i||^2`; last equality uses reversibility | I/II |
+| P1B | `E_epsilon=sum_iw_i epsilon_i^2`, `E_B=sum_iw_i||B_i||_F^2`; `D_2^2>=d^2 E_epsilon/(d-1)^2+d E_B/(d-1)` and `D_2 r_max>=d(d-1)` | exact quotient trace theorem; equality iff constant row rate, zero loss variance and zero `B_i` | I |
 | DEF | equality/stability deficits from loss variance, covariance anisotropy, path propagation and rigidity margin | exact constants in P3/P4 packages | I |
 | LIFT | linear moment/reversibility constraints with `gamma>=0` and nonempty balanced probability polytope | affine slice at fixed target; projective family only after scale quotient | III |
 | NEG | total negative conductance and its dual certificate | FUTURE program value; future exact LP/conic certificate | III |
@@ -55,6 +56,31 @@ Arithmetic uses exact real algebraic expressions, including rational and
 certified radical values; no tolerance is used.
 The baseline output also fixes `L|imS` as `-2`, `-3`, `-4`,
 `-3-3sqrt(5)/5`, and `-3-sqrt(5)` respectively.
+
+## P1B sharp-defect values
+
+```text
+strong coefficient on sum_i w_i epsilon_i^2:
+    d^2/(d-1)^2
+
+strong coefficient on sum_i w_i ||B_i||_F^2:
+    d/(d-1)
+
+universal product constant:
+    d(d-1)
+
+S^2 product constant:
+    6
+
+final equality scalar:
+    c_* = d(d-1)/r_max
+    R_2 = c_* S_2
+```
+
+The regular simplex, cross-polytope and hypercube are all-dimensional equality
+families.  In `d=3`, all five displayed Platonic shortest-edge generators have
+`D_2 r_max=6`, including the tetrahedral, octahedral and cubical alias cases.
+The P1B deterministic audit contains 24 exact fixtures.
 
 ## Frozen exact constants and counts
 
