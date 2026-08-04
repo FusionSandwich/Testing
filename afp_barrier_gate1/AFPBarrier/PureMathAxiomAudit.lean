@@ -12,6 +12,7 @@ import AFPBarrier.SpectralProductAlgebra
 import AFPBarrier.QuadraticCovariance
 import AFPBarrier.QuadraticSampling
 import AFPBarrier.QuadraticSphereResidual
+import AFPBarrier.QuadraticFidelityFoundation
 import AFPBarrier.OneShellQuadraticRigidity
 import AFPBarrier.SpectralSamplingObstruction
 import AFPBarrier.SphericalQEqualityRigidity
@@ -85,6 +86,19 @@ import AFPBarrier.SharpProductBarriers
 #print axioms AFPBarrier.sphereSampledExact_eq_range_inf_targetKernel
 #print axioms AFPBarrier.sphereSampledExact_finrank_eq_form_sub_alias
 #print axioms AFPBarrier.sphereSampledExact_finrank_eq_samplingRank_sub_residualRank
+#print axioms AFPBarrier.weightedFrobeniusRowSynthesis_adjoint
+#print axioms AFPBarrier.weightedFrobeniusRowGram_pairing
+#print axioms AFPBarrier.weightedFrobeniusRowGram_quadratic
+#print axioms AFPBarrier.sphereSamplingLinear_eq_frobeniusRowAnalysis
+#print axioms AFPBarrier.sphereSamplingWeightedGram_pairing
+#print axioms AFPBarrier.sphereSamplingWeightedGram_quadratic
+#print axioms AFPBarrier.sphereResidualWeightedGram_pairing
+#print axioms AFPBarrier.sphereResidualWeightedGram_quadratic
+#print axioms AFPBarrier.frobeniusRowRemainder_pairing
+#print axioms AFPBarrier.matrixFrobeniusNormSq_rowRemainder
+#print axioms AFPBarrier.quadraticTwoDefectRemainder_orthogonal
+#print axioms AFPBarrier.quadraticTwoDefect_pythagorean
+#print axioms AFPBarrier.exactLossSecondMoment_decomposition
 #print axioms AFPBarrier.oneShell_radial_rate
 #print axioms AFPBarrier.oneShell_tangent_balance
 #print axioms AFPBarrier.oneShell_covariance_decomposition
