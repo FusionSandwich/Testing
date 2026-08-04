@@ -209,7 +209,7 @@ theorem frobeniusRowRemainder_pairing
       matrixFrobeniusPairing M Z - c * matrixFrobeniusPairing Z Z := by
   classical
   unfold frobeniusRowRemainder matrixFrobeniusPairing
-  simp only [Matrix.sub_apply, Pi.smul_apply, smul_eq_mul]
+  simp only [Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]
   simp_rw [sub_mul, Finset.sum_sub_distrib]
   apply congrArg₂ (fun u v : ℝ => u - v)
   · rfl
@@ -219,7 +219,6 @@ theorem frobeniusRowRemainder_pairing
     rw [Finset.mul_sum]
     apply Finset.sum_congr rfl
     intro q hq
-    change (c * Z p q) * Z p q = Z p q ^ 2 * c
     ring
 
 /-- Squared norm of a row remainder. -/
