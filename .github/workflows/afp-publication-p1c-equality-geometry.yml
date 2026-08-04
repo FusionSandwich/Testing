@@ -285,6 +285,7 @@ jobs:
           EXACT_ID: ${{ needs.exact-regressions.outputs.artifact-id }}
           EXACT_DIGEST: ${{ needs.exact-regressions.outputs.artifact-digest }}
           LEAN_ID: ${{ needs.lean-kernel.outputs.artifact-id }}
+          LEAN_DIGEST: ${{ needs.lean-kernel.outputs.artifact-digest }}
           SOURCE_SHA: ${{ needs.lean-kernel.outputs.source-sha256 }}
           LEAN_JOBS: ${{ needs.lean-kernel.outputs.lean-jobs }}
         run: |
