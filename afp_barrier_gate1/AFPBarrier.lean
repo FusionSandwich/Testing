@@ -30,6 +30,7 @@ import AFPBarrier.QuadraticCovariance
 import AFPBarrier.QuadraticSampling
 import AFPBarrier.QuadraticSphereResidual
 import AFPBarrier.QuadraticFidelityFoundation
+import AFPBarrier.QuadraticFidelityLowerBound
 import AFPBarrier.OneShellQuadraticRigidity
 import AFPBarrier.SpectralSamplingObstruction
 import AFPBarrier.SphericalQEqualityRigidity
