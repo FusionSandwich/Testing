@@ -2,7 +2,7 @@
 
 | Result / deliverable | Paper I role | Paper II role | Paper III role | Prerequisite / novelty threshold | Kill criterion and prohibited overclaim | Source owner |
 |---|---|---|---|---|---|---|
-| sampled quadratic quotient and covariance factorization | foundation | fixed definition | shared constraint | sampling-kernel correctness | nonzero algebraic form is not necessarily sampled nonzero | I |
+| sampled quadratic quotient, weighted Gram pencil and two-defect covariance factorization | P1A proved foundation | fixed definition | shared constraint | sampling-kernel correctness and `d>=2` | nonzero algebraic form is not necessarily sampled nonzero; no raw singular pencil | I |
 | `D2 r_max >= d(d-1)` | flagship target | optimizer benchmark | boundary datum | sharp proof, equality and normalization | local variance identity alone does not establish it | I |
 | equality classification and exact families | central | regression set | possible lift examples | all hypotheses explicit | no unrestricted Platonic classification | I |
 | quantitative stability | central | conditioning guidance | optional | explicit constants and rigidity margins | rare-edge/long-path failures remain | I |

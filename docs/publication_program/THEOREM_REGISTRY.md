@@ -2,8 +2,10 @@
 
 Primary status is exactly one of `PROVED`, `EXTERNAL`, `COMPUTATIONAL`,
 `CONJECTURE`, `REJECTED`, or `BLOCKED`.  A statement is no stronger than its
-listed hypotheses.  Baseline for all internal rows:
-`6bac46ce1a34ffba53f0003b876e57c4d747feaf`.
+listed hypotheses.  The accepted P1--P4 source baseline is
+`6bac46ce1a34ffba53f0003b876e57c4d747feaf`; P1A is its exact P0 descendant
+and its final source commit is recorded in `P1A_STAGE_REPORT.md` after the
+dedicated exact-head gate.
 
 | ID | Status | Claim and complete boundary | Proof / exact audit / Lean | Counterexample or transfer guard | Consumer |
 |---|---|---|---|---|---|
@@ -17,6 +19,9 @@ listed hypotheses.  Baseline for all internal rows:
 | P1-PLATONIC | REJECTED | Unrestricted claim that `Q=1` forces tetrahedral/octahedral/icosahedral geometry. | exact Platonic audit | cube and dodecahedron also have `Q=1`; sampling aliases occur | I |
 | P2-SAMPLE | PROVED | Quadratic residuals factor through the sampled quotient `Sym_0(d)/K_X`; an algebraically nonzero form may sample to zero. | `QuadraticSampling.lean`, `QuadraticSphereResidual.lean`; exact covariance audit | never infer nonzero sampled function from nonzero form | I |
 | P2-COV | PROVED | Exact covariance/residual identities and the orthogonal radial/anisotropic decomposition under the stated reversible spherical normalization. | `QUADRATIC_COVARIANCE_THEOREM.md`; `QuadraticCovariance.lean`; two covariance audits | no injectivity assumption; denominator is sampled norm | I |
+| P1A-QUOT | PROVED | For `d>=2`, the residual descends to `Sym_0(d)/K_X` equipped with the sampled metric; `D_2` is the norm of `(L+2dI)|im(S_2)` into the whole weighted sample space and its square is the largest eigenvalue of the deflated positive Gram pencil on `K_X^perp`. | `P1A_QUADRATIC_FIDELITY_FOUNDATION.md` §§4–6; `QuadraticFidelityFoundation.lean`; P1A exact audit | never use the Frobenius quotient, a raw singular determinant, or assume `im S_2` invariant | I/II |
+| P1A-2DEF | PROVED | Under positive reversible shared conductances, unit nodes and the coordinate eigenmap, `M_i=d epsilon_i Z_i/(d-1)+B_i` is Frobenius-orthogonal and `epsilon_i=(d-1)^2/r_i+sum_j a_ij(ell_ij-(d-1)/r_i)^2`; hence the exact local and global two-defect identities hold. | P1A theorem §§2–3; independent tensor and operator proofs; Lean finite algebra; exact both-defects cube | literal `d>=2`; pointwise orthogonality does not erase mixed Gram operators | I |
+| P1A-GRAM | PROVED | With `<f,g>_w=sum_i w_i f_i g_i`, `S_2^*f=sum_iw_if_iZ_i`, `R_2^*f=sum_iw_if_iM_i`, and the exact row-frame Gram and trace formulas hold; `E_sample=imS_2 cap ker(L+2dI)` has dimension `rank S_2-rank R_2` even with aliases. | P1A theorem §§4–6; weighted/repeated/prism audits; Lean | `S^TWS` is an operator matrix only in a Frobenius-orthonormal coefficient basis | I/II |
 | P2-POS | PROVED | For nonempty finite `I`, `d>1`, nonnegative rows and a unit coordinate eigenmap, every residual tensor is nonzero with the stated Frobenius bound, obstructing full quadratic exactness. | P2 theorem §4; exact positive audits | positivity and nontrivial sampled quotient are tracked separately | I |
 | P2-SHELL | PROVED | For `d>1`, a nonempty noncoincident shell with `0<ell<2` and full signed tangent isotropy gives the exact covariance split, `R_X=D S_X`, and no genuine sampled exact quadratic mode. | `OneShellQuadraticRigidity.lean`; exact audit | positivity/transitivity/injective sampling alone is refuted by the prism | I |
 | P2-PRISM | COMPUTATIONAL | The specified positive 12-node prism has the exact graph, rank and minor data and two genuine sampled modes. | `exact_quadratic_covariance_audit.py` | sharp finite witness, not a family theorem | I |
@@ -55,6 +60,8 @@ listed hypotheses.  Baseline for all internal rows:
 | E-M4 | EXTERNAL | Special spherical/hyperbolic Delaunay discrete Laplacians. | Izmestiev–Lam, arXiv:2408.04877 / JLMS | not arbitrary AFP weights/conductances | II/III |
 | E-M5 | EXTERNAL | Euclidean positive meshfree Poisson stencil feasibility/support facts. | Seibold, arXiv:0802.2674 | local Euclidean stencils do not imply global reversible spherical lifts | II/III |
 | E-M6 | EXTERNAL | Spectrahedral geometry of fixed-eigenbasis graph sparsifiers. | Babecki–Steinerberger–Thomas, arXiv:2306.06204 | multiplicity and basis choices cannot be suppressed | II/III |
+| E-M8 | EXTERNAL | Commutative association schemes have primitive-idempotent/Schur-product structure that organizes uniform symmetric examples. | Martin–Tanaka, arXiv:0811.2475 | does not cover arbitrary unequal stationary weights or identify scheme spaces with sampled spherical harmonics automatically | I/III |
+| E-M9 | EXTERNAL | Spherical designs are characterized by vanishing harmonic moments and characteristic-matrix orthogonality under the uniform design measure. | Bannai–Bannai, European J. Combin. 30 (2009) | design strength does not imply generator existence, sampled invariance, or injectivity | I/III |
 
 Permanent catalogue control: every entry of
 `afp_barrier_gate1/docs/PURE_MATH_COUNTEREXAMPLE_CATALOGUE.md` remains active,

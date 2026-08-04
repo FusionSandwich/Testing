@@ -19,7 +19,9 @@ not claims that a corresponding source blob or theorem already exists.
 | KX | `K_X=ker S_X` | exact nullspace; quotient boundary | I/III |
 | MBZ | `M_i=P_0(C_i+2 Omega_i Omega_i^T)`, `Z_i=Omega_i Omega_i^T-I/d`, `B_i=M_i-d epsilon_i Z_i/(d-1)` | accepted exact covariance decomposition | I |
 | R2 | `(L+2d I)S_X` | exact residual matrix | I/II |
-| D2 | `sup_(A notin K_X) ||R2 A||_w/||S_X A||_w`, when the sampled quotient is nonzero | future program definition; generalized spectrum on sampled quotient; undefined/handled separately if `K_X=Sym_0(d)`; never divide by `||A||_F` | I/II |
+| D2 | `sup_(A notin K_X) ||R2 A||_w/||S_X A||_w` | P1A-proved quotient norm; `S_2` is automatically nonzero for unit nodes and `d>=2`; compute only after deflating `K_X`, never divide by `||A||_F` | I/II |
+| GS | `G_S=S_2^*S_2=sum_i w_i Z_i tensor Z_i` | weighted row Gram; `tr G_S=(d-1)/d`; coordinate operator matrix is `F^-1 S^TWS` in basis Gram `F` | I/II |
+| GR | `G_R=R_2^*R_2=sum_i w_i M_i tensor M_i=S_2^*(L+2dI)^2S_2` | `tr G_R=d sum_iw_i epsilon_i^2/(d-1)+sum_iw_i||B_i||^2`; last equality uses reversibility | I/II |
 | DEF | equality/stability deficits from loss variance, covariance anisotropy, path propagation and rigidity margin | exact constants in P3/P4 packages | I |
 | LIFT | linear moment/reversibility constraints with `gamma>=0` and nonempty balanced probability polytope | affine slice at fixed target; projective family only after scale quotient | III |
 | NEG | total negative conductance and its dual certificate | FUTURE program value; future exact LP/conic certificate | III |
@@ -46,9 +48,11 @@ Recompute with:
 ```text
 cd afp_barrier_gate1
 python pure_math/covariance/exact_quadratic_covariance_audit.py
+python pure_math/covariance/p1a_quadratic_fidelity_audit.py
 ```
 
-Arithmetic is exact over rationals and `Q(sqrt(5))`; no tolerance is used.
+Arithmetic uses exact real algebraic expressions, including rational and
+certified radical values; no tolerance is used.
 The baseline output also fixes `L|imS` as `-2`, `-3`, `-4`,
 `-3-3sqrt(5)/5`, and `-3-sqrt(5)` respectively.
 
