@@ -15,7 +15,9 @@ open scoped BigOperators
 
 namespace AFPBarrier
 
-variable {I K : Type*} [Fintype K] [DecidableEq K]
+variable {I K : Type*}
+  [Fintype I] [DecidableEq I]
+  [Fintype K] [DecidableEq K]
 
 /-- The tangent part of the increment from `z` to `y` when the chordal loss
 is `ell`: `tau = (y-z) + ell z`. -/
@@ -38,13 +40,16 @@ theorem projectedTangentIncrement_orthogonal
     (hzz : oneShellFiniteDot z z = 1)
     (hzy : oneShellFiniteDot z y = 1 - ell) :
     oneShellFiniteDot z (projectedTangentIncrement z y ell) = 0 := by
-  unfold oneShellFiniteDot projectedTangentIncrement
+  unfold oneShellFiniteDot projectedTangentIncrement at hzz hzy ⊢
   calc
     (∑ p, z p * (y p - z p + ell * z p)) =
         (∑ p, z p * y p) - (∑ p, z p * z p) +
           ell * (∑ p, z p * z p) := by
-            simp_rw [mul_add, mul_sub, Finset.sum_add_distrib,
-              Finset.sum_sub_distrib, Finset.mul_sum]
+            rw [Finset.mul_sum]
+            simp only [← Finset.sum_add_distrib,
+              ← Finset.sum_sub_distrib]
+            apply Finset.sum_congr rfl
+            intro p hp
             ring
     _ = 0 := by rw [hzy, hzz]; ring
 
@@ -58,26 +63,21 @@ theorem projectedTangentIncrement_normSq
         (projectedTangentIncrement z y ell)
         (projectedTangentIncrement z y ell) =
       ell * (2 - ell) := by
-  unfold oneShellFiniteDot projectedTangentIncrement
-  have hyz : (∑ p, y p * z p) = 1 - ell := by
-    calc
-      (∑ p, y p * z p) = ∑ p, z p * y p := by
-        apply Finset.sum_congr rfl
-        intro p hp
-        ring
-      _ = 1 - ell := hzy
+  unfold oneShellFiniteDot projectedTangentIncrement at hzz hyy hzy ⊢
   calc
     (∑ p,
         (y p - z p + ell * z p) *
           (y p - z p + ell * z p)) =
         (∑ p, y p * y p) +
-          2 * (ell - 1) * (∑ p, y p * z p) +
-          (ell - 1) ^ 2 * (∑ p, z p * z p) := by
-            ring_nf
-            simp_rw [Finset.sum_add_distrib, Finset.sum_sub_distrib,
-              Finset.mul_sum]
+          (ell - 1) ^ 2 * (∑ p, z p * z p) +
+          2 * (ell - 1) * (∑ p, z p * y p) := by
+            rw [Finset.mul_sum, Finset.mul_sum]
+            simp only [← Finset.sum_add_distrib]
+            apply Finset.sum_congr rfl
+            intro p hp
+            ring
     _ = ell * (2 - ell) := by
-      rw [hyy, hyz, hzz]
+      rw [hyy, hzz, hzy]
       ring
 
 /-- A denominator-free entrywise form of `B=0` on an equality shell.  Here
@@ -200,7 +200,7 @@ theorem oneShell_normalizedWeights_sum_one
         (∑ j ∈ J, row j) / rate := by
           rw [Finset.sum_div]
     _ = rate / rate := by rw [← hr]
-    _ = 1 := div_self rate hrne
+    _ = 1 := div_self hrne
 
 /-- Raw tightness for scaled tangent increments is equivalent to the
 normalized unit-frame equation.  The `ell ≠ 2` guard is the exact
