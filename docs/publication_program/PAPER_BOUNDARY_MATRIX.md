@@ -27,3 +27,15 @@ its strongest results merge into Paper I.
 
 The accepted P1–P4 package is a foundation and regression corpus, not a claim
 that these future publication thresholds have already been met.
+
+## P1C boundary refinement
+
+| Result / deliverable | Paper I role | Paper II role | Paper III role | Prerequisite / novelty threshold | Kill criterion and prohibited overclaim | Source owner |
+|---|---|---|---|---|---|---|
+| exact equality geometry, infinite families and scoped classifications | central P1C sharpness/equality layer | regression geometry | lift/assembly criterion | radial–tangent block theorem, antipodal split, exact sampled quotient and explicit graph/embedding hypotheses | no unrestricted Platonic classification; frontier equality does not imply a nonzero exactly reproduced `H_2` mode | I |
+
+The local tight-frame theorem classifies algebraic equality. A global
+geometric classification additionally requires compatible endpoint
+identifications, common chord data, reversibility/cycle compatibility and
+stated graph/embedding hypotheses. Symmetric examples are exact families,
+not a license to suppress those assumptions.
