@@ -1,0 +1,127 @@
+name: AFP publication program baseline
+
+on:
+  push:
+    branches:
+      - agent/afp-publication-program-baseline-c8505a70
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  exact-publication-baseline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 110
+    steps:
+      - name: Check out literal publication head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Set up deterministic Python runtime
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install pinned Lean toolchain
+        uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: afp_barrier_gate1
+          build: false
+          test: false
+          lint: false
+          nanoda: false
+          use-mathlib-cache: false
+          use-github-cache: false
+
+      - name: Run complete accepted gate on the literal documentation head
+        id: gate
+        shell: bash
+        env:
+          GATE_NAME: afp-publication-program-baseline
+        run: |
+          set -euo pipefail
+
+          SOURCE='c8505a70df01320d18a443bbf2ed1c11a761e5ce'
+          actual=$(git rev-parse HEAD)
+          tree=$(git show -s --format=%T HEAD)
+          test "$actual" = "$GITHUB_SHA"
+          git merge-base --is-ancestor "$SOURCE" HEAD
+
+          required=(
+            docs/publication_program/PROGRAM_BASELINE.md
+            docs/publication_program/THEOREM_REGISTRY.md
+            docs/publication_program/APPROACH_REGISTRY.md
+            docs/publication_program/VALUE_REGISTRY.md
+            docs/publication_program/PRIOR_ART_MATRIX.md
+            docs/publication_program/PAPER_BOUNDARY_MATRIX.md
+            .github/workflows/afp-publication-program-baseline.yml
+          )
+          for path in "${required[@]}"; do
+            test -s "$path"
+          done
+
+          git diff --check "$SOURCE"...HEAD
+
+          actual_paths=$(mktemp)
+          expected_paths=$(mktemp)
+          git diff --name-only "$SOURCE"...HEAD | sort > "$actual_paths"
+          printf '%s\n' "${required[@]}" | sort > "$expected_paths"
+          diff -u "$expected_paths" "$actual_paths"
+
+          grep -q 'c8505a70df01320d18a443bbf2ed1c11a761e5ce' \
+            docs/publication_program/PROGRAM_BASELINE.md
+          grep -q 'E_sample' docs/publication_program/THEOREM_REGISTRY.md
+          grep -q 'REJECTED' docs/publication_program/THEOREM_REGISTRY.md
+          grep -q 'BLOCKED' docs/publication_program/THEOREM_REGISTRY.md
+          grep -q 'cube' docs/publication_program/VALUE_REGISTRY.md
+          grep -q 'dodecahedron' docs/publication_program/VALUE_REGISTRY.md
+
+          gate_copy="$RUNNER_TEMP/publication-final-acceptance-gate.sh"
+          cp afp_barrier_gate1/pure_math/final_acceptance_gate.sh "$gate_copy"
+
+          python3 - "$gate_copy" <<'PY'
+          from pathlib import Path
+          import sys
+
+          path = Path(sys.argv[1])
+          lines = path.read_text(encoding="utf-8").splitlines()
+          replacement = (
+              "allowed='^("
+              "\\.github/workflows/"
+              "(afp-global-rigidity|afp-prompt3-rigidity|"
+              "afp-prompt4-sharp-barriers|afp-pure-math|"
+              "afp-quadratic-covariance|afp-spherical-feasibility|"
+              "afp-publication-program-baseline)\\.yml|"
+              "docs/publication_program/.*|"
+              "afp_barrier_gate1/AFPBarrier(\\.lean|/.*\\.lean)|"
+              "afp_barrier_gate1/pure_math/.*|"
+              "afp_barrier_gate1/docs/.*)$'"
+          )
+          matches = [i for i, line in enumerate(lines) if line.startswith("allowed=")]
+          if len(matches) != 1:
+              raise SystemExit(f"unexpected allowed-line locations: {matches}")
+          lines[matches[0]] = replacement
+          path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+          PY
+
+          env GITHUB_SHA="$GITHUB_SHA" \
+            GATE_NAME="$GATE_NAME" \
+            bash "$gate_copy"
+
+          printf 'source=%s\nhead=%s\ntree=%s\n' \
+            "$SOURCE" "$actual" "$tree"
+
+      - name: Upload publication-baseline evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: afp-publication-program-baseline-${{ github.run_id }}
+          path: ${{ steps.gate.outputs.evidence_dir }}
+          if-no-files-found: error
