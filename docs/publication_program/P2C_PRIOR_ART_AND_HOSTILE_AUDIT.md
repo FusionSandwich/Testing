@@ -5,7 +5,7 @@
 | Source | Imported statement | Hypotheses checked here | Explicit non-transfer |
 |---|---|---|---|
 | Steinerberger, arXiv:1708.08736 | spectral limitations for nonnegative quadrature/generalized designs | positivity and normalization conventions | no node-generator construction, no shared-edge feasibility |
-| Ahrens–Beylkin, DOI 10.1098/rspa.2009.0104 | icosahedral orbit quadrature methodology and rotational exactness | orbit normalization and each mass are independently audited | no monotone AFP generator, no P2A optimum |
+| Ahrens–Beylkin, DOI 10.1098/rspa.2009.0104 | icosahedral orbit quadrature methodology and rotational exactness | published rules require imported orbit parameters plus independent normalization/mass audits | the executable 12-vertex icosahedron is only a symmetry fixture, not a published AB rule; no generator theorem transfers |
 | Morel et al., DOI 10.13182/NSE07-A2693 | three-dimensional product-quadrature AFP context | P2C product masses use the frozen total-mass-one convention | no arbitrary-node co-design theorem |
 | Bienvenue et al., DOI 10.1080/00295639.2025.2462891 | moment-preserving monotone AFP on nonorthogonal/Voronoi sets | its collision setting is kept separate from ray effects | no exact bilevel optimum, no Paper-I frontier |
 | Bondarenko–Radchenko–Viazovska, arXiv:1303.5991 | well-separated equal-weight spherical designs at the stated cardinality scale | sphere dimension, equal mass, separation, and declared strength | no covering certificate silently bundled; no shared conductance compatibility |
@@ -88,7 +88,7 @@ Any fixed sequence of benchmark rows can mimic a slope.  The P2C convergence cla
 - P2A uses a negative generator \(L\), while the positive operator is \(-L\);
 - \(\lambda_1=2\), \(\lambda_2=6\) on \(\mathbb S^2\);
 - H1 is reconstructed pointwise in all three coordinate columns;
-- harmonic bases are continuum-\(L^2\) normalized;
+- shell bases are fixed and their continuum Gram/scaling is audited; quotient defects are invariant under invertible basis changes;
 - the moving Gram is never frozen during an outer derivative;
 - a retained sampling rank has an explicit positive eigenvalue gap;
 - generator rates divide edge-conductance sums by node mass;

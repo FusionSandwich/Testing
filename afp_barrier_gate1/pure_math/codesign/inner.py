@@ -19,7 +19,7 @@ from pure_math.optimization import (
     solve_design,
 )
 
-from .metrics import to_graph
+from .metrics import apply_generator, to_graph
 from .types import QuadratureCandidate
 
 FloatArray = NDArray[np.float64]
@@ -52,13 +52,15 @@ def moving_gram_data(
 ) -> tuple[FloatArray, FloatArray, FloatArray, FloatArray]:
     """Return samples, Gram, full residual, and residual Gram."""
 
-    graph = to_graph(candidate)
     conductance = np.asarray(gamma, dtype=float)
-    if conductance.shape != (graph.edge_count,):
+    if conductance.shape != (candidate.edge_count,):
         raise ValueError("conductance has the wrong shape")
     samples = real_harmonic_samples(candidate.nodes, int(degree))
     weight = np.diag(candidate.weights)
-    residual = (graph.generator(conductance) + degree * (degree + 1) * np.eye(candidate.node_count)) @ samples
+    residual = (
+        apply_generator(candidate, conductance, samples)
+        + degree * (degree + 1) * samples
+    )
     gram = samples.T @ weight @ samples
     residual_gram = residual.T @ weight @ residual
     return samples, gram, residual, residual_gram
@@ -66,12 +68,15 @@ def moving_gram_data(
 
 def generalized_defect(
     gram: FloatArray,
-    residual_gram: FloatArray,
+    z_residual: FloatArray,
     *,
     rank_tolerance: float = 1e-11,
 ) -> tuple[float, float]:
     eigenvalues, vectors = np.linalg.eigh(0.5 * (gram + gram.T))
-    cutoff = max(rank_tolerance, rank_tolerance * float(np.max(eigenvalues)))
+    cutoff = max(
+        rank_tolerance,
+        rank_tolerance * float(np.max(eigenvalues)),
+    )
     kept = eigenvalues > cutoff
     if not np.any(kept):
         raise ValueError("sampling Gram has zero retained rank")
@@ -79,12 +84,14 @@ def generalized_defect(
     kernel_residual = (
         0.0
         if kernel.size == 0
-        else float(np.linalg.norm(residual_gram @ kernel, ord=2))
+        else float(np.linalg.norm(z_residual @ kernel, ord=2))
     )
     frame = vectors[:, kept] / np.sqrt(eigenvalues[kept])[None, :]
-    reduced = frame.T @ residual_gram @ frame
-    largest = float(np.max(np.linalg.eigvalsh(0.5 * (reduced + reduced.T))))
-    return math_sqrt_nonnegative(largest), kernel_residual
+    reduced_residual = z_residual @ frame
+    return (
+        float(np.linalg.norm(reduced_residual, ord=2)),
+        kernel_residual,
+    )
 
 
 def math_sqrt_nonnegative(value: float) -> float:
@@ -120,12 +127,19 @@ def verify_moving_gram_epigraph(
     *,
     tolerance: float = 2e-8,
 ) -> GramEpigraphReport:
-    _, gram, _, residual_gram = moving_gram_data(candidate, gamma, degree)
-    defect, compatibility = generalized_defect(gram, residual_gram)
+    _, gram, residual, _ = moving_gram_data(candidate, gamma, degree)
+    z_residual = np.sqrt(candidate.weights)[:, None] * residual
+    defect, compatibility = generalized_defect(gram, z_residual)
     block = moving_gram_block(candidate, gamma, degree, delta)
     minimum = float(np.min(np.linalg.eigvalsh(0.5 * (block + block.T))))
     scale = max(1.0, float(np.linalg.norm(block, ord=2)))
-    passed = minimum >= -tolerance * scale and defect <= delta + tolerance * max(1.0, delta)
+    passed = (
+        minimum >= -tolerance * scale
+        and defect <= delta + tolerance * max(1.0, delta)
+        and compatibility <= tolerance * max(
+            1.0, float(np.linalg.norm(z_residual, ord=2))
+        )
+    )
     return GramEpigraphReport(
         int(degree), float(delta), minimum, compatibility, defect, bool(passed)
     )

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 
 import numpy as np
@@ -57,13 +58,10 @@ def family_candidates() -> tuple[QuadratureCandidate, ...]:
     lebedev = _with_dense_seed(lebedev_14(graph="complete"))
     ab = icosahedral_complete_fixture()
     design_base = ahrens_beylkin_icosahedral_fixture(graph="complete")
-    design = QuadratureCandidate.build(
-        "spherical_design",
-        design_base.nodes,
-        design_base.weights,
-        [tuple(map(int, edge)) for edge in design_base.edges],
-        seed_conductance=design_base.seed_conductance,
-        metadata={"declared_strength": 5, "fixture": "icosahedral orbit"},
+    design = _with_dense_seed(
+        spherical_design_candidate(
+            design_base.nodes, strength=5, graph="complete"
+        )
     )
     net = maximal_net_candidate(12, graph="weak_delaunay")
     delaunay = delaunay_candidate(design_base.nodes, design_base.weights)
@@ -83,6 +81,10 @@ def run_audit(*, quick: bool) -> dict[str, object]:
     if names != observed:
         raise AssertionError(f"family coverage mismatch: expected={names}, observed={observed}")
 
+    descriptor_by_name = {
+        descriptor.name: descriptor for descriptor in FAMILY_DESCRIPTORS
+    }
+    rotations_for_rows = signed_permutation_rotations()
     family_rows: list[dict[str, object]] = []
     for candidate in candidates:
         report = full_report(
@@ -91,19 +93,84 @@ def run_audit(*, quick: bool) -> dict[str, object]:
             degrees=(2,),
             fill_probe_count=384 if quick else 2048,
         )
+        digest = hashlib.sha256()
+        for array in (
+            candidate.nodes, candidate.weights, candidate.edges,
+            candidate.seed_conductance,
+        ):
+            if array is not None:
+                digest.update(np.asarray(array).tobytes(order="C"))
+        rotation_row: dict[str, object]
+        if candidate.seed_conductance is None:
+            rotation_row = {
+                "status": "UNDEFINED:NO_VERIFIED_GENERATOR",
+                "scope": "COLLISION_ONLY_PHYSICAL_ROTATION_FIXED_QUADRATURE",
+            }
+        else:
+            row_spread = collision_rotation_spread(
+                candidate,
+                candidate.seed_conductance,
+                np.asarray([1.0, -0.5, 0.25, 0.0, 0.75]),
+                rotations_for_rows,
+            )
+            rotation_row = {
+                "status": "EMPIRICAL_24_ROTATION_SAMPLE",
+                "absolute_spread": row_spread.absolute_spread,
+                "scope": row_spread.scope,
+            }
+        generator_row = (
+            None
+            if report.generator is None
+            else {
+                "H0": report.generator.h0_residual,
+                "H1": report.generator.h1_residual,
+                "reversibility": report.generator.reversibility_residual,
+                "positivity_margin": report.generator.positivity_margin,
+                "rate_max": report.generator.rate_max,
+                "D2": report.generator.shell_defects[2],
+            }
+        )
         family_rows.append({
             "family": report.family,
+            "rule": candidate.metadata.get("rule", "constructed-candidate"),
+            "candidate_scope": (
+                "FIXTURE_ONLY_NOT_PUBLISHED_AHRENS_BEYLKIN_RULE"
+                if report.family == "ahrens_beylkin"
+                else "DECLARED_FAMILY_CANDIDATE"
+            ),
+            "canonical_array_sha256": digest.hexdigest(),
             "N": report.nodes,
             "E": report.edges,
-            "positive_mass": float(np.min(candidate.weights)),
-            "sampling_condition2": report.sampling[0].condition,
+            "graph_rule": candidate.metadata.get("graph_rule", "weak_delaunay"),
+            "permitted_graphs": descriptor_by_name[
+                report.family
+            ].admitted_graphs,
+            "sampling_metric": descriptor_by_name[
+                report.family
+            ].sampling_metric,
+            "feasibility_metric": descriptor_by_name[
+                report.family
+            ].feasibility_metric,
+            "rotation_metric": descriptor_by_name[
+                report.family
+            ].rotation_metric,
+            "mass_certification": (
+                candidate.metadata.get(
+                    "mass_certification", "VERIFIED_FLOAT_STRICT_POSITIVITY"
+                )
+            ),
+            "minimum_mass": float(np.min(candidate.weights)),
+            "half_separation": report.geometry.separation,
+            "sampled_fill_upper": report.geometry.fill_upper_sampled,
+            "edge_radius": report.geometry.edge_radius,
+            "sampling_gram_condition2": report.sampling[0].gram_condition,
             "sampling_rank2": report.sampling[0].rank,
+            "sampling_rank_cutoff": report.sampling[0].cutoff,
             "local_margin": report.feasibility.local_margin_min,
             "global_margin": report.feasibility.global_margin,
             "global_status": report.feasibility.global_status,
-            "seed_H1_residual": (
-                None if report.generator is None else report.generator.h1_residual
-            ),
+            "generator": generator_row,
+            "rotation": rotation_row,
         })
 
     singular = singular_sampling_fixture()
@@ -154,7 +221,7 @@ def run_audit(*, quick: bool) -> dict[str, object]:
 
     levels = ((32, 1), (64, 1)) if quick else ((32, 1), (32, 3), (64, 1))
     convergence = benchmark_reflected_ring_family(
-        levels, optimize_indices=()
+        levels, optimize_indices=(0,)
     )
     slope = fitted_log_slope(convergence)
 

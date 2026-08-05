@@ -11,7 +11,7 @@ from numpy.typing import ArrayLike, NDArray
 
 from pure_math.optimization import degree_two_basis
 
-from .metrics import to_graph
+from .metrics import apply_generator
 from .types import QuadratureCandidate
 
 FloatArray = NDArray[np.float64]
@@ -31,9 +31,24 @@ def signed_permutation_rotations() -> tuple[FloatArray, ...]:
     return tuple(output)
 
 
+def _proper_rotation(rotation: ArrayLike) -> FloatArray:
+    q = np.asarray(rotation, dtype=float)
+    if (
+        q.shape != (3, 3)
+        or not np.all(np.isfinite(q))
+        or np.linalg.norm(q.T @ q - np.eye(3), ord=np.inf) > 2e-10
+        or abs(float(np.linalg.det(q)) - 1.0) > 2e-10
+    ):
+        raise ValueError("rotation must lie in SO(3)")
+    return q
+
+
 def axis_angle(axis: ArrayLike, angle: float) -> FloatArray:
     vector = np.asarray(axis, dtype=float)
-    vector /= np.linalg.norm(vector)
+    norm = float(np.linalg.norm(vector))
+    if not np.isfinite(norm) or norm <= 1e-15 or not np.isfinite(angle):
+        raise ValueError("axis must be nonzero and angle finite")
+    vector /= norm
     x, y, z = vector
     cross = np.asarray([[0.0, -z, y], [z, 0.0, -x], [-y, x, 0.0]])
     return (
@@ -64,12 +79,13 @@ def collision_probe_value(
 ) -> float:
     """Rotate one physical H2 probe relative to a fixed quadrature."""
 
-    q = np.asarray(rotation, dtype=float)
+    if not np.isfinite(denominator_floor) or denominator_floor <= 0:
+        raise ValueError("denominator_floor must be finite and positive")
+    q = _proper_rotation(rotation)
     a = _quadratic_matrix(coefficients)
     rotated = q @ a @ q.T
     samples = np.einsum("ni,ij,nj->n", candidate.nodes, rotated, candidate.nodes)
-    graph = to_graph(candidate)
-    residual = (graph.generator(gamma) + 6.0 * np.eye(candidate.node_count)) @ samples
+    residual = apply_generator(candidate, gamma, samples) + 6.0 * samples
     denominator = float(np.sqrt(np.sum(candidate.weights * samples**2)))
     if denominator <= denominator_floor:
         raise ValueError("rotated probe approaches a sampling alias")
@@ -93,9 +109,12 @@ def collision_rotation_spread(
     coefficients: ArrayLike,
     rotations: Iterable[ArrayLike],
 ) -> RotationSpread:
+    rotation_list = tuple(rotations)
+    if not rotation_list:
+        raise ValueError("rotation collection must be nonempty")
     values = [
         collision_probe_value(candidate, gamma, coefficients, q)
-        for q in rotations
+        for q in rotation_list
     ]
     minimum, maximum = min(values), max(values)
     return RotationSpread(
@@ -123,7 +142,7 @@ def joint_collision_covariance_defect(
     basis = degree_two_basis()
     defects = []
     for rotation in rotations:
-        q = np.asarray(rotation, dtype=float)
+        q = _proper_rotation(rotation)
         rotated_candidate = candidate.rotated(q)
         # Co-rotating A gives q A q^T.  Express it in the frozen basis; the
         # relative call uses identity because the physical coefficient itself
@@ -152,7 +171,13 @@ def application_rotation_spread(
     spatial mesh.  The caller, not this wrapper, supplies the transport model.
     """
 
-    values = [float(response(np.asarray(q, dtype=float), joint)) for q in rotations]
+    rotation_list = tuple(rotations)
+    if not rotation_list:
+        raise ValueError("rotation collection must be nonempty")
+    values = [
+        float(response(_proper_rotation(q), joint))
+        for q in rotation_list
+    ]
     if any(not np.isfinite(value) for value in values):
         raise ValueError("rotation response contains a nonfinite value")
     minimum, maximum = min(values), max(values)
@@ -223,7 +248,12 @@ def audit_rotation_interpolation(
     positivity = float(np.min(matrix))
     mass = float(np.linalg.norm(target.weights @ matrix - source.weights, ord=np.inf))
     moments = float(np.linalg.norm(matrix @ source.nodes - target.nodes, ord=np.inf))
-    norm = float(np.linalg.norm(matrix, ord=2))
+    weighted = (
+        np.sqrt(target.weights)[:, None]
+        * matrix
+        / np.sqrt(source.weights)[None, :]
+    )
+    norm = float(np.linalg.norm(weighted, ord=2))
     passed = (
         constants <= tolerance
         and positivity >= -tolerance

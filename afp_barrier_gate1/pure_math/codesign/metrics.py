@@ -10,7 +10,7 @@ import numpy as np
 from numpy.typing import ArrayLike, NDArray
 from scipy.optimize import linprog, minimize
 
-from pure_math.optimization import DesignModel, QuadratureGraph
+from pure_math.optimization import QuadratureGraph, RankPolicy, real_harmonic_samples
 
 from .types import QuadratureCandidate
 
@@ -75,6 +75,34 @@ def to_graph(candidate: QuadratureCandidate) -> QuadratureGraph:
     )
 
 
+def apply_generator(
+    candidate: QuadratureCandidate,
+    gamma: ArrayLike,
+    values: ArrayLike,
+) -> FloatArray:
+    """Apply L edgewise in O(N+E) storage without an N-by-N matrix."""
+
+    conductance = np.asarray(gamma, dtype=float)
+    field = np.asarray(values, dtype=float)
+    vector = field.ndim == 1
+    if (
+        conductance.shape != (candidate.edge_count,)
+        or not np.all(np.isfinite(conductance))
+        or field.ndim not in (1, 2)
+        or field.shape[0] != candidate.node_count
+        or not np.all(np.isfinite(field))
+    ):
+        raise ValueError("invalid conductance or field for generator action")
+    matrix = field[:, None] if vector else field
+    output = np.zeros_like(matrix, dtype=float)
+    i, j = candidate.edges[:, 0], candidate.edges[:, 1]
+    flux = conductance[:, None] * (matrix[j] - matrix[i])
+    np.add.at(output, i, flux)
+    np.add.at(output, j, -flux)
+    output /= candidate.weights[:, None]
+    return output[:, 0] if vector else output
+
+
 def _geodesic(a: FloatArray, b: FloatArray) -> float:
     return math.acos(float(np.clip(a @ b, -1.0, 1.0)))
 
@@ -115,22 +143,42 @@ def geometry_report(
     )
 
 
+def _matrix_free_shell(
+    candidate: QuadratureCandidate, degree: int
+) -> tuple[FloatArray, FloatArray, int, float]:
+    samples = real_harmonic_samples(candidate.nodes, int(degree))
+    root_w = np.sqrt(candidate.weights)
+    weighted = root_w[:, None] * samples
+    u, singular, _ = np.linalg.svd(weighted, full_matrices=False)
+    policy = RankPolicy()
+    rank = policy.classify(singular, samples.shape[1])
+    cutoff = policy.threshold(float(singular[0]))
+    modes = u[:, :rank] / root_w[:, None]
+    return samples, modes, rank, cutoff
+
+
 def sampling_reports(
     candidate: QuadratureCandidate, degrees: Iterable[int] = (2,)
 ) -> tuple[SamplingReport, ...]:
-    model = DesignModel.build(to_graph(candidate), tuple(degrees))
     output: list[SamplingReport] = []
-    for degree in sorted(model.shells):
-        shell = model.shell(degree).shell
+    for degree in sorted(set(map(int, degrees))):
+        samples = real_harmonic_samples(candidate.nodes, degree)
+        singular = np.linalg.svd(
+            np.sqrt(candidate.weights)[:, None] * samples,
+            compute_uv=False,
+        )
+        policy = RankPolicy()
+        rank = policy.classify(singular, samples.shape[1])
+        condition = float(singular[0] / singular[rank - 1])
         output.append(
             SamplingReport(
                 degree,
-                shell.rank,
-                int(shell.raw_samples.shape[1]),
-                shell.retained_condition,
-                shell.gram_condition,
-                shell.cutoff,
-                shell.exact_rank_certified,
+                rank,
+                int(samples.shape[1]),
+                condition,
+                condition**2,
+                policy.threshold(float(singular[0])),
+                False,
             )
         )
     return tuple(output)
@@ -250,21 +298,46 @@ def generator_report(
     gamma: ArrayLike,
     degrees: Iterable[int] = (2,),
 ) -> GeneratorReport:
-    graph = to_graph(candidate)
     value = np.asarray(gamma, dtype=float)
-    if value.shape != (graph.edge_count,):
+    if value.shape != (candidate.edge_count,):
         raise ValueError("conductance shape mismatch")
-    generator = graph.generator(value)
-    wmat = np.diag(candidate.weights)
-    shells = tuple(sorted(set(int(d) for d in degrees)))
-    model = DesignModel.build(graph, shells)
+    if not np.all(np.isfinite(value)) or np.min(value) < 0:
+        raise ValueError("conductance must be finite and nonnegative")
+    i = candidate.edges[:, 0]
+    j = candidate.edges[:, 1]
+    endpoint_sum = np.zeros(candidate.node_count)
+    np.add.at(endpoint_sum, i, value)
+    np.add.at(endpoint_sum, j, value)
+    rates = endpoint_sum / candidate.weights
+    detailed_balance = float(np.max(np.abs(
+        candidate.weights[i] * (value / candidate.weights[i])
+        - candidate.weights[j] * (value / candidate.weights[j])
+    )))
+    shell_defects: dict[int, float] = {}
+    for degree in sorted(set(map(int, degrees))):
+        _, modes, _, _ = _matrix_free_shell(candidate, degree)
+        residual = (
+            apply_generator(candidate, value, modes)
+            + degree * (degree + 1) * modes
+        )
+        shell_defects[degree] = float(np.linalg.norm(
+            np.sqrt(candidate.weights)[:, None] * residual,
+            ord=2,
+        ))
     return GeneratorReport(
-        float(np.linalg.norm(generator @ np.ones(candidate.node_count), ord=np.inf)),
-        float(np.linalg.norm(generator @ candidate.nodes + 2.0 * candidate.nodes, ord=np.inf)),
-        float(np.linalg.norm(wmat @ generator - generator.T @ wmat, ord=np.inf)),
+        float(np.linalg.norm(
+            apply_generator(candidate, value, np.ones(candidate.node_count)),
+            ord=np.inf,
+        )),
+        float(np.linalg.norm(
+            apply_generator(candidate, value, candidate.nodes)
+            + 2.0 * candidate.nodes,
+            ord=np.inf,
+        )),
+        detailed_balance,
         float(np.min(value)),
-        float(np.max(graph.rates(value))),
-        {degree: model.defect(value, degree) for degree in shells},
+        float(np.max(rates)),
+        shell_defects,
     )
 
 

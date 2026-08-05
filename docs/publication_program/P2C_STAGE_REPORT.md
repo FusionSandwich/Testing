@@ -22,7 +22,7 @@ The stage proves:
 - restored Riemannian and certified Clarke stationary accumulation;
 - alternating convergence with a tangent-frame or joint safeguard;
 - unconditional edge-addition monotonicity and conditional deletion;
-- finite graph-search termination at declared neighborhood stationarity;
+- finite graph-search termination with no certified improving unvisited proposal, with exact neighbor stationarity reserved for exhaustive exclusion certificates;
 - exact dense design initialization;
 - enriched-discrete response refinement;
 - collision/streaming/interpolation separation; and
@@ -78,7 +78,7 @@ The arbitrary local spherical-design compatibility route remains explicitly BLOC
 
 ## Reproducibility contract
 
-Each benchmark row carries node/edge counts, scale, D2, maximum rate, shell conditioning, higher-shell residuals, collision spread, theorem bounds, time, memory, and whether the exact inner optimizer was run.  Exact symmetric identities are checked with SymPy.  Numerical design results must pass the accepted P2A independent verifier.  Graph updates require objective enclosures and rebuilt feasibility residuals.  The workflow pins its Python dependencies and publishes the audit output.
+Each benchmark row carries node/edge counts, scale, D2, maximum rate, Gram conditioning, higher-shell residuals, a labelled 24-rotation empirical spread, formula bounds, time, memory, and whether the exact inner optimizer was run.  The practical M0=32,64 rows are finite regressions; the analytic theorem uses the accepted M0=2^80 admissibility predicate.  Exact symmetric identities are checked with SymPy.  Numerical design results must pass the accepted P2A independent verifier.  Graph updates require objective enclosures and rebuilt feasibility residuals.  The workflow pins its direct Python dependencies, records the complete transitive environment, archives the full exact candidate tree, and publishes the audit output.
 
 ## Acceptance gates
 

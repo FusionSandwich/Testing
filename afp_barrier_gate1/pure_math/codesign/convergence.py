@@ -56,7 +56,7 @@ class ConvergenceRow:
     sampling_condition2: float
     shell_defect3: float
     shell_defect4: float
-    collision_rotation_spread: float
+    sampled_collision_spread_24: float
     theorem_lower: float
     theorem_upper: float
     solve_seconds: float
@@ -104,7 +104,7 @@ def benchmark_reflected_ring_level(
             inner_seconds = inner.elapsed_seconds
             inner_peak = inner.peak_memory_bytes
         report = generator_report(candidate, gamma, (2, 3, 4))
-        condition = sampling_reports(candidate, (2,))[0].condition
+        condition = sampling_reports(candidate, (2,))[0].gram_condition
         rotation = collision_rotation_spread(
             candidate,
             gamma,
@@ -134,7 +134,7 @@ def benchmark_reflected_ring_level(
         max(float(elapsed), inner_seconds),
         max(int(peak), inner_peak),
         optimized,
-        "VERIFIED_FLOAT+ALL_ORDERS_P1B_P1E_INHERITANCE",
+        "VERIFIED_FLOAT_FINITE_REGRESSION+EMPIRICAL_ROTATION_SAMPLE",
     )
 
 

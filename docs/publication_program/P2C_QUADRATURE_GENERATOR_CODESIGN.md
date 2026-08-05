@@ -37,7 +37,7 @@ and detailed balance is exact: \(WL=L^\top W\).  Exact first-shell action is the
  B^\top C B X=\lambda_1WX. \tag{1}
 \]
 
-For a fixed continuum-\(L^2\)-orthonormal real basis of \(\mathcal H_\ell\), let
+For any fixed full real basis of \(\mathcal H_\ell\), let
 \(S_\ell(X)\in\mathbb R^{N\times q_\ell}\) be its sampled values and put
 \[
  G_\ell=S_\ell^\top WS_\ell,\quad
@@ -75,7 +75,7 @@ Unlike a prewhitened formula, (3) remains a raw coefficient-space statement at a
 
 ## 2. Exact inner problem
 
-For fixed \(X,w,E\), choose selected shells \(\mathcal L\), nonnegative coefficients \(\alpha_\ell\), a rate cap \(R\), and an optional closed active-support floor \(\underline c_e\ge0\).  The inner problem is
+For fixed \(X,w,E\), choose selected shells \(\mathcal L\), strictly positive coefficients \(\alpha_\ell\), a rate cap \(R\), and an optional closed active-support floor \(\underline c_e\ge0\).  A zero-weight shell is deleted from the epigraph rather than retained as an unbounded variable.  The inner problem is
 \[
 \begin{array}{ll}
 \operatorname{minimize}_{c,t}&
@@ -99,7 +99,7 @@ Problem (4) is a convex semidefinite program.  If it is feasible, its minimum is
 \[
  \sum_{\{i,j\}\in E}c_{ij}\|x_i-x_j\|^2=\lambda_1, \tag{5}
 \]
-which bounds conductances.  A feasible objective sublevel is therefore closed and bounded, so the continuous objective attains its minimum.  Convexity makes every attained minimum global. ∎
+which bounds conductances.  Because every retained \(\alpha_\ell>0\), a feasible objective sublevel also bounds every \(t_\ell\).  It is therefore closed and bounded, so the continuous objective attains its minimum.  Convexity makes every attained minimum global. ∎
 
 Strict inequalities \(c_e>0\) are open and need not attain an infimum.  “Positive conductance” therefore means \(c_e\ge0\) on a master graph, or \(c_e\ge c_{\min}>0\) on a declared active support.  An invariant secondary strictly convex minimization on the certified optimal face gives a deterministic choice when the primary optimum is nonunique.
 
@@ -118,6 +118,8 @@ Every family is converted to normalized positive masses, an intrinsic permitted 
 | Delaunay | certified positive Voronoi masses | weak spherical Delaunay or complete | distinct nodes, positive cells, moment/rank audit |
 | Locally adapted | positive uniform-surface masses after exact moment restoration | weak Delaunay plus certified edge orbits, complete | every proposal rechecks moments, positivity, rank, and (4) |
 
+The executable 12-vertex icosahedral row is a symmetry and conditioning fixture only; it is not represented as an imported published Ahrens–Beylkin rule.  A published AB rule is admitted only after its actual orbit parameters and masses pass the stated gates.  Generic graph builders implement the permitted graph vocabulary; each convenience family constructor accepts an explicit subset and rejects every unknown graph name.
+
 At a Delaunay degeneracy, the implementation uses the weak graph: the union of all pairs belonging to a common supporting face.  A coordinate-lexicographic diagonal is not rotation-equivariant.
 
 The geometry metrics are separation
@@ -131,7 +133,7 @@ The sampling Gram condition is
  \kappa_\ell^+
  ={\lambda_{\max}(G_\ell)\over\lambda_{\min}^+(G_\ell)}
 \]
-on a declared constant-rank range, with the rank and singular-value gap recorded.  If a positive quadrature integrates all spherical polynomials through degree \(2L\), products of harmonics through \(L\) are exact, hence \(S_{\le L}^\top WS_{\le L}=I\) in an orthonormal basis and every such condition number is exactly one.
+on a declared constant-rank range, with the rank and singular-value gap recorded.  If a positive quadrature integrates all spherical polynomials through degree \(2L\), products of harmonics through \(L\) are exact, hence the discrete Gram equals the continuum Gram \(G_{\rm cont}\).  After explicit continuum whitening it is \(I\), and every such condition number is exactly one.  The implementation deliberately mixes a Frobenius-normalized degree-two basis, whose normalized-surface Gram is \((2/15)I\), with SciPy area-normalized higher harmonics, whose total-mass-one Gram is \(I/(4\pi)\); the moving Gram makes the quotient basis invariant.
 
 For local geometry, set
 \[
@@ -149,9 +151,13 @@ The global feasibility margin is the optimum of the joint LP that imposes (1), \
 
 ## 4. Outer problem and compact protected set
 
-A declared outer objective may be
+Let \(p=(X,w,E)\), let \(\phi(p,c)\) be the declared primary convex inner objective in (4), and define its optimizer set
 \[
- F=\alpha_2\mathfrak D_2+\alpha_r r_{\max}
+ {\cal A}(p)=\arg\min_c\phi(p,c).
+\]
+A declared outer objective on the lifted optimizer graph may be
+\[
+ F(p,c)=\alpha_2\mathfrak D_2+\alpha_r r_{\max}
    +\sum_{\ell>2}\alpha_\ell\mathfrak D_\ell
    +\alpha_\kappa\log\kappa
    +\alpha_{\rm rot}B_{\rm col}
@@ -161,7 +167,8 @@ where all coefficients are nonnegative and
 \[
  r_{\max}=\max_i{1\over w_i}\sum_{e\ni i}c_e.
 \]
-The response term is admitted only with a uniform discrete stability/coercivity bound.
+The co-design problem is \(\min\{F(p,c):p\in{\cal P},c\in{\cal A}(p)\}\).  Thus conductance-dependent outer terms are never evaluated at an unspecified member of a nonunique inner optimizer set.  Equivalently, define the reduced value
+\(\widehat V(p)=\min_{c\in{\cal A}(p)}F(p,c)\), with a deterministic invariant secondary tie-break after that value is certified.  The response term is admitted only with a uniform discrete stability/coercivity bound.
 
 For fixed \(N\), the protected set imposes:
 
@@ -171,16 +178,22 @@ For fixed \(N\), the protected set imposes:
 - a fixed orbit/stabilizer stratum or a finite intrinsic graph pool;
 - a positive sampling eigenvalue floor on each retained rank stratum;
 - a verified uniform inner feasibility/Robinson margin;
+- a full-shell sampling floor, or for every declared rotation probe the uniform denominator floor
+  \(\inf_R(\rho_\ell(R)a)^\top G_\ell\rho_\ell(R)a\ge\nu>0\);
 - closed conductance/rate bounds; and
 - a uniform response stability bound whenever a response objective is present.
 
-This set is closed in a finite product of compact spheres, a simplex, and a finite graph set.  Conductances are bounded by the rate cap or (5), so the lifted feasible set is compact.  Shell norms, graph rate, condition number on the spectral-gap stratum, and maximum edge angle are continuous.  A supremum rotation metric is continuous because it is a supremum of a jointly continuous function over compact \(SO(d)\).  A response is continuous under the uniform stability bound.
+Each fixed labelled graph domain is closed, and their declared finite union is closed in a finite product of compact spheres, a simplex, and a finite graph set.  Conductances are bounded by the rate cap or (5), so the lifted feasible set is compact.  Shell norms, graph rate, condition number on the spectral-gap stratum, and maximum edge angle are continuous.  A supremum rotation metric is continuous because it is a supremum of a jointly continuous function over compact \(SO(d)\).  A response is continuous under the uniform stability bound.
 
 ### Theorem 3 — existence
 
-Every fixed-candidate inner optimum is attained.  If the inner feasible correspondence has constant equality rank and uniform Robinson regularity, its value function \(V(X,w,E)\) is continuous.  Therefore (7) attains an outer minimum on every protected compact design space.
+Every fixed-candidate inner optimum is attained.  Delete zero-weight epigraphs and, for every retained positive-weight shell, restrict \(t_\ell\) to a common optimal sublevel; the protected Gram and conductance bounds give a uniform finite defect upper bound.  If the inner feasible correspondence has constant equality rank and uniform Robinson regularity, the primary value and optimizer correspondence are continuous and compact-valued.  The graph
+\[
+ \{(p,c):p\in{\cal P},\ c\in{\cal A}(p)\}
+\]
+is compact, so (7) attains a lifted outer minimum.  Under the same continuity hypotheses, \(\widehat V\) is continuous.
 
-**Proof.**  Inner attainment is Theorem 2.  Constant rank and uniform Robinson regularity give upper and lower hemicontinuity of the compact feasible correspondence; Berge’s maximum theorem gives continuity of \(V\).  The other terms are continuous as just noted.  Weierstrass then gives an outer minimizer. ∎
+**Proof.**  Inner attainment is Theorem 2.  Positive shell weights bound retained epigraph variables on an optimal sublevel; alternatively they may be eliminated at their minimal generalized-defect values.  Constant rank and uniform Robinson regularity give the required hemicontinuity, while Berge’s theorem gives continuity of the primary value.  If \(p_n\to p\), \(c_n\in{\cal A}(p_n)\), and \(c_n\to c\), closed feasibility and continuity give \(c\in{\cal A}(p)\); hence the optimizer graph is closed inside the compact lifted protected set.  The continuous \(F\) attains there.  A second application of Berge gives continuity of \(\widehat V\). ∎
 
 This is an existence theorem, not a claim that the algorithms below discover the nonconvex global minimum.
 
@@ -192,29 +205,29 @@ The Reynolds projection proves that exactness through degree \(t\) need only be 
 
 ### Theorem 4 — symmetry and covariance
 
-For an orbit-constant design, \(L\) commutes with every induced node permutation.  Harmonic samples intertwine the node and harmonic representations, and every shell Gram and raw LMI transforms by orthogonal congruence.  Thus (4), (7), and the optimal value are invariant under simultaneous rotation of nodes and the physical data.  If the optimizer is unique or selected by an invariant strict tie-break, the selected conductance is equivariant; otherwise only the optimizer set and value are equivariant.
+For an orbit-constant design, \(L\) commutes with every induced \(G\)-node permutation.  Harmonic samples intertwine the node and harmonic representations, and every shell Gram and raw LMI transforms by orthogonal congruence.  A relabelling by \(G\) stays in the fixed stratum.  An arbitrary ambient co-rotation \(Q\) is covariance between the \(G\) stratum and its conjugate \(QGQ^{-1}\) stratum; only the normalizer of \(G\) preserves the fixed-\(G\) parameter space.  Thus (4), (7), and the optimal value agree between the corresponding co-rotated strata.  If the optimizer is unique or selected by an invariant strict tie-break, the selected conductance is equivariant; otherwise only the optimizer set and value are equivariant.
 
 **Proof.**  A group element permutes nodes and edge orbits bijectively while preserving masses and conductances.  Substitution in the edge sum proves commutation.  The identity \(S_\ell(gX)=S_\ell(X)\rho_\ell(g)^\top\) gives the congruences. ∎
 
-On a compact fixed stratum \(Z\), define the exact proximal baseline
+On a compact fixed stratum \(Z\), define the exact proximal baseline for the reduced value \(\widehat V\)
 \[
  z_{k+1}\in\arg\min_{z\in Z}
- \left[V(z)+{d(z,z_k)^2\over2\alpha}\right], \tag{8}
+ \left[\widehat V(z)+{d(z,z_k)^2\over2\alpha}\right], \tag{8}
 \]
 with deterministic tie-breaking and an exact inner solve at every evaluation.
 
 ### Theorem 5 — proximal feasibility, descent, and stationarity
 
-Assume \(Z\) is compact and prox-regular and \(V\) is locally Lipschitz.  Then (8) exists, preserves every constraint, and satisfies
+Assume \(Z\) is compact and prox-regular and \(\widehat V\) is locally Lipschitz.  Then (8) exists, preserves every constraint, and satisfies
 \[
- V(z_{k+1})+{d(z_{k+1},z_k)^2\over2\alpha}\le V(z_k). \tag{9}
+ \widehat V(z_{k+1})+{d(z_{k+1},z_k)^2\over2\alpha}\le \widehat V(z_k). \tag{9}
 \]
 Consequently the squared increments are summable, increments vanish, subsequences converge, and every accumulation point \(z_*\) is limiting-stationary:
 \[
- 0\in\partial V(z_*)+N_Z(z_*). \tag{10}
+ 0\in\partial \widehat V(z_*)+N_Z(z_*). \tag{10}
 \]
 
-**Proof.**  Compactness and continuity give a minimizer.  Feasibility is automatic because the minimization is over \(Z\).  Comparing with \(z=z_k\) proves (9).  Telescoping and the lower bound of \(V\) prove square summability.  Compactness supplies a convergent subsequence.  The limiting first-order condition for (8) contains the distance gradient divided by \(\alpha\); it tends to zero with the increments.  Closedness of the limiting subdifferential and normal graphs yields (10). ∎
+**Proof.**  Compactness and continuity give a minimizer.  Feasibility is automatic because the minimization is over \(Z\).  Comparing with \(z=z_k\) proves (9).  Telescoping and the lower bound of \(\widehat V\) prove square summability.  Compactness supplies a convergent subsequence.  The limiting first-order condition for (8) contains the distance gradient divided by \(\alpha\); it tends to zero with the increments.  Closedness of the limiting subdifferential and normal graphs yields (10). ∎
 
 The executable finite-pool controller proves (9) only over its declared pool.  It does not label that finite computation continuum stationarity.
 
@@ -226,7 +239,7 @@ The restoration gate requires the reduced correction Jacobian to be onto with a 
 
 Arbitrary node motion is not admissible.  For two antipodal nodes joined by one edge, (1) fixes antipodality, equal masses, and the conductance.  Moving one node alone generically destroys feasibility.  The implementation therefore rejects a nonsurjective reduced restoration Jacobian.
 
-On a smooth fixed-graph stratum, strong regularity of the parametric SDP KKT system gives a differentiable value function.  Its envelope derivative includes the moving terms
+On a smooth fixed-graph stratum, primal/dual nondegeneracy, strict complementarity, second-order sufficiency, and strong regularity of the parametric SDP KKT system give a locally \(C^1\) value function; the implementation must verify these hypotheses rather than infer differentiability from Slater feasibility.  Its envelope derivative includes the moving terms
 \[
  dG=(dS)^\top WS+S^\top(dW)S+S^\top W(dS)
 \]
@@ -234,7 +247,7 @@ and \(dZ\) in (3).  Slater feasibility alone is insufficient: optimizer switchin
 
 ### Theorem 6 — restored Riemannian convergence
 
-Assume the protected stratum is compact \(C^2\), restoration is uniformly first-order, every inner solve is exact, and \(V\) has Lipschitz Riemannian gradient.  A restored Armijo step using \(-\operatorname{grad}V\), rejected whenever any certificate fails, preserves feasibility and gives a uniform sufficient decrease.  The accepted gradient norms are square summable; every accumulation point is Riemannian stationary.  Under MFCQ it satisfies the full KKT system.
+Assume the iterates lie on a compact boundaryless \(C^2\) equality manifold a uniform positive distance inside every inequality gate; restoration/retraction is uniformly \(C^2\) and first-order; fixed backtracking parameters have bounded initial steps; every inner solve is exact; and \(V\) is verified \(C^1\) with Lipschitz Riemannian gradient.  A restored Armijo step using \(-\operatorname{grad}V\), rejected whenever any certificate fails, preserves feasibility and gives a uniform sufficient decrease.  The accepted gradient norms are square summable; every accumulation point is Riemannian stationary.  Under MFCQ it satisfies the full KKT system.
 
 **Proof.**  The Riemannian descent lemma and the \(O(\alpha^2)\) restoration perturbation give an Armijo-acceptable interval bounded uniformly away from zero on the compact stratum.  Feasibility follows from exact restoration and the margin audit.  Summing Armijo decreases shows \(\sum\|\operatorname{grad}V(z_k)\|^2<\infty\).  Compactness supplies subsequences, and continuity of the gradient gives stationarity at every cluster point.  MFCQ converts tangent stationarity to KKT multipliers. ∎
 
@@ -250,17 +263,17 @@ with \(\sum\varepsilon_k<\infty\) and \(\eta_k\to0\).  The same telescoping and 
 
 A weight-led or node-led block includes the first-order corrections in all variables needed to remain in \(\ker DH\).  After every accepted outer block, (4) is re-solved; descent is never evaluated with stale conductances.
 
-If block tangent spaces \(T_b(z)\) satisfy the uniform frame condition
+Assume fixed cyclic block coverage; each block uses the negative orthogonal projected gradient; the block projections vary uniformly continuously; the Lipschitz/restoration constants and Armijo parameters are uniform; and every accepted block has a uniform step lower bound and sufficient decrease.  If block tangent spaces \(T_b(z)\) also satisfy the uniform frame condition
 \[
  \sum_b\|\Pi_{T_b(z)}g\|^2\ge\eta\|g\|^2,\qquad\eta>0, \tag{12}
 \]
-then cyclic restored Armijo descent makes the full gradient vanish.  Without (12), separate feasible fibers can be singletons even while a joint feasible descent direction exists.  The reproducible algorithm therefore performs a joint feasible-tangent safeguard once per sweep.  With that safeguard, Theorem 6 applies to the joint step, while the individual blocks supply additional descent.  The claim is full stationarity only when the joint safeguard or (12) is certified; otherwise it is explicitly only block stationarity.
+then cyclic restored Armijo descent makes the full gradient vanish.  Indeed, summing the per-block decreases makes every projected block gradient square summable.  Within-sweep displacements vanish; transporting all block gradients to the sweep start and using uniform continuity plus (12) gives \(\|\operatorname{grad}\widehat V\|\to0\).  Without (12), separate feasible fibers can be singletons even while a joint feasible descent direction exists.  The reproducible algorithm therefore performs a joint feasible-tangent safeguard once per sweep.  With that safeguard, Theorem 6 applies to the joint step, while the individual blocks supply additional certified descent.  The executable ledger alone proves only interval-certified nonincrease; full stationarity is claimed only when these analytic hypotheses and the joint safeguard or (12) are certified.
 
 ## 8. Strategy IV — certified graph updates
 
 ### Theorem 7 — edge addition
 
-If \(E\subseteq E'\), extend a conductance by zero on \(E'\setminus E\).  Equations (1), all rates, every shell residual, positivity, and every fixed convex response term are unchanged.  Hence feasibility is preserved and the exact inner optimum on \(E'\) cannot exceed that on \(E\).
+If \(E\subseteq E'\), every new edge has floor \(\underline c_e=0\) (inactive support), and no constraint charges permitted-edge presence directly, extend a conductance by zero on \(E'\setminus E\).  Equations (1), all rates, every shell residual, positivity, and every fixed convex response term are unchanged.  Hence feasibility is preserved and the exact inner optimum on \(E'\) cannot exceed that on \(E\).
 
 **Proof.**  The added incidence columns are multiplied by zero.  Every displayed affine expression is therefore identical.  The old feasible set embeds in the new one. ∎
 
@@ -270,14 +283,17 @@ Deletion has no unconditional analogue.  It is accepted only after an independen
  \delta c_e=-c_e,\quad
  c+\delta c\ge0,
 \]
-and the rate cap reverified.  Linear infeasibility may be certified by a Farkas separator; conic objectives require the full conic dual certificate.
+and the rate cap reverified.  Linear infeasibility may be certified by a Farkas separator; conic objectives require the full conic dual certificate.  A kernel move certifies only an H1/positivity/rate-feasible seed: shell LMIs, response terms, and the objective still require a fresh independently verified inner solve.
 
 For a finite master graph, propose whole symmetry edge orbits in deterministic order.  With objective intervals \([L,U]\), edge penalty \(\beta\), and strict gap \(\tau>0\), accept only if
 \[
  U_{\rm new}+\beta|E_{\rm new}|
  \le L_{\rm old}+\beta|E_{\rm old}|-\tau. \tag{13}
 \]
-Retain the incumbent on every rejection and forbid revisits.  There are finitely many graphs, so accepted changes terminate.  Exhaustion certifies only single-declared-orbit graph-neighborhood stationarity.
+Retain the incumbent on every rejection and forbid revisits.  There are finitely many graphs, so accepted changes terminate.  A one-pass finite proposal list proves only absence of a certified \(\tau\)-improving unvisited proposal.  Exact graph-neighborhood stationarity additionally requires re-enumerating every declared neighbor of the final incumbent and, for each, either an exact comparison or an exclusion enclosure
+\[
+ L_{\rm new}+\beta|E_{\rm new}|\ge U_{\rm old}+\beta|E_{\rm old}|-\tau.
+\]
 
 ## 9. Strategy V — direct spherical-design construction
 
@@ -339,9 +355,9 @@ For every admissible P1E level, not merely a fitted subsequence,
 \[
  \mathfrak D_{2,\mathrm{opt}}=\Theta(h^2)
 \]
-with the explicit constants in (19).  Certified edge additions and accepted outer moves that retain the same P1E feasible incumbent and rate cap preserve the upper bound; the P1B universal lower bound persists.
+with the explicit constants in (19).  For the fixed accepted P1E \(X,w\), certified zero-floor edge supergraphs and exact inner minimization of \(\mathfrak D_2\) at the same rate cap preserve the upper bound; the P1B universal lower bound persists.  Ordinary node/weight moves or descent for a combined objective do not inherit (19).
 
-This is the requested asymptotic theorem.  Finite fitted slopes are reported only as supplementary regressions.  The benchmark records \(N\), \(|E|\), \(h\), \(\mathfrak D_2\), \(r_{\max}\), \(\kappa_2^+\), higher-shell defects, collision rotation spread, solve time, and peak memory at every tested level.
+This is the requested asymptotic theorem.  Finite fitted slopes are reported only as supplementary regressions.  The theorem uses the accepted P1E admissibility predicate, including its fixed \(M_0=2^{80}\) construction and declared schedule.  Practical \(M_0=32,64\) rows are labelled finite floating regressions, not theorem levels.  Each row records \(N\), \(|E|\), \(h\), \(\mathfrak D_2\), \(r_{\max}\), \(\kappa_2^+\), higher-shell defects, a 24-rotation empirical collision sample, solve time, and peak memory.
 
 ## 12. Rotation claims and tests
 
@@ -366,7 +382,7 @@ The required tests are:
 4. **Streaming joint rotation.**  Co-rotate quadrature, geometry, and spatial mesh, or use analytic characteristics/rotationally symmetric geometry.  Otherwise spatial anisotropy contaminates the result.
 5. **Coupled BFP.**  Report the coupled spread separately; never label it collision error alone.
 
-A sampled \(SO(3)\) maximum is certified only with a rotation-net covering radius \(\delta\) and a proved Lipschitz constant \(K\): the true extrema lie within \(K\delta\) of the sampled extrema.  Stable linear response problems admit such a bound from the resolvent/adjoint identity and a uniform coercivity constant.  Discontinuous beams without this bound remain empirical.
+A sampled \(SO(3)\) maximum is certified only with a rotation-net covering radius \(\delta\) and a proved Lipschitz constant \(K\): the true extrema lie within \(K\delta\) of the sampled extrema.  Stable linear response problems admit such a bound only after uniform rotation-derivative or Lipschitz bounds for the operator and data are proved; the resolvent/adjoint identity and uniform coercivity then convert those bounds into \(K\).  Discontinuous beams without this bound remain empirical.
 
 Quadrature rotation or interpolation is a separate streaming remedy.  Its audit records
 \[
@@ -378,7 +394,7 @@ the operator norm, and accumulated error.  Generic positive interpolation need n
 
 ## 13. Reproducibility and certification
 
-Every run records:
+The production-run record contract requires:
 
 - family and parameter/orbit file;
 - canonical node, weight, graph, and conductance hashes;
@@ -403,7 +419,7 @@ The external literature is used only for its stated background result:
 - Steinerberger, “Spectral Limitations of Quadrature Rules and Generalized Spherical Designs,” [arXiv:1708.08736](https://arxiv.org/abs/1708.08736), supplies spectral limitations for positive quadrature; it is not a co-design construction.
 - Ahrens and Beylkin, “Rotationally Invariant Quadratures for the Sphere,” [DOI 10.1098/rspa.2009.0104](https://doi.org/10.1098/rspa.2009.0104), supplies icosahedral invariant quadrature methodology; it does not prove positive shared-edge generator feasibility.
 - Morel et al., “A Discretization Scheme for the Three-Dimensional Angular Fokker–Planck Operator,” [DOI 10.13182/NSE07-A2693](https://doi.org/10.13182/NSE07-A2693), supplies the product-quadrature AFP context; it is not the present bilevel theorem.
-- Bienvenue et al., “A Flexible, Moment-Preserving, and Monotone Discretization…,” [DOI 10.1080/00295639.2025.2462891](https://doi.org/10.1080/00295639.2025.2462891), supplies nonorthogonal/Voronoi AFP context and keeps ray effects separate; it does not prove the P2A optimum or Paper-I frontier.
+- Bienvenue et al., “A Flexible, Moment-Preserving, and Monotone Discretization…,” [DOI 10.1080/00295639.2025.2462891](https://doi.org/10.1080/00295639.2025.2462891), supplies nonorthogonal/Voronoi moment-preserving monotone AFP context; it does not prove the P2A optimum, Paper-I frontier, or the present ray-effect separation.
 - Bondarenko–Radchenko–Viazovska, “Well separated spherical designs,” [arXiv:1303.5991](https://arxiv.org/abs/1303.5991), supplies well-separated design existence, not local generator compatibility.
 - Izmestiev and Lam, “Discrete Laplacians—spherical and hyperbolic,” [arXiv:2408.04877](https://arxiv.org/abs/2408.04877), supplies spherical Delaunay nonnegative structure, not this bilevel optimum.
 

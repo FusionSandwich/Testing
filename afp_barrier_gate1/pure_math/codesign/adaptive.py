@@ -79,8 +79,11 @@ def deterministic_mark(
         raise ValueError("indicators must be a finite nonnegative vector")
     if not 0 < bulk_fraction <= 1:
         raise ValueError("bulk fraction must lie in (0,1]")
+    total = float(np.sum(value))
+    if total == 0.0:
+        return ()
     order = sorted(range(len(value)), key=lambda i: (-value[i], i))
-    target = bulk_fraction * float(np.sum(value))
+    target = bulk_fraction * total
     selected: list[int] = []
     running = 0.0
     for index in order:
@@ -112,7 +115,14 @@ def antipodal_response_proposal(
     feasibility are deliberately rechecked by downstream gates.
     """
 
-    marked = deterministic_mark(indicators, bulk_fraction=bulk_fraction)
+    indicator_vector = np.asarray(indicators, dtype=float)
+    if indicator_vector.shape != (candidate.node_count,):
+        raise ValueError("adaptive indicators need one entry per node")
+    marked = deterministic_mark(
+        indicator_vector, bulk_fraction=bulk_fraction
+    )
+    if not marked:
+        raise ValueError("zero indicators define no refinement proposal")
     index = marked[0]
     x = candidate.nodes[index]
     tangent = np.asarray([x[1] - x[2], x[2] - x[0], x[0] - x[1]])

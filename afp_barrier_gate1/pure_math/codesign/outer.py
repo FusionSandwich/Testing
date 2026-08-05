@@ -51,6 +51,8 @@ class ObjectiveTerms:
         )
         if any(not np.isfinite(value) or value < 0 for value in values):
             raise ValueError("objective terms must be finite and nonnegative")
+        if self.conditioning < 1.0:
+            raise ValueError("a condition number cannot be below one")
         return float(
             weights.defect2 * self.defect2
             + weights.rate * self.rate
@@ -86,17 +88,50 @@ class OuterEvaluation:
     feasible_verified: bool
     inner_verified: bool
     certification: str
+    objective_lower: float | None = None
+    objective_upper: float | None = None
     diagnostics: Mapping[str, float | str] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        if not np.isfinite(self.objective):
+            raise ValueError("outer objective must be finite")
+        if (self.objective_lower is None) != (self.objective_upper is None):
+            raise ValueError("objective enclosure needs both endpoints")
+        if self.certification == "OUTWARD_INTERVAL":
+            if self.objective_lower is None:
+                raise ValueError("outward interval needs objective bounds")
+            if not (
+                np.isfinite(self.objective_lower)
+                and np.isfinite(self.objective_upper)
+                and self.objective_lower <= self.objective
+                <= self.objective_upper
+            ):
+                raise ValueError("invalid outward objective enclosure")
+
+    @property
+    def lower(self) -> float:
+        if self.certification == "EXACT":
+            return float(self.objective)
+        if self.objective_lower is None:
+            raise ValueError("evaluation has no theorem-bearing lower bound")
+        return float(self.objective_lower)
+
+    @property
+    def upper(self) -> float:
+        if self.certification == "EXACT":
+            return float(self.objective)
+        if self.objective_upper is None:
+            raise ValueError("evaluation has no theorem-bearing upper bound")
+        return float(self.objective_upper)
 
     @property
     def accepted_certificate(self) -> bool:
         return (
             self.feasible_verified
             and self.inner_verified
-            and self.certification in {
-                "EXACT", "OUTWARD_INTERVAL", "VERIFIED_FLOAT"
-            }
+            and self.certification in {"EXACT", "OUTWARD_INTERVAL"}
         )
+
 
 
 Evaluator = Callable[[QuadratureCandidate], OuterEvaluation]
@@ -137,39 +172,44 @@ def certified_proximal_step(
     alpha: float,
     distance: Callable[[QuadratureCandidate, QuadratureCandidate], float] = labelled_distance,
 ) -> ProximalStep:
-    """Globally minimize the proximal objective over a declared finite pool.
-
-    The pool is an executable approximation of the compact-stratum proximal
-    theorem.  It certifies descent over this pool only, not continuum
-    stationarity or global outer optimality.
-    """
+    """Accept only a nonoverlapping certified proximal decrease in a finite pool."""
 
     if not np.isfinite(alpha) or alpha <= 0:
         raise ValueError("alpha must be finite and positive")
     before = evaluator(current)
     if not before.accepted_certificate:
-        raise RuntimeError("current incumbent lacks a verified certificate")
-    pool = [current, *candidate_pool]
+        raise RuntimeError("current incumbent lacks an exact/interval certificate")
     evaluated: list[tuple[float, str, OuterEvaluation, float]] = []
-    for proposal in pool:
+    for proposal in candidate_pool:
         report = evaluator(proposal)
         if not report.accepted_certificate:
             continue
         gap = distance(proposal, current)
         if not np.isfinite(gap):
             continue
-        score = report.objective + gap * gap / (2.0 * alpha)
+        score_upper = report.upper + gap * gap / (2.0 * alpha)
         key = f"{proposal.family}:{proposal.node_count}:{proposal.edge_count}"
-        evaluated.append((float(score), key, report, float(gap)))
+        evaluated.append((float(score_upper), key, report, float(gap)))
     if not evaluated:
-        raise RuntimeError("no proposal, including the incumbent, verified")
-    score, _, after, gap = min(evaluated, key=lambda row: (row[0], row[1]))
-    descent = before.objective - after.objective
-    tolerance = 5e-11 * max(1.0, abs(before.objective), abs(after.objective))
-    accepted = after.objective + gap * gap / (2.0 * alpha) <= before.objective + tolerance
+        return ProximalStep(
+            before, before, 0.0, before.upper, 0.0, False
+        )
+    score, _, proposal, gap = min(
+        evaluated, key=lambda row: (row[0], row[1])
+    )
+    accepted = score <= before.lower
     if not accepted:
-        after, gap, score, descent = before, 0.0, before.objective, 0.0
-    return ProximalStep(before, after, gap, score, descent, accepted)
+        return ProximalStep(
+            before, before, 0.0, before.upper, 0.0, False
+        )
+    return ProximalStep(
+        before,
+        proposal,
+        gap,
+        score,
+        before.lower - proposal.upper,
+        True,
+    )
 
 
 @dataclass(frozen=True)
@@ -201,7 +241,7 @@ def accept_restored_armijo(
     if trial.step_size <= 0 or trial.direction_norm < 0:
         raise ValueError("invalid restored trial")
     required = armijo * trial.step_size * trial.direction_norm**2
-    observed = current.objective - trial.evaluation.objective
+    observed = current.lower - trial.evaluation.upper
     checks = {
         "current certificate": current.accepted_certificate,
         "trial certificate": trial.evaluation.accepted_certificate,
@@ -229,10 +269,11 @@ class AlternatingLedger:
         if not evaluation.accepted_certificate:
             raise ValueError("cannot record an uncertified accepted block")
         if self.evaluations:
-            previous = self.evaluations[-1].objective
-            tolerance = 5e-11 * max(1.0, abs(previous))
-            if evaluation.objective > previous + tolerance:
-                raise ValueError("accepted alternating block increased the objective")
+            previous = self.evaluations[-1]
+            if evaluation.upper > previous.lower:
+                raise ValueError(
+                    "accepted alternating block lacks certified nonincrease"
+                )
         self.block_labels.append(label)
         self.evaluations.append(evaluation)
 

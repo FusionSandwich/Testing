@@ -9,7 +9,9 @@ from typing import Iterable, Sequence
 import numpy as np
 from numpy.polynomial.legendre import leggauss
 from numpy.typing import ArrayLike, NDArray
-from scipy.spatial import ConvexHull
+from scipy.spatial import ConvexHull, QhullError
+
+from pure_math.optimization import real_harmonic_samples
 
 from .types import FamilyDescriptor, QuadratureCandidate
 
@@ -130,9 +132,18 @@ def weak_delaunay_edges(
     """
 
     x = np.asarray(nodes, dtype=float)
-    if x.ndim != 2 or x.shape[1] != 3 or len(x) < 4:
+    if not np.isfinite(facet_tolerance) or facet_tolerance <= 0:
+        raise ValueError("facet_tolerance must be finite and positive")
+    if x.ndim != 2 or x.shape[1] != 3:
+        raise ValueError("nodes must have shape (N,3)")
+    if len(x) < 4:
         return complete_edges(len(x))
-    hull = ConvexHull(x)
+    try:
+        hull = ConvexHull(x)
+    except QhullError as error:
+        raise ValueError(
+            "weak spherical Delaunay requires a full-dimensional node hull"
+        ) from error
     groups: list[tuple[np.ndarray, float, set[int]]] = []
     for simplex, equation in zip(hull.simplices, hull.equations, strict=True):
         normal = np.asarray(equation[:3], dtype=float)
@@ -227,10 +238,12 @@ def level_symmetric_from_orbits(
         nodes.extend(orbit)
         weights.extend([float(mass) / len(orbit)] * len(orbit))
     x = np.asarray(nodes)
-    selected = (
-        weak_delaunay_edges(x) if graph == "weak_delaunay"
-        else complete_edges(len(x))
-    )
+    if graph == "weak_delaunay":
+        selected = weak_delaunay_edges(x)
+    elif graph == "complete":
+        selected = complete_edges(len(x))
+    else:
+        raise ValueError("unsupported level-symmetric graph")
     return QuadratureCandidate.build(
         "level_symmetric", x, weights, selected,
         metadata={"orbit_sizes": orbit_sizes, "graph_rule": graph},
@@ -239,7 +252,12 @@ def level_symmetric_from_orbits(
 
 def lebedev_6(*, graph: str = "weak_delaunay") -> QuadratureCandidate:
     nodes = np.vstack([np.eye(3), -np.eye(3)])
-    edges = weak_delaunay_edges(nodes) if graph == "weak_delaunay" else complete_edges(6)
+    if graph == "weak_delaunay":
+        edges = weak_delaunay_edges(nodes)
+    elif graph == "complete":
+        edges = complete_edges(6)
+    else:
+        raise ValueError("unsupported Lebedev-6 graph")
     return QuadratureCandidate.build(
         "lebedev", nodes, np.full(6, 1.0 / 6.0), edges,
         metadata={"rule": "octahedral-6", "advertised_degree": 3, "graph_rule": graph},
@@ -251,7 +269,12 @@ def lebedev_14(*, graph: str = "weak_delaunay") -> QuadratureCandidate:
     cube = np.asarray(list(product((-1.0, 1.0), repeat=3))) / math.sqrt(3.0)
     nodes = np.vstack([axes, cube])
     weights = np.concatenate([np.full(6, 1.0 / 15.0), np.full(8, 3.0 / 40.0)])
-    edges = weak_delaunay_edges(nodes) if graph == "weak_delaunay" else complete_edges(14)
+    if graph == "weak_delaunay":
+        edges = weak_delaunay_edges(nodes)
+    elif graph == "complete":
+        edges = complete_edges(14)
+    else:
+        raise ValueError("unsupported Lebedev-14 graph")
     return QuadratureCandidate.build(
         "lebedev", nodes, weights, edges,
         metadata={"rule": "octahedral-14", "advertised_degree": 5, "graph_rule": graph},
@@ -271,7 +294,12 @@ def ahrens_beylkin_icosahedral_fixture(
                 nodes.extend(([0.0, s * a, t * b], [s * a, t * b, 0.0], [t * b, 0.0, s * a]))
     x = np.asarray(nodes)
     x /= np.linalg.norm(x, axis=1)[:, None]
-    edges = weak_delaunay_edges(x) if graph == "weak_delaunay" else complete_edges(12)
+    if graph == "weak_delaunay":
+        edges = weak_delaunay_edges(x)
+    elif graph == "complete":
+        edges = complete_edges(12)
+    else:
+        raise ValueError("unsupported icosahedral-fixture graph")
     return QuadratureCandidate.build(
         "ahrens_beylkin", x, np.full(12, 1.0 / 12.0), edges,
         metadata={"rule": "icosahedral-vertex-orbit-fixture", "graph_rule": graph},
@@ -283,13 +311,42 @@ def spherical_design_candidate(
     strength: int,
     *,
     graph: str = "weak_delaunay",
+    moment_tolerance: float = 2e-11,
 ) -> QuadratureCandidate:
     x = np.asarray(nodes, dtype=float)
+    if strength < 1:
+        raise ValueError("design strength must be positive")
+    if not np.isfinite(moment_tolerance) or moment_tolerance <= 0:
+        raise ValueError("moment_tolerance must be finite and positive")
     weights = np.full(len(x), 1.0 / len(x))
-    selected = weak_delaunay_edges(x) if graph == "weak_delaunay" else complete_edges(len(x))
+    moment_residual = max(
+        float(np.linalg.norm(
+            weights @ real_harmonic_samples(x, degree),
+            ord=np.inf,
+        ))
+        for degree in range(1, int(strength) + 1)
+    )
+    if moment_residual > moment_tolerance:
+        raise ValueError(
+            f"nodes fail the declared t-design moment audit: "
+            f"{moment_residual:.3e} > {moment_tolerance:.3e}"
+        )
+    if graph == "weak_delaunay":
+        selected = weak_delaunay_edges(x)
+    elif graph == "complete":
+        selected = complete_edges(len(x))
+    elif graph == "knn":
+        selected = knn_edges(x, min(6, len(x) - 1))
+    else:
+        raise ValueError("unsupported spherical-design graph")
     return QuadratureCandidate.build(
         "spherical_design", x, weights, selected,
-        metadata={"declared_strength": int(strength), "graph_rule": graph},
+        metadata={
+            "declared_strength": int(strength),
+            "graph_rule": graph,
+            "strength_certification": "VERIFIED_FLOAT_MOMENT_RESIDUAL",
+            "moment_residual": moment_residual,
+        },
     )
 
 
@@ -319,7 +376,14 @@ def maximal_net_candidate(
         chosen.append(candidate)
         best_dot = np.maximum(best_dot, pool @ pool[candidate])
     x = pool[np.asarray(chosen)]
-    selected = weak_delaunay_edges(x) if graph == "weak_delaunay" else complete_edges(len(x))
+    if graph == "weak_delaunay":
+        selected = weak_delaunay_edges(x)
+    elif graph == "complete":
+        selected = complete_edges(len(x))
+    elif graph == "knn":
+        selected = knn_edges(x, min(6, len(x) - 1))
+    else:
+        raise ValueError("unsupported maximal-net graph")
     return QuadratureCandidate.build(
         "maximal_net", x, np.full(count, 1.0 / count), selected,
         metadata={

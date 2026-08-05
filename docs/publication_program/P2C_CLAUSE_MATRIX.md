@@ -14,7 +14,7 @@
 | prove invariance | Theorem 4 plus intrinsic graph and tie-break conditions |
 | prove feasibility preservation | Theorems 5–7, restoration and retention gates |
 | prove descent | proximal inequality (9), restored Armijo, interval graph gap |
-| prove stationarity | Theorems 5–6 and Clarke condition (11) |
+| prove continuous-stratum stationarity | Theorems 5–6 and Clarke condition (11); graph search has the narrower certified-improvement conclusion |
 | prove compactness/existence | protected set and Theorem 3 |
 | prove convergence of subsequences | Theorems 5–6 |
 | avoid nonconvex global-optimality overclaim | explicit scope, counterexample, claim map |
@@ -30,7 +30,7 @@
 | interpolation only as separate remedy | Section 12 and interpolation audit |
 | convergence order for a co-designed family | Theorem 8, exact P1B/P1E constants at every level |
 | connect Paper-I lower and upper bounds | equation (19), symbolic constant audit |
-| record N, E, rate, condition, shell, rotation, time, memory | ConvergenceRow and benchmark JSON |
+| record N, E, rate, Gram condition, shell, sampled rotation, time, memory | ConvergenceRow and benchmark JSON; certified SO(3) extrema require a separate net enclosure |
 | reproducibility | Section 13, deterministic ordering, hashes, CI, exact audit |
 | prior-art hypotheses and limits | prior-art/hostile audit ledger |
 | multi-route search and blocked-route discipline | approach-family registry |

@@ -16,7 +16,7 @@ import numpy as np
 from numpy.typing import ArrayLike, NDArray
 
 from .inner import moving_gram_data
-from .metrics import geometry_report, generator_report, to_graph
+from .metrics import geometry_report, generator_report, sampling_reports, to_graph
 from .types import Certification, CertifiedValue, QuadratureCandidate
 
 FloatArray = NDArray[np.float64]
@@ -89,7 +89,11 @@ def audit_protected_stratum(
     geometry = geometry_report(candidate, fill_probe_count=1024)
     report = generator_report(candidate, value, degrees=(degree,))
     _, gram, _, _ = moving_gram_data(candidate, value, degree)
-    gram_min = float(np.min(np.linalg.eigvalsh(0.5 * (gram + gram.T))))
+    sampling = sampling_reports(candidate, (degree,))[0]
+    gram_eigenvalues = np.linalg.eigvalsh(0.5 * (gram + gram.T))
+    gram_min = float(
+        np.sort(gram_eigenvalues)[-sampling.rank]
+    )
     trace_residual = h1_trace_identity(candidate, value).value
     scale = max(1.0, rate_cap if np.isfinite(rate_cap) else 1.0)
     passed = bool(

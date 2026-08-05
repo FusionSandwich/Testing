@@ -9,9 +9,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum
+from types import MappingProxyType
 from typing import Any, Iterable, Mapping
 
 import numpy as np
+from scipy.spatial import cKDTree
 from numpy.typing import ArrayLike, NDArray
 
 FloatArray = NDArray[np.float64]
@@ -47,6 +49,11 @@ class CertifiedValue:
             raise ValueError("invalid upper enclosure")
         if (self.lower is None) != (self.upper is None):
             raise ValueError("an enclosure needs both endpoints")
+        if (
+            self.certification is Certification.OUTWARD_INTERVAL
+            and self.lower is None
+        ):
+            raise ValueError("outward-interval certification needs an enclosure")
 
     @property
     def proved(self) -> bool:
@@ -165,7 +172,7 @@ class QuadratureCandidate:
         *,
         seed_conductance: ArrayLike | None = None,
         metadata: Mapping[str, Any] | None = None,
-        unit_tolerance: float = 5e-11,
+        unit_tolerance: float = 5e-12,
         mass_tolerance: float = 5e-12,
     ) -> "QuadratureCandidate":
         x = np.asarray(nodes, dtype=float)
@@ -176,6 +183,12 @@ class QuadratureCandidate:
             raise ValueError("nodes contain a nonfinite value")
         if np.max(np.abs(np.linalg.norm(x, axis=1) - 1.0)) > unit_tolerance:
             raise ValueError("nodes are not unit vectors")
+        duplicate_pairs = cKDTree(x).query_pairs(r=5.0 * unit_tolerance)
+        if duplicate_pairs:
+            raise ValueError(
+                f"candidate contains duplicate/colliding nodes: "
+                f"{sorted(duplicate_pairs)[:3]}"
+            )
         if w.shape != (len(x),) or not np.all(np.isfinite(w)) or np.min(w) <= 0:
             raise ValueError("weights must be finite and strictly positive")
         if abs(float(np.sum(w)) - 1.0) > mass_tolerance:
@@ -191,9 +204,14 @@ class QuadratureCandidate:
             if not np.all(np.isfinite(gamma)) or np.min(gamma) < 0:
                 raise ValueError("seed conductance must be finite and nonnegative")
             gamma = gamma.copy()
+        x_out, w_out, edge_out = x.copy(), w.copy(), edge_array.copy()
+        for array in (x_out, w_out, edge_out):
+            array.setflags(write=False)
+        if gamma is not None:
+            gamma.setflags(write=False)
         return cls(
-            str(family), x.copy(), w.copy(), edge_array.copy(), gamma,
-            dict(metadata or {}),
+            str(family), x_out, w_out, edge_out, gamma,
+            MappingProxyType(dict(metadata or {})),
         )
 
     @property
@@ -230,6 +248,9 @@ class FamilyDescriptor:
     exactness_gate: str
     positivity_gate: str
     warning: str
+    sampling_metric: str = "kappa_plus(G_l)=lambda_max/lambda_min_positive"
+    feasibility_metric: str = "local barycentric margin plus global shared-edge LP margin"
+    rotation_metric: str = "declared physical harmonic collision spread under fixed quadrature"
 
 
 @dataclass(frozen=True)

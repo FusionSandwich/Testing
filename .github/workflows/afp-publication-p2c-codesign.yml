@@ -135,6 +135,7 @@ jobs:
             'clarabel==0.11.1' 'cvxpy==1.7.3' 'numpy==2.3.2' \
             'osqp==1.0.4' 'pytest==8.4.2' 'scipy==1.18.0' \
             'scs==3.2.9' 'sympy==1.14.0' | tee "${out}/dependencies.log"
+          python -m pip freeze --all | sort > "${out}/pip-freeze.txt"
 
       - name: Run P2C exact audit, benchmark, and hostile tests
         working-directory: afp_barrier_gate1
@@ -150,6 +151,8 @@ jobs:
             pure_math/tests/test_p2c_codesign.py | tee "${out}/pytest.log"
           grep -Fxq 'P2C_EXACT_AUDIT_PASS' "${out}/exact-audit.log"
           grep -Fxq 'P2C_CODESIGN_AUDIT_PASS' "${out}/codesign-audit.log"
+          grep -Fq '"optimized_inner": true' "${out}/codesign-audit.log"
+          grep -Fq '"verification": "VERIFIED_FLOAT_FINITE_REGRESSION+EMPIRICAL_ROTATION_SAMPLE"' "${out}/codesign-audit.log"
           grep -Eq '^[0-9]+ passed(, [0-9]+ [a-z]+)* in ' "${out}/pytest.log"
 
       - name: Run retained P1E, P2A, and P2B regressions
@@ -232,16 +235,7 @@ jobs:
           set -euo pipefail
           out="${RUNNER_TEMP}/p2c-exact"
           name="afp-publication-p2c-source-${CANDIDATE_SHA}.tar.gz"
-          git archive --format=tar.gz --output="${out}/${name}" "${CANDIDATE_SHA}" -- \
-            .github/workflows/afp-publication-p2c-codesign.yml \
-            docs/publication_program/P2C_APPROACH_REGISTRY.md \
-            docs/publication_program/P2C_CLAIM_MAP.md \
-            docs/publication_program/P2C_CLAUSE_MATRIX.md \
-            docs/publication_program/P2C_PRIOR_ART_AND_HOSTILE_AUDIT.md \
-            docs/publication_program/P2C_QUADRATURE_GENERATOR_CODESIGN.md \
-            docs/publication_program/P2C_STAGE_REPORT.md \
-            afp_barrier_gate1/pure_math/codesign \
-            afp_barrier_gate1/pure_math/tests/test_p2c_codesign.py
+          git archive --format=tar.gz --output="${out}/${name}" "${CANDIDATE_SHA}"
           sha256sum "${out}/${name}" > "${out}/${name}.sha256"
           printf 'commit=%s\ntree=%s\nbase=%s\nrun=%s\nattempt=%s\n' \
             "${CANDIDATE_SHA}" "$(git rev-parse HEAD^{tree})" "${P2B_COMMIT}" \

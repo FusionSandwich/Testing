@@ -8,7 +8,6 @@ from typing import Callable, Iterable, Sequence
 import numpy as np
 from numpy.typing import ArrayLike
 
-from .metrics import to_graph
 from .types import QuadratureCandidate
 
 
@@ -110,9 +109,14 @@ def certified_graph_decision(
         raise ValueError("penalties/decrease must be nonnegative")
     old_lower = old.objective.lower + edge_penalty * old.candidate.edge_count
     new_upper = new.objective.upper + edge_penalty * new.candidate.edge_count
+    accepted_labels = {"EXACT", "OUTWARD_INTERVAL"}
     certificates = (
-        old.feasible_verified and old.inner_verified
-        and new.feasible_verified and new.inner_verified
+        old.feasible_verified
+        and old.inner_verified
+        and new.feasible_verified
+        and new.inner_verified
+        and old.certificate in accepted_labels
+        and new.certificate in accepted_labels
     )
     decrease = new_upper <= old_lower - strict_decrease
     return GraphDecision(
@@ -132,35 +136,52 @@ def verify_zero_extension(
     *,
     tolerance: float = 3e-11,
 ) -> bool:
-    """Directly audit the edge-addition embedding theorem."""
+    """Audit the structural embedding E subset E' and zero new edges.
 
-    old_graph, new_graph = to_graph(old), to_graph(new)
+    Identical nodes/masses plus exact edge inclusion prove equality of the
+    whole generator and every shell action; no dense matrix is assembled.
+    A tolerance is used only for conductance values, so this return is a
+    verified-float regression unless those values are exact objects upstream.
+    """
+
     old_value = np.asarray(gamma_old, dtype=float)
     new_value = np.asarray(gamma_new, dtype=float)
-    lookup = {
-        _edge_tuple(edge): float(value)
-        for edge, value in zip(new.edges, new_value, strict=True)
-    }
-    if any(edge not in lookup for edge in map(_edge_tuple, old.edges)):
+    if (
+        old.nodes.shape != new.nodes.shape
+        or old.weights.shape != new.weights.shape
+        or not np.array_equal(old.nodes, new.nodes)
+        or not np.array_equal(old.weights, new.weights)
+        or old_value.shape != (old.edge_count,)
+        or new_value.shape != (new.edge_count,)
+        or not np.all(np.isfinite(old_value))
+        or not np.all(np.isfinite(new_value))
+    ):
         return False
-    reconstructed = np.asarray([lookup[_edge_tuple(edge)] for edge in old.edges])
-    new_only = [
-        lookup[_edge_tuple(edge)]
-        for edge in new.edges
-        if _edge_tuple(edge) not in set(map(_edge_tuple, old.edges))
-    ]
+    old_edges = tuple(_edge_tuple(edge) for edge in old.edges)
+    new_edges = tuple(_edge_tuple(edge) for edge in new.edges)
+    old_set, new_set = set(old_edges), set(new_edges)
+    if not old_set <= new_set:
+        return False
+    lookup = {
+        edge: float(value)
+        for edge, value in zip(new_edges, new_value, strict=True)
+    }
+    reconstructed = np.asarray([lookup[edge] for edge in old_edges])
+    added = np.asarray(
+        [lookup[edge] for edge in new_edges if edge not in old_set],
+        dtype=float,
+    )
+    scale = max(
+        1.0,
+        float(np.max(np.abs(old_value))) if old_value.size else 0.0,
+    )
     return bool(
-        np.linalg.norm(reconstructed - old_value, ord=np.inf) <= tolerance
-        and (not new_only or max(map(abs, new_only)) <= tolerance)
-        and np.linalg.norm(
-            old_graph.h1_matrix @ old_value - new_graph.h1_matrix @ new_value,
-            ord=np.inf,
-        ) <= tolerance
-        and np.linalg.norm(
-            old_graph.endpoint_incidence @ old_value
-            - new_graph.endpoint_incidence @ new_value,
-            ord=np.inf,
-        ) <= tolerance
+        np.linalg.norm(reconstructed - old_value, ord=np.inf)
+        <= tolerance * scale
+        and (
+            added.size == 0
+            or np.max(np.abs(added)) <= tolerance * scale
+        )
     )
 
 
@@ -173,17 +194,26 @@ def verify_deletion_kernel_move(
     rate_cap: float,
     tolerance: float = 2e-10,
 ) -> bool:
-    graph = to_graph(candidate)
+    """Check an H1-feasible deletion seed, not shell/objective acceptance."""
+
     value, move = np.asarray(gamma, dtype=float), np.asarray(delta, dtype=float)
-    if value.shape != (graph.edge_count,) or move.shape != value.shape:
+    if value.shape != (candidate.edge_count,) or move.shape != value.shape:
         return False
     trial = value + move
+    from .metrics import apply_generator
+
+    h1_move = apply_generator(candidate, move, candidate.nodes)
+    endpoint_sum = np.zeros(candidate.node_count)
+    i, j = candidate.edges[:, 0], candidate.edges[:, 1]
+    np.add.at(endpoint_sum, i, trial)
+    np.add.at(endpoint_sum, j, trial)
+    rates = endpoint_sum / candidate.weights
     return bool(
-        0 <= deleted_edge < graph.edge_count
+        0 <= deleted_edge < candidate.edge_count
         and abs(trial[deleted_edge]) <= tolerance
         and np.min(trial) >= -tolerance
-        and np.linalg.norm(graph.h1_matrix @ move, ord=np.inf) <= tolerance
-        and np.max(graph.rates(trial)) <= rate_cap + tolerance
+        and np.linalg.norm(h1_move, ord=np.inf) <= tolerance
+        and np.max(rates) <= rate_cap + tolerance
     )
 
 

@@ -5,7 +5,11 @@ import math
 import numpy as np
 import pytest
 
-from pure_math.codesign.adaptive import deterministic_mark, enriched_response_identity
+from pure_math.codesign.adaptive import (
+    antipodal_response_proposal,
+    deterministic_mark,
+    enriched_response_identity,
+)
 from pure_math.codesign.convergence import (
     PAPER_I_LOWER_CONSTANT,
     PAPER_I_RATE_CONSTANT,
@@ -47,7 +51,11 @@ from pure_math.codesign.inner import (
     moving_gram_block,
     verify_moving_gram_epigraph,
 )
-from pure_math.codesign.metrics import generator_report, sampling_reports
+from pure_math.codesign.metrics import (
+    apply_generator,
+    generator_report,
+    sampling_reports,
+)
 from pure_math.codesign.outer import (
     ObjectiveTerms,
     ObjectiveWeights,
@@ -56,11 +64,17 @@ from pure_math.codesign.outer import (
 )
 from pure_math.codesign.rotations import (
     audit_rotation_interpolation,
+    axis_angle,
+    collision_probe_value,
     collision_rotation_spread,
     joint_collision_covariance_defect,
     signed_permutation_rotations,
 )
-from pure_math.codesign.types import QuadratureCandidate
+from pure_math.codesign.types import (
+    Certification,
+    CertifiedValue,
+    QuadratureCandidate,
+)
 
 
 def test_all_requested_family_descriptors_are_explicit() -> None:
@@ -163,16 +177,16 @@ def test_certified_graph_decision_is_fail_closed() -> None:
     old_candidate = octahedral_complete_fixture()
     new_candidate = old_candidate
     old = GraphEvaluation(
-        old_candidate, ObjectiveInterval(1.0, 1.01), True, True, "old"
+        old_candidate, ObjectiveInterval(1.0, 1.01), True, True, "OUTWARD_INTERVAL"
     )
     new = GraphEvaluation(
-        new_candidate, ObjectiveInterval(0.80, 0.81), True, True, "new"
+        new_candidate, ObjectiveInterval(0.80, 0.81), True, True, "OUTWARD_INTERVAL"
     )
     assert certified_graph_decision(
         old, new, edge_penalty=0.0, strict_decrease=0.01
     ).accepted
     uncertified = GraphEvaluation(
-        new_candidate, ObjectiveInterval(0.1, 0.2), True, False, "solver-only"
+        new_candidate, ObjectiveInterval(0.1, 0.2), True, False, "DIAGNOSTIC"
     )
     assert not certified_graph_decision(old, uncertified).accepted
 
@@ -240,7 +254,11 @@ def test_finite_proximal_controller_certifies_descent_without_global_claim() -> 
     current = octahedral_complete_fixture()
     proposal = current.rotated(np.eye(3))
 
+    calls: dict[int, int] = {}
+
     def evaluator(candidate):
+        key = id(candidate)
+        calls[key] = calls.get(key, 0) + 1
         value = 2.0 if "joint_rotation" not in candidate.metadata else 1.8
         terms = ObjectiveTerms(value, 0.0)
         return OuterEvaluation(
@@ -249,12 +267,13 @@ def test_finite_proximal_controller_certifies_descent_without_global_claim() -> 
             value,
             True,
             True,
-            "VERIFIED_FLOAT",
+            "EXACT",
         )
 
     step = certified_proximal_step(
         current, [proposal], evaluator, alpha=1.0
     )
+    assert calls[id(current)] == 1
     assert step.accepted
     assert step.after.objective <= step.before.objective
 
@@ -279,3 +298,147 @@ def test_symbolic_audit() -> None:
     assert result["H1"] == "exact eigenvalue -2"
     assert result["H2_dense_defect"] == "4"
     assert result["paper_I_lower_times_rate_cap"] == "6"
+
+
+def test_sparse_generator_matches_inherited_dense_generator() -> None:
+    candidate = octahedral_complete_fixture()
+    from pure_math.codesign.metrics import to_graph
+
+    dense = to_graph(candidate).generator(candidate.seed_conductance)
+    fields = np.column_stack([
+        np.arange(candidate.node_count, dtype=float),
+        candidate.nodes,
+    ])
+    assert np.allclose(
+        apply_generator(candidate, candidate.seed_conductance, fields),
+        dense @ fields,
+        atol=2e-13,
+    )
+
+
+def test_matrix_free_reports_do_not_construct_quadrature_graph(monkeypatch) -> None:
+    candidate = icosahedral_complete_fixture()
+    import pure_math.codesign.metrics as metrics
+
+    monkeypatch.setattr(
+        metrics,
+        "to_graph",
+        lambda *args, **kwargs: (_ for _ in ()).throw(
+            AssertionError("dense graph construction forbidden")
+        ),
+    )
+    report = generator_report(candidate, candidate.seed_conductance, (2,))
+    sampling = sampling_reports(candidate, (2,))[0]
+    assert abs(report.shell_defects[2] - 4.0) < 2e-10
+    assert abs(sampling.gram_condition - 1.0) < 2e-10
+
+
+@pytest.mark.parametrize(
+    "bad",
+    [
+        2.0 * np.eye(3),
+        np.diag([-1.0, 1.0, 1.0]),
+        np.full((3, 3), np.nan),
+    ],
+)
+def test_collision_probe_rejects_nonrotations(bad) -> None:
+    candidate = icosahedral_complete_fixture()
+    with pytest.raises(ValueError):
+        collision_probe_value(
+            candidate,
+            candidate.seed_conductance,
+            np.ones(5),
+            bad,
+        )
+    with pytest.raises(ValueError):
+        collision_rotation_spread(
+            candidate,
+            candidate.seed_conductance,
+            np.ones(5),
+            (),
+        )
+    with pytest.raises(ValueError):
+        axis_angle([0.0, 0.0, 0.0], 1.0)
+
+
+def test_zero_extension_rejects_changed_nodes_or_weights() -> None:
+    old = octahedral_complete_fixture()
+    moved = old.rotated(axis_angle([1.0, 2.0, 3.0], 0.1))
+    assert not verify_zero_extension(
+        old,
+        moved,
+        old.seed_conductance,
+        moved.seed_conductance,
+    )
+
+
+def test_graph_decision_rejects_diagnostic_objective_interval() -> None:
+    candidate = octahedral_complete_fixture()
+    exact = GraphEvaluation(
+        candidate, ObjectiveInterval(1.0, 1.0), True, True, "EXACT"
+    )
+    diagnostic = GraphEvaluation(
+        candidate, ObjectiveInterval(0.0, 0.1), True, True, "VERIFIED_FLOAT"
+    )
+    assert not certified_graph_decision(exact, diagnostic).accepted
+
+
+def test_zero_indicators_do_not_trigger_refinement() -> None:
+    candidate = octahedral_complete_fixture()
+    assert deterministic_mark(np.zeros(candidate.node_count)) == ()
+    with pytest.raises(ValueError):
+        antipodal_response_proposal(
+            candidate, np.zeros(candidate.node_count), bulk_fraction=0.5
+        )
+    with pytest.raises(ValueError):
+        antipodal_response_proposal(
+            candidate, np.ones(candidate.node_count - 1), bulk_fraction=0.5
+        )
+
+
+@pytest.mark.parametrize(
+    "builder",
+    [
+        lambda: lebedev_6(graph="unknown"),
+        lambda: lebedev_14(graph="unknown"),
+        lambda: ahrens_beylkin_icosahedral_fixture(graph="unknown"),
+        lambda: level_symmetric_from_orbits(
+            [(1, 1, 1)], [1.0], graph="unknown"
+        ),
+        lambda: maximal_net_candidate(10, graph="unknown"),
+    ],
+)
+def test_family_constructors_reject_unknown_graphs(builder) -> None:
+    with pytest.raises(ValueError):
+        builder()
+
+
+def test_duplicate_nodes_are_rejected() -> None:
+    with pytest.raises(ValueError):
+        QuadratureCandidate.build(
+            "duplicate",
+            [[1, 0, 0], [1, 0, 0], [-1, 0, 0]],
+            [0.25, 0.25, 0.5],
+            [(0, 2), (1, 2)],
+        )
+
+
+def test_outward_interval_requires_an_enclosure() -> None:
+    with pytest.raises(ValueError):
+        CertifiedValue(1.0, Certification.OUTWARD_INTERVAL)
+
+
+def test_spherical_design_strength_is_actually_audited() -> None:
+    base = ahrens_beylkin_icosahedral_fixture(graph="complete")
+    admitted = spherical_design_candidate(
+        base.nodes, strength=5, graph="complete"
+    )
+    assert admitted.metadata["strength_certification"].startswith(
+        "VERIFIED_FLOAT"
+    )
+    with pytest.raises(ValueError):
+        spherical_design_candidate(
+            product_rule(2, 4, graph="complete").nodes,
+            strength=5,
+            graph="complete",
+        )

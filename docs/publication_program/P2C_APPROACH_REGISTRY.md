@@ -11,7 +11,7 @@ This registry groups work by mathematical mechanism.  A status of PROVED means t
 | ALTERNATING | weight-led, node-led, exact conductance blocks plus joint safeguard | PROVED | full stationarity with joint safeguard or tangent-frame condition; otherwise only block stationarity |
 | GRAPH-ZERO | edge addition by zero extension | PROVED | feasibility preservation and nonincrease of every fixed convex inner optimum |
 | GRAPH-DELETE | restricted conic reoptimization or exact kernel move | PROVED | conditional safe deletion; no unconditional deletion theorem |
-| GRAPH-FINITE | interval-certified edge-orbit search on a finite master graph | PROVED | finite termination and declared graph-neighborhood stationarity |
+| GRAPH-FINITE | interval-certified edge-orbit search on a finite master graph | PROVED | finite termination with no certified tau-improving unvisited proposal; exact neighbor stationarity needs exclusion enclosures |
 | DESIGN-DENSE | positive centered quadrature plus complete-graph dense conductance | PROVED | exact H0/H1 and strict conductance positivity; H2 defect \(d+1\), hence nonconvergent |
 | DESIGN-LOCAL | quasiuniform spherical design plus a local graph | BLOCKED | design exactness and local cones do not solve shared symmetric conductance compatibility; admitted only after global P2A/P1E certificate |
 | ADAPT-ENRICHED | discrete adjoint residual, deterministic marking, retention on failure | PROVED | exact enriched-reference identity and feasibility/descent for accepted proposals |
