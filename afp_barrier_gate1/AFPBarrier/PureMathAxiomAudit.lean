@@ -16,6 +16,7 @@ import AFPBarrier.QuadraticFidelityFoundation
 import AFPBarrier.QuadraticFidelityLowerBound
 import AFPBarrier.QuadraticEqualityGeometry
 import AFPBarrier.QuadraticFidelityStability
+import AFPBarrier.QuadraticFidelityConstruction
 import AFPBarrier.OneShellQuadraticRigidity
 import AFPBarrier.SpectralSamplingObstruction
 import AFPBarrier.SphericalQEqualityRigidity
@@ -122,6 +123,26 @@ import AFPBarrier.SharpProductBarriers
 #print axioms AFPBarrier.sphericalEigenvalue_dimension_one_not_injective
 #print axioms AFPBarrier.internalScalarOperator_apply_of_mem
 #print axioms AFPBarrier.internalScalarOperator_constants_eq_zero
+
+/-! Prompt P1E: finite construction identities. -/
+
+#print axioms AFPBarrier.construction_constant_reproduction
+#print axioms AFPBarrier.construction_increment_decomposition
+#print axioms AFPBarrier.tangentForce_zero_radialMass_exactForce
+#print axioms AFPBarrier.tangentForce_zero_radialMass_hOne
+#print axioms AFPBarrier.sharedConductance_detailedBalance_entry
+#print axioms AFPBarrier.unnormalizedMoment_div_mass_entry
+#print axioms AFPBarrier.unnormalizedMomentSum_div_mass_entry
+#print axioms AFPBarrier.constructionCorrection_closes
+#print axioms AFPBarrier.constructionCorrection_force_zero
+#print axioms AFPBarrier.fourPointConnector_firstMoment
+#print axioms AFPBarrier.fourPointConnector_cubicMoment
+#print axioms AFPBarrier.fourPointConnector_weight_pos
+#print axioms AFPBarrier.chordMass_outgoingConductance_bound
+#print axioms AFPBarrier.chordMass_normalizedRate_bound
+#print axioms AFPBarrier.regularPolygon_hOne_scalar_recurrence
+#print axioms AFPBarrier.regularPolygon_hTwo_scalar_residual
+#print axioms AFPBarrier.regularPolygon_hTwo_scalar_eigenvalue
 
 #print axioms AFPBarrier.rate_eq_of_symmetric_active_loss
 #print axioms AFPBarrier.rate_eq_of_active_reflTransGen

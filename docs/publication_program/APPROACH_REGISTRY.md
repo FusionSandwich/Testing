@@ -22,7 +22,7 @@ mechanism named below.
 | exact symbolic computation | regressions | COMPUTATIONAL | algebraic Platonic table, 19 P1A fixtures and 24 P1B bound/equality/degeneracy fixtures | finite verification never replaces all-orders theorem | exact certificate for a theorem step | all |
 | Plantri enumeration | adversarial census | COMPUTATIONAL | 9150 maps through 12 vertices | finite census is not classification | larger census only as regression, not proof | I |
 | conic/SDP duality | optimizer/negativity | ACTIVE | proposed primal-dual formulations | normalization and dual attainment not yet frozen | solver-independent exact certificates | II/III |
-| asymptotic construction | match frontier | BLOCKED | loss window and `r=O(h^-2)` compatibility | no complete positive reversible family with certified H2 error | explicit family plus all-order error bound | I |
+| asymptotic construction | match frontier | PROVED_D2_D3 | regular polygons on `S^1` and a no-guard adaptive-ring family on `S^2`, with all-orders constants | no corresponding construction in `d>3`; arbitrary perturbations are not covered | a genuinely new higher-dimensional compiler with global shared-edge margins | I |
 | Delsarte machinery | equality/optimality | BLOCKED | comparison framework only | no transferred certificate for AFP constraints | exact source theorem with every hypothesis checked | I/III |
 | Bakry–Émery route | general P4 barrier | REJECTED | retained negative decision | route did not close the required sharp product theorem | genuinely different curvature mechanism | none |
 | discrete Delaunay geometry | local construction | BLOCKED | relevant external special operator | fixed connectivity/AFP weights not covered | proved conversion preserving weights and sign | II/III |
@@ -67,3 +67,19 @@ P1D is an additive descendant of frozen P1C commit
 | quotient residual transfer | sampled shell | PROVED_P1D | Hilbert--Schmidt row control and `alpha_X^{-1/2}` quotient operator bound including leakage | sampling aliases and nearly singular sample frames | quotient `K_X`; expose `alpha_X` | I/II |
 | exact/interval P1D audit | regression | COMPUTATIONAL_CANDIDATE | 30 symbolic and outward-rounded stress fixtures | no floating rank thresholds; finite checks are not theorem proofs | exact-head execution | all |
 | Lean stability core | finite scalar algebra | IMPLEMENTATION_P1D | `QuadraticFidelityStability.lean` over accepted P1B/P1C interfaces | inverse-square-root and graph spectral calculus remain in the ordinary proof | exact-head full build | I |
+
+## P1E matching-construction mechanisms
+
+P1E is an additive descendant of the frozen P1D source. Its ordinary theorem
+is accepted; the dedicated exact-head workflow and archive freeze have not yet
+run and therefore have no recorded run or artifact status.
+
+| Family / mechanism | Target | Status | Concrete output | Exact blocker or adversarial test | Reopen condition | Paper |
+|---|---|---|---|---|---|---|
+| regular polygon | matching family in `d=2` | PROVED_P1E | for fill `h=pi/N`, exact `mathfrak D_2=2(1-cos(2h))`, `r=(1-cos(2h))^-1`, product `2` | irregular gaps need different shared rates and can have first-order defect | none for the regular family | I |
+| no-guard adaptive rings | matching family in `d=3` | PROVED_P1E | exact `H_0,H_1`, positive shared conductances, `B_i=0`, `R_3=64pi^2`, `C_3=75/2` | pre-repair equal-gap/cap formulas retained as failed mutations | none under the stated schedule | I |
+| rational Cauchy compiler | all-orders transition and first-row margins | PROVED_P1E | literal symbolic limit plus uniform rational disk bounds | isotropy RHS has no removable quotient; direct overbound used instead | none | I |
+| structured latitude perturbation | robustness | PROVED_P1E_SCOPED | fixed-support reflected perturbations retain positivity, exactness and order | arbitrary longitude motion loses the row reduction | a global six-moment right inverse | I/III |
+| finite generator | regression | COMPUTATIONAL_CANDIDATE | deterministic nodes/conductances/masses and hostile mutations | finite levels and fitted slopes never establish all-orders behavior | exact-head execution for reproducibility only | all |
+| six independent alternative routes | search boundary | REJECTED_AS_STANDALONE_ROUTES | exact Voronoi, cone, reconciliation, symmetry, covariance-floor and product obstructions | each rejection is scoped to its proposed mechanism | materially new compiler, invariant or uniform inverse | I/III |
+| Lean construction core | finite algebra | IMPLEMENTATION_P1E | shared-stress, exact-force, moment, rate and polygon identities | analytic ring/Cauchy proof remains in ordinary mathematics | exact-head full build | I |

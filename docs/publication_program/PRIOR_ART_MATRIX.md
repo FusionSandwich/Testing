@@ -48,3 +48,16 @@ internally; no external theorem is transferred as the equality result.
 P1D invokes no external global embedding-stability theorem. Its local repairs
 are constructive; its necessity examples prevent silent transfer of a
 uniform frame or graph-rigidity constant.
+
+## P1E construction transfer audit
+
+| Source | External content used | P1E hypothesis and convention transfer | Precise non-transfer boundary |
+|---|---|---|---|
+| Izmestiev--Lam, spherical discrete Laplacians | geometry-specific shared spherical edge coefficients and the coordinate eigenspace under their triangulation hypotheses | sign and stationary-weight conventions are compared only as adjacent context; the adaptive-ring conductances are derived internally row by row | no Delaunay or Voronoi theorem is used to infer positivity, the `H_2` multiplier, or the constants `R_3,C_3` |
+| Seibold, minimal positive stencils | Euclidean local positive-stencil feasibility and sparse LP supports | motivates the local cone viewpoint only | local row feasibility does not supply symmetric shared conductances or global reversibility; the P1E cycle obstruction is retained |
+| García Trillos--Gerlach--Hein--Slepčev | probabilistic spectral convergence for random geometric graph Laplacians under bandwidth and sampling hypotheses | asymptotic context only | no probabilistic convergence theorem yields P1E's exact `H_1`, all-orders positivity, deterministic constants, or sampled-quotient estimate |
+| Ahrens--Beylkin | rotationally invariant spherical quadrature orbits | symmetry context for orbit-based alternatives | quadrature exactness does not construct the adaptive shared-edge stress or prove detailed balance |
+
+The accepted P1E upper theorem is an internal construction, not a transferred
+corollary of any row in this table. Its scope is `d=2,3`; the lower frontier,
+equality theorem, and stability budget remain all-dimensional.
