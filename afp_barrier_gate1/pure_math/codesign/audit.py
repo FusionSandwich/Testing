@@ -152,7 +152,7 @@ def run_audit(*, quick: bool) -> dict[str, object]:
     if not enriched.passed:
         raise AssertionError("enriched discrete response identity failed")
 
-    levels = ((16, 1), (24, 1)) if quick else ((16, 1), (24, 1), (32, 1))
+    levels = ((32, 1), (64, 1)) if quick else ((32, 1), (32, 3), (64, 1))
     convergence = benchmark_reflected_ring_family(
         levels, optimize_indices=()
     )
