@@ -205,3 +205,20 @@ import AFPBarrier
 #print axioms AFPBarrier.regularPolygon_hOne_scalar_recurrence
 #print axioms AFPBarrier.regularPolygon_hTwo_scalar_residual
 #print axioms AFPBarrier.regularPolygon_hTwo_scalar_eigenvalue
+
+/-! Prompt P2A: convex-generator finite identities. -/
+
+#print axioms AFPBarrier.convexDesign_constant_exact
+#print axioms AFPBarrier.convexDesign_rate_nonneg
+#print axioms AFPBarrier.convexDesign_detailedBalance
+#print axioms AFPBarrier.conductanceMix_nonneg
+#print axioms AFPBarrier.sharedEdgeApply_conductanceMix
+#print axioms AFPBarrier.sharedEdge_exact_conductanceMix
+#print axioms AFPBarrier.finiteMatrixApply_conductanceMix_le
+#print axioms AFPBarrier.affineShellResidual_conductanceMix
+#print axioms AFPBarrier.sum_incidentLossMass
+#print axioms AFPBarrier.lossWeightedTotal_fixed_of_radialExact
+#print axioms AFPBarrier.S2_lossWeightedTotal_one
+#print axioms AFPBarrier.totalConductance_fixed_of_constantLoss
+#print axioms AFPBarrier.rateCapped_dualWork_nonneg
+#print axioms AFPBarrier.rateCapped_negative_dualWork_certifies_infeasible

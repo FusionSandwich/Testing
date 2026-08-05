@@ -21,7 +21,7 @@ mechanism named below.
 | rigidity/propagation | equality and stability | PROVED_SCOPED | ten-hypothesis classification and quantitative propagation | deleted-hypothesis catalogue | only stronger hypotheses with audited necessity | I |
 | exact symbolic computation | regressions | COMPUTATIONAL | algebraic Platonic table, 19 P1A fixtures and 24 P1B bound/equality/degeneracy fixtures | finite verification never replaces all-orders theorem | exact certificate for a theorem step | all |
 | Plantri enumeration | adversarial census | COMPUTATIONAL | 9150 maps through 12 vertices | finite census is not classification | larger census only as regression, not proof | I |
-| conic/SDP duality | optimizer/negativity | ACTIVE | proposed primal-dual formulations | normalization and dual attainment not yet frozen | solver-independent exact certificates | II/III |
+| conic/SDP duality | fixed-quadrature optimizer | PROVED_P2A | exact SDP/SOCP/QP/LP primal-dual families on the sampled quotient | boundary Slater, factor-two cross block and output-leakage audits | none for fixed linear objectives | II/III |
 | asymptotic construction | match frontier | PROVED_D2_D3 | regular polygons on `S^1` and a no-guard adaptive-ring family on `S^2`, with all-orders constants | no corresponding construction in `d>3`; arbitrary perturbations are not covered | a genuinely new higher-dimensional compiler with global shared-edge margins | I |
 | Delsarte machinery | equality/optimality | BLOCKED | comparison framework only | no transferred certificate for AFP constraints | exact source theorem with every hypothesis checked | I/III |
 | Bakry–Émery route | general P4 barrier | REJECTED | retained negative decision | route did not close the required sharp product theorem | genuinely different curvature mechanism | none |
@@ -29,6 +29,25 @@ mechanism named below.
 | transport-error decomposition | response relevance | BLOCKED | planned angular/spatial/energy separation | physical model and conditioning constants absent | certified equal-cost benchmark protocol | II |
 | Lean architecture | finite algebra kernel | ACTIVE_P1B | P1A quotient/Gram core plus P1B weighted trace domination and scalar sharp-bound algebra | exact-head build and axiom audit still control acceptance | formalize only stable algebraic interfaces | I/III |
 | compact-space generalization | beyond sphere | DEFERRED | no claim | outside current paper boundary | Paper I completed first | future |
+
+## P2A fixed-quadrature convex-design mechanisms
+
+P2A is an additive descendant of the accepted Paper-I/P1F archive commit
+`ab155b8e04bdf00306351b581739fb5feeb2979e`, tree
+`61a07c6c187d3002d5ca433be16b26fb1bad73f1`.
+
+| Family / mechanism | Target | Status | Concrete output | Exact blocker or adversarial test | Reopen condition | Paper |
+|---|---|---|---|---|---|---|
+| shared-edge affine cone | exact `H_0,H_1` and reversibility | PROVED_P2A | `A gamma=b`, `gamma>=0`, rate inequalities | unequal-mass four-cycle is locally strict but globally Farkas-infeasible | none for the finite characterization | II |
+| sampled shell whitening | alias-correct residual | PROVED_P2A | `T_l=W^(1/2)(L+lambda_l I)V_l` with full output leakage | octahedral rank two; ambiguous numerical rank rejected | exact/certified rank input | I/II |
+| spectral epigraph | minimum `D_2` or rate | PROVED_P2A | exact primal and dual SDPs | missing dual cross-block factor two mutation | none | II |
+| Hilbert--Schmidt and selected modes | QP/SOCP alternatives | PROVED_P2A | invariant quotient Frobenius and finite-mode objectives | raw coefficient norm and sampled-zero mode mutations | none | II |
+| multi-shell/fixed response | broader objectives | PROVED_P2A_SCOPED | shellwise QP/SDP/SOCP/LP assembly | nonlinear resolvent and continuum rotation not covered | separate response theorem | II |
+| conductance penalty analysis | support control | PROVED_P2A | loss-weighted `l1` fixed; total conductance is mean-rate control | exact antipodal long-edge preference witness | none for diagnosis | II/III |
+| pruning with reoptimization | sparse returned support | IMPLEMENTED_P2A_SCOPED | deterministic delete/re-solve/certify loop | outer support choice is combinatorial | exhaustive/MIP proof for cardinality | II/III |
+| conic/Farkas certificate verification | solver independence | PROVED_P2A | exact rays, primal-dual feasibility and gap brackets | solver status alone explicitly rejected | rational or outward interval certificate | II |
+| exact/ill-conditioned fixtures | adversarial regression | COMPUTATIONAL_P2A | tetra/octa equality, full-rank ill-conditioning, local/global failure | finite solver runs do not prove convex duality | retained exact proof source | all |
+| Lean finite core | stable algebra | IMPLEMENTATION_P2A | conductance, mixture and fixed-loss identities | no formal generic SDP strong-duality theorem | exact-head build | II |
 
 Adversarial controls applied to every future route: sign and weight
 normalization, sampled-kernel aliasing, eigenvalue multiplicity, degenerate

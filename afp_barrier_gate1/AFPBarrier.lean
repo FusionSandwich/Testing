@@ -53,3 +53,4 @@ import AFPBarrier.EqualAngleQuadrature
 import AFPBarrier.EqualAngleAsymptotics
 import AFPBarrier.EqualAngleRateMaximum
 import AFPBarrier.SphereSpecialization
+import AFPBarrier.ConvexGeneratorDesign
