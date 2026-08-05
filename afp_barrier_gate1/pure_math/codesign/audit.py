@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 
 import numpy as np
@@ -33,7 +32,7 @@ from .rotations import (
     joint_collision_covariance_defect,
     signed_permutation_rotations,
 )
-from .types import QuadratureCandidate
+from .types import QuadratureCandidate, canonical_array_sha256
 
 
 def _with_dense_seed(candidate: QuadratureCandidate) -> QuadratureCandidate:
@@ -93,13 +92,12 @@ def run_audit(*, quick: bool) -> dict[str, object]:
             degrees=(2,),
             fill_probe_count=384 if quick else 2048,
         )
-        digest = hashlib.sha256()
-        for array in (
-            candidate.nodes, candidate.weights, candidate.edges,
-            candidate.seed_conductance,
-        ):
-            if array is not None:
-                digest.update(np.asarray(array).tobytes(order="C"))
+        candidate_sha256 = canonical_array_sha256({
+            "nodes": candidate.nodes,
+            "weights": candidate.weights,
+            "edges": candidate.edges,
+            "seed_conductance": candidate.seed_conductance,
+        })
         rotation_row: dict[str, object]
         if candidate.seed_conductance is None:
             rotation_row = {
@@ -136,9 +134,13 @@ def run_audit(*, quick: bool) -> dict[str, object]:
             "candidate_scope": (
                 "FIXTURE_ONLY_NOT_PUBLISHED_AHRENS_BEYLKIN_RULE"
                 if report.family == "ahrens_beylkin"
+                else "PROPOSAL_ONLY_REQUIRES_MOMENT_AND_INNER_ADMISSION"
+                if report.family == "locally_adapted"
+                else "DIAGNOSTIC_NET_NOT_EXACT_QUADRATURE"
+                if report.family == "maximal_net"
                 else "DECLARED_FAMILY_CANDIDATE"
             ),
-            "canonical_array_sha256": digest.hexdigest(),
+            "canonical_array_sha256": candidate_sha256,
             "N": report.nodes,
             "E": report.edges,
             "graph_rule": candidate.metadata.get("graph_rule", "weak_delaunay"),
@@ -159,6 +161,12 @@ def run_audit(*, quick: bool) -> dict[str, object]:
                     "mass_certification", "VERIFIED_FLOAT_STRICT_POSITIVITY"
                 )
             ),
+            "exactness_certification": candidate.metadata.get(
+                "exactness_certification",
+                candidate.metadata.get(
+                    "strength_certification", "NO_EXACTNESS_CLAIM"
+                ),
+            ),
             "minimum_mass": float(np.min(candidate.weights)),
             "half_separation": report.geometry.separation,
             "sampled_fill_upper": report.geometry.fill_upper_sampled,
@@ -167,7 +175,11 @@ def run_audit(*, quick: bool) -> dict[str, object]:
             "sampling_rank2": report.sampling[0].rank,
             "sampling_rank_cutoff": report.sampling[0].cutoff,
             "local_margin": report.feasibility.local_margin_min,
-            "global_margin": report.feasibility.global_margin,
+            "global_margin": (
+                report.feasibility.global_margin
+                if np.isfinite(report.feasibility.global_margin)
+                else None
+            ),
             "global_status": report.feasibility.global_status,
             "generator": generator_row,
             "rotation": rotation_row,
@@ -253,7 +265,7 @@ def main() -> None:
     parser.add_argument("--quick", action="store_true")
     args = parser.parse_args()
     report = run_audit(quick=args.quick)
-    print(json.dumps(report, sort_keys=True))
+    print(json.dumps(report, sort_keys=True, allow_nan=False))
     print("P2C_CODESIGN_AUDIT_PASS")
 
 

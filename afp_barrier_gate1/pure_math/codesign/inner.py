@@ -14,6 +14,7 @@ from pure_math.optimization import (
     DesignModel,
     DesignRequest,
     DesignResult,
+    RankPolicy,
     SolverConfig,
     real_harmonic_samples,
     solve_design,
@@ -32,6 +33,10 @@ class GramEpigraphReport:
     minimum_block_eigenvalue: float
     kernel_compatibility_residual: float
     generalized_defect: float
+    sampling_rank: int
+    sampling_cutoff: float
+    smallest_retained_singular: float
+    largest_discarded_singular: float
     passed: bool
 
 
@@ -39,7 +44,7 @@ class GramEpigraphReport:
 class InnerRecord:
     result: DesignResult
     elapsed_seconds: float
-    peak_memory_bytes: int
+    python_tracemalloc_peak_bytes: int
     node_count: int
     edge_count: int
     rate_cap: float
@@ -70,31 +75,44 @@ def generalized_defect(
     gram: FloatArray,
     z_residual: FloatArray,
     *,
-    rank_tolerance: float = 1e-11,
-) -> tuple[float, float]:
-    eigenvalues, vectors = np.linalg.eigh(0.5 * (gram + gram.T))
-    cutoff = max(
-        rank_tolerance,
-        rank_tolerance * float(np.max(eigenvalues)),
-    )
-    kept = eigenvalues > cutoff
-    if not np.any(kept):
-        raise ValueError("sampling Gram has zero retained rank")
-    kernel = vectors[:, ~kept]
+    rank_policy: RankPolicy | None = None,
+) -> tuple[float, float, int, float, float, float]:
+    """Use the frozen P2A singular-value rank policy on a Gram matrix."""
+
+    symmetric = 0.5 * (gram + gram.T)
+    eigenvalues, vectors = np.linalg.eigh(symmetric)
+    scale = max(1.0, float(np.max(np.abs(eigenvalues))))
+    if float(np.min(eigenvalues)) < -1e-12 * scale:
+        raise ValueError("sampling Gram is not positive semidefinite")
+    order = np.argsort(eigenvalues)[::-1]
+    eigenvalues = np.maximum(eigenvalues[order], 0.0)
+    vectors = vectors[:, order]
+    singular = np.sqrt(eigenvalues)
+    policy = rank_policy or RankPolicy()
+    rank = policy.classify(singular, gram.shape[0])
+    kept_vectors = vectors[:, :rank]
+    kept_values = eigenvalues[:rank]
+    kernel = vectors[:, rank:]
     kernel_residual = (
         0.0
         if kernel.size == 0
         else float(np.linalg.norm(z_residual @ kernel, ord=2))
     )
-    frame = vectors[:, kept] / np.sqrt(eigenvalues[kept])[None, :]
+    frame = kept_vectors / np.sqrt(kept_values)[None, :]
     reduced_residual = z_residual @ frame
+    discarded = 0.0 if rank >= len(singular) else float(singular[rank])
     return (
         float(np.linalg.norm(reduced_residual, ord=2)),
         kernel_residual,
+        rank,
+        policy.threshold(float(singular[0])),
+        float(singular[rank - 1]),
+        discarded,
     )
 
-
 def math_sqrt_nonnegative(value: float) -> float:
+    if not np.isfinite(value):
+        raise ArithmeticError("generalized residual Gram value is nonfinite")
     if value < -1e-10:
         raise ArithmeticError("generalized residual Gram has a negative eigenvalue")
     return float(np.sqrt(max(0.0, value)))
@@ -127,9 +145,18 @@ def verify_moving_gram_epigraph(
     *,
     tolerance: float = 2e-8,
 ) -> GramEpigraphReport:
+    if not np.isfinite(tolerance) or tolerance < 0:
+        raise ValueError("tolerance must be finite and nonnegative")
     _, gram, residual, _ = moving_gram_data(candidate, gamma, degree)
     z_residual = np.sqrt(candidate.weights)[:, None] * residual
-    defect, compatibility = generalized_defect(gram, z_residual)
+    (
+        defect,
+        compatibility,
+        sampling_rank,
+        sampling_cutoff,
+        smallest_retained,
+        largest_discarded,
+    ) = generalized_defect(gram, z_residual)
     block = moving_gram_block(candidate, gamma, degree, delta)
     minimum = float(np.min(np.linalg.eigvalsh(0.5 * (block + block.T))))
     scale = max(1.0, float(np.linalg.norm(block, ord=2)))
@@ -141,7 +168,16 @@ def verify_moving_gram_epigraph(
         )
     )
     return GramEpigraphReport(
-        int(degree), float(delta), minimum, compatibility, defect, bool(passed)
+        int(degree),
+        float(delta),
+        minimum,
+        compatibility,
+        defect,
+        sampling_rank,
+        sampling_cutoff,
+        smallest_retained,
+        largest_discarded,
+        bool(passed),
     )
 
 
@@ -170,14 +206,17 @@ def solve_global_inner(
 
     model = build_inner_model(candidate, (degree,))
     request = DesignRequest.minimum_defect(float(rate_cap), degree=degree)
-    tracemalloc.start()
+    owns_trace = not tracemalloc.is_tracing()
+    if owns_trace:
+        tracemalloc.start()
     start = time.perf_counter()
     try:
         result = solve_design(model, request, SolverConfig(solver=solver))
         elapsed = time.perf_counter() - start
         _, peak = tracemalloc.get_traced_memory()
     finally:
-        tracemalloc.stop()
+        if owns_trace:
+            tracemalloc.stop()
     if (
         not result.feasible_candidate
         or result.verification is None

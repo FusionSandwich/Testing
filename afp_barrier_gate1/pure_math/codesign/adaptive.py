@@ -35,6 +35,8 @@ def enriched_response_identity(
 ) -> EnrichedResponseReport:
     """Audit c*(u-Iu_H)=z*(q-A Iu_H) without Galerkin assumptions."""
 
+    if not np.isfinite(tolerance) or tolerance < 0:
+        raise ValueError("tolerance must be finite and nonnegative")
     matrix = np.asarray(operator, dtype=float)
     q = np.asarray(source, dtype=float)
     c = np.asarray(response, dtype=float)
@@ -45,8 +47,14 @@ def enriched_response_identity(
         or q.shape != c.shape
         or q.shape != coarse.shape
         or q.shape != (matrix.shape[0],)
+        or not all(
+            np.all(np.isfinite(value))
+            for value in (matrix, q, c, coarse)
+        )
     ):
-        raise ValueError("enriched identity arrays have incompatible shapes")
+        raise ValueError(
+            "enriched identity arrays must be finite with compatible shapes"
+        )
     solution = np.linalg.solve(matrix, q)
     adjoint = np.linalg.solve(matrix.T, c)
     residual = q - matrix @ coarse

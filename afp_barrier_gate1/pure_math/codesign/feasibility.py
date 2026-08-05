@@ -80,9 +80,27 @@ def audit_protected_stratum(
     minimum_separation: float = 0.0,
     minimum_sampling_eigenvalue: float = 0.0,
     minimum_conductance: float = 0.0,
-    rate_cap: float = float("inf"),
+    rate_cap: float | None = None,
     tolerance: float = 2e-8,
 ) -> ProtectedAudit:
+    if not np.isfinite(tolerance) or tolerance < 0:
+        raise ValueError("tolerance must be finite and nonnegative")
+    gates = (
+        minimum_weight,
+        minimum_separation,
+        minimum_sampling_eigenvalue,
+        minimum_conductance,
+    )
+    if (
+        not all(np.isfinite(gate) for gate in gates)
+        or minimum_weight < 0
+        or minimum_separation < 0
+        or minimum_conductance < 0
+        or rate_cap is None
+        or not np.isfinite(rate_cap)
+        or rate_cap <= 0
+    ):
+        raise ValueError("protected gates must be finite and rate_cap positive")
     value = np.asarray(gamma, dtype=float)
     if value.shape != (candidate.edge_count,):
         raise ValueError("conductance shape mismatch")
@@ -150,10 +168,17 @@ def minimum_norm_restoration_step(
 ) -> tuple[FloatArray, RestorationRankReport]:
     """Solve J delta = -r only when the reduced Jacobian is onto numerically."""
 
+    if not np.isfinite(singular_floor) or singular_floor <= 0:
+        raise ValueError("singular_floor must be finite and positive")
     matrix = np.asarray(jacobian, dtype=float)
     rhs = np.asarray(residual, dtype=float)
-    if matrix.ndim != 2 or rhs.shape != (matrix.shape[0],):
-        raise ValueError("restoration matrix/residual shape mismatch")
+    if (
+        matrix.ndim != 2
+        or rhs.shape != (matrix.shape[0],)
+        or not np.all(np.isfinite(matrix))
+        or not np.all(np.isfinite(rhs))
+    ):
+        raise ValueError("restoration matrix/residual must be finite with matching shapes")
     u, singular, vt = np.linalg.svd(matrix, full_matrices=False)
     scale = max(1.0, float(singular[0]) if singular.size else 1.0)
     kept = singular > singular_floor * scale

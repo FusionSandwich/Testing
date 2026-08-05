@@ -118,7 +118,7 @@ Every family is converted to normalized positive masses, an intrinsic permitted 
 | Delaunay | certified positive Voronoi masses | weak spherical Delaunay or complete | distinct nodes, positive cells, moment/rank audit |
 | Locally adapted | positive uniform-surface masses after exact moment restoration | weak Delaunay plus certified edge orbits, complete | every proposal rechecks moments, positivity, rank, and (4) |
 
-The executable 12-vertex icosahedral row is a symmetry and conditioning fixture only; it is not represented as an imported published Ahrens–Beylkin rule.  A published AB rule is admitted only after its actual orbit parameters and masses pass the stated gates.  Generic graph builders implement the permitted graph vocabulary; each convenience family constructor accepts an explicit subset and rejects every unknown graph name.
+The executable 12-vertex icosahedral row is a symmetry and conditioning fixture only; it is not represented as an imported published Ahrens–Beylkin rule.  A published AB rule is admitted only after its actual orbit parameters and masses pass the stated gates.  Generic builders implement complete, (k)-NN, radius, and weak-Delaunay graphs.  Orbit-distance and certified-edge entries are admission contracts: callers supply a canonical edge list and its orbit/intrinsic certificate.  Each convenience constructor advertises only an explicit implemented subset and rejects every unknown graph name.
 
 At a Delaunay degeneracy, the implementation uses the weak graph: the union of all pairs belonging to a common supporting face.  A coordinate-lexicographic diagonal is not rotation-equivariant.
 
@@ -168,7 +168,7 @@ where all coefficients are nonnegative and
  r_{\max}=\max_i{1\over w_i}\sum_{e\ni i}c_e.
 \]
 The co-design problem is \(\min\{F(p,c):p\in{\cal P},c\in{\cal A}(p)\}\).  Thus conductance-dependent outer terms are never evaluated at an unspecified member of a nonunique inner optimizer set.  Equivalently, define the reduced value
-\(\widehat V(p)=\min_{c\in{\cal A}(p)}F(p,c)\), with a deterministic invariant secondary tie-break after that value is certified.  The response term is admitted only with a uniform discrete stability/coercivity bound.
+\(\widehat V(p)=\min_{c\in{\cal A}(p)}F(p,c)\), with a deterministic invariant secondary tie-break after that value is certified.  The response term is admitted only when its discrete operator, right-hand side, response functional, and every interpolation or reconstruction map depend continuously on (p), and the operator has a uniform inverse/coercivity bound.
 
 For fixed \(N\), the protected set imposes:
 
@@ -181,9 +181,9 @@ For fixed \(N\), the protected set imposes:
 - a full-shell sampling floor, or for every declared rotation probe the uniform denominator floor
   \(\inf_R(\rho_\ell(R)a)^\top G_\ell\rho_\ell(R)a\ge\nu>0\);
 - closed conductance/rate bounds; and
-- a uniform response stability bound whenever a response objective is present.
+- continuous parameter dependence of all response data/maps and a uniform response inverse/coercivity bound whenever a response objective is present.
 
-Each fixed labelled graph domain is closed, and their declared finite union is closed in a finite product of compact spheres, a simplex, and a finite graph set.  Conductances are bounded by the rate cap or (5), so the lifted feasible set is compact.  Shell norms, graph rate, condition number on the spectral-gap stratum, and maximum edge angle are continuous.  A supremum rotation metric is continuous because it is a supremum of a jointly continuous function over compact \(SO(d)\).  A response is continuous under the uniform stability bound.
+For this compactness theorem a graph label is either an independent fixed combinatorial graph, a Delaunay cell protected by a closed positive facet/flip margin, or part of a closed admissibility relation such as (Esubseteq E_{m weak}(X)).  Equality to a recomputed generic Delaunay triangulation is not a closed stratum at a flip and is excluded.  The declared finite union of the protected graph domains is therefore closed in a finite product of compact spheres, a simplex, and a finite graph set.  Conductances are bounded by the rate cap or (5), so the lifted feasible set is compact.  Shell norms, graph rate, condition number on the spectral-gap stratum, and maximum edge angle are continuous.  A supremum rotation metric is continuous because it is a supremum of a jointly continuous function over compact \(SO(d)\).  A response is continuous by the explicitly assumed continuous parameter/data dependence together with the uniform inverse/coercivity bound.
 
 ### Theorem 3 — existence
 
@@ -205,7 +205,7 @@ The Reynolds projection proves that exactness through degree \(t\) need only be 
 
 ### Theorem 4 — symmetry and covariance
 
-For an orbit-constant design, \(L\) commutes with every induced \(G\)-node permutation.  Harmonic samples intertwine the node and harmonic representations, and every shell Gram and raw LMI transforms by orthogonal congruence.  A relabelling by \(G\) stays in the fixed stratum.  An arbitrary ambient co-rotation \(Q\) is covariance between the \(G\) stratum and its conjugate \(QGQ^{-1}\) stratum; only the normalizer of \(G\) preserves the fixed-\(G\) parameter space.  Thus (4), (7), and the optimal value agree between the corresponding co-rotated strata.  If the optimizer is unique or selected by an invariant strict tie-break, the selected conductance is equivariant; otherwise only the optimizer set and value are equivariant.
+For an orbit-constant design, \(L\) commutes with every induced \(G\)-node permutation.  Harmonic samples intertwine the node and harmonic representations, and every shell Gram and raw LMI transforms by orthogonal congruence.  A relabelling by \(G\) stays in the fixed stratum.  An arbitrary ambient co-rotation \(Q\) is covariance between the \(G\) stratum and its conjugate \(QGQ^{-1}\) stratum; only the normalizer of \(G\) preserves the fixed-\(G\) parameter space.  Thus the intrinsic inner problem (4), intrinsic terms in (7), and their optimal values agree between the corresponding co-rotated strata.  The application term (E_{m resp}), and hence the full (F), is covariant only when the physical coefficients, source, geometry, spatial mesh, interpolation/reconstruction, and response functional are co-rotated through an equivariant application discretization.  If the optimizer is unique or selected by an invariant strict tie-break, the selected conductance is equivariant; otherwise only the optimizer set and value are equivariant.
 
 **Proof.**  A group element permutes nodes and edge orbits bijectively while preserving masses and conductances.  Substitution in the edge sum proves commutation.  The identity \(S_\ell(gX)=S_\ell(X)\rho_\ell(g)^\top\) gives the congruences. ∎
 
@@ -311,7 +311,7 @@ so H0 and H1 are exact and every conductance is strictly positive.  Orbit-consta
 \]
 This is an exact, deterministic, globally compatible initializer.  It is nonlocal and does not converge in \(\mathfrak D_2\).
 
-For a spherical \(t\)-design, equal masses give positivity and exact Gram conditioning through \(\ell\le t/2\).  Well-separated designs with \(N=\Theta(t^{d-1})\), together with a certified covering estimate, give quasiuniform node candidates.  They enter the local co-design only after the global shared-edge feasibility LP or an accepted construction passes.  Design exactness and local cones are never substituted for global conductance compatibility.
+For a spherical \(t\)-design, equal masses give positivity and make the discrete Gram equal to the continuum Gram through \(\ell\le t/2\); the condition number is exactly one after continuum whitening (or in a continuum-orthogonal equal-norm basis).  The Bondarenko–Radchenko–Viazovska well-separated existence theorem supplies \(N=\Theta(t^{d-1})\) and separation \(\Omega(t^{-1})\); Yudin's spherical-design covering theorem supplies covering radius \(O(t^{-1})\) at fixed dimension.  Together they give quasiuniform node candidates.  They enter the local co-design only after the global shared-edge feasibility LP or an accepted construction passes.  Design exactness and local cones are never substituted for global conductance compatibility.
 
 ## 10. Strategy VI — adaptive response refinement
 
@@ -357,7 +357,7 @@ For every admissible P1E level, not merely a fitted subsequence,
 \]
 with the explicit constants in (19).  For the fixed accepted P1E \(X,w\), certified zero-floor edge supergraphs and exact inner minimization of \(\mathfrak D_2\) at the same rate cap preserve the upper bound; the P1B universal lower bound persists.  Ordinary node/weight moves or descent for a combined objective do not inherit (19).
 
-This is the requested asymptotic theorem.  Finite fitted slopes are reported only as supplementary regressions.  The theorem uses the accepted P1E admissibility predicate, including its fixed \(M_0=2^{80}\) construction and declared schedule.  Practical \(M_0=32,64\) rows are labelled finite floating regressions, not theorem levels.  Each row records \(N\), \(|E|\), \(h\), \(\mathfrak D_2\), \(r_{\max}\), \(\kappa_2^+\), higher-shell defects, a 24-rotation empirical collision sample, solve time, and peak memory.
+This is the requested asymptotic theorem.  Finite fitted slopes are reported only as supplementary regressions.  The theorem uses the accepted P1E admissibility predicate, including its fixed \(M_0=2^{80}\) construction and declared schedule.  Practical \(M_0=32,64\) rows are labelled finite floating regressions, not theorem levels.  Each row records \(N\), \(|E|\), \(h\), \(\mathfrak D_2\), \(r_{\max}\), \(\kappa_2^+\), higher-shell defects, a 24-rotation empirical collision sample, input/output hashes, solver identity/version/status, the independently reconstructed primal–dual objective enclosure and gap, inner-solve and total benchmark wall time, process maximum RSS, and separately labelled Python-tracemalloc peaks.
 
 ## 12. Rotation claims and tests
 
@@ -406,7 +406,7 @@ The production-run record contract requires:
 - fixed-physical and joint-rotation spreads with their scope;
 - response test definition and stability certificate;
 - primal/dual gaps and independent conic residual reconstruction;
-- wall time, solver identity/version, and peak memory.
+- inner and benchmark wall time, solver identity/version, process maximum RSS, and Python-tracemalloc peak with explicit scope labels.
 
 Coordinates and orbit parameters are deterministically ordered.  Nonunique inner optima use a declared invariant secondary tie-break.  Exact symmetric fixtures use rational/algebraic arithmetic.  General numerical candidates require outward-rounded primal feasibility and objective enclosures for theorem-bearing claims.  Floating solver status alone is diagnostic.
 
@@ -421,6 +421,8 @@ The external literature is used only for its stated background result:
 - Morel et al., “A Discretization Scheme for the Three-Dimensional Angular Fokker–Planck Operator,” [DOI 10.13182/NSE07-A2693](https://doi.org/10.13182/NSE07-A2693), supplies the product-quadrature AFP context; it is not the present bilevel theorem.
 - Bienvenue et al., “A Flexible, Moment-Preserving, and Monotone Discretization…,” [DOI 10.1080/00295639.2025.2462891](https://doi.org/10.1080/00295639.2025.2462891), supplies nonorthogonal/Voronoi moment-preserving monotone AFP context; it does not prove the P2A optimum, Paper-I frontier, or the present ray-effect separation.
 - Bondarenko–Radchenko–Viazovska, “Well separated spherical designs,” [arXiv:1303.5991](https://arxiv.org/abs/1303.5991), supplies well-separated design existence, not local generator compatibility.
+- Yudin, “Coverings of a sphere, and extremal properties of orthogonal polynomials,” [MathNet](https://www.mathnet.ru/eng/dm590), supplies the \(O(t^{-1})\) covering-radius consequence for spherical designs, not separation or generator compatibility.
+- Yudin, “Lower bounds for spherical designs,” [DOI 10.1070/IM1997v061n03ABEH000132](https://doi.org/10.1070/IM1997v061n03ABEH000132), supplies a design-cardinality lower bound, not existence, positivity, or a co-design construction.
 - Izmestiev and Lam, “Discrete Laplacians—spherical and hyperbolic,” [arXiv:2408.04877](https://arxiv.org/abs/2408.04877), supplies spherical Delaunay nonnegative structure, not this bilevel optimum.
 
 The new claims in Theorems 1–8 are derived above from the frozen P2A model and the accepted Paper-I P1B/P1E results, not imported from those papers.

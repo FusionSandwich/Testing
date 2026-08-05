@@ -30,7 +30,7 @@
 | interpolation only as separate remedy | Section 12 and interpolation audit |
 | convergence order for a co-designed family | Theorem 8, exact P1B/P1E constants at every level |
 | connect Paper-I lower and upper bounds | equation (19), symbolic constant audit |
-| record N, E, rate, Gram condition, shell, sampled rotation, time, memory | ConvergenceRow and benchmark JSON; certified SO(3) extrema require a separate net enclosure |
+| record N, E, rate, Gram condition, shell, sampled rotation, time, memory | ConvergenceRow and benchmark JSON, with inner/benchmark time, process RSS, and scoped tracemalloc; certified SO(3) extrema require a separate net enclosure |
 | reproducibility | Section 13, deterministic ordering, hashes, CI, exact audit |
 | prior-art hypotheses and limits | prior-art/hostile audit ledger |
 | multi-route search and blocked-route discipline | approach-family registry |

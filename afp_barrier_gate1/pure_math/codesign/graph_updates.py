@@ -105,8 +105,13 @@ def certified_graph_decision(
     edge_penalty: float = 0.0,
     strict_decrease: float = 0.0,
 ) -> GraphDecision:
-    if edge_penalty < 0 or strict_decrease < 0:
-        raise ValueError("penalties/decrease must be nonnegative")
+    if (
+        not np.isfinite(edge_penalty)
+        or not np.isfinite(strict_decrease)
+        or edge_penalty < 0
+        or strict_decrease < 0
+    ):
+        raise ValueError("penalties/decrease must be finite and nonnegative")
     old_lower = old.objective.lower + edge_penalty * old.candidate.edge_count
     new_upper = new.objective.upper + edge_penalty * new.candidate.edge_count
     accepted_labels = {"EXACT", "OUTWARD_INTERVAL"}
@@ -123,8 +128,13 @@ def certified_graph_decision(
         bool(certificates and decrease),
         float(old_lower),
         float(new_upper),
-        "CERTIFIED_DECREASE" if certificates and decrease
-        else "RETAIN_INCUMBENT",
+        (
+            "CERTIFIED_DECREASE"
+            if certificates and decrease and new_upper < old_lower
+            else "CERTIFIED_NONINCREASE"
+            if certificates and decrease
+            else "RETAIN_INCUMBENT"
+        ),
     )
 
 
@@ -144,6 +154,8 @@ def verify_zero_extension(
     verified-float regression unless those values are exact objects upstream.
     """
 
+    if not np.isfinite(tolerance) or tolerance < 0:
+        raise ValueError("tolerance must be finite and nonnegative")
     old_value = np.asarray(gamma_old, dtype=float)
     new_value = np.asarray(gamma_new, dtype=float)
     if (
@@ -196,13 +208,23 @@ def verify_deletion_kernel_move(
 ) -> bool:
     """Check an H1-feasible deletion seed, not shell/objective acceptance."""
 
+    if not np.isfinite(tolerance) or tolerance < 0:
+        raise ValueError("tolerance must be finite and nonnegative")
+    if not np.isfinite(rate_cap) or rate_cap <= 0:
+        raise ValueError("rate_cap must be finite and positive")
     value, move = np.asarray(gamma, dtype=float), np.asarray(delta, dtype=float)
-    if value.shape != (candidate.edge_count,) or move.shape != value.shape:
+    if (
+        value.shape != (candidate.edge_count,)
+        or move.shape != value.shape
+        or not np.all(np.isfinite(value))
+        or not np.all(np.isfinite(move))
+    ):
         return False
     trial = value + move
     from .metrics import apply_generator
 
     h1_move = apply_generator(candidate, move, candidate.nodes)
+    h1_trial = apply_generator(candidate, trial, candidate.nodes) + 2.0 * candidate.nodes
     endpoint_sum = np.zeros(candidate.node_count)
     i, j = candidate.edges[:, 0], candidate.edges[:, 1]
     np.add.at(endpoint_sum, i, trial)
@@ -213,6 +235,7 @@ def verify_deletion_kernel_move(
         and abs(trial[deleted_edge]) <= tolerance
         and np.min(trial) >= -tolerance
         and np.linalg.norm(h1_move, ord=np.inf) <= tolerance
+        and np.linalg.norm(h1_trial, ord=np.inf) <= tolerance
         and np.max(rates) <= rate_cap + tolerance
     )
 
@@ -228,8 +251,12 @@ class GraphSearchLedger:
         return tuple(_edge_tuple(edge) for edge in candidate.edges)
 
     def initialize(self, incumbent: GraphEvaluation) -> None:
-        if not incumbent.feasible_verified or not incumbent.inner_verified:
-            raise ValueError("initial graph lacks a verified incumbent")
+        if (
+            not incumbent.feasible_verified
+            or not incumbent.inner_verified
+            or incumbent.certificate not in {"EXACT", "OUTWARD_INTERVAL"}
+        ):
+            raise ValueError("initial graph lacks an exact/interval verified incumbent")
         self.accepted = [incumbent]
         self.visited = {self.signature(incumbent.candidate)}
 
@@ -240,6 +267,16 @@ class GraphSearchLedger:
         edge_penalty: float,
         strict_decrease: float,
     ) -> GraphDecision:
+        if (
+            not np.isfinite(strict_decrease)
+            or strict_decrease <= 0
+            or not np.isfinite(edge_penalty)
+            or edge_penalty < 0
+        ):
+            raise ValueError(
+                "graph-search penalty must be finite/nonnegative and "
+                "strict_decrease finite/positive"
+            )
         if not self.accepted:
             raise RuntimeError("ledger was not initialized")
         signature = self.signature(proposal.candidate)

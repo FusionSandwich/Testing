@@ -260,7 +260,12 @@ def lebedev_6(*, graph: str = "weak_delaunay") -> QuadratureCandidate:
         raise ValueError("unsupported Lebedev-6 graph")
     return QuadratureCandidate.build(
         "lebedev", nodes, np.full(6, 1.0 / 6.0), edges,
-        metadata={"rule": "octahedral-6", "advertised_degree": 3, "graph_rule": graph},
+        metadata={
+            "rule": "octahedral-6",
+            "advertised_degree": 3,
+            "exactness_certification": "EXACT_SYMPY_MONOMIAL_AUDIT",
+            "graph_rule": graph,
+        },
     )
 
 
@@ -277,7 +282,12 @@ def lebedev_14(*, graph: str = "weak_delaunay") -> QuadratureCandidate:
         raise ValueError("unsupported Lebedev-14 graph")
     return QuadratureCandidate.build(
         "lebedev", nodes, weights, edges,
-        metadata={"rule": "octahedral-14", "advertised_degree": 5, "graph_rule": graph},
+        metadata={
+            "rule": "octahedral-14",
+            "advertised_degree": 5,
+            "exactness_certification": "EXACT_SYMPY_MONOMIAL_AUDIT",
+            "graph_rule": graph,
+        },
     )
 
 

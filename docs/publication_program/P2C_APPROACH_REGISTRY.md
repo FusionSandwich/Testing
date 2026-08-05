@@ -18,7 +18,7 @@ This registry groups work by mathematical mechanism.  A status of PROVED means t
 | ADAPT-CONTINUUM | enriched estimator promoted directly to continuum error | BLOCKED | missing independent continuum consistency/stability enclosure; no such claim is made |
 | P1-FRONTIER | reflected adaptive rings plus exact inner reoptimization | PROVED | all-level \(3h^2/(32\pi^2)\le\mathfrak D_2\le75h^2/2\) |
 | ROT-COLLISION | physical harmonic rotated against fixed quadrature | PROVED | declared directional collision metric and shell-defect upper control |
-| ROT-JOINT | physical problem and quadrature co-rotated | PROVED | exact mathematical covariance; floating result is a regression |
+| ROT-JOINT | physical problem and quadrature co-rotated | PROVED | intrinsic generator covariance is exact; full-response covariance additionally requires equivariant co-rotation of coefficients, source, geometry, spatial mesh, and response maps; floating result is a regression |
 | ROT-STREAMING | collision-disabled ballistic test | COMPUTATIONAL | separates ray effects; certified extrema require a rotation net and Lipschitz bound |
 | ROT-INTERP | quadrature rotation/interpolation | COMPUTATIONAL | separate remedy with constants, positivity, mass, first-moment, norm audit |
 | FULL-NONCONVEX | local node method asserted globally optimal | REJECTED | explicit nonglobal local minima exist; the assertion is false without a global certificate |

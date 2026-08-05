@@ -8,6 +8,7 @@ from typing import Iterable
 
 import numpy as np
 from numpy.typing import ArrayLike, NDArray
+from scipy import sparse
 from scipy.optimize import linprog, minimize
 
 from pure_math.optimization import QuadratureGraph, RankPolicy, real_harmonic_samples
@@ -255,43 +256,77 @@ def local_barycentric_margins(candidate: QuadratureCandidate) -> tuple[float, ..
 def global_feasibility_margin(
     candidate: QuadratureCandidate, rate_cap: float
 ) -> tuple[float, str]:
-    """LP candidate for a simultaneous positivity/rate margin.
+    """Sparse LP candidate for a simultaneous positivity/rate margin.
 
     The margin is VERIFIED_FLOAT only; exact symmetric fixtures are audited
     separately.  A negative/infinite return is a deterministic rejection.
+    Assembly is O(N+E) sparse storage; it does not form an E-by-E dense block.
     """
 
     if not np.isfinite(rate_cap) or rate_cap <= 0:
         raise ValueError("rate_cap must be finite and positive")
-    graph = to_graph(candidate)
-    m = graph.edge_count
-    c = np.concatenate([np.zeros(m), [-1.0]])
-    aeq = np.zeros((graph.h1_matrix.shape[0], m + 1))
-    aeq[:, :m] = graph.h1_matrix
-    scale = np.asarray(
-        [candidate.weights[int(i)] * candidate.weights[int(j)] for i, j in candidate.edges]
+    n, m = candidate.node_count, candidate.edge_count
+    left = candidate.edges[:, 0]
+    right = candidate.edges[:, 1]
+    edge_index = np.arange(m, dtype=np.int64)
+    delta = candidate.nodes[right] - candidate.nodes[left]
+    h1_rows = np.concatenate([
+        (3 * left[:, None] + np.arange(3)).reshape(-1),
+        (3 * right[:, None] + np.arange(3)).reshape(-1),
+    ])
+    h1_cols = np.concatenate([
+        np.repeat(edge_index, 3),
+        np.repeat(edge_index, 3),
+    ])
+    h1_data = np.concatenate([delta.reshape(-1), -delta.reshape(-1)])
+    h1 = sparse.coo_matrix(
+        (h1_data, (h1_rows, h1_cols)), shape=(3 * n, m)
+    ).tocsr()
+    endpoint = sparse.coo_matrix(
+        (
+            np.ones(2 * m),
+            (
+                np.concatenate([left, right]),
+                np.concatenate([edge_index, edge_index]),
+            ),
+        ),
+        shape=(n, m),
+    ).tocsr()
+    rhs = (-2.0 * candidate.weights[:, None] * candidate.nodes).reshape(-1)
+
+    objective = np.concatenate([np.zeros(m), [-1.0]])
+    equality = sparse.hstack(
+        [h1, sparse.csr_matrix((3 * n, 1))], format="csr"
     )
-    positivity = np.zeros((m, m + 1))
-    positivity[:, :m] = -np.eye(m)
-    positivity[:, m] = scale
-    rate = np.zeros((candidate.node_count, m + 1))
-    rate[:, :m] = graph.endpoint_incidence
-    rate[:, m] = rate_cap * candidate.weights
-    aub = np.vstack([positivity, rate])
-    bub = np.concatenate([np.zeros(m), rate_cap * candidate.weights])
+    scale = np.asarray([
+        candidate.weights[int(i)] * candidate.weights[int(j)]
+        for i, j in candidate.edges
+    ])
+    positivity = sparse.hstack(
+        [-sparse.eye(m, format="csr"), sparse.csr_matrix(scale[:, None])],
+        format="csr",
+    )
+    rate = sparse.hstack(
+        [
+            endpoint,
+            sparse.csr_matrix((rate_cap * candidate.weights)[:, None]),
+        ],
+        format="csr",
+    )
+    inequality = sparse.vstack([positivity, rate], format="csr")
+    upper_rhs = np.concatenate([np.zeros(m), rate_cap * candidate.weights])
     result = linprog(
-        c,
-        A_ub=aub,
-        b_ub=bub,
-        A_eq=aeq,
-        b_eq=graph.h1_rhs,
+        objective,
+        A_ub=inequality,
+        b_ub=upper_rhs,
+        A_eq=equality,
+        b_eq=rhs,
         bounds=[(0.0, None)] * m + [(0.0, 1.0)],
         method="highs",
     )
     if result.success:
         return float(result.x[-1]), "VERIFIED_FLOAT_CANDIDATE"
     return float("-inf"), f"INFEASIBLE_OR_UNRESOLVED:{result.status}"
-
 
 def generator_report(
     candidate: QuadratureCandidate,

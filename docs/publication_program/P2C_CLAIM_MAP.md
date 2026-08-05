@@ -7,10 +7,10 @@
 | C03 | H0, reversibility, and nonnegative dissipation are exact | Section 1 edge identity | accepted P2A graph model | symbolic dense fixture and pytest |
 | C04 | H1 implies the conductance trace identity | equation (5) | feasibility.py | symbolic and floating fixture audits |
 | C05 | all eight requested family admissions have positive-mass and graph rules | Section 3 table | families.py | family-coverage and positivity tests |
-| C06 | exactness through degree 2L gives condition one through shell L | Section 3 product-of-harmonics proof | metrics.py | icosahedral degree-two Gram test |
+| C06 | exactness through degree 2L gives the continuum Gram through shell L, hence condition one after continuum whitening | Section 3 product-of-harmonics proof | metrics.py | icosahedral degree-two Gram test |
 | C07 | local barycentric feasibility is not promoted to global feasibility | equation (6) and hostile boundary | metrics.py | global LP is a separate report field |
 | C08 | a lifted minimizer exists on the compact graph of globally inner-optimal conductances | Theorem 3 | protected data structures/audits | compact-margin tests; analytic theorem, not finite proof |
-| C09 | orbit formulation and inner value are jointly rotation invariant | Theorem 4 | rotations.py and intrinsic graphs | joint covariance regression |
+| C09 | orbit formulation and intrinsic inner value are jointly rotation covariant; full response covariance is conditional on equivariant application co-rotation | Theorem 4 | rotations.py and intrinsic graphs | joint covariance regression |
 | C10 | exact orbit proximal steps preserve feasibility and descend | Theorem 5 | outer.py finite-pool analogue | controller test; finite pool has narrower claim |
 | C11 | accumulation points of the exact proximal scheme are limiting stationary | Theorem 5 | no finite run is labelled proof | analytic closed-graph proof |
 | C12 | restored Riemannian Armijo has stationary cluster points under gates | Theorem 6 | feasibility.py and outer.py acceptance controller | nonsurjective-Jacobian hostile test |

@@ -157,7 +157,36 @@ jobs:
           grep -Fxq 'P2C_EXACT_AUDIT_PASS' "${out}/exact-audit.log"
           grep -Fxq 'P2C_CODESIGN_AUDIT_PASS' "${out}/codesign-audit.log"
           grep -Fq '"optimized_inner": true' "${out}/codesign-audit.log"
+          grep -Fq '"solver": "CLARABEL"' "${out}/codesign-audit.log"
+          grep -Fq '"inner_dual_passed": true' "${out}/codesign-audit.log"
+          grep -Fq '"inner_certificate_level": "tolerance_diagnostic"' "${out}/codesign-audit.log"
+          grep -Eq '"input_sha256": "[0-9a-f]{64}"' "${out}/codesign-audit.log"
+          grep -Eq '"conductance_sha256": "[0-9a-f]{64}"' "${out}/codesign-audit.log"
           grep -Fq '"verification": "VERIFIED_FLOAT_FINITE_REGRESSION+EMPIRICAL_ROTATION_SAMPLE"' "${out}/codesign-audit.log"
+          python - "${out}/codesign-audit.log" <<'PY'
+          import json, pathlib, sys
+
+          rows = pathlib.Path(sys.argv[1]).read_text(encoding="utf-8").splitlines()
+          payload = json.loads(
+              next(row for row in rows if row.startswith("{")),
+              parse_constant=lambda value: (_ for _ in ()).throw(
+                  ValueError(f"non-RFC JSON constant: {value}")
+              ),
+          )
+          optimized = [row for row in payload["convergence"] if row["optimized_inner"]]
+          if len(optimized) != 1:
+              raise SystemExit("expected exactly one optimized finite benchmark row")
+          row = optimized[0]
+          required = (
+              "solver", "solver_version", "solver_status",
+              "inner_objective_lower", "inner_objective_upper",
+              "inner_duality_gap", "input_sha256", "conductance_sha256",
+              "inner_solve_seconds", "benchmark_wall_seconds",
+              "process_peak_rss_bytes", "python_tracemalloc_peak_bytes",
+          )
+          if any(row[key] is None for key in required):
+              raise SystemExit("optimized row has an incomplete provenance field")
+          PY
           grep -Eq '^[0-9]+ passed(, [0-9]+ [a-z]+)* in ' "${out}/pytest.log"
 
       - name: Run retained P1E, P2A, and P2B regressions

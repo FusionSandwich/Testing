@@ -1,8 +1,9 @@
 """Symbolic finite-algebra audit for P2C.
 
 This module proves only the stable rational/algebraic identities it evaluates:
-normalization, centering, the dense complete-graph H0/H1 construction, its
-Lebedev-14 H2 defect, and the Paper-I constant sandwich.  It does not pretend
+normalization, the full advertised Lebedev-6/14 monomial exactness,
+centering, the dense complete-graph H0/H1 construction, its Lebedev-14 H2
+defect, and the Paper-I constant sandwich.  It does not pretend
 to formalize compactness, SDP duality, or asymptotic design existence.
 """
 
@@ -11,6 +12,44 @@ from __future__ import annotations
 import json
 
 import sympy as sp
+
+
+def _lebedev6_exact() -> tuple[sp.Matrix, list[sp.Expr]]:
+    nodes = sp.Matrix([
+        (1, 0, 0), (-1, 0, 0),
+        (0, 1, 0), (0, -1, 0),
+        (0, 0, 1), (0, 0, -1),
+    ])
+    return nodes, [sp.Rational(1, 6)] * 6
+
+
+def _sphere_monomial_average(a: int, b: int, c: int) -> sp.Expr:
+    if any(exponent % 2 for exponent in (a, b, c)):
+        return sp.Integer(0)
+    p, q, r = a // 2, b // 2, c // 2
+    return sp.Rational(
+        sp.factorial2(2 * p - 1)
+        * sp.factorial2(2 * q - 1)
+        * sp.factorial2(2 * r - 1),
+        sp.factorial2(2 * (p + q + r) + 1),
+    )
+
+
+def _assert_monomial_exactness(
+    nodes: sp.Matrix, weights: list[sp.Expr], degree: int
+) -> None:
+    for a in range(degree + 1):
+        for b in range(degree + 1 - a):
+            for c in range(degree + 1 - a - b):
+                discrete = sp.simplify(sum(
+                    weights[i]
+                    * nodes[i, 0] ** a
+                    * nodes[i, 1] ** b
+                    * nodes[i, 2] ** c
+                    for i in range(nodes.rows)
+                ))
+                exact = _sphere_monomial_average(a, b, c)
+                assert sp.simplify(discrete - exact) == 0
 
 
 def _lebedev14_exact() -> tuple[sp.Matrix, list[sp.Expr]]:
@@ -39,7 +78,10 @@ def _dense_generator(nodes: sp.Matrix, weights: list[sp.Expr]) -> sp.Matrix:
 
 
 def exact_audit() -> dict[str, str]:
+    nodes6, weights6 = _lebedev6_exact()
+    _assert_monomial_exactness(nodes6, weights6, 3)
     nodes, weights = _lebedev14_exact()
+    _assert_monomial_exactness(nodes, weights, 5)
     n = nodes.rows
     one = sp.ones(n, 1)
     wrow = sp.Matrix(1, n, weights)
@@ -94,6 +136,8 @@ def exact_audit() -> dict[str, str]:
 
     return {
         "mass": "1",
+        "lebedev_6_degree": "exact through 3",
+        "lebedev_14_degree": "exact through 5",
         "centering": "exact",
         "H0": "exact",
         "H1": "exact eigenvalue -2",

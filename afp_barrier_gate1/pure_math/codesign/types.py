@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum
+import hashlib
 from types import MappingProxyType
 from typing import Any, Iterable, Mapping
 
@@ -83,12 +84,18 @@ class CompactBox:
             raise ValueError("compact box endpoints must be finite")
         if np.any(lo > hi):
             raise ValueError("compact box has a reversed interval")
-        return cls(lo.copy(), hi.copy(), labels)
+        lo_out, hi_out = lo.copy(), hi.copy()
+        lo_out.setflags(write=False)
+        hi_out.setflags(write=False)
+        return cls(lo_out, hi_out, labels)
 
     def contains(self, value: ArrayLike, tolerance: float = 0.0) -> bool:
+        if not np.isfinite(tolerance) or tolerance < 0:
+            raise ValueError("containment tolerance must be finite and nonnegative")
         point = np.asarray(value, dtype=float)
         return bool(
             point.shape == self.lower.shape
+            and np.all(np.isfinite(point))
             and np.all(point >= self.lower - tolerance)
             and np.all(point <= self.upper + tolerance)
         )
@@ -175,6 +182,13 @@ class QuadratureCandidate:
         unit_tolerance: float = 5e-12,
         mass_tolerance: float = 5e-12,
     ) -> "QuadratureCandidate":
+        if (
+            not np.isfinite(unit_tolerance)
+            or not np.isfinite(mass_tolerance)
+            or unit_tolerance <= 0
+            or mass_tolerance <= 0
+        ):
+            raise ValueError("unit_tolerance and mass_tolerance must be finite and positive")
         x = np.asarray(nodes, dtype=float)
         w = np.asarray(weights, dtype=float)
         if x.ndim != 2 or x.shape[1] != 3 or x.shape[0] < 2:
@@ -228,8 +242,13 @@ class QuadratureCandidate:
 
     def rotated(self, rotation: ArrayLike) -> "QuadratureCandidate":
         q = np.asarray(rotation, dtype=float)
-        if q.shape != (3, 3) or np.linalg.norm(q.T @ q - np.eye(3), ord=np.inf) > 1e-10:
-            raise ValueError("rotation must be orthogonal")
+        if (
+            q.shape != (3, 3)
+            or not np.all(np.isfinite(q))
+            or np.linalg.norm(q.T @ q - np.eye(3), ord=np.inf) > 1e-10
+            or abs(float(np.linalg.det(q)) - 1.0) > 1e-10
+        ):
+            raise ValueError("rotation must lie in SO(3)")
         return QuadratureCandidate.build(
             self.family,
             self.nodes @ q.T,
@@ -238,6 +257,41 @@ class QuadratureCandidate:
             seed_conductance=self.seed_conductance,
             metadata={**self.metadata, "joint_rotation": q.tolist()},
         )
+
+
+
+
+
+def canonical_array_sha256(
+    fields: Mapping[str, ArrayLike | None],
+) -> str:
+    """Hash named numeric arrays with canonical dtype, endian, and framing."""
+
+    digest = hashlib.sha256()
+    for name in sorted(fields):
+        encoded = str(name).encode("utf-8")
+        digest.update(len(encoded).to_bytes(8, "little"))
+        digest.update(encoded)
+        value = fields[name]
+        if value is None:
+            digest.update(b"N")
+            continue
+        raw = np.asarray(value)
+        if raw.dtype.kind in {"i", "u"}:
+            array = np.ascontiguousarray(raw, dtype="<i8")
+            kind = b"I"
+        elif raw.dtype.kind == "b":
+            array = np.ascontiguousarray(raw, dtype=np.uint8)
+            kind = b"B"
+        else:
+            array = np.ascontiguousarray(raw, dtype="<f8")
+            kind = b"F"
+        digest.update(kind)
+        digest.update(array.ndim.to_bytes(8, "little"))
+        for size in array.shape:
+            digest.update(int(size).to_bytes(8, "little"))
+        digest.update(array.tobytes(order="C"))
+    return digest.hexdigest()
 
 
 @dataclass(frozen=True)

@@ -8,6 +8,7 @@ document; the code never infers it from monotonicity alone.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from types import MappingProxyType
 from typing import Callable, Iterable, Mapping, Sequence
 
 import numpy as np
@@ -71,13 +72,16 @@ class ProtectedMargins:
     minimum_feasibility_margin: float
 
     def __post_init__(self) -> None:
-        if min(
+        values = (
             self.minimum_weight,
             self.minimum_separation,
             self.minimum_sampling_eigenvalue,
             self.minimum_feasibility_margin,
-        ) <= 0:
-            raise ValueError("protected-stratum margins must be strictly positive")
+        )
+        if any(not np.isfinite(value) or value <= 0 for value in values):
+            raise ValueError(
+                "protected-stratum margins must be finite and strictly positive"
+            )
 
 
 @dataclass(frozen=True)
@@ -93,6 +97,7 @@ class OuterEvaluation:
     diagnostics: Mapping[str, float | str] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
+        object.__setattr__(self, "diagnostics", MappingProxyType(dict(self.diagnostics)))
         if not np.isfinite(self.objective):
             raise ValueError("outer objective must be finite")
         if (self.objective_lower is None) != (self.objective_upper is None):
@@ -185,7 +190,7 @@ def certified_proximal_step(
         if not report.accepted_certificate:
             continue
         gap = distance(proposal, current)
-        if not np.isfinite(gap):
+        if not np.isfinite(gap) or gap < 0:
             continue
         score_upper = report.upper + gap * gap / (2.0 * alpha)
         key = f"{proposal.family}:{proposal.node_count}:{proposal.edge_count}"
@@ -236,10 +241,19 @@ def accept_restored_armijo(
     armijo: float,
     restoration_tolerance: float,
 ) -> ArmijoDecision:
-    if not 0 < armijo < 1:
-        raise ValueError("armijo must lie in (0,1)")
-    if trial.step_size <= 0 or trial.direction_norm < 0:
-        raise ValueError("invalid restored trial")
+    if not np.isfinite(armijo) or not 0 < armijo < 1:
+        raise ValueError("armijo must be finite and lie in (0,1)")
+    if not np.isfinite(restoration_tolerance) or restoration_tolerance < 0:
+        raise ValueError("restoration_tolerance must be finite and nonnegative")
+    if (
+        not np.isfinite(trial.step_size)
+        or not np.isfinite(trial.direction_norm)
+        or not np.isfinite(trial.restoration_residual)
+        or trial.step_size <= 0
+        or trial.direction_norm < 0
+        or trial.restoration_residual < 0
+    ):
+        raise ValueError("restored trial scalars must be finite and nonnegative")
     required = armijo * trial.step_size * trial.direction_norm**2
     observed = current.lower - trial.evaluation.upper
     checks = {

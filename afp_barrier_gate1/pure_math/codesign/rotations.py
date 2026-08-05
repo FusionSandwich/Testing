@@ -61,10 +61,10 @@ def axis_angle(axis: ArrayLike, angle: float) -> FloatArray:
 def _quadratic_matrix(coefficients: ArrayLike) -> FloatArray:
     value = np.asarray(coefficients, dtype=float)
     basis = degree_two_basis()
-    if value.shape != (len(basis),):
-        raise ValueError("degree-two coefficient vector has the wrong shape")
+    if value.shape != (len(basis),) or not np.all(np.isfinite(value)):
+        raise ValueError("degree-two coefficient vector must be finite with the right shape")
     norm = float(np.linalg.norm(value))
-    if norm == 0:
+    if norm <= 0:
         raise ValueError("rotation probe cannot be zero")
     return np.tensordot(value / norm, basis, axes=(0, 0))
 
@@ -135,13 +135,16 @@ def joint_collision_covariance_defect(
 ) -> float:
     """Rotate nodes and physical quadratic together; this is a covariance test."""
 
+    rotation_list = tuple(rotations)
+    if not rotation_list:
+        raise ValueError("rotation collection must be nonempty")
     baseline = collision_probe_value(
         candidate, gamma, coefficients, np.eye(3)
     )
     a = _quadratic_matrix(coefficients)
     basis = degree_two_basis()
     defects = []
-    for rotation in rotations:
+    for rotation in rotation_list:
         q = _proper_rotation(rotation)
         rotated_candidate = candidate.rotated(q)
         # Co-rotating A gives q A q^T.  Express it in the frozen basis; the
@@ -244,9 +247,14 @@ def audit_rotation_interpolation(
     *,
     tolerance: float = 2e-10,
 ) -> InterpolationAudit:
+    if not np.isfinite(tolerance) or tolerance < 0:
+        raise ValueError("tolerance must be finite and nonnegative")
     matrix = np.asarray(interpolation, dtype=float)
-    if matrix.shape != (target.node_count, source.node_count):
-        raise ValueError("interpolation matrix has the wrong shape")
+    if (
+        matrix.shape != (target.node_count, source.node_count)
+        or not np.all(np.isfinite(matrix))
+    ):
+        raise ValueError("interpolation matrix must be finite with the right shape")
     constants = float(
         np.linalg.norm(matrix @ np.ones(source.node_count) - np.ones(target.node_count), ord=np.inf)
     )

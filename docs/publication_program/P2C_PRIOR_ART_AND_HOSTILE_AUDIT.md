@@ -7,8 +7,10 @@
 | Steinerberger, arXiv:1708.08736 | spectral limitations for nonnegative quadrature/generalized designs | positivity and normalization conventions | no node-generator construction, no shared-edge feasibility |
 | Ahrens–Beylkin, DOI 10.1098/rspa.2009.0104 | icosahedral orbit quadrature methodology and rotational exactness | published rules require imported orbit parameters plus independent normalization/mass audits | the executable 12-vertex icosahedron is only a symmetry fixture, not a published AB rule; no generator theorem transfers |
 | Morel et al., DOI 10.13182/NSE07-A2693 | three-dimensional product-quadrature AFP context | P2C product masses use the frozen total-mass-one convention | no arbitrary-node co-design theorem |
-| Bienvenue et al., DOI 10.1080/00295639.2025.2462891 | moment-preserving monotone AFP on nonorthogonal/Voronoi sets | its collision setting is kept separate from ray effects | no exact bilevel optimum, no Paper-I frontier |
+| Bienvenue et al., DOI 10.1080/00295639.2025.2462891 | moment-preserving monotone AFP on nonorthogonal/Voronoi sets | moment, monotonicity, and nonorthogonal-node conventions only | no exact bilevel optimum, no Paper-I frontier, and no streaming ray-effect remedy is transferred |
 | Bondarenko–Radchenko–Viazovska, arXiv:1303.5991 | well-separated equal-weight spherical designs at the stated cardinality scale | sphere dimension, equal mass, separation, and declared strength | no covering certificate silently bundled; no shared conductance compatibility |
+| Yudin, “Coverings of a sphere, and extremal properties of orthogonal polynomials,” Discrete Math. Appl. 5:4 (1995) | the spherical-design covering-radius bound determined by a Jacobi/Gegenbauer zero, hence (O(t^{-1})) at fixed dimension | sphere dimension and design strength | no separation, quadrature positivity, graph, conductance, or co-design result |
+| Yudin, “Lower bounds for spherical designs,” Izv. Math. 61:3 (1997) | a cardinality lower bound for spherical designs | sphere dimension and design strength | no existence, positivity, covering, graph, conductance, or co-design result |
 | Izmestiev–Lam, arXiv:2408.04877 | spherical/hyperbolic Delaunay nonnegative structure-preserving Laplacians | intrinsic Delaunay convention | no P2A shell optimum or co-design stationarity |
 | accepted P2A | fixed-node convex programs, normalizations, independent verifier | literal archived parent and frozen sign/basis conventions | no nonconvex node globality |
 | accepted Paper-I P1B | \(\mathfrak D_2r_{\max}\ge6\) on its declared class | same positivity, H1, rate, and normalization class | not a lower bound on rotation spread |
@@ -104,7 +106,7 @@ Any fixed sequence of benchmark rows can mimic a slope.  The P2C convergence cla
 - report primal and dual objective enclosures and the gap;
 - accept a graph update only with nonoverlapping objective intervals;
 - certify \(SO(3)\) extrema only with a covering radius and Lipschitz bound;
-- record solver/version, input hash, time, and peak memory;
+- record solver/version, canonical input hash, inner/benchmark time, process maximum RSS, and separately scoped Python-tracemalloc peak;
 - never infer an exact sign from a floating value whose interval contains zero.
 
 This audit is intentionally stronger than the computational smoke tests: each listed false transfer is also excluded from the claim map and main theorem language.

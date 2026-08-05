@@ -42,24 +42,31 @@ from pure_math.codesign.fixtures import (
 )
 from pure_math.codesign.graph_updates import (
     GraphEvaluation,
+    GraphSearchLedger,
     ObjectiveInterval,
     add_edges,
     certified_graph_decision,
+    verify_deletion_kernel_move,
     verify_zero_extension,
 )
 from pure_math.codesign.inner import (
+    generalized_defect,
     moving_gram_block,
     verify_moving_gram_epigraph,
 )
 from pure_math.codesign.metrics import (
     apply_generator,
     generator_report,
+    global_feasibility_margin,
     sampling_reports,
 )
 from pure_math.codesign.outer import (
     ObjectiveTerms,
     ObjectiveWeights,
     OuterEvaluation,
+    ProtectedMargins,
+    RestoredTrial,
+    accept_restored_armijo,
     certified_proximal_step,
 )
 from pure_math.codesign.rotations import (
@@ -74,7 +81,9 @@ from pure_math.codesign.rotations import (
 from pure_math.codesign.types import (
     Certification,
     CertifiedValue,
+    CompactBox,
     QuadratureCandidate,
+    canonical_array_sha256,
 )
 
 
@@ -298,6 +307,8 @@ def test_symbolic_audit() -> None:
     result = exact_audit()
     assert result["H1"] == "exact eigenvalue -2"
     assert result["H2_dense_defect"] == "4"
+    assert result["lebedev_6_degree"] == "exact through 3"
+    assert result["lebedev_14_degree"] == "exact through 5"
     assert result["paper_I_lower_times_rate_cap"] == "6"
 
 
@@ -435,6 +446,62 @@ def test_duplicate_nodes_are_rejected() -> None:
         )
 
 
+def test_certificate_tolerances_and_penalties_fail_closed() -> None:
+    candidate = octahedral_complete_fixture()
+    gamma = candidate.seed_conductance
+    with pytest.raises(ValueError):
+        verify_moving_gram_epigraph(
+            candidate, gamma, 2, 4.0, tolerance=float("inf")
+        )
+    with pytest.raises(ValueError):
+        audit_protected_stratum(
+            candidate, gamma, tolerance=float("nan")
+        )
+    with pytest.raises(ValueError):
+        verify_zero_extension(
+            candidate, candidate, gamma, gamma, tolerance=float("inf")
+        )
+    with pytest.raises(ValueError):
+        verify_deletion_kernel_move(
+            candidate,
+            gamma,
+            np.zeros_like(gamma),
+            0,
+            rate_cap=float("inf"),
+        )
+    with pytest.raises(ValueError):
+        audit_rotation_interpolation(
+            np.eye(candidate.node_count),
+            candidate,
+            candidate,
+            tolerance=float("inf"),
+        )
+    exact = GraphEvaluation(
+        candidate, ObjectiveInterval(1.0, 1.0), True, True, "EXACT"
+    )
+    with pytest.raises(ValueError):
+        certified_graph_decision(exact, exact, edge_penalty=float("inf"))
+    with pytest.raises(ValueError):
+        minimum_norm_restoration_step(
+            np.eye(2), np.ones(2), singular_floor=-1.0
+        )
+
+
+def test_rotation_audits_reject_empty_or_nonfinite_probes() -> None:
+    candidate = icosahedral_complete_fixture()
+    with pytest.raises(ValueError):
+        joint_collision_covariance_defect(
+            candidate, candidate.seed_conductance, np.ones(5), ()
+        )
+    with pytest.raises(ValueError):
+        collision_probe_value(
+            candidate,
+            candidate.seed_conductance,
+            np.asarray([1.0, 0.0, np.nan, 0.0, 0.0]),
+            np.eye(3),
+        )
+
+
 def test_outward_interval_requires_an_enclosure() -> None:
     with pytest.raises(ValueError):
         CertifiedValue(1.0, Certification.OUTWARD_INTERVAL)
@@ -454,3 +521,106 @@ def test_spherical_design_strength_is_actually_audited() -> None:
             strength=5,
             graph="complete",
         )
+
+
+def test_near_singular_rank_uses_the_same_p2a_singular_value_policy() -> None:
+    defect, compatibility, rank, cutoff, retained, discarded = generalized_defect(
+        np.diag([1.0, 1.0e-12]),
+        np.diag([0.0, 1.0e-6]),
+    )
+    assert rank == 2
+    assert abs(defect - 1.0) < 2e-10
+    assert compatibility == 0.0
+    assert retained == pytest.approx(1.0e-6)
+    assert discarded == 0.0
+    assert cutoff < retained
+
+
+def test_graph_ledger_requires_certified_incumbent_and_no_revisit() -> None:
+    candidate = octahedral_complete_fixture()
+    diagnostic = GraphEvaluation(
+        candidate, ObjectiveInterval(1.0, 1.0), True, True, "DIAGNOSTIC"
+    )
+    ledger = GraphSearchLedger()
+    with pytest.raises(ValueError):
+        ledger.initialize(diagnostic)
+    exact = GraphEvaluation(
+        candidate, ObjectiveInterval(1.0, 1.0), True, True, "EXACT"
+    )
+    ledger.initialize(exact)
+    decision = ledger.consider(
+        exact, edge_penalty=0.0, strict_decrease=0.01
+    )
+    assert not decision.accepted
+    assert decision.reason == "NO_REVISIT"
+
+
+def test_deletion_seed_requires_full_trial_h1_feasibility() -> None:
+    candidate = octahedral_complete_fixture()
+    zero = np.zeros(candidate.edge_count)
+    assert not verify_deletion_kernel_move(
+        candidate, zero, zero, 0, rate_cap=2.0
+    )
+
+
+def test_interpolation_rejects_first_moment_breaking_average() -> None:
+    candidate = octahedral_complete_fixture()
+    averaging = np.full(
+        (candidate.node_count, candidate.node_count),
+        1.0 / candidate.node_count,
+    )
+    report = audit_rotation_interpolation(averaging, candidate, candidate)
+    assert not report.passed
+    assert report.first_moment_residual > 0.5
+
+
+def test_protected_types_and_canonical_hashes_fail_closed() -> None:
+    with pytest.raises(ValueError):
+        ProtectedMargins(float("nan"), 1.0, 1.0, 1.0)
+    candidate = octahedral_complete_fixture()
+    with pytest.raises(ValueError):
+        QuadratureCandidate.build(
+            "bad_tolerance",
+            candidate.nodes,
+            2.0 * candidate.weights,
+            [tuple(map(int, edge)) for edge in candidate.edges],
+            mass_tolerance=float("inf"),
+        )
+    with pytest.raises(ValueError):
+        candidate.rotated(np.diag([-1.0, 1.0, 1.0]))
+    little = np.asarray([1.0, 2.0], dtype="<f8")
+    big = np.asarray([1.0, 2.0], dtype=">f8")
+    assert canonical_array_sha256({"x": little}) == canonical_array_sha256(
+        {"x": big}
+    )
+    box = CompactBox.build([0.0], [1.0], ["x"])
+    with pytest.raises(ValueError):
+        box.lower[0] = -1.0
+
+
+def test_remaining_tolerance_paths_fail_closed() -> None:
+    with pytest.raises(ValueError):
+        enriched_response_identity(
+            np.eye(2), [1.0, 0.0], [0.0, 1.0], [0.0, 0.0],
+            tolerance=float("inf"),
+        )
+    candidate = octahedral_complete_fixture()
+    evaluation = OuterEvaluation(
+        candidate, ObjectiveTerms(1.0, 0.0), 1.0, True, True, "EXACT"
+    )
+    trial = RestoredTrial(evaluation, 1.0, 1.0, 0.0, True)
+    with pytest.raises(ValueError):
+        accept_restored_armijo(
+            evaluation,
+            trial,
+            armijo=0.5,
+            restoration_tolerance=float("inf"),
+        )
+
+
+def test_sparse_global_margin_matches_exact_symmetric_fixture() -> None:
+    candidate = octahedral_complete_fixture()
+    margin, status = global_feasibility_margin(candidate, 2.0)
+    assert status == "VERIFIED_FLOAT_CANDIDATE"
+    assert np.isfinite(margin)
+    assert margin >= -2e-10
