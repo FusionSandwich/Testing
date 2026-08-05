@@ -1,5 +1,17 @@
 # AFP publication-program baseline
 
+## P2A accepted-parent addendum
+
+Prompt P2A starts additively from the literal accepted Paper-I/P1F object
+`ab155b8e04bdf00306351b581739fb5feeb2979e`, tree
+`61a07c6c187d3002d5ca433be16b26fb1bad73f1`, branch
+`agent/afp-publication-p1f-flagship-paper-4e461c10`, and immutable ref
+`archive/afp-publication-p1f-flagship-paper-verified`.  The P2A working branch
+was created at that exact object as
+`agent/afp-publication-p2a-convex-design-ab155b8e`.  This addendum supersedes
+the older P0 source only as the parent selection for P2A; it does not rewrite
+the historical provenance below.
+
 Snapshot: 2026-08-04 (America/Toronto)
 Repository: `FusionSandwich/Testing`
 

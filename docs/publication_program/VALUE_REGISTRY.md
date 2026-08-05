@@ -26,7 +26,15 @@ not claims that a corresponding source blob or theorem already exists.
 | DEF | equality/stability deficits from loss variance, covariance anisotropy, path propagation and rigidity margin | exact constants in P3/P4 packages | I |
 | LIFT | linear moment/reversibility constraints with `gamma>=0` and nonempty balanced probability polytope | affine slice at fixed target; projective family only after scale quotient | III |
 | NEG | total negative conductance and its dual certificate | FUTURE program value; future exact LP/conic certificate | III |
-| DESIGN | fixed-quadrature objective combining D2, rate/locality and regularization | FUTURE program value; certified convex value required | II |
+| DESIGN | fixed-quadrature shared-conductance programs on `A gamma=b`, `gamma>=0`, with exact shellwise quotient residuals and rate/locality constraints | P2A-proved SDP/SOCP/QP/LP value with explicit primal/dual certificate | II |
+| P2A-A | edge-force matrix with blocks `Omega_j-Omega_i` and `Omega_i-Omega_j`; `b_i=-2w_iOmega_i` | `A gamma=b` iff `L_gamma Omega=-2Omega` | II |
+| P2A-C | unsigned incidence `C=abs(B)` | node rate `r_i=(C gamma)_i/w_i`; cap `C gamma<=Rw` | II |
+| P2A-TL | for certified shell basis `V_l^T W V_l=I`, `T_l=W^(1/2)(L_gamma+l(l+1)I)V_l` | affine full-output quotient residual; `D_l=||T_l||_2` | II |
+| P2A-LOSS-L1 | `sum_e (1-Omega_i.Omega_j)gamma_e` | exactly `1` under `sum w=1` and exact `H_1`; not a sparsity objective | II/III |
+| P2A-TOTAL | `sum_e gamma_e=(1/2)sum_iw_ir_i` | mean-rate cost, generally variable and potentially long-edge favoring | II/III |
+| P2A-LOWER | fixed-rate/fixed-defect optimizer bound on `S^2` | `opt_D(R)>=6/R`; `opt_R(delta)>=6/delta` | I/II |
+| P2A-TETRA | regular tetrahedron, `w=1/4`, `gamma=1/8` | rank `S_2=3`, `rmax=3/2`, `D_2=4`, Frobenius half-square `24` | I/II |
+| P2A-OCTA | regular octahedron, nonantipodal graph, `w=1/6`, `gamma=1/12` | rank `S_2=2`, `rmax=2`, `D_2=3` | I/II |
 | SEMI | semigroup/resolvent response norms | FUTURE program value with domain and conditioning | II |
 | TRAN | equal-cost response errors split into angular, spatial, energy and model parts | FUTURE benchmark value with units/tolerances | II |
 | HTS | layer/tensor angular response values | FUTURE layer-resolved physical data; not pure-math evidence | II |

@@ -8,7 +8,7 @@
 | quantitative stability | central | conditioning guidance | optional | explicit constants and rigidity margins | rare-edge/long-path failures remain | I |
 | matching positive `O(h^2)` construction | **P1E proved for `d=2,3`** | baseline method | optional | all-orders construction and certified error | no extension to `d>3`; fitted numerical slope or rate-cap compatibility is insufficient | I |
 | five-Platonic table and Plantri census | supporting regression | test data | examples | exact arithmetic/source pin | not flagship and not an all-orders proof | I |
-| fixed-quadrature conic optimizer | none | method core | duality overlap | reproducible primal/dual certificate | lower abstract H2 norm alone does not earn Paper II | II |
+| fixed-quadrature conic optimizer | lower bound and equality regressions | **P2A proved method core** | duality overlap | reproducible primal/dual/Farkas certificates, exact quotient normalization and solver-independent verification | the proved optimizer method alone does not establish lower physical response or earn the full Paper-II validation claim | II |
 | semigroup/resolvent/response bounds | cited boundary | theorem core | none | full norms, domains, conditioning | cannot transfer harmonic residual without proof | II |
 | quadrature-generator co-design | none | method target | lift overlap | convergence and rotational robustness | heuristic optimization is insufficient | II |
 | equal-cost transport hierarchy | no validation claim | validation core | none | identical nodes/cost and error decomposition | no conflation of ray/spatial/energy/model errors | II |
@@ -56,3 +56,14 @@ geometric classification additionally requires compatible endpoint
 identifications, common chord data, reversibility/cycle compatibility and
 stated graph/embedding hypotheses. Symmetric examples are exact families,
 not a license to suppress those assumptions.
+
+## P2A boundary refinement
+
+| Result / deliverable | Paper I role | Paper II role | Paper III role | Prerequisite / novelty threshold | Kill criterion and prohibited overclaim | Source owner |
+|---|---|---|---|---|---|---|
+| global shared-conductance affine design | fixed definition | proved P2A feasibility core | lift-cone input | fixed `(X,w,E)`, exact coordinate module, positivity and reversibility | no local-row-to-global inference; infeasible inputs are valid outcomes | II |
+| alias-correct operator-norm SDP | sharp lower benchmark | proved P2A optimizer core | spectrahedral context | exact/certified sampling rank, sampled metric and full output leakage | no raw singular pencil, Frobenius coefficient denominator or compressed residual | II |
+| primal/dual/Farkas certificate package | equality examples | proved P2A reproducibility core | generic duality boundary | explicit Slater/minimal-face conditions and original-scale verification | solver status is not a certificate; generic conic duality is not branded new | II/III |
+| multi-shell and fixed response objectives | shell definitions | proved convex formulation | none | each shell deflated separately; response maps fixed | no nonlinear resolvent convexity or continuum rotation claim | II |
+| support pruning | none | implemented certified heuristic | support-face context | exact reoptimization after every deletion | no minimum-cardinality or generic `l1` sparsity theorem | II/III |
+| equal-cost physical response improvement | none | still required for full Paper-II validation | none | identical cost/nodes and audited response decomposition | P2A's lower abstract harmonic residual alone is insufficient | II |
