@@ -32,3 +32,19 @@ association-scheme structure, design/frame language and invariant-quadrature
 examples. Every local block identity, rate normalization, sampled-kernel
 statement, family construction and restricted classification is proved
 internally; no external theorem is transferred as the equality result.
+
+## P1D transfer audit
+
+| Source or standard tool | External content used | P1D transfer boundary |
+|---|---|---|
+| finite-frame polar decomposition | positive-definite frame operators admit inverse square roots and whitening | P1D derives the weighted Procrustes constant directly; no published frame-stability theorem is imported |
+| weighted Cauchy--Schwarz, Chebyshev and finite Poincare inequalities | standard finite Hilbert-space inequalities | all normalizations, stationary measures, gaps and equality-sensitive constants are recomputed in P1D |
+| Hoffman--Wielandt spectral variation | Frobenius perturbation controls ordered eigenvalue displacement for symmetric matrices | applied only to explicit local covariance matrices; radial eigenvector stability still requires a nonzero spectral gap |
+| effective resistance energy inequality | point differences are controlled by resistance times Dirichlet energy | P1D states its energy convention and retains resistance, path length, minimum conductance and congestion parameters |
+| García Trillos--Gerlach--Hein--Slepčev, arXiv:1801.10108 | asymptotic spectral convergence of random geometric graph Laplacians under manifold/bandwidth hypotheses | adjacent spectral context only; it proves none of the finite P1D master, quotient, edge, or frame-repair constants |
+| Izmestiev--Lam, arXiv:2408.04877 | geometry-specific spherical/hyperbolic discrete Laplacians | no transfer from their specialized weights to arbitrary positive reversible generators |
+| Martin--Tanaka and Bannai--Bannai | association schemes and spherical-design moment structure for symmetric examples | symmetry does not supply `w_min`, `kappa`, sampling gaps, tangent lower bounds, or global gluing |
+
+P1D invokes no external global embedding-stability theorem. Its local repairs
+are constructive; its necessity examples prevent silent transfer of a
+uniform frame or graph-rigidity constant.

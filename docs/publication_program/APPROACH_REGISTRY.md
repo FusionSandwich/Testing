@@ -49,3 +49,21 @@ P1C is an additive descendant of frozen P1B commit
 | global equality classification | geometry | PROVED_RESTRICTED | degree-`d`, complete-support and strict-convex `S^2` polyhedral classifications under explicit hypotheses | covers, blowups, long-chord shells and weighted frames reject an unrestricted Platonic claim | stronger explicit graph/embedding hypotheses only | I/III |
 | exact symbolic P1C audit | regression | COMPUTATIONAL_CANDIDATE | rational/algebraic block, family, minor, alias and counterfamily fixtures | no numerical rank thresholds; computation is not the all-orders proof | exact-head execution | all |
 | Lean equality geometry | finite algebra kernel | IMPLEMENTATION_P1C | `QuadraticEqualityGeometry.lean` over accepted P1B/P3 algebra | compilation and axiom audit remain acceptance gates | exact-head build | I |
+
+## P1D quantitative-stability mechanisms
+
+P1D is an additive descendant of frozen P1C commit
+`9ae0c8f16e8cd97cd84ef89b25064512a04b308a`, tree
+`289113bb760fbe079f5d581c10f1cefea8a72931`.
+
+| Family / mechanism | Target | Status | Concrete output | Exact blocker or adversarial test | Reopen condition | Paper |
+|---|---|---|---|---|---|---|
+| normalized frontier budget | P1D stability | PROVED_P1D | exact `sum w(2q+q^2)+(d-1)E_B/(d a_0^2)<=2delta+delta^2` | every later conclusion must preserve its weighting and normalization | none | I |
+| weighted exceptional sets | vertex stability | PROVED_P1D | exact `H/[rho(2+rho)]` mass bound and `sqrt(1+H/w_i)-1` pointwise envelope | tiny stationary masses reject unweighted control | add an explicit mass floor | I |
+| reversible conductance measure | edge stability | PROVED_P1D | global-shell loss identity and active-conductance fraction bounds | an edge carrying probability `kappa` may retain order-one defect | add an explicit probability floor for edgewise claims | I/II |
+| graph propagation | global rate stability | PROVED_P1D_SCOPED | multiplicative path, additive energy, effective-resistance and Poincare-gap bounds | long paths and vanishing gaps reject parameter-free propagation | diameter, resistance, gap or congestion must be displayed | I/II |
+| local polar whitening | tangent geometry | PROVED_P1D_SCOPED | explicit Procrustes repair to a centered weighted tight frame | nearly singular tangent covariance and antipodal shells | retain tangent lower bound and shell margin | I/III |
+| positive unit-frame repair | local spherical figure | PROVED_P1D_SCOPED | feature-operator pseudoinverse corrects weights while retaining unit directions and positivity | feature overlap, active degree, `kappa`, and shell floor are necessary | none under stated margins | I/III |
+| quotient residual transfer | sampled shell | PROVED_P1D | Hilbert--Schmidt row control and `alpha_X^{-1/2}` quotient operator bound including leakage | sampling aliases and nearly singular sample frames | quotient `K_X`; expose `alpha_X` | I/II |
+| exact/interval P1D audit | regression | COMPUTATIONAL_CANDIDATE | 30 symbolic and outward-rounded stress fixtures | no floating rank thresholds; finite checks are not theorem proofs | exact-head execution | all |
+| Lean stability core | finite scalar algebra | IMPLEMENTATION_P1D | `QuadraticFidelityStability.lean` over accepted P1B/P1C interfaces | inverse-square-root and graph spectral calculus remain in the ordinary proof | exact-head full build | I |

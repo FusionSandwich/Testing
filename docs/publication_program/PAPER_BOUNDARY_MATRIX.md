@@ -34,6 +34,14 @@ that these future publication thresholds have already been met.
 |---|---|---|---|---|---|---|
 | exact equality geometry, infinite families and scoped classifications | central P1C sharpness/equality layer | regression geometry | lift/assembly criterion | radial–tangent block theorem, antipodal split, exact sampled quotient and explicit graph/embedding hypotheses | no unrestricted Platonic classification; frontier equality does not imply a nonzero exactly reproduced `H_2` mode | I |
 
+## P1D boundary refinement
+
+| Result / deliverable | Paper I role | Paper II role | Paper III role | Prerequisite / novelty threshold | Kill criterion and prohibited overclaim | Source owner |
+|---|---|---|---|---|---|---|
+| quantitative stability at the sharp frontier | central P1D stability layer | conditioning guidance | local-frame boundary | exact normalized master budget and every parameter shown | do not turn weighted averages into pointwise, edgewise or global geometry without the named mass/probability/gap/frame hypotheses | I |
+| sampled-shell operator stability | degree-two spectral consequence | response-transfer input | none | quotient by `K_X`, sampling lower-frame constant `alpha_X`, and leakage control | no coefficient recovery on aliases; no range-invariance assumption | I/II |
+| constructive tangent-frame repair | geometric consequence | mesh-quality diagnostic | lift local model | shell margin, tangent lower frame, and for unit frames feature overlap plus positivity radius | no global embedding classification or gluing from independent local repairs | I/III |
+
 The local tight-frame theorem classifies algebraic equality. A global
 geometric classification additionally requires compatible endpoint
 identifications, common chord data, reversibility/cycle compatibility and

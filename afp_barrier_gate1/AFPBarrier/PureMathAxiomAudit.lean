@@ -15,6 +15,7 @@ import AFPBarrier.QuadraticSphereResidual
 import AFPBarrier.QuadraticFidelityFoundation
 import AFPBarrier.QuadraticFidelityLowerBound
 import AFPBarrier.QuadraticEqualityGeometry
+import AFPBarrier.QuadraticFidelityStability
 import AFPBarrier.OneShellQuadraticRigidity
 import AFPBarrier.SpectralSamplingObstruction
 import AFPBarrier.SphericalQEqualityRigidity
@@ -233,3 +234,21 @@ import AFPBarrier.SharpProductBarriers
 #print axioms AFPBarrier.scaledTangentTightFrame_iff_normalized
 #print axioms AFPBarrier.scaledTangentTightFrame_iff_normalized_of_nonantipodal
 #print axioms AFPBarrier.quadraticEquality_rate_product
+
+/-! P1D: elementary quantitative-stability budget. -/
+
+#print axioms AFPBarrier.quadraticStability_slack_identity
+#print axioms AFPBarrier.quadraticStability_total_sq_budget
+#print axioms AFPBarrier.quadraticStability_total_linear_budget
+#print axioms AFPBarrier.quadraticStability_component_sq_budget
+#print axioms AFPBarrier.quadraticStability_pointwise_sq_budget
+#print axioms AFPBarrier.quadraticStability_pointwise_sq_budget_of_wmin
+#print axioms AFPBarrier.quadraticStability_badVertexMass
+#print axioms AFPBarrier.quadraticStability_badVertexMass_sharp
+#print axioms AFPBarrier.quadraticStability_pointwise_full_budget
+#print axioms AFPBarrier.quadraticStability_tensor_budget
+#print axioms AFPBarrier.quadraticStability_tensor_rate_bound
+#print axioms AFPBarrier.quadraticStability_scaledVariance_sq_budget
+#print axioms AFPBarrier.quadraticStability_master_square_consequences
+#print axioms AFPBarrier.quadraticStability_mean_le_delta
+#print axioms AFPBarrier.quadraticStability_weightedMean_le_delta

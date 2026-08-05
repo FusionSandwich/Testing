@@ -135,3 +135,28 @@ For uniform shortest-edge generators,
 
 Recompute with
 `python pure_math/covariance/p1c_equality_geometry_audit.py`.
+
+## P1D quantitative-stability values
+
+Let `n=d-1`, `a_0=n^2/r_max`, `ell_0=n/r_max`,
+`c_0=dn/r_max`, and `eta=2delta+delta^2`.
+
+| ID | Exact definition / domain | Sharp or proved bound | Consumer |
+|---|---|---|---|
+| P1D-QSV | `s_i=r_max/r_i-1`, `v_i=V_i/a_0`, `q_i=x_i-1=s_i+v_i` | `sum w(2q+q^2)+n E_B/(d a_0^2)<=eta` | I |
+| P1D-H | `H=eta-n E_B/(d a_0^2)` | `0<=H<=eta`; retains scalar/tensor competition | I |
+| P1D-GLOBAL | normalized scalar, rate, variance, tensor defects | `sum w q^2,sum w s^2,sum w v^2<=eta`; `E_B<=d a_0^2 eta/n=d n^3 eta/r_max^2` | I |
+| P1D-V | local loss variance | `sum w V<=a_0 delta`; `sum w V^2<=a_0^2 eta` | I |
+| P1D-POINT | positive vertex mass `w_i` | `q_i<=sqrt(1+H/w_i)-1`; the joint local budget gives `||B_i||<=a_0 sqrt(d eta/(n w_i))` | I |
+| P1D-BAD | threshold `rho>0` | weighted bad-vertex mass `<=min(1,H/[rho(2+rho)])` | I |
+| P1D-K0 | covariance/residual Hilbert--Schmidt allowance | `K_0=d a_0^2 eta/n=d(d-1)^3 eta/r_max^2` | I/II |
+| P1D-EDGE | `nu_ij=gamma_ij/bar r`, relative global loss `g=ell/ell_0-1` | `E_nu g^2<=sqrt(1+H)H/2`; tail `<=sqrt(1+H)H/(2t^2)` | I/II |
+| P1D-KAPPA | every active `p_ij>=kappa` | local edge relative defect `<=sqrt(v_i/(kappa(1+s_i)))`; all uniform versions display `kappa,w_min` | I/II |
+| P1D-GAP | sampled lower-frame `alpha_X>0` on `K_X^perp` | `||U-c_0 iota||<=rho_X=sqrt(K_0/alpha_X)`; compressed shell width `2rho_X` | I/II |
+| P1D-FRAME | raw tangent lower bound `lambda`, target `theta=m(2-m)/n` | Procrustes square `<= (||B||^2+V^2/n)/[r^2(sqrt(lambda)+sqrt(theta))^2]` | I/III |
+| P1D-UNIT | shell floor `s_-`, feature gap `mu`, probability floor `kappa` | weight correction `<=R_*/mu`; positivity if `R_*<kappa mu`; geometric metric given in theorem (10.17) | I/III |
+
+The P1D exact/interval audit contains 30 fixtures: five master-budget, three
+small-mass, two aliases, four `kappa` compass, three path, four singular-frame,
+four sampling-gap, and five outward-interval fixtures. These counts and
+constants are regression values, not replacements for the all-orders proof.
