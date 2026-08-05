@@ -33,6 +33,7 @@ import AFPBarrier.QuadraticFidelityFoundation
 import AFPBarrier.QuadraticFidelityLowerBound
 import AFPBarrier.QuadraticEqualityGeometry
 import AFPBarrier.QuadraticFidelityStability
+import AFPBarrier.QuadraticFidelityConstruction
 import AFPBarrier.OneShellQuadraticRigidity
 import AFPBarrier.SpectralSamplingObstruction
 import AFPBarrier.SphericalQEqualityRigidity

@@ -185,3 +185,23 @@ import AFPBarrier
 
 #print axioms AFPBarrier.no_exact_S2_degree_two_at_peak
 #print axioms AFPBarrier.S2_four_le_rate_mul_defect
+
+/-! Prompt P1E: finite construction identities. -/
+
+#print axioms AFPBarrier.construction_constant_reproduction
+#print axioms AFPBarrier.construction_increment_decomposition
+#print axioms AFPBarrier.tangentForce_zero_radialMass_exactForce
+#print axioms AFPBarrier.tangentForce_zero_radialMass_hOne
+#print axioms AFPBarrier.sharedConductance_detailedBalance_entry
+#print axioms AFPBarrier.unnormalizedMoment_div_mass_entry
+#print axioms AFPBarrier.unnormalizedMomentSum_div_mass_entry
+#print axioms AFPBarrier.constructionCorrection_closes
+#print axioms AFPBarrier.constructionCorrection_force_zero
+#print axioms AFPBarrier.fourPointConnector_firstMoment
+#print axioms AFPBarrier.fourPointConnector_cubicMoment
+#print axioms AFPBarrier.fourPointConnector_weight_pos
+#print axioms AFPBarrier.chordMass_outgoingConductance_bound
+#print axioms AFPBarrier.chordMass_normalizedRate_bound
+#print axioms AFPBarrier.regularPolygon_hOne_scalar_recurrence
+#print axioms AFPBarrier.regularPolygon_hTwo_scalar_residual
+#print axioms AFPBarrier.regularPolygon_hTwo_scalar_eigenvalue

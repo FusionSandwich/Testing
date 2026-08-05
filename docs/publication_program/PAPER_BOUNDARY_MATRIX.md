@@ -6,7 +6,7 @@
 | `D2 r_max >= d(d-1)` | **P1B proved sharp flagship frontier** | optimizer benchmark | boundary datum | quotient trace proof, full equality theorem and all-dimensional sharpness | local variance identity alone does not establish it; matching construction remains separate | I |
 | equality classification and exact families | central | regression set | possible lift examples | all hypotheses explicit | no unrestricted Platonic classification | I |
 | quantitative stability | central | conditioning guidance | optional | explicit constants and rigidity margins | rare-edge/long-path failures remain | I |
-| matching positive `O(h^2)` construction | required | baseline method | optional | all-orders construction and certified error | fitted numerical slope or rate-cap compatibility is insufficient | I |
+| matching positive `O(h^2)` construction | **P1E proved for `d=2,3`** | baseline method | optional | all-orders construction and certified error | no extension to `d>3`; fitted numerical slope or rate-cap compatibility is insufficient | I |
 | five-Platonic table and Plantri census | supporting regression | test data | examples | exact arithmetic/source pin | not flagship and not an all-orders proof | I |
 | fixed-quadrature conic optimizer | none | method core | duality overlap | reproducible primal/dual certificate | lower abstract H2 norm alone does not earn Paper II | II |
 | semigroup/resolvent/response bounds | cited boundary | theorem core | none | full norms, domains, conditioning | cannot transfer harmonic residual without proof | II |
@@ -41,6 +41,15 @@ that these future publication thresholds have already been met.
 | quantitative stability at the sharp frontier | central P1D stability layer | conditioning guidance | local-frame boundary | exact normalized master budget and every parameter shown | do not turn weighted averages into pointwise, edgewise or global geometry without the named mass/probability/gap/frame hypotheses | I |
 | sampled-shell operator stability | degree-two spectral consequence | response-transfer input | none | quotient by `K_X`, sampling lower-frame constant `alpha_X`, and leakage control | no coefficient recovery on aliases; no range-invariance assumption | I/II |
 | constructive tangent-frame repair | geometric consequence | mesh-quality diagnostic | lift local model | shell margin, tangent lower frame, and for unit frames feature overlap plus positivity radius | no global embedding classification or gluing from independent local repairs | I/III |
+
+## P1E boundary refinement
+
+| Result / deliverable | Paper I role | Paper II role | Paper III role | Prerequisite / novelty threshold | Kill criterion and prohibited overclaim | Source owner |
+|---|---|---|---|---|---|---|
+| regular-polygon family on `S^1` | exact low-dimensional matching family | regression family | none | direct all-`N` trigonometric proof with sampled quotient | not an irregular-mesh or higher-dimensional construction | I |
+| adaptive-ring family on `S^2` | matching upper theorem with `R_3=64pi^2`, `C_3=75/2` | deterministic baseline | possible lift example | shared positive conductances, every row class, all-orders Cauchy guards, exact quotient multiplier, rate and mesh constants | no generic Delaunay, arbitrary-perturbation, or `d>3` claim | I |
+| structured robustness | construction stability boundary | mesh diagnostic | none | fixed counts, phases, masks, horizontal jumps, reflection and a common rotation | independent longitude or arbitrary node motion is outside the theorem | I |
+| six failed construction routes | falsification appendix | method boundary | lift boundary | exact obstruction or missing uniform inverse stated route by route | negative route evidence is not a universal nonexistence theorem | I/II/III |
 
 The local tight-frame theorem classifies algebraic equality. A global
 geometric classification additionally requires compatible endpoint

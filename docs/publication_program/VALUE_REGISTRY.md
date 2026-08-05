@@ -160,3 +160,22 @@ The P1D exact/interval audit contains 30 fixtures: five master-budget, three
 small-mass, two aliases, four `kappa` compass, three path, four singular-frame,
 four sampling-gap, and five outward-interval fixtures. These counts and
 constants are regression values, not replacements for the all-orders proof.
+
+## P1E matching-construction values
+
+| ID | Exact definition / domain | Proved value or bound | Consumer |
+|---|---|---|---|
+| P1E-D2-H | regular `N`-gon, `N>=5`, fill/separation `h=pi/N` | active edge angle `2h`; loss `ell=1-cos(2h)=2sin^2h` | I |
+| P1E-D2-RATE | same family | `r_max=ell^-1 <= (pi^2/8)h^-2` | I |
+| P1E-D2-DEFECT | sampled degree-two quotient | `mathfrak D_2=2ell=4sin^2h<=4h^2`; product exactly `2` | I |
+| P1E-D2-ORDER | class with rate cap `R_2=pi^2/8` | `16h^2/pi^2 <= inf mathfrak D_2 <= 4h^2` | I |
+| P1E-D3-MESH | adaptive reflected ring family on `S^2`; `h=pi/(2S)` | bounded degree and angular window; every active chord at least `h/8` | I |
+| P1E-D3-RATE | same family | `R_3=64pi^2`; `r_max<=R_3h^-2` | I |
+| P1E-D3-DEFECT | exact row multiplier on the sampled quotient | `C_3=75/2`; `mathfrak D_2<=C_3h^2` | I |
+| P1E-D3-LOWER | P1B product bound under the `R_3` cap | `c_3=6/R_3=3/(32pi^2)` | I |
+| P1E-D3-ORDER | admissible class `mathcal G_h(R_3)` containing the ring generator | `c_3h^2 <= inf mathfrak D_2 <= C_3h^2` | I |
+
+The `d=3` perturbation constants apply only to support-preserving reflected
+latitude perturbations with fixed combinatorial data. No exact-head workflow
+execution, artifact digest, or frozen P1E commit is recorded in this value
+table.
