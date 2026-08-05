@@ -67,6 +67,7 @@ from pure_math.codesign.rotations import (
     axis_angle,
     collision_probe_value,
     collision_rotation_spread,
+    enclose_rotation_extrema,
     joint_collision_covariance_defect,
     signed_permutation_rotations,
 )
@@ -359,6 +360,17 @@ def test_collision_probe_rejects_nonrotations(bad) -> None:
         )
     with pytest.raises(ValueError):
         axis_angle([0.0, 0.0, 0.0], 1.0)
+
+
+def test_rotation_net_enclosure_rejects_nonfinite_lipschitz_data() -> None:
+    with pytest.raises(ValueError):
+        enclose_rotation_extrema(
+            [1.0, 2.0], lipschitz_constant=float("nan"), cover_radius=0.1
+        )
+    with pytest.raises(ValueError):
+        enclose_rotation_extrema(
+            [1.0, 2.0], lipschitz_constant=1.0, cover_radius=float("inf")
+        )
 
 
 def test_zero_extension_rejects_changed_nodes_or_weights() -> None:

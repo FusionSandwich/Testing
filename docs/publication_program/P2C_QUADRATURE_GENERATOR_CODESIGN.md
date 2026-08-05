@@ -187,13 +187,13 @@ Each fixed labelled graph domain is closed, and their declared finite union is c
 
 ### Theorem 3 — existence
 
-Every fixed-candidate inner optimum is attained.  Delete zero-weight epigraphs and, for every retained positive-weight shell, restrict \(t_\ell\) to a common optimal sublevel; the protected Gram and conductance bounds give a uniform finite defect upper bound.  If the inner feasible correspondence has constant equality rank and uniform Robinson regularity, the primary value and optimizer correspondence are continuous and compact-valued.  The graph
+Every fixed-candidate inner optimum is attained.  Delete zero-weight epigraphs and, for every retained positive-weight shell, restrict \(t_\ell\) to a common optimal sublevel; the protected Gram and conductance bounds give a uniform finite defect upper bound.  If the inner feasible correspondence has constant equality rank and uniform Robinson regularity, the primary value is continuous and the optimizer correspondence is nonempty, compact-valued, and upper hemicontinuous.  Its graph
 \[
  \{(p,c):p\in{\cal P},\ c\in{\cal A}(p)\}
 \]
-is compact, so (7) attains a lifted outer minimum.  Under the same continuity hypotheses, \(\widehat V\) is continuous.
+is compact, so (7) attains a lifted outer minimum.  Continuity or local Lipschitzness of \(\widehat V\) is asserted only with the additional optimizer-face continuity/strong-regularity hypothesis stated in the algorithm using it.
 
-**Proof.**  Inner attainment is Theorem 2.  Positive shell weights bound retained epigraph variables on an optimal sublevel; alternatively they may be eliminated at their minimal generalized-defect values.  Constant rank and uniform Robinson regularity give the required hemicontinuity, while Berge’s theorem gives continuity of the primary value.  If \(p_n\to p\), \(c_n\in{\cal A}(p_n)\), and \(c_n\to c\), closed feasibility and continuity give \(c\in{\cal A}(p)\); hence the optimizer graph is closed inside the compact lifted protected set.  The continuous \(F\) attains there.  A second application of Berge gives continuity of \(\widehat V\). ∎
+**Proof.**  Inner attainment is Theorem 2.  Positive shell weights bound retained epigraph variables on an optimal sublevel; alternatively they may be eliminated at their minimal generalized-defect values.  Constant rank and uniform Robinson regularity make the feasible correspondence continuous, while Berge’s theorem gives continuity of the primary value and upper hemicontinuity of its optimizer set.  If \(p_n\to p\), \(c_n\in{\cal A}(p_n)\), and \(c_n\to c\), closed feasibility and continuity give \(c\in{\cal A}(p)\); hence the optimizer graph is closed inside the compact lifted protected set.  The continuous \(F\) attains there.  A unique strongly regular secondary selection, or an independently verified continuous optimizer-face correspondence, permits a second Berge application to \(\widehat V\); this is not inferred from nonunique primary optimality alone. ∎
 
 This is an existence theorem, not a claim that the algorithms below discover the nonconvex global minimum.
 

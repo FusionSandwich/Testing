@@ -210,8 +210,13 @@ def enclose_rotation_extrema(
     sample = np.asarray(values, dtype=float)
     if sample.ndim != 1 or len(sample) == 0 or not np.all(np.isfinite(sample)):
         raise ValueError("rotation samples must be a finite nonempty vector")
-    if lipschitz_constant < 0 or cover_radius < 0:
-        raise ValueError("Lipschitz data must be nonnegative")
+    if (
+        not np.isfinite(lipschitz_constant)
+        or not np.isfinite(cover_radius)
+        or lipschitz_constant < 0
+        or cover_radius < 0
+    ):
+        raise ValueError("Lipschitz data must be finite and nonnegative")
     correction = lipschitz_constant * cover_radius
     return RotationNetEnclosure(
         float(np.min(sample)), float(np.max(sample)),

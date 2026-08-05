@@ -115,7 +115,12 @@ jobs:
           line=$(git ls-remote --exit-code --heads origin "refs/heads/${P2C_ARCHIVE}"); status=$?
           set -e
           if [[ ${status} -eq 0 ]]; then
-            test "$(awk 'NR==1 {print $1}' <<<"${line}")" = "${CANDIDATE_SHA}"
+            archive_sha="$(awk 'NR==1 {print $1}' <<<"${line}")"
+            if [[ "${GITHUB_REF}" = "refs/heads/${P2C_ARCHIVE}" ]]; then
+              test "${archive_sha}" = "${CANDIDATE_SHA}"
+            else
+              git merge-base --is-ancestor "${archive_sha}" "${CANDIDATE_SHA}"
+            fi
           elif [[ ${status} -ne 2 || "${GITHUB_REF}" = "refs/heads/${P2C_ARCHIVE}" ]]; then
             exit 1
           fi
@@ -306,7 +311,7 @@ jobs:
           git diff --check "${P2B_COMMIT}" "${CANDIDATE_SHA}"
           test -z "$(git status --short)"
 
-  freeze-create-only-archive:
+  freeze-forward-only-archive:
     needs: [exact-codesign-and-regressions, retained-lean-kernel, final-candidate-integrity]
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/agent/afp-publication-p2c-codesign-9b39b6ad-v2' }}
     runs-on: ubuntu-latest
@@ -319,7 +324,7 @@ jobs:
           fetch-depth: 0
           ref: ${{ env.CANDIDATE_SHA }}
           persist-credentials: true
-      - name: Freeze verified P2C head without moving an archive
+      - name: Fast-forward the verified P2C archive
         shell: bash
         run: |
           set -euo pipefail
@@ -329,7 +334,11 @@ jobs:
           line=$(git ls-remote --exit-code --heads origin "refs/heads/${P2C_ARCHIVE}"); status=$?
           set -e
           if [[ ${status} -eq 0 ]]; then
-            test "$(awk 'NR==1 {print $1}' <<<"${line}")" = "${CANDIDATE_SHA}"
+            archive_sha="$(awk 'NR==1 {print $1}' <<<"${line}")"
+            git merge-base --is-ancestor "${archive_sha}" "${CANDIDATE_SHA}"
+            if [[ "${archive_sha}" != "${CANDIDATE_SHA}" ]]; then
+              git push origin "${CANDIDATE_SHA}:refs/heads/${P2C_ARCHIVE}"
+            fi
           elif [[ ${status} -eq 2 ]]; then
             git push --force-with-lease="refs/heads/${P2C_ARCHIVE}:" origin \
               "${CANDIDATE_SHA}:refs/heads/${P2C_ARCHIVE}"
