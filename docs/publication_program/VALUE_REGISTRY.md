@@ -35,8 +35,14 @@ not claims that a corresponding source blob or theorem already exists.
 | P2A-LOWER | fixed-rate/fixed-defect optimizer bound on `S^2` | `opt_D(R)>=6/R`; `opt_R(delta)>=6/delta` | I/II |
 | P2A-TETRA | regular tetrahedron, `w=1/4`, `gamma=1/8` | rank `S_2=3`, `rmax=3/2`, `D_2=4`, Frobenius half-square `24` | I/II |
 | P2A-OCTA | regular octahedron, nonantipodal graph, `w=1/6`, `gamma=1/12` | rank `S_2=2`, `rmax=2`, `D_2=3` | I/II |
-| SEMI | semigroup/resolvent response norms | FUTURE program value with domain and conditioning | II |
-| TRAN | equal-cost response errors split into angular, spatial, energy and model parts | FUTURE benchmark value with units/tolerances | II |
+| SEMI | $k_{t,\lambda}=(1-e^{-\lambda t})/\lambda$ and $c_{\alpha,\lambda}=1/[\alpha(\alpha+\lambda)]$ | P2B-proved sharp full conservative-space residual-to-transient/resolvent constants; replace zero spectral value by a declared gap for the refined constant | II |
+| P2B-BAND | row block $[W^{1/2}K_\ell(t)W^{-1/2}T_\ell]_\ell$ and $\beta_{\mathcal B}=\lambda_{\min}(V_{\mathcal B}^*WV_{\mathcal B})$ | exact cross-shell propagated-residual norm; total-sample transfer only when $\beta_{\mathcal B}>0$ or the sampling kernel is eigenvalue-map invariant | I/II |
+| P2B-STAB | $K_B(t,s)=\exp(-\int_s^t\beta)$; $C_{\rm st}=1/\beta_B$ under onto positive coercivity or $1/\mu$ under onto inf-sup | explicit transport stability factors in the physical norm | II |
+| P2B-R1--R6 | physical BFP, angular generator, sampling/quadrature, spatial, energy/slowing-down, iteration/time-reconstruction residuals | exact P2B common-space closure $e_t+A_Be=\sum_{j=1}^6R_j$ | II |
+| P2B-BLOCK | $\beta_M=\lambda_{\min}(\operatorname{diag}(\beta_g)-(C+C^T)/2)$, $c_{gg'}=\sqrt{\eta_g/\eta_{g'}}\|K_{gg'}\|$ | multigroup coercivity certificate when positive; its transient kernel additionally requires the stated evolution-family generation hypothesis, and its inverse bound requires surjectivity | II |
+| P2B-ANG-SHARP | two equatorial samples, $W=I/2$, $L=3[[-1,1],[1,-1]]$, target $\lambda=6$ | one sampled quadratic exact, one kernel-aligned; transient and shifted-resolvent effectivity exactly $1$ | II |
+| P2B-SPATIAL | two cells by two directions, $a=1,b=2,\sigma=1$, $\psi_*=(1,2,3,4)$ | $f=(0,2,3,10)$, $\psi_h=(7/9,7/3,8/3,38/9)$, $e=(2/9,-1/3,1/3,-2/9)$; theorem residual $r_*=(14/9)(1,-1,1,-1)$, bound $56/27$, energy effectivity $28\sqrt{26}/39$, and exact $A_*^{-*}$ adjoint effectivity $1$.  The reverse comparator $r_h=(1,-1,1,-1)$ is retained only for the $A_h$ preconditioner regression. | II |
+| TRAN | response error split into six named P2B channels with stability and adjoint weights | PROVED error-certificate value; an equal-cost physical improvement benchmark remains a later validation claim | II |
 | HTS | layer/tensor angular response values | FUTURE layer-resolved physical data; not pure-math evidence | II |
 
 ## Immutable exact regression dataset: five Platonic examples

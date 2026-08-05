@@ -1,0 +1,503 @@
+name: AFP publication P2B harmonic-defect transport
+
+on:
+  push:
+    branches:
+      - agent/afp-publication-p2b-harmonic-transport-07138547
+      - archive/afp-publication-p2b-harmonic-transport-verified
+  pull_request:
+    branches:
+      - archive/afp-publication-p2a-convex-design-verified
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  actions: read
+  contents: read
+
+env:
+  EXPECTED_REPOSITORY: FusionSandwich/Testing
+  PR_HEAD_REPOSITORY: ${{ github.event.pull_request.head.repo.full_name || '' }}
+  CANDIDATE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+  P2B_BRANCH: agent/afp-publication-p2b-harmonic-transport-07138547
+  P2B_ARCHIVE: archive/afp-publication-p2b-harmonic-transport-verified
+  P2A_COMMIT: 07138547ff5c85df071e2067587dd83ca20b71b5
+  P2A_TREE: 7b17d48665bfc9f8a4490a26468ccf3633960897
+  P2A_ARCHIVE: archive/afp-publication-p2a-convex-design-verified
+  GIT_NO_REPLACE_OBJECTS: '1'
+
+jobs:
+  exact-dynamics-and-regressions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    outputs:
+      artifact-id: ${{ steps.upload.outputs.artifact-id }}
+      artifact-digest: ${{ steps.upload.outputs.artifact-digest }}
+      source-sha256: ${{ steps.hash.outputs.source-sha256 }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          ref: ${{ env.CANDIDATE_SHA }}
+          persist-credentials: false
+
+      - name: Verify exact P2B head, scope, ancestry, and refs
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/p2b-exact"; mkdir -p "${out}"
+          test "${GITHUB_REPOSITORY}" = "${EXPECTED_REPOSITORY}"
+          if [[ "${GITHUB_EVENT_NAME}" = pull_request ]]; then
+            test "${GITHUB_HEAD_REF}" = "${P2B_BRANCH}"
+            test "${GITHUB_BASE_REF}" = "${P2A_ARCHIVE}"
+            test "${PR_HEAD_REPOSITORY}" = "${EXPECTED_REPOSITORY}"
+          fi
+          test "$(git rev-parse HEAD)" = "${CANDIDATE_SHA}"
+          test "$(git rev-parse "${P2A_COMMIT}^{tree}")" = "${P2A_TREE}"
+          git merge-base --is-ancestor "${P2A_COMMIT}" "${CANDIDATE_SHA}"
+          test "$(git rev-list --count --merges "${P2A_COMMIT}..${CANDIDATE_SHA}")" -eq 0
+          python - "${P2A_COMMIT}" "${CANDIDATE_SHA}" <<'PY' | tee "${out}/scope.log"
+          import os, subprocess, sys
+
+          base, head = sys.argv[1:]
+          allowed = {
+              ".github/workflows/afp-publication-p2b-harmonic-transport.yml",
+              "afp_barrier_gate1/AFPBarrier.lean",
+              "afp_barrier_gate1/AFPBarrier/HarmonicDefectTransport.lean",
+              "afp_barrier_gate1/AFPBarrier/P2BAxiomAudit.lean",
+              "afp_barrier_gate1/AFPBarrier/PureMathAxiomAudit.lean",
+              "afp_barrier_gate1/pure_math/dynamics/__init__.py",
+              "afp_barrier_gate1/pure_math/dynamics/audit.py",
+              "afp_barrier_gate1/pure_math/dynamics/bounds.py",
+              "afp_barrier_gate1/pure_math/dynamics/core.py",
+              "afp_barrier_gate1/pure_math/dynamics/exact_audit.py",
+              "afp_barrier_gate1/pure_math/dynamics/manufactured.py",
+              "afp_barrier_gate1/pure_math/tests/test_p2b_dynamics.py",
+              "docs/publication_program/APPROACH_REGISTRY.md",
+              "docs/publication_program/P2B_APPROACH_REGISTRY.md",
+              "docs/publication_program/P2B_CLAIM_MAP.md",
+              "docs/publication_program/P2B_HARMONIC_TRANSPORT_INTERPRETATION.md",
+              "docs/publication_program/P2B_PRIOR_ART_AND_HOSTILE_AUDIT.md",
+              "docs/publication_program/P2B_STAGE_REPORT.md",
+              "docs/publication_program/PAPER_BOUNDARY_MATRIX.md",
+              "docs/publication_program/PRIOR_ART_MATRIX.md",
+              "docs/publication_program/PROGRAM_BASELINE.md",
+              "docs/publication_program/THEOREM_REGISTRY.md",
+              "docs/publication_program/VALUE_REGISTRY.md",
+          }
+          raw = subprocess.check_output(
+              ["git", "diff", "--no-renames", "--name-only", "-z", base, head]
+          )
+          changed = {os.fsdecode(item) for item in raw.split(b"\0") if item}
+          if changed != allowed:
+              raise SystemExit(
+                  f"P2B scope mismatch; missing={sorted(allowed-changed)} "
+                  f"outside={sorted(changed-allowed)}"
+              )
+          forbidden = (set(range(32)) - {9, 10, 13}) | {127}
+          for path in sorted(changed):
+              row = subprocess.check_output(
+                  ["git", "ls-tree", head, "--", path], text=True
+              ).strip()
+              if not row.startswith("100644 blob "):
+                  raise SystemExit(f"not a regular blob: {path}: {row!r}")
+              payload = subprocess.check_output(["git", "show", f"{head}:{path}"])
+              if not payload:
+                  raise SystemExit(f"empty P2B path: {path}")
+              payload.decode("utf-8")
+              bad = sorted({byte for byte in payload if byte in forbidden})
+              if bad:
+                  raise SystemExit(f"forbidden control bytes in {path}: {bad}")
+          print(f"P2B allowlist and UTF-8/control-byte audit: EXACT ({len(changed)} paths)")
+          PY
+          git diff --check "${P2A_COMMIT}" "${CANDIDATE_SHA}"
+          test "$(git ls-remote --exit-code --heads origin "refs/heads/${P2B_BRANCH}" | awk 'NR==1 {print $1}')" = "${CANDIDATE_SHA}"
+          test "$(git ls-remote --exit-code --heads origin "refs/heads/${P2A_ARCHIVE}" | awk 'NR==1 {print $1}')" = "${P2A_COMMIT}"
+          set +e
+          line=$(git ls-remote --exit-code --heads origin "refs/heads/${P2B_ARCHIVE}"); status=$?
+          set -e
+          if [[ ${status} -eq 0 ]]; then
+            test "$(awk 'NR==1 {print $1}' <<<"${line}")" = "${CANDIDATE_SHA}"
+            echo "${P2B_ARCHIVE} PRESENT_EXACT" | tee "${out}/archive.log"
+          elif [[ ${status} -eq 2 && "${GITHUB_REF}" != "refs/heads/${P2B_ARCHIVE}" ]]; then
+            echo "${P2B_ARCHIVE} ABSENT_BEFORE_CREATE_ONLY_FREEZE" | tee "${out}/archive.log"
+          else
+            exit 1
+          fi
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+
+      - name: Install pinned numerical dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/p2b-exact"
+          sudo apt-get update -qq
+          sudo apt-get install --no-install-recommends -y ripgrep | tee "${out}/apt.log"
+          python -m pip install --disable-pip-version-check --no-input \
+            'clarabel==0.11.1' 'cvxpy==1.7.3' 'numpy==2.3.2' \
+            'osqp==1.0.4' 'pytest==8.4.2' 'scipy==1.18.0' \
+            'scs==3.2.9' 'sympy==1.14.0' | tee "${out}/dependencies.log"
+
+      - name: Run P2B implementation, exact audit, and mutations
+        working-directory: afp_barrier_gate1
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/p2b-exact"
+          export PYTHONPYCACHEPREFIX="${RUNNER_TEMP}/p2b-pycache"
+          python -m compileall -q pure_math/dynamics pure_math/tests/test_p2b_dynamics.py
+          python -m pure_math.dynamics.exact_audit | tee "${out}/exact-audit.log"
+          python -m pure_math.dynamics.audit | tee "${out}/numeric-audit.log"
+          python -m pytest -p no:cacheprovider -q -ra \
+            pure_math/tests/test_p2b_dynamics.py | tee "${out}/pytest.log"
+          grep -Eq '^[0-9]+ passed(, [0-9]+ [a-z]+)* in ' "${out}/pytest.log"
+          grep -Fxq 'P2B exact manufactured audit: PASS' "${out}/exact-audit.log"
+          grep -Fxq 'P2B numerical dynamics audit: PASS' "${out}/numeric-audit.log"
+          grep -Fq "'commutator_rank': '4'" "${out}/exact-audit.log"
+          grep -Fq "'response': '5/3'" "${out}/exact-audit.log"
+          grep -Fq "'low_group_response_error': '11/96'" "${out}/exact-audit.log"
+          grep -Fq "'multigroup_commutator_rank': '1'" "${out}/exact-audit.log"
+
+      - name: Run accepted P2A and Paper-I regressions
+        working-directory: afp_barrier_gate1
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/p2b-exact"
+          export PYTHONPYCACHEPREFIX="${RUNNER_TEMP}/p2b-pycache"
+          python -m pure_math.optimization.exact_audit | tee "${out}/p2a.log"
+          grep -Fxq 'P2A exact symmetric/Farkas audit: PASS' "${out}/p2a.log"
+          python pure_math/covariance/p1a_quadratic_fidelity_audit.py | tee "${out}/p1a.log"
+          python pure_math/covariance/p1b_sharp_quadratic_defect_audit.py | tee "${out}/p1b.log"
+          grep -Fxq 'P1A exact quadratic-fidelity audit: PASS' "${out}/p1a.log"
+          grep -Fxq 'P1B sharp quadratic-defect audit: PASS' "${out}/p1b.log"
+
+      - name: Audit theorem map and claim boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/p2b-exact"
+          main=docs/publication_program/P2B_HARMONIC_TRANSPORT_INTERPRETATION.md
+          claims=docs/publication_program/P2B_CLAIM_MAP.md
+          theorem=docs/publication_program/THEOREM_REGISTRY.md
+          test "$(head -n 1 "${main}")" = '# Harmonic defect as a dynamical and transport-error certificate'
+          for heading in \
+            '## 2. The one-mode dynamical theorem' \
+            '## 3. Shells, bands, and physical angular norms' \
+            '## 6. Exact six-way residual decomposition' \
+            '## 7. Two noncommuting transport proofs' \
+            '## 8. Steady problems, resolvents, and preconditioners' \
+            '## 9. Multigroup Boltzmann--Fokker--Planck systems' \
+            '## 10. Adjoint-weighted linear responses' \
+            '## 12. Exact manufactured examples and effectivity'; do
+            rg -Fxq "${heading}" "${main}"
+          done
+          python - "${main}" "${claims}" "${theorem}" <<'PY' | tee "${out}/claim-map.log"
+          import pathlib, re, sys
+
+          main_path, claims_path, theorem_path = map(pathlib.Path, sys.argv[1:])
+          keys = {
+              "P2B-ANGULAR", "P2B-SHELL", "P2B-PHYSNORM", "P2B-RESIDUAL",
+              "P2B-NONCOMMUTE", "P2B-STEADY", "P2B-MULTIGROUP", "P2B-ADJOINT",
+              "P2B-PREDICT", "P2B-MANUFACTURED", "P2B-FORMAL",
+          }
+          key_pattern = re.compile(r"^\|\s*(P2B-[A-Z0-9-]+)\s*\|", re.M)
+          for path in (claims_path, theorem_path):
+              text = path.read_text(encoding="utf-8")
+              rows = key_pattern.findall(text)
+              if set(rows) != keys or len(rows) != len(keys):
+                  raise SystemExit(
+                      f"{path} P2B row mismatch: rows={rows}, expected={sorted(keys)}"
+                  )
+
+          source_pattern = re.compile(r"`([^`]+\.(?:md|py|lean))`")
+          for line in claims_path.read_text(encoding="utf-8").splitlines():
+              if not key_pattern.match(line):
+                  continue
+              cells = [cell.strip() for cell in line.strip().split("|")[1:-1]]
+              if len(cells) != 5:
+                  raise SystemExit(f"malformed claim-map row: {line}")
+              key, _, proof, test, registry = cells
+              proof_sources = source_pattern.findall(proof)
+              test_sources = source_pattern.findall(test)
+              registry_sources = source_pattern.findall(registry)
+              if len(proof_sources) != 1 or len(test_sources) != 1:
+                  raise SystemExit(
+                      f"{key} must have one proof and one test source: "
+                      f"proof={proof_sources}, test={test_sources}"
+                  )
+              def resolve(source):
+                  if source.startswith(("pure_math/", "AFPBarrier/")):
+                      return pathlib.Path("afp_barrier_gate1") / source
+                  return pathlib.Path("docs/publication_program") / source
+              for source in proof_sources + test_sources:
+                  if not resolve(source).is_file():
+                      raise SystemExit(f"{key} maps missing source {source}")
+              if registry_sources != ["THEOREM_REGISTRY.md"] or key not in registry:
+                  raise SystemExit(f"{key} has a noncanonical registry cell: {registry}")
+              if not resolve(registry_sources[0]).is_file():
+                  raise SystemExit(f"{key} maps missing registry {registry_sources[0]}")
+
+          allowed_statuses = {
+              "PROVED", "EXTERNAL", "COMPUTATIONAL", "CONJECTURE",
+              "REJECTED", "BLOCKED",
+          }
+          for line in theorem_path.read_text(encoding="utf-8").splitlines():
+              if not key_pattern.match(line):
+                  continue
+              cells = [cell.strip() for cell in line.strip().split("|")[1:-1]]
+              if len(cells) < 2 or cells[1] not in allowed_statuses:
+                  raise SystemExit(f"invalid theorem status row: {line}")
+          placeholders = re.compile(
+              r"(?im)(?:^|\s)(?:TODO|TBD|FIXME|XXX):|STATUS_PENDING|"
+              r"MISSING[ _-]PROOF|INSERT[ _-]CITATION|NotImplementedError"
+          )
+          roots = [
+              pathlib.Path("docs/publication_program"),
+              pathlib.Path("afp_barrier_gate1/pure_math/dynamics"),
+              pathlib.Path("afp_barrier_gate1/pure_math/tests/test_p2b_dynamics.py"),
+              pathlib.Path("afp_barrier_gate1/AFPBarrier/HarmonicDefectTransport.lean"),
+          ]
+          candidates = []
+          for root in roots:
+              if root.is_file():
+                  candidates.append(root)
+              elif root.name == "publication_program":
+                  candidates.extend(sorted(root.glob("P2B*")))
+              else:
+                  candidates.extend(sorted(
+                      p for p in root.rglob("*")
+                      if p.is_file() and p.suffix in {".py", ".lean", ".md"}
+                  ))
+          for path in candidates:
+              match = placeholders.search(path.read_text(encoding="utf-8"))
+              if match:
+                  raise SystemExit(f"placeholder in {path}: {match.group(0)!r}")
+          print("P2B claim registry and placeholder audit: EXACT")
+          PY
+          rg -Fq 'does not claim to formalize matrix exponentials' \
+            afp_barrier_gate1/AFPBarrier/HarmonicDefectTransport.lean
+          ! rg -n -i 'streaming and angular diffusion commute|D_2 is universally predictive|replaces the full Boltzmann|Lean formalizes matrix exponentials' \
+            docs/publication_program/P2B*.md
+          git diff --check
+          test -z "$(git status --short)"
+
+      - name: Hash exact P2B records
+        id: hash
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/p2b-exact"
+          name="afp-publication-p2b-source-${CANDIDATE_SHA}.tar.gz"
+          git archive --format=tar.gz --output="${out}/${name}" "${CANDIDATE_SHA}" -- \
+            .github/workflows/afp-publication-p2b-harmonic-transport.yml \
+            docs/publication_program \
+            afp_barrier_gate1/AFPBarrier.lean \
+            afp_barrier_gate1/AFPBarrier/HarmonicDefectTransport.lean \
+            afp_barrier_gate1/AFPBarrier/P2BAxiomAudit.lean \
+            afp_barrier_gate1/AFPBarrier/PureMathAxiomAudit.lean \
+            afp_barrier_gate1/pure_math/dynamics \
+            afp_barrier_gate1/pure_math/tests/test_p2b_dynamics.py
+          sha256sum "${out}/${name}" > "${out}/${name}.sha256"
+          digest=$(awk 'NR==1 {print $1}' "${out}/${name}.sha256")
+          echo "source-sha256=${digest}" >> "${GITHUB_OUTPUT}"
+          printf 'commit=%s\ntree=%s\nbase=%s\nworkflow-blob=%s\nrun=%s\nattempt=%s\n' \
+            "${CANDIDATE_SHA}" "$(git rev-parse HEAD^{tree})" "${P2A_COMMIT}" \
+            "$(git rev-parse HEAD:.github/workflows/afp-publication-p2b-harmonic-transport.yml)" \
+            "${GITHUB_RUN_ID}" "${GITHUB_RUN_ATTEMPT}" > "${out}/report.txt"
+          find afp_barrier_gate1/pure_math/dynamics \
+            docs/publication_program/P2B_CLAIM_MAP.md \
+            docs/publication_program/P2B_HARMONIC_TRANSPORT_INTERPRETATION.md \
+            docs/publication_program/P2B_PRIOR_ART_AND_HOSTILE_AUDIT.md \
+            docs/publication_program/P2B_STAGE_REPORT.md \
+            -type f -print0 | sort -z | xargs -0 sha256sum > "${out}/release-files.sha256"
+          (cd "${out}" && find . -maxdepth 1 -type f ! -name records.sha256 -print0 | sort -z | xargs -0 sha256sum > records.sha256)
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        id: upload
+        with:
+          name: afp-publication-p2b-exact-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/p2b-exact
+          if-no-files-found: error
+
+  lean-kernel:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    outputs:
+      artifact-id: ${{ steps.upload.outputs.artifact-id }}
+      artifact-digest: ${{ steps.upload.outputs.artifact-digest }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          ref: ${{ env.CANDIDATE_SHA }}
+          persist-credentials: false
+      - name: Verify focused Lean checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "${GITHUB_REPOSITORY}" = "${EXPECTED_REPOSITORY}"
+          test "$(git rev-parse HEAD)" = "${CANDIDATE_SHA}"
+          test "$(git rev-parse "${P2A_COMMIT}^{tree}")" = "${P2A_TREE}"
+          git merge-base --is-ancestor "${P2A_COMMIT}" "${CANDIDATE_SHA}"
+          test "$(git ls-remote --exit-code --heads origin "refs/heads/${P2B_BRANCH}" | awk 'NR==1 {print $1}')" = "${CANDIDATE_SHA}"
+          mkdir -p "${RUNNER_TEMP}/p2b-lean"
+      - uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9
+        with:
+          lake-package-directory: afp_barrier_gate1
+          build: false
+          test: false
+          lint: false
+          nanoda: false
+          use-mathlib-cache: false
+          use-github-cache: false
+      - name: Build focused finite core and audit axioms
+        working-directory: afp_barrier_gate1
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/p2b-lean"
+          lean --version | tee "${out}/lean-version.log"
+          lake --version | tee "${out}/lake-version.log"
+          lake update | tee "${out}/lake-update.log"
+          lake exe cache get | tee "${out}/cache.log"
+          lake build | tee "${out}/lean-build.log"
+          lake env lean AFPBarrier/HarmonicDefectTransport.lean | tee "${out}/focused.log"
+          lake env lean AFPBarrier/P2BAxiomAudit.lean | tee "${out}/p2b-axioms.log"
+          lake env lean AFPBarrier/PureMathAxiomAudit.lean | tee "${out}/pure-axioms.log"
+          python - "${out}/p2b-axioms.log" <<'PY' | tee "${out}/axiom-set.log"
+          import re, sys
+          text = open(sys.argv[1], encoding="utf-8").read()
+          groups = re.findall(r"depends on axioms:\s*\[(.*?)\]", text, re.S)
+          if not groups:
+              raise SystemExit("P2B axiom audit produced no records")
+          observed = {item.strip() for group in groups for item in group.split(",") if item.strip()}
+          allowed = {"propext", "Classical.choice", "Quot.sound"}
+          if not observed <= allowed:
+              raise SystemExit(f"unexpected axiom dependencies: {sorted(observed)}")
+          required = {
+              "finiteDuhamel_norm_le", "resolvent_residual_identity",
+              "sixError_telescope", "finitePair_transpose_apply",
+              "adjointWeightedResidual_exact", "energyResidual_young",
+              "preconditionedIteration_geometric", "preconditionedGeometricSeries_le",
+          }
+          missing = sorted(name for name in required if name not in text)
+          if missing:
+              raise SystemExit(f"P2B theorem prints missing: {missing}")
+          print("P2B focused axiom dependency subset: EXACT", sorted(observed))
+          PY
+          sudo apt-get update -qq
+          sudo apt-get install --no-install-recommends -y ripgrep
+          ! rg --glob '*.lean' '(^|[^[:alnum:]_])(sorry|admit|sorryAx)([^[:alnum:]_]|$)' AFPBarrier AFPBarrier.lean
+          ! rg --glob '*.lean' '^[[:space:]]*(@\[[^]]*\][[:space:]]*)*((private|protected|noncomputable|unsafe|scoped|local)[[:space:]]+)*(axiom|axioms)([[:space:]]|$)' AFPBarrier AFPBarrier.lean
+          ! rg '^[[:space:]]*(@\[[^]]*\][[:space:]]*)*((private|protected|noncomputable|unsafe|scoped|local)[[:space:]]+)*(constant|constants)([[:space:]]|$)' \
+            AFPBarrier.lean AFPBarrier/HarmonicDefectTransport.lean AFPBarrier/P2BAxiomAudit.lean AFPBarrier/PureMathAxiomAudit.lean
+          git diff --check
+          test -z "$(git status --short)"
+      - name: Hash formal records
+        working-directory: afp_barrier_gate1
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/p2b-lean"
+          printf 'commit=%s\ntree=%s\nbase=%s\n' "${CANDIDATE_SHA}" "$(git rev-parse HEAD^{tree})" "${P2A_COMMIT}" > "${out}/report.txt"
+          sha256sum AFPBarrier/HarmonicDefectTransport.lean AFPBarrier/P2BAxiomAudit.lean AFPBarrier/PureMathAxiomAudit.lean > "${out}/formal-files.sha256"
+          (cd "${out}" && find . -maxdepth 1 -type f ! -name records.sha256 -print0 | sort -z | xargs -0 sha256sum > records.sha256)
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        id: upload
+        with:
+          name: afp-publication-p2b-lean-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/p2b-lean
+          if-no-files-found: error
+
+  final-candidate-integrity:
+    needs: [exact-dynamics-and-regressions, lean-kernel]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      artifact-id: ${{ steps.upload.outputs.artifact-id }}
+      artifact-digest: ${{ steps.upload.outputs.artifact-digest }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          ref: ${{ env.CANDIDATE_SHA }}
+          persist-credentials: false
+      - name: Resolve exact candidate evidence
+        shell: bash
+        env:
+          EXACT_RESULT: ${{ needs.exact-dynamics-and-regressions.result }}
+          LEAN_RESULT: ${{ needs.lean-kernel.result }}
+          EXACT_ID: ${{ needs.exact-dynamics-and-regressions.outputs.artifact-id }}
+          EXACT_DIGEST: ${{ needs.exact-dynamics-and-regressions.outputs.artifact-digest }}
+          LEAN_ID: ${{ needs.lean-kernel.outputs.artifact-id }}
+          LEAN_DIGEST: ${{ needs.lean-kernel.outputs.artifact-digest }}
+          SOURCE_SHA: ${{ needs.exact-dynamics-and-regressions.outputs.source-sha256 }}
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/p2b-final"; mkdir -p "${out}"
+          test "${EXACT_RESULT}" = success; test "${LEAN_RESULT}" = success
+          test -n "${EXACT_ID}"; test -n "${LEAN_ID}"
+          [[ "${EXACT_DIGEST}" =~ ^(sha256:)?[0-9a-f]{64}$ ]]
+          [[ "${LEAN_DIGEST}" =~ ^(sha256:)?[0-9a-f]{64}$ ]]
+          [[ "${SOURCE_SHA}" =~ ^[0-9a-f]{64}$ ]]
+          test "$(git rev-parse HEAD)" = "${CANDIDATE_SHA}"
+          git merge-base --is-ancestor "${P2A_COMMIT}" "${CANDIDATE_SHA}"
+          branch_head=$(git ls-remote --exit-code --heads origin "refs/heads/${P2B_BRANCH}" | awk 'NR==1 {print $1}')
+          test "${branch_head}" = "${CANDIDATE_SHA}"
+          printf 'commit=%s\ntree=%s\nbase=%s\nbranch=%s\nexact-artifact=%s\nexact-digest=%s\nlean-artifact=%s\nlean-digest=%s\nsource-sha256=%s\n' \
+            "${CANDIDATE_SHA}" "$(git rev-parse HEAD^{tree})" "${P2A_COMMIT}" "${branch_head}" \
+            "${EXACT_ID}" "${EXACT_DIGEST}" "${LEAN_ID}" "${LEAN_DIGEST}" "${SOURCE_SHA}" \
+            > "${out}/resolved.txt"
+          git diff --check "${P2A_COMMIT}" "${CANDIDATE_SHA}"
+          test -z "$(git status --short)"
+          sha256sum "${out}/resolved.txt" > "${out}/records.sha256"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        id: upload
+        with:
+          name: afp-publication-p2b-final-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/p2b-final
+          if-no-files-found: error
+
+  freeze-create-only-archive:
+    needs: [exact-dynamics-and-regressions, lean-kernel, final-candidate-integrity]
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/agent/afp-publication-p2b-harmonic-transport-07138547' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          ref: ${{ env.CANDIDATE_SHA }}
+          persist-credentials: true
+      - name: Freeze the verified head without moving an archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "${{ needs.exact-dynamics-and-regressions.result }}" = success
+          test "${{ needs.lean-kernel.result }}" = success
+          test "${{ needs.final-candidate-integrity.result }}" = success
+          test "$(git rev-parse HEAD)" = "${CANDIDATE_SHA}"
+          test "$(git ls-remote --exit-code --heads origin "refs/heads/${P2B_BRANCH}" | awk 'NR==1 {print $1}')" = "${CANDIDATE_SHA}"
+          set +e
+          line=$(git ls-remote --exit-code --heads origin "refs/heads/${P2B_ARCHIVE}"); status=$?
+          set -e
+          if [[ ${status} -eq 0 ]]; then
+            test "$(awk 'NR==1 {print $1}' <<<"${line}")" = "${CANDIDATE_SHA}"
+          elif [[ ${status} -eq 2 ]]; then
+            git push --force-with-lease="refs/heads/${P2B_ARCHIVE}:" origin \
+              "${CANDIDATE_SHA}:refs/heads/${P2B_ARCHIVE}"
+          else
+            exit 1
+          fi
+          test "$(git ls-remote --exit-code --heads origin "refs/heads/${P2B_ARCHIVE}" | awk 'NR==1 {print $1}')" = "${CANDIDATE_SHA}"
+          printf 'archive=%s\ncommit=%s\ntree=%s\nmode=create-only-absent-ref-lease\n' \
+            "${P2B_ARCHIVE}" "${CANDIDATE_SHA}" "$(git rev-parse HEAD^{tree})" >> "${GITHUB_STEP_SUMMARY}"
