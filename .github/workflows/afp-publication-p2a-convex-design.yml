@@ -392,6 +392,7 @@ jobs:
           git diff --check
           test -z "$(git status --short)"
       - name: Hash formal records
+        working-directory: afp_barrier_gate1
         shell: bash
         run: |
           set -euo pipefail
