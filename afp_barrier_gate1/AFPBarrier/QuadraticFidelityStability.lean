@@ -171,7 +171,7 @@ theorem quadraticStability_badVertexMass
         have hsq : t ^ 2 ≤ (q i) ^ 2 := by nlinarith
         nlinarith [mul_le_mul_of_nonneg_left hsq (hw i)]
       · simp only [hbad, if_false]
-        exact mul_nonneg (hw i) (sq_nonneg (q i))
+        simpa using mul_nonneg (hw i) (sq_nonneg (q i))
     _ ≤ eta := hbudget
 
 /-- Retaining the linear part gives the sharper bad-vertex denominator
@@ -201,7 +201,7 @@ theorem quadraticStability_badVertexMass_sharp
       · simp only [hbad, if_false]
         have hinside : 0 ≤ 2 * q i + (q i) ^ 2 := by
           nlinarith [hq i, sq_nonneg (q i)]
-        exact mul_nonneg (hw i) hinside
+        simpa using mul_nonneg (hw i) hinside
     _ ≤ eta := hbudget
 
 /-- The full local scalar budget at a positive-mass vertex.  Solving this
@@ -249,7 +249,7 @@ theorem quadraticStability_tensor_budget
   have hcoefEB : (d - 1) / (d * a0 ^ 2) * EB ≤ eta := by
     linarith
   have hdiv : EB ≤ eta / ((d - 1) / (d * a0 ^ 2)) :=
-    (le_div_iff₀ hcoefpos).2 hcoefEB
+    (le_div_iff₀ hcoefpos).2 (by simpa [mul_comm] using hcoefEB)
   calc
     EB ≤ eta / ((d - 1) / (d * a0 ^ 2)) := hdiv
     _ = d * a0 ^ 2 / (d - 1) * eta := by
@@ -282,7 +282,6 @@ theorem quadraticStability_tensor_rate_bound
       have hdpos : 0 < d := lt_trans zero_lt_one hd
       have hdm1pos : 0 < d - 1 := sub_pos.mpr hd
       field_simp [ne_of_gt hdpos, ne_of_gt hdm1pos, ne_of_gt hrmax]
-      <;> ring
 
 /-- Restoring dimensions from `v_i = V_i / a0`: the weighted squared loss
 variance is at most `a0^2 eta`. -/
