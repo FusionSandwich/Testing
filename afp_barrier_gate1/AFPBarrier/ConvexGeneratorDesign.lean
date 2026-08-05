@@ -170,9 +170,8 @@ times its spherical chord loss.  A loop is counted twice, consistently with
 the two-endpoint incidence convention. -/
 def incidentLossMass
     (left right : E → I) (gamma ell : E → ℝ) (i : I) : ℝ :=
-  ∑ e,
-    (if i = left e then gamma e * ell e else 0) +
-      (if i = right e then gamma e * ell e else 0)
+  ∑ e, ((if i = left e then gamma e * ell e else 0) +
+    (if i = right e then gamma e * ell e else 0))
 
 /-- Double counting the endpoint incidences gives twice the undirected
 loss-weighted total conductance. -/
@@ -183,12 +182,10 @@ theorem sum_incidentLossMass
   classical
   unfold incidentLossMass
   calc
-    (∑ i, ∑ e,
-        (if i = left e then gamma e * ell e else 0) +
-          (if i = right e then gamma e * ell e else 0)) =
-        ∑ e, ∑ i,
-          (if i = left e then gamma e * ell e else 0) +
-            (if i = right e then gamma e * ell e else 0) := by
+    (∑ i, ∑ e, ((if i = left e then gamma e * ell e else 0) +
+      (if i = right e then gamma e * ell e else 0))) =
+        ∑ e, ∑ i, ((if i = left e then gamma e * ell e else 0) +
+          (if i = right e then gamma e * ell e else 0)) := by
           rw [Finset.sum_comm]
     _ = ∑ e, 2 * (gamma e * ell e) := by
           apply Finset.sum_congr rfl
