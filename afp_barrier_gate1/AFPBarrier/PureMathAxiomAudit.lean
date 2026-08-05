@@ -24,6 +24,7 @@ import AFPBarrier.QuantitativeGlobalNearRigidity
 import AFPBarrier.QEqualityCovariance
 import AFPBarrier.SharpProductBarriers
 import AFPBarrier.ConvexGeneratorDesign
+import AFPBarrier.HarmonicDefectTransport
 
 /-! Focused axiom audit for the pure-mathematics branch. -/
 
@@ -161,6 +162,22 @@ import AFPBarrier.ConvexGeneratorDesign
 #print axioms AFPBarrier.totalConductance_fixed_of_constantLoss
 #print axioms AFPBarrier.rateCapped_dualWork_nonneg
 #print axioms AFPBarrier.rateCapped_negative_dualWork_certifies_infeasible
+
+/-! Prompt P2B: finite transport-error algebra. -/
+
+#print axioms AFPBarrier.finiteDuhamel_norm_le
+#print axioms AFPBarrier.transientKernel_nonneg
+#print axioms AFPBarrier.resolvent_residual_identity
+#print axioms AFPBarrier.resolvent_residual_norm_le
+#print axioms AFPBarrier.sixError_telescope
+#print axioms AFPBarrier.sixError_norm_le
+#print axioms AFPBarrier.finitePair_transpose_apply
+#print axioms AFPBarrier.adjointWeightedResidual_exact
+#print axioms AFPBarrier.adjointWeightedResidual_approx
+#print axioms AFPBarrier.energyResidual_young
+#print axioms AFPBarrier.coerciveResidual_bound
+#print axioms AFPBarrier.preconditionedIteration_geometric
+#print axioms AFPBarrier.preconditionedGeometricSeries_le
 
 #print axioms AFPBarrier.rate_eq_of_symmetric_active_loss
 #print axioms AFPBarrier.rate_eq_of_active_reflTransGen

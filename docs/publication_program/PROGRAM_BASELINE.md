@@ -1,5 +1,22 @@
 # AFP publication-program baseline
 
+## P2B accepted-parent addendum
+
+Prompt P2B starts additively from the literal accepted P2A object
+`07138547ff5c85df071e2067587dd83ca20b71b5`, tree
+`7b17d48665bfc9f8a4490a26468ccf3633960897`, with both
+`agent/afp-publication-p2a-convex-design-ab155b8e` and the create-only archive
+`archive/afp-publication-p2a-convex-design-verified` at that exact object.
+The clean P2B branch is
+`agent/afp-publication-p2b-harmonic-transport-07138547`; its create-only target
+is `archive/afp-publication-p2b-harmonic-transport-verified`.
+
+P2B adds a separate harmonic-defect transport theorem, manufactured-error
+implementation, formal finite core, and exact-head workflow.  It does not
+rewrite the accepted Paper-I/P2A definitions, optimizer, lower bound, or
+transport Gate-6 archive.  The latter remains numerical background and a
+regression boundary, not a proof source for P2B's stability estimates.
+
 ## P2A accepted-parent addendum
 
 Prompt P2A starts additively from the literal accepted Paper-I/P1F object

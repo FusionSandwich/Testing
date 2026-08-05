@@ -71,3 +71,21 @@ equality theorem, and stability budget remain all-dimensional.
 | Seibold | local positive Euclidean stencil LP/Farkas geometry and basic-feasible support bounds | motivates local cones and exact failure certificates | rowwise stencils need not assemble to shared reversible conductances; no spherical mass matrix or sampled harmonic quotient |
 | Babecki--Steinerberger--Thomas | convex/spectrahedral sets of positive subgraph reweightings preserving an initial ordered eigenpair segment | establishes graph-sparsifier/eigenpair-preserving convex precedent | P2A fixes a geometric coordinate module in a generalized mass problem and optimizes a shell quotient; it does not claim first convex eigenpair preservation |
 | finite-dimensional conic duality | Slater strong duality, Lorentz/PSD self-duality and complementary slackness | invoked for the explicitly displayed finite primal/dual pairs | all AFP signs, factors, matrices, facial conditions and exact certificates are derived internally |
+
+## P2B harmonic-transport transfer audit
+
+| Source or external tool | Exact external content used | Transfer into P2B | Precise non-transfer boundary |
+|---|---|---|---|
+| [Morel 1981](https://doi.org/10.13182/NSE79-340) | standard discrete-ordinates use for time/steady and forward/adjoint one-dimensional FP calculations | application and historical context | no general weighted-Hilbert contraction, six-residual decomposition, or adjoint remainder estimator is transferred |
+| [Pomraning 1992](https://doi.org/10.1142/S021820259200003X) | formal FP asymptotic limit under a scaled highly peaked scattering family; forward peaking alone is insufficient | forces a separate physical BFP residual $R_1$ | no material kernel is declared asymptotically valid without its own scaling theorem |
+| [Morel et al. 2007](https://doi.org/10.13182/NSE07-A2693) | self-adjoint, monotone, nonpositive angular scheme and moment statements under named quadrature hypotheses | direct angular-discretization precedent | quadrature-specific moment preservation is not broadened to arbitrary fixed nodes; publisher metadata give pages 154--163 |
+| [Bienvenue et al. 2025](https://doi.org/10.1080/00295639.2025.2462891) | flexible monotone moment-preserving multidimensional angular FP coefficients on tested quadratures | modern shared-coefficient context | the deposited Eq. 38 factor $-4$ is not transferred; P2B retains the Eqs. 35--36/Paper-I target $L\Omega=-2\Omega$ |
+| [Bienvenue--Hébert 2022](https://doi.org/10.1016/j.anucene.2022.109032) | DD1/DD2 spatial BFP schemes and reported fourth-/sixth-order numerical behavior | motivation for a distinct spatial residual $R_4$ | no general coercivity, boundary, interface, or response theorem is transferred |
+| spectral theorem / Hille--Yosida | contraction and resolvent bounds for self-adjoint nonpositive or m-accretive operators | abstract analytic input for Sections 2 and 5 | detailed balance proves the angular hypotheses; transport range/accretivity and domain hypotheses are stated separately |
+| Green identity / energy method | transport boundary flux and coercive energy inequality on graph domains with traces | independent noncommuting stability route | raw inflow mismatch, point sampling, and nonconforming face terms require explicit lifts or dual norms |
+
+P2B claims neither the first FP discretization nor the first BFP, adjoint, or
+multigroup calculation.  Its scoped distinction is the exact conversion of
+the accepted full-output sampled harmonic residual into sharp angular
+transient/resolvent bounds and then into one explicitly stable, six-channel,
+noncommuting transport and response-error framework.

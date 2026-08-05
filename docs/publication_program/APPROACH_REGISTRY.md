@@ -13,7 +13,7 @@ mechanism named below.
 | covariance algebra | sampled H2 fidelity | PROVED_P1B_SHARP_BOUND | P1A factorization plus the exact two-defect trace lower bound | sampling-kernel, mixed-Gram and equality audits | matching positive asymptotic construction | I |
 | generalized eigenvalues | `mathfrak D_l` | PROVED_P1B_SHARP_BOUND | sampling-metric quotient, deflated pencil, sharp trace ratio and complete equality conditions for `mathfrak D_2` | raw singular pencil and non-invariant sampled range rejected | higher-degree or construction-specific frontier analysis | I/II |
 | quotient Hilbert--Schmidt / random averaging | P1B universal lower bound | PROVED | independent quotient-map, isotropic-random-matrix and finite-frame proofs of the same sharp trace inequality | semigroup restriction rejected when `im S_2` is non-invariant | none for P1B | I |
-| semigroup/resolvent | response error | BLOCKED | planned Duhamel/resolvent route | harmonic residual does not alone control full transport | explicit domain, norm and constants | II |
+| semigroup/resolvent | response error | PROVED_P2B | sharp full-output Duhamel multiplier and resolvent identity, with shell/band/physical-norm extensions | harmonic residual alone still does not control the other five transport residual channels | none for the scoped angular theorem | II |
 | representation theory | equality/families | ACTIVE | symmetry reductions for exact examples | multiplicities and sampled kernels | family theorem, not dimension count | I/III |
 | spherical designs | lift implication | ACTIVE | design moment identities | design does not imply positive local reversible lift | non-generic lift characterization | III |
 | association schemes | exact families | ACTIVE | candidate simultaneous eigenspace calculations | locality/positivity may fail | infinite positive family with exact spectrum | I/III |
@@ -26,7 +26,7 @@ mechanism named below.
 | Delsarte machinery | equality/optimality | BLOCKED | comparison framework only | no transferred certificate for AFP constraints | exact source theorem with every hypothesis checked | I/III |
 | Bakry–Émery route | general P4 barrier | REJECTED | retained negative decision | route did not close the required sharp product theorem | genuinely different curvature mechanism | none |
 | discrete Delaunay geometry | local construction | BLOCKED | relevant external special operator | fixed connectivity/AFP weights not covered | proved conversion preserving weights and sign | II/III |
-| transport-error decomposition | response relevance | BLOCKED | planned angular/spatial/energy separation | physical model and conditioning constants absent | certified equal-cost benchmark protocol | II |
+| transport-error decomposition | response relevance | PROVED_P2B_SCOPED | exact common-space physical/angular/sampling/spatial/energy/iteration residual ledger, two noncommuting stability proofs, steady/multigroup/adjoint bounds | physical-model residual and all stability constants remain explicit inputs; no equal-cost production benchmark claim | none for the error-certificate theorem | II |
 | Lean architecture | finite algebra kernel | ACTIVE_P1B | P1A quotient/Gram core plus P1B weighted trace domination and scalar sharp-bound algebra | exact-head build and axiom audit still control acceptance | formalize only stable algebraic interfaces | I/III |
 | compact-space generalization | beyond sphere | DEFERRED | no claim | outside current paper boundary | Paper I completed first | future |
 
@@ -48,6 +48,26 @@ P2A is an additive descendant of the accepted Paper-I/P1F archive commit
 | conic/Farkas certificate verification | solver independence | PROVED_P2A | exact rays, primal-dual feasibility and gap brackets | solver status alone explicitly rejected | rational or outward interval certificate | II |
 | exact/ill-conditioned fixtures | adversarial regression | COMPUTATIONAL_P2A | tetra/octa equality, full-rank ill-conditioning, local/global failure | finite solver runs do not prove convex duality | retained exact proof source | all |
 | Lean finite core | stable algebra | IMPLEMENTATION_P2A | conductance, mixture and fixed-loss identities | no formal generic SDP strong-duality theorem | exact-head build | II |
+
+## P2B harmonic-defect transport mechanisms
+
+P2B is an additive descendant of the accepted P2A archive
+`07138547ff5c85df071e2067587dd83ca20b71b5`.  Its detailed portfolio and
+rejections are in `P2B_APPROACH_REGISTRY.md`.
+
+| Mechanism | Purpose | Status | Retained conclusion | Counterexample / transfer guard | Remaining condition | Consumer |
+|---|---|---|---|---|---|---|
+| spectral Duhamel multiplier | one-mode transient error | PROVED_P2B | exact $k_{t,\lambda}(-L)$ identity and sharp conservative-space constant | fixed-shell gap improvement needs a verified mean-zero/reducing subspace | none | II |
+| resolvent residual identity | steady angular response | PROVED_P2B | exact identity and sharp $1/[\alpha(\alpha+\lambda)]$ bound | $\alpha=0$ fails on constants | positive shift or gap compatibility | II |
+| shell/band synthesis | sampled harmonic extension | PROVED_P2B | alias-correct full-output shell theorem and exact cross-shell block Gram | two-equator alias rejects an initial-sample-only band claim | kernel invariance or global sampling angle for total-sample norm | I/II |
+| common-space residual ledger | transport separation | PROVED_P2B | exact six-way residual closure through $PJ=I$ | raw point sampling and relabeled aliases rejected | bounded conforming reconstruction and declared residual norms | II |
+| evolution-family route | noncommuting transient stability | PROVED_P2B | explicit variation-of-constants/intertwining estimates | no streaming--diffusion factorization | a well-posed evolution family under the stated common-form/Kato generation hypotheses | II |
+| energy route | independent transport stability | PROVED_P2B | Green identity, boundary flux, collision coercivity and stability kernel | variable density and amplifying albedo mutations | displayed boundary/coercivity assumptions | II |
+| steady/preconditioned route | residual-to-solution bound | PROVED_P2B_SCOPED | coercive/inf-sup resolvents, Neumann and lower-singular estimates | contraction without absorption and spectral-radius-only claims rejected | onto coercivity/inf-sup or induced-norm contraction | II |
+| multigroup block route | group/slowing-down extension | PROVED_P2B | weighted block coercivity and finite triangular downscatter inverse | triangularity need not control transient growth | positive block certificate or explicit finite inverse | II |
+| adjoint residual route | response estimation | PROVED_P2B | exact steady/transient identities and enriched-adjoint remainder | point detector is not an $L^2$ response | bounded response or separate dual-space theorem | II |
+| exact manufactured fixtures | effectivity/falsification | COMPUTATIONAL_EXACT_P2B | angular sharpness, noncommuting spatial solve, six-ledger closure and adjoint effectivity | finite fixtures do not prove PDE well-posedness | retained theorem source | II |
+| Lean finite core | algebraic audit | IMPLEMENTATION_P2B | finite resolvent, residual telescope, transpose, energy and iteration identities | no formal PDE/Bochner/trace theorem is claimed | exact-head build and axiom audit | II |
 
 Adversarial controls applied to every future route: sign and weight
 normalization, sampled-kernel aliasing, eigenvalue multiplicity, degenerate
