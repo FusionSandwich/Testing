@@ -12,6 +12,7 @@ from .convergence import benchmark_reflected_ring_family, fitted_log_slope
 from .families import (
     FAMILY_DESCRIPTORS,
     ahrens_beylkin_icosahedral_fixture,
+    ahrens_beylkin_from_orbits,
     delaunay_candidate,
     lebedev_14,
     level_symmetric_from_orbits,
@@ -55,7 +56,14 @@ def family_candidates() -> tuple[QuadratureCandidate, ...]:
         [(1.0, 1.0, 1.0)], [1.0], graph="complete"
     ))
     lebedev = _with_dense_seed(lebedev_14(graph="complete"))
-    ab = icosahedral_complete_fixture()
+    phi = (1.0 + np.sqrt(5.0)) / 2.0
+    ab = _with_dense_seed(ahrens_beylkin_from_orbits(
+        [(0.0, 1.0, phi)],
+        [1.0],
+        advertised_degree=5,
+        graph="complete",
+        source_label="internal-orbit-adapter-regression-not-published-table",
+    ))
     design_base = ahrens_beylkin_icosahedral_fixture(graph="complete")
     design = _with_dense_seed(
         spherical_design_candidate(
@@ -132,7 +140,7 @@ def run_audit(*, quick: bool) -> dict[str, object]:
             "family": report.family,
             "rule": candidate.metadata.get("rule", "constructed-candidate"),
             "candidate_scope": (
-                "FIXTURE_ONLY_NOT_PUBLISHED_AHRENS_BEYLKIN_RULE"
+                "ICOSAHEDRAL_ORBIT_ADAPTER_REGRESSION_NOT_PUBLISHED_TABLE"
                 if report.family == "ahrens_beylkin"
                 else "PROPOSAL_ONLY_REQUIRES_MOMENT_AND_INNER_ADMISSION"
                 if report.family == "locally_adapted"

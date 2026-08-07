@@ -55,3 +55,4 @@ import AFPBarrier.EqualAngleRateMaximum
 import AFPBarrier.SphereSpecialization
 import AFPBarrier.ConvexGeneratorDesign
 import AFPBarrier.HarmonicDefectTransport
+import AFPBarrier.QuadratureGeneratorCodesign

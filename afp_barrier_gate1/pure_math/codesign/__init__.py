@@ -19,7 +19,11 @@ from .convergence import (
     benchmark_reflected_ring_level,
     paper_i_sandwich,
 )
-from .families import FAMILY_DESCRIPTORS
+from .families import (
+    FAMILY_DESCRIPTORS,
+    ahrens_beylkin_from_orbits,
+    icosahedral_rotations,
+)
 from .graph_updates import (
     GraphDecision,
     GraphEvaluation,
@@ -66,6 +70,8 @@ __all__ = [
     "ConvergenceRow",
     "EnrichedResponseReport",
     "FAMILY_DESCRIPTORS",
+    "ahrens_beylkin_from_orbits",
+    "icosahedral_rotations",
     "FamilyDescriptor",
     "GramEpigraphReport",
     "GraphDecision",

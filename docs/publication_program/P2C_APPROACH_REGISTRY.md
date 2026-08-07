@@ -13,6 +13,7 @@ This registry groups work by mathematical mechanism.  A status of PROVED means t
 | GRAPH-DELETE | restricted conic reoptimization or exact kernel move | PROVED | conditional safe deletion; no unconditional deletion theorem |
 | GRAPH-FINITE | interval-certified edge-orbit search on a finite master graph | PROVED | finite termination with no certified tau-improving unvisited proposal; exact neighbor stationarity needs exclusion enclosures |
 | DESIGN-DENSE | positive centered quadrature plus complete-graph dense conductance | PROVED | exact H0/H1 and strict conductance positivity; H2 defect \(d+1\), hence nonconvergent |
+| AB-ORBIT-ADAPTER | deterministic proper-icosahedral group expansion plus imported orbit masses | COMPUTATIONAL | 60 rotations, stabilizer-reduced orbit sizes, duplicate rejection, positive mass and harmonic-moment audit; no published table is silently claimed |
 | DESIGN-LOCAL | quasiuniform spherical design plus a local graph | BLOCKED | design exactness and local cones do not solve shared symmetric conductance compatibility; admitted only after global P2A/P1E certificate |
 | ADAPT-ENRICHED | discrete adjoint residual, deterministic marking, retention on failure | PROVED | exact enriched-reference identity and feasibility/descent for accepted proposals |
 | ADAPT-CONTINUUM | enriched estimator promoted directly to continuum error | BLOCKED | missing independent continuum consistency/stability enclosure; no such claim is made |

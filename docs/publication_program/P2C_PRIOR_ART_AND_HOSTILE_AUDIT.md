@@ -5,7 +5,7 @@
 | Source | Imported statement | Hypotheses checked here | Explicit non-transfer |
 |---|---|---|---|
 | Steinerberger, arXiv:1708.08736 | spectral limitations for nonnegative quadrature/generalized designs | positivity and normalization conventions | no node-generator construction, no shared-edge feasibility |
-| Ahrens–Beylkin, DOI 10.1098/rspa.2009.0104 | icosahedral orbit quadrature methodology and rotational exactness | published rules require imported orbit parameters plus independent normalization/mass audits | the executable 12-vertex icosahedron is only a symmetry fixture, not a published AB rule; no generator theorem transfers |
+| Ahrens–Beylkin, DOI 10.1098/rspa.2009.0104 | icosahedral orbit quadrature methodology and rotational exactness | the executable adapter expands the 60-element proper group and independently audits imported orbit sizes, positive masses, duplicates, and harmonic moments | the internal 12-vertex regression is not identified with a published AB table; no generator theorem transfers |
 | Morel et al., DOI 10.13182/NSE07-A2693 | three-dimensional product-quadrature AFP context | P2C product masses use the frozen total-mass-one convention | no arbitrary-node co-design theorem |
 | Bienvenue et al., DOI 10.1080/00295639.2025.2462891 | moment-preserving monotone AFP on nonorthogonal/Voronoi sets | moment, monotonicity, and nonorthogonal-node conventions only | no exact bilevel optimum, no Paper-I frontier, and no streaming ray-effect remedy is transferred |
 | Bondarenko–Radchenko–Viazovska, arXiv:1303.5991 | well-separated equal-weight spherical designs at the stated cardinality scale | sphere dimension, equal mass, separation, and declared strength | no covering certificate silently bundled; no shared conductance compatibility |
@@ -15,6 +15,10 @@
 | accepted P2A | fixed-node convex programs, normalizations, independent verifier | literal archived parent and frozen sign/basis conventions | no nonconvex node globality |
 | accepted Paper-I P1B | \(\mathfrak D_2r_{\max}\ge6\) on its declared class | same positivity, H1, rate, and normalization class | not a lower bound on rotation spread |
 | accepted Paper-I P1E | reflected-ring feasible construction and constants | the implementation calls the accepted constructor and normalizes exactly as P2A | not an arbitrary-design compatibility theorem |
+
+### A source label is not a quadrature certificate
+
+An orbit file marked “Ahrens–Beylkin” can contain a normalization mismatch, a duplicated stabilizer orbit, a nonpositive mass, or a failed moment equation.  The adapter therefore expands the proper icosahedral group itself and recomputes every advertised harmonic moment.  The source label is retained only as provenance.
 
 ## Exact hostile examples
 
