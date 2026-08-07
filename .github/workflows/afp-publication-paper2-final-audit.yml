@@ -1,0 +1,99 @@
+name: AFP publication Paper II P2A-P2F completion audit
+
+on:
+  pull_request:
+    branches:
+      - archive/afp-publication-p2c-codesign-verified
+    paths:
+      - .github/workflows/afp-publication-paper2-final-audit.yml
+      - docs/publication_program/PAPER_II_P2A_P2F_FINAL_AUDIT_2026-08-07.md
+      - docs/publication_program/PAPER_II_P2A_P2F_FINAL_AUDIT_2026-08-07.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-audit-record:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out literal PR head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+
+      - name: Verify ancestry, scope, and status matrix
+        shell: bash
+        run: |
+          set -euo pipefail
+          PARENT=b34c29b1b04f5293eaa4007b39d189efa03c51f5
+          REPORT=docs/publication_program/PAPER_II_P2A_P2F_FINAL_AUDIT_2026-08-07.md
+          MANIFEST=docs/publication_program/PAPER_II_P2A_P2F_FINAL_AUDIT_2026-08-07.json
+
+          test "$(git merge-base HEAD "$PARENT")" = "$PARENT"
+          test -s "$REPORT"
+          test -s "$MANIFEST"
+
+          git diff --check "$PARENT"...HEAD
+          git diff --name-only "$PARENT"...HEAD | sort > changed.txt
+          cat > expected.txt <<'EOF'
+          .github/workflows/afp-publication-paper2-final-audit.yml
+          docs/publication_program/PAPER_II_P2A_P2F_FINAL_AUDIT_2026-08-07.json
+          docs/publication_program/PAPER_II_P2A_P2F_FINAL_AUDIT_2026-08-07.md
+          EOF
+          diff -u expected.txt changed.txt
+
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          manifest_path = Path("docs/publication_program/PAPER_II_P2A_P2F_FINAL_AUDIT_2026-08-07.json")
+          report_path = Path("docs/publication_program/PAPER_II_P2A_P2F_FINAL_AUDIT_2026-08-07.md")
+          data = json.loads(manifest_path.read_text(encoding="utf-8"))
+          report = report_path.read_text(encoding="utf-8")
+
+          assert data["schema"] == "afp-paper2-p2a-p2f-completion-audit-v1"
+          assert data["audited_parent_sha"] == "b34c29b1b04f5293eaa4007b39d189efa03c51f5"
+          assert data["controlling_prompts"] == ["P2A", "P2B", "P2C", "P2D", "P2E", "P2F"]
+          assert data["accepted_stage_count"] == 3
+          assert data["required_stage_count"] == 6
+          assert data["paper_ii_status"] == "NOT_COMPLETE"
+          assert data["next_required_stage"] == "P2D"
+
+          for stage in ("P2A", "P2B", "P2C"):
+              assert data["stages"][stage]["status"] == "COMPLETE_AND_PUSHED"
+              assert data["stages"][stage]["workflow_conclusion"] == "success"
+          for stage in ("P2D", "P2E", "P2F"):
+              assert data["stages"][stage]["status"] == "NOT_COMPLETE"
+              for key in ("branch_found", "commit_found", "pr_found", "workflow_found", "archive_found"):
+                  assert data["stages"][stage][key] is False
+
+          required_report_markers = [
+              "P2A  COMPLETE_AND_PUSHED",
+              "P2B  COMPLETE_AND_PUSHED",
+              "P2C  COMPLETE_AND_PUSHED",
+              "P2D  NOT_COMPLETE",
+              "P2E  NOT_COMPLETE",
+              "P2F  NOT_COMPLETE",
+              "PAPER_II  NOT_COMPLETE",
+              "archive/afp-publication-p2def-paper2-closeout-verified",
+          ]
+          for marker in required_report_markers:
+              assert marker in report, marker
+          PY
+
+          test ! -e docs/publication_program/PAPER_II_MANUSCRIPT.md
+          test ! -e docs/publication_program/P2E_BENCHMARK_MANIFEST.json
+          test ! -e docs/publication_program/P2F_STAGE_REPORT.md
+          test ! -e PAPER_II_P2DEF_CLOSEOUT_PACKAGE.zip
+
+          if find .github/workflows -maxdepth 1 -type f \
+              \( -name 'afp-publication-p2d*' -o -name 'afp-publication-p2e*' -o -name 'afp-publication-p2f*' \) \
+              | grep -q .; then
+            echo 'Unexpected P2D/P2E/P2F workflow exists; update the audit through a new reviewed commit.' >&2
+            exit 1
+          fi
+
+          echo PAPER_II_COMPLETION_AUDIT_VERIFIED
