@@ -1,9 +1,13 @@
 # Paper II P2A–P2F final completion audit
 
-**Audit date:** 2026-08-07  
-**Repository:** `FusionSandwich/Testing`  
-**Audited parent:** `archive/afp-publication-p2c-codesign-verified`  
-**Audited SHA:** `b34c29b1b04f5293eaa4007b39d189efa03c51f5`  
+**Audit date:** 2026-08-07
+
+**Repository:** `FusionSandwich/Testing`
+
+**Audited parent:** `archive/afp-publication-p2c-codesign-verified`
+
+**Audited SHA:** `b34c29b1b04f5293eaa4007b39d189efa03c51f5`
+
 **Audited tree:** `7db9e821738b0121ab3fdb1d1a40b76f85abed48`
 
 ## 1. Controlling scope
