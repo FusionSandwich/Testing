@@ -1,0 +1,155 @@
+name: AFP publication P2E pre-registration development
+
+on:
+  push:
+    branches:
+      - agent/afp-publication-p2e-benchmark-development-b34c29b1
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  actions: read
+  contents: read
+
+env:
+  EXPECTED_REPOSITORY: FusionSandwich/Testing
+  P2E_BRANCH: agent/afp-publication-p2e-benchmark-development-b34c29b1
+  P2C_COMMIT: b34c29b1b04f5293eaa4007b39d189efa03c51f5
+  P2C_TREE: 7db9e821738b0121ab3fdb1d1a40b76f85abed48
+  GIT_NO_REPLACE_OBJECTS: '1'
+
+jobs:
+  training-only-design-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Check out literal development head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          ref: ${{ github.sha }}
+          persist-credentials: false
+
+      - name: Verify exact lineage and development-only scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "${GITHUB_REPOSITORY}" = "${EXPECTED_REPOSITORY}"
+          test "${GITHUB_REF}" = "refs/heads/${P2E_BRANCH}"
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          test "$(git rev-parse "${P2C_COMMIT}^{tree}")" = "${P2C_TREE}"
+          git merge-base --is-ancestor "${P2C_COMMIT}" "${GITHUB_SHA}"
+          test "$(git rev-list --count --merges "${P2C_COMMIT}..${GITHUB_SHA}")" -eq 0
+          python - "${P2C_COMMIT}" "${GITHUB_SHA}" <<'PY'
+          import os, subprocess, sys
+          base, head = sys.argv[1:]
+          allowed = {
+              ".github/workflows/afp-publication-p2e-development.yml",
+              "afp_barrier_gate1/pure_math/benchmarking/__init__.py",
+              "afp_barrier_gate1/pure_math/benchmarking/design_probe.py",
+              "docs/publication_program/P2E_DEVELOPMENT_PLAN.md",
+          }
+          raw = subprocess.check_output(
+              ["git", "diff", "--no-renames", "--name-only", "-z", base, head]
+          )
+          changed = {os.fsdecode(item) for item in raw.split(b"\0") if item}
+          if changed != allowed:
+              raise SystemExit(
+                  f"P2E development scope mismatch; missing={sorted(allowed-changed)} "
+                  f"outside={sorted(changed-allowed)}"
+              )
+          for path in sorted(changed):
+              payload = subprocess.check_output(["git", "show", f"{head}:{path}"])
+              if not payload:
+                  raise SystemExit(f"empty path: {path}")
+              payload.decode("utf-8")
+          print("P2E_DEVELOPMENT_SCOPE_EXACT")
+          PY
+          git diff --check "${P2C_COMMIT}" "${GITHUB_SHA}"
+
+      - name: Set up frozen Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+
+      - name: Install accepted numerical stack
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check --no-input \
+            'clarabel==0.11.1' 'cvxpy==1.7.3' 'numpy==2.3.2' \
+            'osqp==1.0.4' 'pytest==8.4.2' 'scipy==1.18.0' \
+            'scs==3.2.9' 'sympy==1.14.0'
+          mkdir -p "${RUNNER_TEMP}/p2e-development"
+          python -m pip freeze --all | sort > \
+            "${RUNNER_TEMP}/p2e-development/pip-freeze.txt"
+
+      - name: Compile and run training-only design probe
+        working-directory: afp_barrier_gate1
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/p2e-development"
+          export PYTHONPYCACHEPREFIX="${RUNNER_TEMP}/p2e-pycache"
+          python -m compileall -q pure_math/benchmarking
+          python -m pure_math.benchmarking.design_probe \
+            --output "${out}/design-probe.json" | tee "${out}/design-probe.log"
+          grep -Fxq 'P2E_DESIGN_PROBE_PASS' "${out}/design-probe.log"
+          python - "${out}/design-probe.json" <<'PY'
+          import json, pathlib, sys
+          path = pathlib.Path(sys.argv[1])
+          data = json.loads(path.read_text(encoding="utf-8"),
+              parse_constant=lambda value: (_ for _ in ()).throw(
+                  ValueError(f"non-RFC JSON constant: {value}")
+              ))
+          assert data["schema"] == "afp-p2e-training-design-probe-v1"
+          assert data["scope"] == "TRAINING_ONLY_NOT_HELD_OUT_NOT_PUBLICATION_EVIDENCE"
+          assert data["selected_training_candidate"] is not None
+          assert len(data["rows"]) == 5
+          assert any(
+              row["optimized_status"] == "VERIFIED_FLOAT_P2A_INNER"
+              and row["d2_ratio"] is not None
+              and row["d2_ratio"] < 1.0
+              for row in data["rows"]
+          )
+          print("P2E_DESIGN_PROBE_JSON_PASS")
+          PY
+
+      - name: Retain P2A-P2C exact regressions
+        working-directory: afp_barrier_gate1
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/p2e-development"
+          python -m pure_math.optimization.exact_audit | tee "${out}/p2a.log"
+          python -m pure_math.dynamics.exact_audit | tee "${out}/p2b.log"
+          python -m pure_math.codesign.exact_audit | tee "${out}/p2c.log"
+          grep -Fxq 'P2A exact symmetric/Farkas audit: PASS' "${out}/p2a.log"
+          grep -Fxq 'P2B exact manufactured audit: PASS' "${out}/p2b.log"
+          grep -Fxq 'P2C_EXACT_AUDIT_PASS' "${out}/p2c.log"
+          git diff --check
+          test -z "$(git status --short)"
+
+      - name: Hash development records
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/p2e-development"
+          (cd "${out}" && sha256sum * | sort > records.sha256)
+          {
+            echo "repository=${GITHUB_REPOSITORY}"
+            echo "head=${GITHUB_SHA}"
+            echo "parent=${P2C_COMMIT}"
+            echo "scope=TRAINING_ONLY_NOT_HELD_OUT_NOT_PUBLICATION_EVIDENCE"
+          } > "${out}/provenance.txt"
+
+      - name: Upload training-only development evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: p2e-training-design-probe-${{ github.sha }}
+          path: ${{ runner.temp }}/p2e-development
+          if-no-files-found: error
+          retention-days: 90
