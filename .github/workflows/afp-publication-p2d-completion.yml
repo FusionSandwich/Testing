@@ -1,0 +1,312 @@
+name: AFP publication P2D completion
+
+on:
+  push:
+    branches:
+      - agent/afp-publication-p2d-completion-2fb7a11b
+      - archive/afp-publication-p2d-complete-verified
+  pull_request:
+    branches:
+      - archive/afp-publication-p2d-acceleration-verified
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  actions: read
+  contents: read
+
+env:
+  EXPECTED_REPOSITORY: FusionSandwich/Testing
+  PR_HEAD_REPOSITORY: ${{ github.event.pull_request.head.repo.full_name || '' }}
+  CANDIDATE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+  P2D_COMPLETION_BRANCH: agent/afp-publication-p2d-completion-2fb7a11b
+  P2D_COMPLETION_ARCHIVE: archive/afp-publication-p2d-complete-verified
+  P2D_PREDECESSOR: 2fb7a11b75a9699a7afc8a2ee16c90656c58fb28
+  P2D_PREDECESSOR_TREE: 9c4d101ac7afd3b3439a28bcff084dffeb5fca93
+  P2D_PREDECESSOR_ARCHIVE: archive/afp-publication-p2d-acceleration-verified
+  GIT_NO_REPLACE_OBJECTS: '1'
+  OMP_NUM_THREADS: '1'
+  OPENBLAS_NUM_THREADS: '1'
+  MKL_NUM_THREADS: '1'
+  NUMEXPR_NUM_THREADS: '1'
+
+jobs:
+  completion-proof-performance-and-regressions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          ref: ${{ env.CANDIDATE_SHA }}
+          persist-credentials: false
+
+      - name: Verify exact completion ancestry, scope, and refs
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/p2d-complete"; mkdir -p "${out}"
+          test "${GITHUB_REPOSITORY}" = "${EXPECTED_REPOSITORY}"
+          if [[ "${GITHUB_EVENT_NAME}" = pull_request ]]; then
+            test "${GITHUB_HEAD_REF}" = "${P2D_COMPLETION_BRANCH}"
+            test "${GITHUB_BASE_REF}" = "${P2D_PREDECESSOR_ARCHIVE}"
+            test "${PR_HEAD_REPOSITORY}" = "${EXPECTED_REPOSITORY}"
+          fi
+          test "$(git rev-parse HEAD)" = "${CANDIDATE_SHA}"
+          test "$(git rev-parse "${P2D_PREDECESSOR}^{tree}")" = "${P2D_PREDECESSOR_TREE}"
+          git merge-base --is-ancestor "${P2D_PREDECESSOR}" "${CANDIDATE_SHA}"
+          test "$(git rev-list --count --merges "${P2D_PREDECESSOR}..${CANDIDATE_SHA}")" -eq 0
+          python - "${P2D_PREDECESSOR}" "${CANDIDATE_SHA}" <<'PY' | tee "${out}/scope.log"
+          import os, subprocess, sys
+          base, head = sys.argv[1:]
+          allowed = {
+              ".github/workflows/afp-publication-p2d-completion.yml",
+              "afp_barrier_gate1/pure_math/acceleration/__init__.py",
+              "afp_barrier_gate1/pure_math/acceleration/audit.py",
+              "afp_barrier_gate1/pure_math/acceleration/core.py",
+              "afp_barrier_gate1/pure_math/acceleration/p2d_frozen_operators.json",
+              "afp_barrier_gate1/pure_math/acceleration/transport.py",
+              "afp_barrier_gate1/pure_math/tests/test_p2d_acceleration.py",
+              "docs/publication_program/P2D_ACCELERATION_PRECONDITIONER.md",
+              "docs/publication_program/P2D_APPROACH_REGISTRY.md",
+              "docs/publication_program/P2D_CLAIM_MAP.md",
+              "docs/publication_program/P2D_CLAUSE_MATRIX.md",
+              "docs/publication_program/P2D_PRIOR_ART_AND_HOSTILE_AUDIT.md",
+              "docs/publication_program/P2D_STAGE_REPORT.md",
+          }
+          raw = subprocess.check_output(
+              ["git", "diff", "--no-renames", "--name-only", "-z", base, head]
+          )
+          changed = {os.fsdecode(item) for item in raw.split(b"\0") if item}
+          if changed != allowed:
+              raise SystemExit(
+                  f"P2D completion scope mismatch; missing={sorted(allowed-changed)} "
+                  f"outside={sorted(changed-allowed)}"
+              )
+          forbidden = (set(range(32)) - {9, 10, 13}) | {127}
+          for path in sorted(changed):
+              row = subprocess.check_output(
+                  ["git", "ls-tree", head, "--", path], text=True
+              ).strip()
+              if not row.startswith("100644 blob "):
+                  raise SystemExit(f"not a regular blob: {path}: {row!r}")
+              payload = subprocess.check_output(["git", "show", f"{head}:{path}"])
+              if not payload:
+                  raise SystemExit(f"empty completion path: {path}")
+              payload.decode("utf-8")
+              bad = sorted({byte for byte in payload if byte in forbidden})
+              if bad:
+                  raise SystemExit(f"forbidden control bytes in {path}: {bad}")
+          print(f"P2D_COMPLETION_SCOPE_EXACT:{len(changed)}")
+          PY
+          git diff --check "${P2D_PREDECESSOR}" "${CANDIDATE_SHA}"
+          test "$(git ls-remote --exit-code --heads origin "refs/heads/${P2D_COMPLETION_BRANCH}" | awk 'NR==1 {print $1}')" = "${CANDIDATE_SHA}"
+          test "$(git ls-remote --exit-code --heads origin "refs/heads/${P2D_PREDECESSOR_ARCHIVE}" | awk 'NR==1 {print $1}')" = "${P2D_PREDECESSOR}"
+          set +e
+          line=$(git ls-remote --exit-code --heads origin "refs/heads/${P2D_COMPLETION_ARCHIVE}"); status=$?
+          set -e
+          if [[ ${status} -eq 0 ]]; then
+            archive_sha="$(awk 'NR==1 {print $1}' <<<"${line}")"
+            if [[ "${GITHUB_REF}" = "refs/heads/${P2D_COMPLETION_ARCHIVE}" ]]; then
+              test "${archive_sha}" = "${CANDIDATE_SHA}"
+            else
+              git merge-base --is-ancestor "${archive_sha}" "${CANDIDATE_SHA}"
+            fi
+          elif [[ ${status} -ne 2 || "${GITHUB_REF}" = "refs/heads/${P2D_COMPLETION_ARCHIVE}" ]]; then
+            exit 1
+          fi
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+
+      - name: Install frozen numerical stack
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/p2d-complete"
+          python -m pip install --disable-pip-version-check --no-input \
+            'clarabel==0.11.1' 'cvxpy==1.7.3' 'numpy==2.3.2' \
+            'osqp==1.0.4' 'pytest==8.4.2' 'scipy==1.18.0' \
+            'scs==3.2.9' 'sympy==1.14.0' | tee "${out}/dependencies.log"
+          python -m pip freeze --all | sort > "${out}/pip-freeze.txt"
+
+      - name: Run complete P2D audit and hostile tests
+        working-directory: afp_barrier_gate1
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/p2d-complete"
+          export PYTHONPYCACHEPREFIX="${RUNNER_TEMP}/p2d-complete-pycache"
+          python -m compileall -q pure_math/acceleration pure_math/tests/test_p2d_acceleration.py
+          python -m pure_math.acceleration.audit | tee "${out}/p2d-audit.log"
+          python -m pytest -p no:cacheprovider -q -ra \
+            pure_math/tests/test_p2d_acceleration.py | tee "${out}/pytest.log"
+          grep -Fxq 'P2D_ACCELERATION_AUDIT_PASS' "${out}/p2d-audit.log"
+          grep -Fq '"forward_peaked_optimized_beats_baseline": true' "${out}/p2d-audit.log"
+          grep -Fq '"forward_peaked_optimized_beats_none": true' "${out}/p2d-audit.log"
+          grep -Fq '"higher_shell_failure_exposed": true' "${out}/p2d-audit.log"
+          grep -Fq '"ray_error_dominates": true' "${out}/p2d-audit.log"
+          grep -Fq '"conservation_constraint_preserved": true' "${out}/p2d-audit.log"
+          grep -Eq '^15 passed(, [0-9]+ [a-z]+)* in ' "${out}/pytest.log"
+          python - "${out}/p2d-audit.log" <<'PY'
+          import json, math, pathlib, sys
+          rows = pathlib.Path(sys.argv[1]).read_text(encoding="utf-8").splitlines()
+          payload = json.loads(
+              "\n".join(rows[:-1]),
+              parse_constant=lambda value: (_ for _ in ()).throw(
+                  ValueError(f"non-RFC JSON constant: {value}")
+              ),
+          )
+          if payload["status"] != "PASS":
+              raise SystemExit("P2D audit did not pass")
+          sweep = payload["transport"]["forward_peaked_sweep"]
+          if len(sweep["rows"]) != 4:
+              raise SystemExit("expected four forward-peaked rows")
+          methods = {
+              "none", "optimized_harmonic_fidelity",
+              "moment_monotone_baseline", "classical_modified_fp",
+              "h2_poor_positive",
+          }
+          for row in sweep["rows"]:
+              if set(row["methods"]) != methods:
+                  raise SystemExit("comparator inventory mismatch")
+              opt = row["methods"]["optimized_harmonic_fidelity"]
+              base = row["methods"]["moment_monotone_baseline"]
+              none = row["methods"]["none"]
+              if not (opt["iterations"] < base["iterations"] and opt["iterations"] < none["iterations"]):
+                  raise SystemExit("optimized iteration gate failed")
+              for method in row["methods"].values():
+                  required = (
+                      "iterations", "high_order_matvecs", "low_order_solves",
+                      "setup_seconds", "solve_seconds", "total_seconds",
+                      "python_peak_bytes", "matrix_bytes", "preconditioner_bytes",
+                      "final_high_order_residual", "solution_error",
+                  )
+                  if any(key not in method for key in required):
+                      raise SystemExit("missing performance metric")
+                  numeric = [method[key] for key in required]
+                  if any(not math.isfinite(float(value)) or float(value) < 0.0 for value in numeric):
+                      raise SystemExit("invalid performance metric")
+                  if not method["converged"]:
+                      raise SystemExit("comparator did not converge")
+          if sweep["summary"]["minimum_iteration_reduction_vs_baseline"] <= 0.4:
+              raise SystemExit("minimum iteration reduction gate failed")
+          if payload["transport"]["ray_dominated_adversary"]["relative_ray_error"] <= 1.0:
+              raise SystemExit("ray adversary was not exposed")
+          PY
+
+      - name: Retain P2A-P2C exact regressions
+        working-directory: afp_barrier_gate1
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/p2d-complete"
+          python -m pure_math.optimization.exact_audit | tee "${out}/p2a.log"
+          python -m pure_math.dynamics.exact_audit | tee "${out}/p2b.log"
+          python -m pure_math.codesign.exact_audit | tee "${out}/p2c.log"
+          grep -Fxq 'P2A exact symmetric/Farkas audit: PASS' "${out}/p2a.log"
+          grep -Fxq 'P2B exact manufactured audit: PASS' "${out}/p2b.log"
+          grep -Fxq 'P2C_EXACT_AUDIT_PASS' "${out}/p2c.log"
+
+      - name: Audit claims, clauses, documents, and placeholders
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import pathlib, re
+          root = pathlib.Path("docs/publication_program")
+          names = {
+              "P2D_ACCELERATION_PRECONDITIONER.md", "P2D_APPROACH_REGISTRY.md",
+              "P2D_CLAIM_MAP.md", "P2D_CLAUSE_MATRIX.md",
+              "P2D_PRIOR_ART_AND_HOSTILE_AUDIT.md", "P2D_STAGE_REPORT.md",
+          }
+          got = {path.name for path in root.glob("P2D*.md")}
+          if got != names:
+              raise SystemExit(f"P2D document inventory mismatch: {sorted(got)}")
+          claims = (root / "P2D_CLAIM_MAP.md").read_text(encoding="utf-8")
+          ids = re.findall(r"^\|\s*(D[0-9]{2})\s*\|", claims, re.M)
+          if ids != [f"D{i:02d}" for i in range(1, 19)]:
+              raise SystemExit(f"claim ids: {ids}")
+          clauses = (root / "P2D_CLAUSE_MATRIX.md").read_text(encoding="utf-8")
+          for phrase in (
+              "forward peaking", "setup cost", "ray-effect adversary",
+              "higher-harmonic adversary", "classical modified FP",
+          ):
+              if phrase.lower() not in clauses.lower():
+                  raise SystemExit(f"missing clause closure: {phrase}")
+          scan = list(root.glob("P2D*.md")) + list(
+              pathlib.Path("afp_barrier_gate1/pure_math/acceleration").glob("*.py")
+          ) + [pathlib.Path(
+              "afp_barrier_gate1/pure_math/tests/test_p2d_acceleration.py"
+          )]
+          forbidden = re.compile(
+              r"(?im)(?:^|\s)(?:TODO|TBD|FIXME|XXX):|NotImplementedError|"
+              r"STATUS_PENDING|DEFERRED_TO_P2E"
+          )
+          for path in scan:
+              match = forbidden.search(path.read_text(encoding="utf-8"))
+              if match:
+                  raise SystemExit(f"placeholder in {path}: {match.group(0)!r}")
+          print("P2D_COMPLETION_DOCUMENT_AUDIT_PASS")
+          PY
+          git diff --check
+          test -z "$(git status --short)"
+
+      - name: Hash exact completion evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/p2d-complete"
+          git archive --format=tar.gz \
+            --output="${out}/p2d-complete-source-${CANDIDATE_SHA}.tar.gz" \
+            "${CANDIDATE_SHA}"
+          printf 'repository=%s\nhead=%s\ntree=%s\nbase=%s\n' \
+            "${GITHUB_REPOSITORY}" "${CANDIDATE_SHA}" \
+            "$(git rev-parse HEAD^{tree})" "${P2D_PREDECESSOR}" \
+            > "${out}/provenance.txt"
+          (cd "${out}" && find . -maxdepth 1 -type f ! -name records.sha256 -print0 \
+            | sort -z | xargs -0 sha256sum > records.sha256)
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: afp-publication-p2d-complete-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/p2d-complete
+          if-no-files-found: error
+          retention-days: 90
+
+  retained-lean-kernel:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          ref: ${{ env.CANDIDATE_SHA }}
+          persist-credentials: false
+      - uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9
+        with:
+          lake-package-directory: afp_barrier_gate1
+          build: false
+          test: false
+          lint: false
+          nanoda: false
+          use-mathlib-cache: false
+          use-github-cache: false
+      - name: Build P2D finite core and axiom audit
+        working-directory: afp_barrier_gate1
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake update
+          lake exe cache get
+          lake build AFPBarrier.AccelerationFixedPoint
+          lake env lean AFPBarrier/P2DAccelerationAxiomAudit.lean
+          ! grep -R -nE '(^|[^[:alnum:]_])(sorry|admit|sorryAx)([^[:alnum:]_]|$)' \
+            AFPBarrier/AccelerationFixedPoint.lean \
+            AFPBarrier/P2DAccelerationAxiomAudit.lean
+          git diff --check
+          test -z "$(git status --short)"
