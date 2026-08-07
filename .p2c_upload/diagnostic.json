@@ -1,0 +1,174 @@
+{
+  "candidate_tree": "00be7b50b2505ff035d0a1d52363669053eb70aa",
+  "diff_paths": [
+    ".github/workflows/afp-publication-p2c-codesign.yml",
+    ".github/workflows/p2c-diagnose-assemble.yml",
+    ".github/workflows/p2c-final-assemble.yml",
+    ".github/workflows/p2c-upload-assemble.yml",
+    ".p2c_upload/families.part00.b64",
+    ".p2c_upload/main_theorem.part00.b64",
+    ".p2c_upload/main_theorem.part01.b64",
+    ".p2c_upload/tests.part00.b64",
+    ".p2c_upload/theorem_registry.chunk00.b64",
+    ".p2c_upload/theorem_registry.chunk01.b64",
+    ".p2c_upload/theorem_registry.chunk02.b64",
+    ".p2c_upload/theorem_registry.chunk03.b64",
+    ".p2c_upload/theorem_registry.chunk04.b64",
+    ".p2c_upload/theorem_registry.chunk05.b64",
+    ".p2c_upload/theorem_registry.chunk06.b64",
+    ".p2c_upload/theorem_registry.chunk07.b64",
+    ".p2c_upload/theorem_registry.part00.b64",
+    ".p2c_upload/theorem_registry.part01.b64",
+    ".p2c_upload/theorem_registry.tail00.b64",
+    ".p2c_upload/theorem_registry.tail01.b64",
+    ".p2c_upload/theorem_registry.tail02.b64",
+    ".p2c_upload/workflow.part00.b64",
+    "afp_barrier_gate1/AFPBarrier.lean",
+    "afp_barrier_gate1/AFPBarrier/P2CAxiomAudit.lean",
+    "afp_barrier_gate1/AFPBarrier/QuadratureGeneratorCodesign.lean",
+    "afp_barrier_gate1/pure_math/codesign/__init__.py",
+    "afp_barrier_gate1/pure_math/codesign/audit.py",
+    "afp_barrier_gate1/pure_math/codesign/families.py",
+    "afp_barrier_gate1/pure_math/tests/test_p2c_codesign.py",
+    "docs/publication_program/P2C_APPROACH_REGISTRY.md",
+    "docs/publication_program/P2C_CLAIM_MAP.md",
+    "docs/publication_program/P2C_CLAUSE_MATRIX.md",
+    "docs/publication_program/P2C_FORMAL_AND_RELEASE_AUDIT.md",
+    "docs/publication_program/P2C_INDEPENDENT_PROOF_AUDIT.md",
+    "docs/publication_program/P2C_PRIOR_ART_AND_HOSTILE_AUDIT.md",
+    "docs/publication_program/P2C_QUADRATURE_GENERATOR_CODESIGN.md",
+    "docs/publication_program/P2C_STAGE_REPORT.md",
+    "docs/publication_program/PAPER_BOUNDARY_MATRIX.md",
+    "docs/publication_program/VALUE_REGISTRY.md"
+  ],
+  "head": "d2603d2d6038049a885b43a46826a19e43acf125",
+  "parent": "b34c29b1b04f5293eaa4007b39d189efa03c51f5",
+  "parts": {},
+  "target_tree": "c25da2ab59408dea279393fb62dbf684266518b4",
+  "targets": {
+    ".github/workflows/afp-publication-p2c-codesign.yml": {
+      "actual_blob": "65962ac770848ad91652965453e7642fc6b932da",
+      "blob_match": true,
+      "encoded_length": 8212,
+      "expected_blob": "65962ac770848ad91652965453e7642fc6b932da",
+      "parts": [
+        {
+          "exists": true,
+          "length": 8212,
+          "path": ".p2c_upload/workflow.part00.b64",
+          "sha256": "fc026c5f10fa3352374f4461e1835afeec00ff6973ea1098af5e5629c7591ffd"
+        }
+      ]
+    },
+    "afp_barrier_gate1/pure_math/codesign/families.py": {
+      "actual_blob": "b12aa82e108d67328fdaae91171d698e86da2b5e",
+      "blob_match": true,
+      "encoded_length": 9232,
+      "expected_blob": "b12aa82e108d67328fdaae91171d698e86da2b5e",
+      "parts": [
+        {
+          "exists": true,
+          "length": 9232,
+          "path": ".p2c_upload/families.part00.b64",
+          "sha256": "8f19bca643c1cb8a76f4423577e8dbc3eff73785f714b258d4cd6429b70b24ad"
+        }
+      ]
+    },
+    "afp_barrier_gate1/pure_math/tests/test_p2c_codesign.py": {
+      "actual_blob": "8be088960b05ee517669af6a7a2b220ab5fa1d1c",
+      "blob_match": true,
+      "encoded_length": 7376,
+      "expected_blob": "8be088960b05ee517669af6a7a2b220ab5fa1d1c",
+      "parts": [
+        {
+          "exists": true,
+          "length": 7376,
+          "path": ".p2c_upload/tests.part00.b64",
+          "sha256": "a796b597a372d1ebf739564b346eee0d82d07ac741f56ee2092be6dc874907a3"
+        }
+      ]
+    },
+    "docs/publication_program/P2C_QUADRATURE_GENERATOR_CODESIGN.md": {
+      "actual_blob": "22d4986b53ef1b1362739fae279f48670cf92dfd",
+      "blob_match": true,
+      "encoded_length": 20488,
+      "expected_blob": "22d4986b53ef1b1362739fae279f48670cf92dfd",
+      "parts": [
+        {
+          "exists": true,
+          "length": 12000,
+          "path": ".p2c_upload/main_theorem.part00.b64",
+          "sha256": "a487db9645c0505ee1e7c6f2e74bfc08f2b1dadc63418590e7c6c8b1d0a8ef3b"
+        },
+        {
+          "exists": true,
+          "length": 8488,
+          "path": ".p2c_upload/main_theorem.part01.b64",
+          "sha256": "2dc355d5ce2589aba835f369679617ea0bc1b1a9bdd7cdf3d1d1e7fe1d2d493a"
+        }
+      ]
+    },
+    "docs/publication_program/THEOREM_REGISTRY.md": {
+      "error": "Error('Incorrect padding')",
+      "expected_blob": "b5473bd8b88818deb363b90f0b4ad29d62a6ef92",
+      "parts": [
+        {
+          "exists": true,
+          "length": 11999,
+          "path": ".p2c_upload/theorem_registry.part00.b64",
+          "sha256": "0830d1bf04a625f1c15d204c56cd2bed812478f4e080c96c32b25066f913c2e8"
+        },
+        {
+          "exists": true,
+          "length": 1300,
+          "path": ".p2c_upload/theorem_registry.chunk00.b64",
+          "sha256": "028ae5f678c1943f85bb98b1b57250d4ab6d2a6f3c8e021d1cfcc92902f914e7"
+        },
+        {
+          "exists": true,
+          "length": 1299,
+          "path": ".p2c_upload/theorem_registry.chunk01.b64",
+          "sha256": "87d69a2fc1509acefafe15527e837f1a9c4778e6c58280fb66f3a1e40bf97f86"
+        },
+        {
+          "exists": true,
+          "length": 1300,
+          "path": ".p2c_upload/theorem_registry.chunk02.b64",
+          "sha256": "611db73956e933e2051c076ce0a88d7c1954df742f234968f862454afbb55a3e"
+        },
+        {
+          "exists": true,
+          "length": 1300,
+          "path": ".p2c_upload/theorem_registry.chunk03.b64",
+          "sha256": "c8dbfd6a056dd377cf480aeca6828de3e9902dfba5af459eecb358aaffdbc0a9"
+        },
+        {
+          "exists": true,
+          "length": 1300,
+          "path": ".p2c_upload/theorem_registry.chunk04.b64",
+          "sha256": "61669a70c49dbf2ebe7b334ad6bcc939ad65fd947be29b7dbd6473a2e0be534a"
+        },
+        {
+          "exists": true,
+          "length": 1300,
+          "path": ".p2c_upload/theorem_registry.chunk05.b64",
+          "sha256": "fe41715c12fd39143edeb66c54df1511bf3baa5dd5bfb4cc4afd204c23261cd1"
+        },
+        {
+          "exists": true,
+          "length": 1300,
+          "path": ".p2c_upload/theorem_registry.chunk06.b64",
+          "sha256": "3551035f7ca25c0665861d9663e47a73ab1fe1ecc146ae2f5066eb2d20d59484"
+        },
+        {
+          "exists": true,
+          "length": 1256,
+          "path": ".p2c_upload/theorem_registry.chunk07.b64",
+          "sha256": "0c179dd235e3b28e724d7552e898b21801c7f43598836606d510a744346ce90d"
+        }
+      ],
+      "traceback": "Traceback (most recent call last):\n  File \"<stdin>\", line 26, in <module>\n  File \"/usr/lib/python3.12/base64.py\", line 88, in b64decode\n    return binascii.a2b_base64(s, strict_mode=validate)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nbinascii.Error: Incorrect padding\n"
+    }
+  },
+  "tree_match": false
+}
