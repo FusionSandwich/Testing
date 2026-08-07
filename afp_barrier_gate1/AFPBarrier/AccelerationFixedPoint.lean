@@ -28,7 +28,8 @@ theorem residualCorrection_error
     (hfixed : A xstar = b) :
     (x + omega • B (b - A x)) - xstar =
       (x - xstar) - omega • B (A (x - xstar)) := by
-  rw [map_sub, hfixed]
+  subst b
+  simp only [map_sub]
   module
 
 /-- If every low-order correction lies in the kernel of a declared balance
@@ -46,6 +47,5 @@ theorem scalarShell_errorFactor
     (aH aL omega e : ℝ) (haL : aL ≠ 0) :
     e - omega * (aH * e / aL) = (1 - omega * aH / aL) * e := by
   field_simp
-  ring
 
 end AFPBarrier
