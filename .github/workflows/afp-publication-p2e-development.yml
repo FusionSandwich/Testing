@@ -20,11 +20,15 @@ env:
   P2C_COMMIT: b34c29b1b04f5293eaa4007b39d189efa03c51f5
   P2C_TREE: 7db9e821738b0121ab3fdb1d1a40b76f85abed48
   GIT_NO_REPLACE_OBJECTS: '1'
+  OMP_NUM_THREADS: '1'
+  OPENBLAS_NUM_THREADS: '1'
+  MKL_NUM_THREADS: '1'
+  NUMEXPR_NUM_THREADS: '1'
 
 jobs:
-  training-only-design-probe:
+  training-validation-freeze-probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 180
     steps:
       - name: Check out literal development head
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -50,6 +54,11 @@ jobs:
               ".github/workflows/afp-publication-p2e-development.yml",
               "afp_barrier_gate1/pure_math/benchmarking/__init__.py",
               "afp_barrier_gate1/pure_math/benchmarking/design_probe.py",
+              "afp_barrier_gate1/pure_math/benchmarking/harness.py",
+              "afp_barrier_gate1/pure_math/benchmarking/manifest_builder.py",
+              "afp_barrier_gate1/pure_math/benchmarking/operator_freeze.py",
+              "afp_barrier_gate1/pure_math/benchmarking/transport.py",
+              "afp_barrier_gate1/pure_math/tests/test_p2e_benchmarking.py",
               "docs/publication_program/P2E_DEVELOPMENT_PLAN.md",
           }
           raw = subprocess.check_output(
@@ -87,14 +96,16 @@ jobs:
           python -m pip freeze --all | sort > \
             "${RUNNER_TEMP}/p2e-development/pip-freeze.txt"
 
-      - name: Compile and run training-only design probe
+      - name: Compile, test, and run training-only family probe
         working-directory: afp_barrier_gate1
         shell: bash
         run: |
           set -euo pipefail
           out="${RUNNER_TEMP}/p2e-development"
           export PYTHONPYCACHEPREFIX="${RUNNER_TEMP}/p2e-pycache"
-          python -m compileall -q pure_math/benchmarking
+          python -m compileall -q pure_math/benchmarking pure_math/tests/test_p2e_benchmarking.py
+          python -m pytest -p no:cacheprovider -q pure_math/tests/test_p2e_benchmarking.py | \
+            tee "${out}/pytest-p2e-development.log"
           python -m pure_math.benchmarking.design_probe \
             --output "${out}/design-probe.json" | tee "${out}/design-probe.log"
           grep -Fxq 'P2E_DESIGN_PROBE_PASS' "${out}/design-probe.log"
@@ -107,15 +118,70 @@ jobs:
               ))
           assert data["schema"] == "afp-p2e-training-design-probe-v1"
           assert data["scope"] == "TRAINING_ONLY_NOT_HELD_OUT_NOT_PUBLICATION_EVIDENCE"
-          assert data["selected_training_candidate"] is not None
-          assert len(data["rows"]) == 5
-          assert any(
-              row["optimized_status"] == "VERIFIED_FLOAT_P2A_INNER"
-              and row["d2_ratio"] is not None
-              and row["d2_ratio"] < 1.0
-              for row in data["rows"]
-          )
+          assert data["selected_training_candidate"] == "product_4x8"
+          assert data["payload_sha256"] == "c5f9f615505eaa5674f76fa22295b5c0dd09b1ac049dadcc755385f62d3f8683"
           print("P2E_DESIGN_PROBE_JSON_PASS")
+          PY
+
+      - name: Build candidate operator registry and development manifest
+        working-directory: afp_barrier_gate1
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/p2e-development"
+          python -m pure_math.benchmarking.operator_freeze \
+            --output "${out}/operator-registry.json" | tee "${out}/operator-freeze.log"
+          grep -Fxq 'P2E_OPERATOR_FREEZE_PASS' "${out}/operator-freeze.log"
+          python -m pure_math.benchmarking.manifest_builder \
+            --registry "${out}/operator-registry.json" \
+            --output "${out}/development-manifest.json" \
+            --status DEVELOPMENT_TRAINING_VALIDATION | tee "${out}/manifest-build.log"
+          grep -Fxq 'P2E_MANIFEST_BUILD_PASS' "${out}/manifest-build.log"
+
+      - name: Execute training and validation only
+        working-directory: afp_barrier_gate1
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/p2e-development"
+          python -m pure_math.benchmarking.harness \
+            --registry "${out}/operator-registry.json" \
+            --manifest "${out}/development-manifest.json" \
+            --partition training \
+            --output "${out}/training-results.json" | tee "${out}/training.log"
+          python -m pure_math.benchmarking.harness \
+            --registry "${out}/operator-registry.json" \
+            --manifest "${out}/development-manifest.json" \
+            --partition validation \
+            --output "${out}/validation-results.json" | tee "${out}/validation.log"
+          grep -Fxq 'P2E_BENCHMARK_TRAINING_PASS' "${out}/training.log"
+          grep -Fxq 'P2E_BENCHMARK_VALIDATION_PASS' "${out}/validation.log"
+          test ! -e "${out}/heldout-results.json"
+          python - "${out}" <<'PY'
+          import json, pathlib, sys
+          root = pathlib.Path(sys.argv[1])
+          registry = json.loads((root / "operator-registry.json").read_text())
+          manifest = json.loads((root / "development-manifest.json").read_text())
+          training = json.loads((root / "training-results.json").read_text())
+          validation = json.loads((root / "validation-results.json").read_text())
+          assert registry["schema"] == "afp-p2e-frozen-operator-registry-v1"
+          assert manifest["status"] == "DEVELOPMENT_TRAINING_VALIDATION"
+          assert training["partition"] == "training"
+          assert validation["partition"] == "validation"
+          assert len(training["cases"]) == len(manifest["partitions"]["training"])
+          assert len(validation["cases"]) == len(manifest["partitions"]["validation"])
+          assert set(training["cases"]) == set(manifest["partitions"]["training"])
+          assert set(validation["cases"]) == set(manifest["partitions"]["validation"])
+          for results in (training, validation):
+              invariants = results["method_invariants"]
+              for name, row in invariants.items():
+                  if name == "signed_higher_accuracy":
+                      continue
+                  assert row["conservation_residual"] <= 5e-8, (name, row)
+                  assert row["h0_residual"] <= 5e-8, (name, row)
+                  assert row["h1_residual"] <= 5e-7, (name, row)
+                  assert row["minimum_offdiagonal"] >= -3e-10, (name, row)
+          print("P2E_TRAINING_VALIDATION_JSON_PASS")
           PY
 
       - name: Retain P2A-P2C exact regressions
@@ -126,7 +192,7 @@ jobs:
           out="${RUNNER_TEMP}/p2e-development"
           python -m pure_math.optimization.exact_audit | tee "${out}/p2a.log"
           python -m pure_math.dynamics.exact_audit | tee "${out}/p2b.log"
-          python -m pure_math.codesign.exact_audit | tee "${out}/p2c.log"
+          python -m pure_math.codesign.exact_audit | tee "{out}/p2c.log"
           grep -Fxq 'P2A exact symmetric/Farkas audit: PASS' "${out}/p2a.log"
           grep -Fxq 'P2B exact manufactured audit: PASS' "${out}/p2b.log"
           grep -Fxq 'P2C_EXACT_AUDIT_PASS' "${out}/p2c.log"
@@ -143,13 +209,13 @@ jobs:
             echo "repository=${GITHUB_REPOSITORY}"
             echo "head=${GITHUB_SHA}"
             echo "parent=${P2C_COMMIT}"
-            echo "scope=TRAINING_ONLY_NOT_HELD_OUT_NOT_PUBLICATION_EVIDENCE"
+            echo "scope=TRAINING_AND_VALIDATION_ONLY_NO_HELD_OUT_PUBLICATION_EVIDENCE"
           } > "${out}/provenance.txt"
 
-      - name: Upload training-only development evidence
+      - name: Upload development evidence
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: p2e-training-design-probe-${{ github.sha }}
+          name: p2e-training-validation-${{ github.sha }}
           path: ${{ runner.temp }}/p2e-development
           if-no-files-found: error
           retention-days: 90
