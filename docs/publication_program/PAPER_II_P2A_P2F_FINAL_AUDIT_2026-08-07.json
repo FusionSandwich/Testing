@@ -1,0 +1,79 @@
+{
+  "accepted_stage_count": 3,
+  "audit_date": "2026-08-07",
+  "audited_parent_ref": "archive/afp-publication-p2c-codesign-verified",
+  "audited_parent_sha": "b34c29b1b04f5293eaa4007b39d189efa03c51f5",
+  "audited_parent_tree": "7db9e821738b0121ab3fdb1d1a40b76f85abed48",
+  "controlling_prompts": [
+    "P2A",
+    "P2B",
+    "P2C",
+    "P2D",
+    "P2E",
+    "P2F"
+  ],
+  "correction": {
+    "claimed_closeout_artifacts_found": false,
+    "claimed_combined_archive_found": false,
+    "prior_combined_closeout_claim_supported": false
+  },
+  "next_required_stage": "P2D",
+  "paper_ii_status": "NOT_COMPLETE",
+  "repository": "FusionSandwich/Testing",
+  "required_stage_count": 6,
+  "schema": "afp-paper2-p2a-p2f-completion-audit-v1",
+  "stages": {
+    "P2A": {
+      "archive": "archive/afp-publication-p2a-convex-design-verified",
+      "pr": 45,
+      "sha": "07138547ff5c85df071e2067587dd83ca20b71b5",
+      "status": "COMPLETE_AND_PUSHED",
+      "workflow_conclusion": "success",
+      "workflow_run": 31005575551
+    },
+    "P2B": {
+      "archive": "archive/afp-publication-p2b-harmonic-transport-verified",
+      "pr": 46,
+      "sha": "9b39b6ad52213197c0af75d4988eccd1a29d66a9",
+      "status": "COMPLETE_AND_PUSHED",
+      "workflow_conclusion": "success",
+      "workflow_run": 31022719199
+    },
+    "P2C": {
+      "archive": "archive/afp-publication-p2c-codesign-verified",
+      "pr": 47,
+      "sha": "b34c29b1b04f5293eaa4007b39d189efa03c51f5",
+      "status": "COMPLETE_AND_PUSHED",
+      "tree": "7db9e821738b0121ab3fdb1d1a40b76f85abed48",
+      "workflow_conclusion": "success",
+      "workflow_run": 31040201081
+    },
+    "P2D": {
+      "archive_found": false,
+      "branch_found": false,
+      "commit_found": false,
+      "pr_found": false,
+      "status": "NOT_COMPLETE",
+      "workflow_found": false
+    },
+    "P2E": {
+      "archive_found": false,
+      "branch_found": false,
+      "commit_found": false,
+      "pr_found": false,
+      "preregistration_manifest_found": false,
+      "status": "NOT_COMPLETE",
+      "workflow_found": false
+    },
+    "P2F": {
+      "archive_found": false,
+      "branch_found": false,
+      "commit_found": false,
+      "hts_case_found": false,
+      "paper2_manuscript_found": false,
+      "pr_found": false,
+      "status": "NOT_COMPLETE",
+      "workflow_found": false
+    }
+  }
+}
