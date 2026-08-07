@@ -1,26 +1,48 @@
-# P2D prior-art and hostile audit
+# P2D prior-art transfer and hostile audit
 
-## Prior-art transfer firewall
+## Prior-art firewall
 
-Morel and Pomraning motivate the angular Fokker–Planck approximation but do
-not prove that any particular discrete low-order operator accelerates a
-noncommuting transport solve.  Kuczek–Patel–Vasques establish modified FP
-acceleration for their stated slab setting; their fixed-point mechanism and
-kernel tests are precedent, not a transfer of convergence to the present
-multidimensional generator.  The Bienvenue–Naceur–Carrier–Hébert monotone AFP
-is the same-node baseline, not evidence that a new conductance design wins.
+Morel establishes standard-discrete-ordinates use of angular FP operators;
+Pomraning supplies an asymptotic FP limit under stated forward-peaking
+hypotheses.  Neither result proves that an arbitrary discrete AFP generator
+accelerates a coupled transport solve.
 
-## Hostile checks
+Kuczek–Patel–Vasques provide FPSA/NFPA/MFPA precedent in slab geometry,
+including predict/correct consistency and forward-peaked kernel studies.  The
+present signed spectral comparator implements the same low-order
+Laplace–Beltrami principle and exact-high-residual correction, but is not
+claimed to reproduce their weighted finite-difference matrices, code, cross
+sections, or timing conventions.
 
-- A low `H_2` defect is not accepted as acceleration evidence without a solve.
-- All preconditioned solutions are checked against the original high-order
-  residual and exact dense solution.
-- A conservation claim is rejected unless the correction map has `QP_L=0`
-  and the initial state is compatible.
-- FOV certificates expose their metric, coercivity, and operator-norm inputs.
-- The higher-shell fixture forces the optimized `H_2` operator to lose its
-  presumed advantage.
-- Streaming and group coupling are noncommuting matrix blocks, not scalar
-  shell decorations.
-- The classical comparator is labelled a finite model comparator; it is not a
-  reproduction of every published MFPA implementation.
+The Bienvenue–Naceur–Carrier–Hébert method is the precedent for a flexible
+shared-conductance, moment-preserving monotone AFP baseline.  The frozen
+baseline is an independently implemented same-node construction, not a
+byte-for-byte external-code reproduction.
+
+## Hostile audits
+
+- A lower `D_2` is rejected as acceleration evidence until a coupled solve and
+  the relevant slow-subspace action are checked.
+- Every preconditioned solution is accepted only by the original high-order
+  residual and comparison with the direct high-order solution.
+- The low matrix is factored once; setup and solve cost are separated.
+- Conservation is rejected unless `QP_L=0` and the initial invariant is
+  compatible.
+- SPD and FOV claims expose the metric and reject missing positivity,
+  symmetry, or coercivity hypotheses.
+- Generator data are hash-bound; tampering fails closed.
+- Positive operators are independently rechecked for H0, H1, reversibility,
+  off-diagonal sign, rate, and H2–H6 defects.
+- The forward sweep uses one high-order matrix, source, stopping rule, and
+  spatial discretization per row for every comparator.
+- The classical signed comparator is never promoted to a monotone production
+  operator merely because it is faster.
+- A degree-seven case makes the relevant mismatch a higher-shell quantity.
+- A separate hostile diagonal case makes the nominal H2 optimizer lose to the
+  baseline on higher-shell-supported error.
+- A grazing ballistic case demonstrates that fixed-quadrature ray error can
+  exceed the collision-operator difference by orders of magnitude and cannot
+  be changed by a fixed-point-preserving preconditioner.
+- The heat-kernel sweep is a controlled BFP/forward-peaked family, not a claim
+  about material-specific electron, neutron, or proton data; those belong to
+  P2E.
