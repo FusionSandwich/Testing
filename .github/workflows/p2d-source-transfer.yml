@@ -1,0 +1,75 @@
+name: P2D source transfer
+
+on:
+  push:
+    branches:
+      - agent/p2d-source-transfer-b34c29b1
+
+permissions:
+  contents: write
+
+concurrency:
+  group: p2d-source-transfer
+  cancel-in-progress: false
+
+env:
+  TARGET_BRANCH: agent/afp-publication-p2d-acceleration-b34c29b1
+  TARGET_PARENT: b34c29b1b04f5293eaa4007b39d189efa03c51f5
+  PAYLOAD_B64_SHA256: 0d8680f22a5d42ed6f65a7623fce27099612bba738dbde6cd84bb127cdefd12d
+  PAYLOAD_TAR_SHA256: 921842cdfc68539f4112bb35f76044011e95f65d0520804e715e9641ffab1f6d
+
+jobs:
+  materialize-and-push:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Verify exact payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          work="${RUNNER_TEMP}/p2d-transfer"; mkdir -p "${work}"
+          cp .github/p2d-bootstrap/payload.part00 "${work}/payload.b64"
+          test "$(sha256sum "${work}/payload.b64" | awk '{print $1}')" = "${PAYLOAD_B64_SHA256}"
+          base64 --decode "${work}/payload.b64" > "${work}/payload.tar.gz"
+          test "$(sha256sum "${work}/payload.tar.gz" | awk '{print $1}')" = "${PAYLOAD_TAR_SHA256}"
+          tar -tzf "${work}/payload.tar.gz" | sort > "${work}/inventory.txt"
+          cat > "${work}/expected.txt" <<'EOF'
+          afp_barrier_gate1/AFPBarrier/AccelerationFixedPoint.lean
+          afp_barrier_gate1/AFPBarrier/P2DAccelerationAxiomAudit.lean
+          afp_barrier_gate1/pure_math/acceleration/__init__.py
+          afp_barrier_gate1/pure_math/acceleration/audit.py
+          afp_barrier_gate1/pure_math/acceleration/core.py
+          afp_barrier_gate1/pure_math/acceleration/fixtures.py
+          afp_barrier_gate1/pure_math/tests/test_p2d_acceleration.py
+          docs/publication_program/P2D_ACCELERATION_PRECONDITIONER.md
+          docs/publication_program/P2D_APPROACH_REGISTRY.md
+          docs/publication_program/P2D_CLAIM_MAP.md
+          docs/publication_program/P2D_CLAUSE_MATRIX.md
+          docs/publication_program/P2D_PRIOR_ART_AND_HOSTILE_AUDIT.md
+          docs/publication_program/P2D_STAGE_REPORT.md
+          EOF
+          sort -o "${work}/expected.txt" "${work}/expected.txt"
+          diff -u "${work}/expected.txt" "${work}/inventory.txt"
+
+      - name: Publish exact non-workflow source
+        shell: bash
+        run: |
+          set -euo pipefail
+          work="${RUNNER_TEMP}/p2d-transfer"
+          git fetch origin "refs/heads/${TARGET_BRANCH}:refs/remotes/origin/${TARGET_BRANCH}"
+          test "$(git rev-parse "refs/remotes/origin/${TARGET_BRANCH}")" = "${TARGET_PARENT}"
+          git switch --force-create "${TARGET_BRANCH}" "refs/remotes/origin/${TARGET_BRANCH}"
+          tar -xzf "${work}/payload.tar.gz"
+          xargs -d '\n' git add -- < "${work}/expected.txt"
+          git diff --cached --check
+          git diff --cached --name-only | sort > "${work}/changed.txt"
+          diff -u "${work}/expected.txt" "${work}/changed.txt"
+          git config user.name FusionSandwich
+          git config user.email 145234893+FusionSandwich@users.noreply.github.com
+          git commit -m 'P2D: add fixed-point-preserving acceleration'
+          git push origin "HEAD:refs/heads/${TARGET_BRANCH}"
