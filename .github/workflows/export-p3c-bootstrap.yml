@@ -1,0 +1,47 @@
+name: Export P3C bootstrap source
+
+on:
+  push:
+    branches:
+      - agent/afp-publication-p3c-min-negativity-b40ee289
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - name: Record exact bootstrap commit
+        run: git rev-parse HEAD > P3C_BOOTSTRAP_COMMIT.txt
+      - name: Build source archive
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from zipfile import ZIP_STORED, ZipFile, ZipInfo
+          root = Path('.')
+          out = Path('/tmp/p3c-bootstrap-source.zip')
+          files = sorted(
+              p for p in root.rglob('*')
+              if p.is_file() and '.git' not in p.parts
+          )
+          with ZipFile(out, 'w', compression=ZIP_STORED) as archive:
+              for path in files:
+                  relative = path.as_posix()
+                  info = ZipInfo(relative, date_time=(2026, 8, 7, 0, 0, 0))
+                  info.compress_type = ZIP_STORED
+                  info.external_attr = (0o100644 & 0xFFFF) << 16
+                  archive.writestr(info, path.read_bytes())
+          print(f'archived {len(files)} files')
+          PY
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: p3c-bootstrap-source-${{ github.run_attempt }}
+          path: /tmp/p3c-bootstrap-source.zip
+          retention-days: 2
+          if-no-files-found: error
