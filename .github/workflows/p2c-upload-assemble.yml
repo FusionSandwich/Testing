@@ -34,20 +34,24 @@ jobs:
           from pathlib import Path
           import base64
           import gzip
+          import hashlib
           import subprocess
 
           specs = {
               '.github/workflows/afp-publication-p2c-codesign.yml': (
                   ['.p2c_upload/workflow.part00.b64'],
                   '65962ac770848ad91652965453e7642fc6b932da',
+                  None,
               ),
               'afp_barrier_gate1/pure_math/codesign/families.py': (
                   ['.p2c_upload/families.part00.b64'],
                   'b12aa82e108d67328fdaae91171d698e86da2b5e',
+                  None,
               ),
               'afp_barrier_gate1/pure_math/tests/test_p2c_codesign.py': (
                   ['.p2c_upload/tests.part00.b64'],
                   '8be088960b05ee517669af6a7a2b220ab5fa1d1c',
+                  None,
               ),
               'docs/publication_program/P2C_QUADRATURE_GENERATOR_CODESIGN.md': (
                   [
@@ -55,21 +59,33 @@ jobs:
                       '.p2c_upload/main_theorem.part01.b64',
                   ],
                   '22d4986b53ef1b1362739fae279f48670cf92dfd',
+                  None,
               ),
               'docs/publication_program/THEOREM_REGISTRY.md': (
                   [
                       '.p2c_upload/theorem_registry.part00.b64',
-                      '.p2c_upload/theorem_registry.part01.b64',
+                      '.p2c_upload/theorem_registry.tail00.b64',
+                      '.p2c_upload/theorem_registry.tail01.b64',
+                      '.p2c_upload/theorem_registry.tail02.b64',
                   ],
                   'b5473bd8b88818deb363b90f0b4ad29d62a6ef92',
+                  (22356, 'cea44229140ad47c8d0c3e1938c236dd8dbbd3724309ae418e65199fdd1c18b9'),
               ),
           }
 
-          for target, (parts, expected_blob) in specs.items():
+          for target, (parts, expected_blob, encoded_guard) in specs.items():
               encoded = ''.join(
                   ''.join(Path(part).read_text(encoding='ascii').split())
                   for part in parts
               )
+              if encoded_guard is not None:
+                  expected_length, expected_sha256 = encoded_guard
+                  actual_sha256 = hashlib.sha256(encoded.encode('ascii')).hexdigest()
+                  if len(encoded) != expected_length or actual_sha256 != expected_sha256:
+                      raise SystemExit(
+                          f'{target}: encoded payload mismatch '
+                          f'length={len(encoded)} sha256={actual_sha256}'
+                      )
               compressed = base64.b64decode(encoded, validate=True)
               raw = gzip.decompress(compressed)
               path = Path(target)
