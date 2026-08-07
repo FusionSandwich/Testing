@@ -17,7 +17,6 @@ env:
   TARGET_PARENT: 2fb7a11b75a9699a7afc8a2ee16c90656c58fb28
   PAYLOAD_B64_SHA256: b3ab71e2ab378bd79707e7880ce82bb1d84084bd00252cd32093c3a7a874f18c
   PAYLOAD_TAR_SHA256: 0b69a69d0b0b4256fffc0d81c36087bc1df1155504346f6746733d7a2e09392e
-  INVENTORY_SHA256: 299de5a8f7b8425f61dc45edd540d1267b2d368eee67237483efd8a575cf83fc
 
 jobs:
   materialize-and-push:
@@ -39,8 +38,7 @@ jobs:
           test "$(sha256sum "${work}/payload.b64" | awk '{print $1}')" = "${PAYLOAD_B64_SHA256}"
           base64 --decode "${work}/payload.b64" > "${work}/payload.tar.gz"
           test "$(sha256sum "${work}/payload.tar.gz" | awk '{print $1}')" = "${PAYLOAD_TAR_SHA256}"
-          tar -tzf "${work}/payload.tar.gz" | LC_ALL=C sort > "${work}/inventory.txt"
-          test "$(sha256sum "${work}/inventory.txt" | awk '{print $1}')" = "${INVENTORY_SHA256}"
+          tar -tzf "${work}/payload.tar.gz"
 
       - name: Publish exact source
         shell: bash
@@ -51,10 +49,23 @@ jobs:
           test "$(git rev-parse "refs/remotes/origin/${TARGET_BRANCH}")" = "${TARGET_PARENT}"
           git switch --force-create "${TARGET_BRANCH}" "refs/remotes/origin/${TARGET_BRANCH}"
           tar -xzf "${work}/payload.tar.gz"
-          xargs -d '\n' git add -- < "${work}/inventory.txt"
+          paths=(
+            afp_barrier_gate1/pure_math/benchmarking/__init__.py
+            afp_barrier_gate1/pure_math/benchmarking/design_probe.py
+            afp_barrier_gate1/pure_math/benchmarking/harness.py
+            afp_barrier_gate1/pure_math/benchmarking/manifest_builder.py
+            afp_barrier_gate1/pure_math/benchmarking/operator_freeze.py
+            afp_barrier_gate1/pure_math/benchmarking/scipy_convex.py
+            afp_barrier_gate1/pure_math/benchmarking/summarize.py
+            afp_barrier_gate1/pure_math/benchmarking/transport.py
+            afp_barrier_gate1/pure_math/tests/test_p2e_benchmarking.py
+            docs/publication_program/P2E_DEVELOPMENT_PLAN.md
+          )
+          git add -- "${paths[@]}"
           git diff --cached --check
+          printf '%s\n' "${paths[@]}" | LC_ALL=C sort > "${work}/expected.txt"
           git diff --cached --name-only | LC_ALL=C sort > "${work}/changed.txt"
-          test "$(sha256sum "${work}/changed.txt" | awk '{print $1}')" = "${INVENTORY_SHA256}"
+          diff -u "${work}/expected.txt" "${work}/changed.txt"
           git config user.name FusionSandwich
           git config user.email 145234893+FusionSandwich@users.noreply.github.com
           git commit -m 'P2E: add preregistration benchmark harness'
