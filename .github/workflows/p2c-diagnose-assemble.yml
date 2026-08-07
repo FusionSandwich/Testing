@@ -1,0 +1,75 @@
+name: P2C assembler diagnostics
+
+on:
+  push:
+    branches:
+      - agent/afp-publication-p2c-completion-b34c29b1
+    paths:
+      - '.github/workflows/p2c-diagnose-assemble.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: agent/afp-publication-p2c-completion-b34c29b1
+      - name: Build diagnostic report
+        shell: bash
+        run: |
+          set -u
+          python - <<'PY'
+          from pathlib import Path
+          import base64, gzip, hashlib, json, subprocess, traceback
+
+          parent='b34c29b1b04f5293eaa4007b39d189efa03c51f5'
+          target_tree='c25da2ab59408dea279393fb62dbf684266518b4'
+          specs={
+            '.github/workflows/afp-publication-p2c-codesign.yml': (['.p2c_upload/workflow.part00.b64'],'65962ac770848ad91652965453e7642fc6b932da'),
+            'afp_barrier_gate1/pure_math/codesign/families.py': (['.p2c_upload/families.part00.b64'],'b12aa82e108d67328fdaae91171d698e86da2b5e'),
+            'afp_barrier_gate1/pure_math/tests/test_p2c_codesign.py': (['.p2c_upload/tests.part00.b64'],'8be088960b05ee517669af6a7a2b220ab5fa1d1c'),
+            'docs/publication_program/P2C_QUADRATURE_GENERATOR_CODESIGN.md': (['.p2c_upload/main_theorem.part00.b64','.p2c_upload/main_theorem.part01.b64'],'22d4986b53ef1b1362739fae279f48670cf92dfd'),
+            'docs/publication_program/THEOREM_REGISTRY.md': (['.p2c_upload/theorem_registry.part00.b64']+[f'.p2c_upload/theorem_registry.chunk{i:02d}.b64' for i in range(8)],'b5473bd8b88818deb363b90f0b4ad29d62a6ef92'),
+          }
+          report={'head':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'parent':parent,'target_tree':target_tree,'parts':{},'targets':{}}
+          for target,(parts,expected) in specs.items():
+            row={'expected_blob':expected,'parts':[]}
+            try:
+              encoded=''
+              for part in parts:
+                p=Path(part)
+                pr={'path':part,'exists':p.exists()}
+                if p.exists():
+                  text=''.join(p.read_text(encoding='ascii').split())
+                  pr.update(length=len(text),sha256=hashlib.sha256(text.encode()).hexdigest())
+                  encoded+=text
+                row['parts'].append(pr)
+              raw=gzip.decompress(base64.b64decode(encoded,validate=True))
+              path=Path(target); path.parent.mkdir(parents=True,exist_ok=True); path.write_bytes(raw)
+              actual=subprocess.check_output(['git','hash-object',target],text=True).strip()
+              row.update(encoded_length=len(encoded),actual_blob=actual,blob_match=(actual==expected))
+            except Exception as exc:
+              row['error']=repr(exc)
+              row['traceback']=traceback.format_exc()
+            report['targets'][target]=row
+          subprocess.run(['git','add','-A'],check=False)
+          report['diff_paths']=sorted(filter(None,subprocess.check_output(['git','diff','--cached','--name-only',parent,'--'],text=True).splitlines()))
+          report['candidate_tree']=subprocess.check_output(['git','write-tree'],text=True).strip()
+          report['tree_match']=report['candidate_tree']==target_tree
+          Path('.p2c_upload').mkdir(exist_ok=True)
+          Path('.p2c_upload/diagnostic.json').write_text(json.dumps(report,sort_keys=True,indent=2)+'\n')
+          PY
+      - name: Commit diagnostic report
+        shell: bash
+        run: |
+          set -euo pipefail
+          git reset
+          git add .p2c_upload/diagnostic.json
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git commit -m 'P2C: record exact assembler diagnostics'
+          git push origin HEAD:agent/afp-publication-p2c-completion-b34c29b1
