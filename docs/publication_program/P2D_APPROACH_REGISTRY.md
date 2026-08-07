@@ -2,12 +2,16 @@
 
 | Family | Mechanism | Status | Boundary |
 |---|---|---|---|
-| stationary residual correction | exact high-order residual, low-order inverse | PROVED | requires low-order nonsingularity and contraction for convergence |
-| constrained correction | KKT/Schur projection into `ker Q` | PROVED | requires compatible initial invariant and nonsingular Schur block |
+| stationary residual correction | exact high-order residual, cached low-order inverse | PROVED | convergence needs a contraction or equivalent stability condition |
+| constrained correction | Schur projection into `ker Q` | PROVED | compatible initial invariant and nonsingular Schur block required |
 | commuting harmonic analysis | exact shell ratios | PROVED | only common reducing shells |
-| noncommuting perturbation | `A_L^-1(A_L-A_H)` norm | PROVED | may be pessimistic |
-| noncommuting FOV | coercivity/norm disk | PROVED | metric-specific sufficient condition, not necessary |
-| Krylov left preconditioning | low operator used only in `M^-1` | COMPUTATIONAL | convergence recorded in original residual |
-| eigenvalue-only acceleration inference | isolated angular eigenvalues imply full transport speedup | REJECTED | streaming/energy/boundary noncommutation invalidates inference |
-| universal H2 dominance | optimized H2 always improves iteration count | REJECTED | higher-shell hostile fixture |
-| physical forward-peaking sweep | published electron/neutron/proton cases | DEFERRED_TO_P2E | belongs to benchmark hierarchy |
+| SPD spectral equivalence | generalized Rayleigh bounds | PROVED | transformed matrices must be symmetric positive |
+| nonsymmetric field of values | coercivity/norm disk | PROVED | metric-specific sufficient condition, not necessary |
+| slow-subspace restriction | audit `||EV||` and leakage | PROVED/COMPUTATIONAL | basis must represent the actual slow error |
+| left-preconditioned GMRES | cached low solve; original residual acceptance | COMPUTATIONAL | finite frozen systems |
+| heat-kernel forward-peaking sweep | exact shell multipliers and same-node AFP lows | COMPUTATIONAL | controlled BFP family, not material cross sections |
+| classical modified-FP comparator | signed spectral Laplace–Beltrami preconditioner | COMPUTATIONAL | comparator only; not monotone or a byte-identical external code reproduction |
+| multigroup/boundary retention | identical nonangular blocks in high and low systems | COMPUTATIONAL | two-group/two-cell finite audit |
+| eigenvalue-only inference | isolated angular eigenvalues imply full transport speedup | REJECTED | streaming, group, boundary, and leakage invalidate inference |
+| universal H2 dominance | low `D_2` always predicts acceleration | REJECTED | higher-shell and ray adversaries |
+| low operator fixes ray error | preconditioner changes fixed-quadrature production response | REJECTED | exact fixed-point preservation forbids it |
