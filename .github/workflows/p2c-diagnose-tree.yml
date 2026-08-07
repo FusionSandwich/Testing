@@ -1,0 +1,69 @@
+name: P2C exact tree diagnostics
+
+on:
+  push:
+    branches:
+      - agent/afp-publication-p2c-completion-b34c29b1
+    paths:
+      - '.github/workflows/p2c-diagnose-tree.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: agent/afp-publication-p2c-completion-b34c29b1
+      - name: Reconstruct and inspect final tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import base64, gzip, json, subprocess
+          specs={
+            '.github/workflows/afp-publication-p2c-codesign.yml':['.p2c_upload/workflow.part00.b64'],
+            'afp_barrier_gate1/pure_math/codesign/families.py':['.p2c_upload/families.part00.b64'],
+            'afp_barrier_gate1/pure_math/tests/test_p2c_codesign.py':['.p2c_upload/tests.part00.b64'],
+            'docs/publication_program/P2C_QUADRATURE_GENERATOR_CODESIGN.md':['.p2c_upload/main_theorem.part00.b64','.p2c_upload/main_theorem.part01.b64'],
+            'docs/publication_program/THEOREM_REGISTRY.md':['.p2c_upload/theorem_registry.part00.b64']+[f'.p2c_upload/theorem_registry.chunk{i:02d}.b64' for i in range(8)],
+          }
+          for target,parts in specs.items():
+            encoded=''.join(''.join(Path(p).read_text(encoding='ascii').split()) for p in parts)
+            raw=gzip.decompress(base64.b64decode(encoded,validate=True))
+            path=Path(target); path.parent.mkdir(parents=True,exist_ok=True); path.write_bytes(raw)
+          targets=[
+            '.github/workflows/afp-publication-p2c-codesign.yml','afp_barrier_gate1/AFPBarrier.lean','afp_barrier_gate1/AFPBarrier/P2CAxiomAudit.lean','afp_barrier_gate1/AFPBarrier/QuadratureGeneratorCodesign.lean','afp_barrier_gate1/pure_math/codesign/__init__.py','afp_barrier_gate1/pure_math/codesign/audit.py','afp_barrier_gate1/pure_math/codesign/families.py','afp_barrier_gate1/pure_math/tests/test_p2c_codesign.py','docs/publication_program/P2C_APPROACH_REGISTRY.md','docs/publication_program/P2C_CLAIM_MAP.md','docs/publication_program/P2C_CLAUSE_MATRIX.md','docs/publication_program/P2C_FORMAL_AND_RELEASE_AUDIT.md','docs/publication_program/P2C_INDEPENDENT_PROOF_AUDIT.md','docs/publication_program/P2C_PRIOR_ART_AND_HOSTILE_AUDIT.md','docs/publication_program/P2C_QUADRATURE_GENERATOR_CODESIGN.md','docs/publication_program/P2C_STAGE_REPORT.md','docs/publication_program/PAPER_BOUNDARY_MATRIX.md','docs/publication_program/THEOREM_REGISTRY.md','docs/publication_program/VALUE_REGISTRY.md']
+          hashes={p:subprocess.check_output(['git','hash-object',p],text=True).strip() for p in targets}
+          Path('/tmp/p2c_hashes.json').write_text(json.dumps(hashes,sort_keys=True,indent=2)+'\n')
+          PY
+          rm -rf .p2c_upload
+          rm -f .github/workflows/p2c-upload-assemble.yml .github/workflows/p2c-final-assemble.yml .github/workflows/p2c-diagnose-assemble.yml .github/workflows/p2c-diagnose-tree.yml
+          git add -A
+          python - <<'PY'
+          from pathlib import Path
+          import json, subprocess
+          parent='b34c29b1b04f5293eaa4007b39d189efa03c51f5'
+          report={
+            'head':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+            'hashes':json.loads(Path('/tmp/p2c_hashes.json').read_text()),
+            'diff_paths':sorted(filter(None,subprocess.check_output(['git','diff','--cached','--name-only',parent,'--'],text=True).splitlines())),
+            'candidate_tree':subprocess.check_output(['git','write-tree'],text=True).strip(),
+          }
+          subprocess.run(['git','reset','--hard','HEAD'],check=True)
+          Path('.p2c_upload').mkdir(exist_ok=True)
+          Path('.p2c_upload/diagnostic2.json').write_text(json.dumps(report,sort_keys=True,indent=2)+'\n')
+          PY
+      - name: Commit diagnostics
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add .p2c_upload/diagnostic2.json
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git commit -m 'P2C: record exact tree diagnostics'
+          git push origin HEAD:agent/afp-publication-p2c-completion-b34c29b1
