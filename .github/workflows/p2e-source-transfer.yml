@@ -48,7 +48,7 @@ jobs:
           echo "payload_tar_sha256=${actual_tar}"
           test "${actual_tar}" = "${PAYLOAD_TAR_SHA256}"
           tar -tzf "${work}/payload.tar.gz" | sort > "${work}/inventory.txt"
-          cat > "${work}/expected.txt" <<'EOF'
+          cat > "${work}/payload-expected.txt" <<'EOF'
           .github/workflows/afp-publication-p2e-development.yml
           afp_barrier_gate1/pure_math/benchmarking/harness.py
           afp_barrier_gate1/pure_math/benchmarking/manifest_builder.py
@@ -56,9 +56,9 @@ jobs:
           afp_barrier_gate1/pure_math/benchmarking/transport.py
           afp_barrier_gate1/pure_math/tests/test_p2e_benchmarking.py
           EOF
-          diff -u "${work}/expected.txt" "${work}/inventory.txt"
+          diff -u "${work}/payload-expected.txt" "${work}/inventory.txt"
 
-      - name: Materialize exact target commit
+      - name: Materialize exact non-workflow target commit
         shell: bash
         run: |
           set -euo pipefail
@@ -67,8 +67,14 @@ jobs:
           test "$(git rev-parse "refs/remotes/origin/${TARGET_BRANCH}")" = "${TARGET_PARENT}"
           git switch --force-create "${TARGET_BRANCH}" "refs/remotes/origin/${TARGET_BRANCH}"
           tar -xzf "${work}/payload.tar.gz"
+
+          # GitHub Actions tokens may not update workflow files without the
+          # dedicated workflows permission. Restore the existing workflow and
+          # publish the exact workflow payload in a separate connector-audited
+          # commit after this source commit succeeds.
+          git restore --source=HEAD -- .github/workflows/afp-publication-p2e-development.yml
+
           git add \
-            .github/workflows/afp-publication-p2e-development.yml \
             afp_barrier_gate1/pure_math/benchmarking/harness.py \
             afp_barrier_gate1/pure_math/benchmarking/manifest_builder.py \
             afp_barrier_gate1/pure_math/benchmarking/operator_freeze.py \
@@ -76,8 +82,15 @@ jobs:
             afp_barrier_gate1/pure_math/tests/test_p2e_benchmarking.py
           git diff --cached --check
           git diff --cached --name-only | sort > "${work}/changed.txt"
-          diff -u "${work}/expected.txt" "${work}/changed.txt"
+          cat > "${work}/target-expected.txt" <<'EOF'
+          afp_barrier_gate1/pure_math/benchmarking/harness.py
+          afp_barrier_gate1/pure_math/benchmarking/manifest_builder.py
+          afp_barrier_gate1/pure_math/benchmarking/operator_freeze.py
+          afp_barrier_gate1/pure_math/benchmarking/transport.py
+          afp_barrier_gate1/pure_math/tests/test_p2e_benchmarking.py
+          EOF
+          diff -u "${work}/target-expected.txt" "${work}/changed.txt"
           git config user.name FusionSandwich
           git config user.email 145234893+FusionSandwich@users.noreply.github.com
-          git commit -m 'P2E: add preregistration harness and validation gate'
+          git commit -m 'P2E: add preregistration harness and validation code'
           git push origin "HEAD:refs/heads/${TARGET_BRANCH}"
