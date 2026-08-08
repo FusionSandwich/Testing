@@ -1,0 +1,36 @@
+{
+  "decision": "freeze production operator and thresholds; proceed to heldout only after this record is committed and its exact-head workflow passes",
+  "heldout_executed": false,
+  "manifest_sha256": "c947d2b0954210af640780ba35240d4271cf66c60e5bcd623f8bdb23725499db",
+  "operator_registry_sha256": "0380a84199eae0818bc135c869a7dfa0a69a3c93bdfcd4ab95415f1922181fa8",
+  "parent_p2d_sha": "d46979d2aa52d502915eea2355a64cb788aae4f6",
+  "schema": "afp-p2e-preregistration-record-v1",
+  "scientific_sha256": "f4724b89c0b7595e36257027587225c0a9543bb4f28f070d8c90250a9ecc0e07",
+  "status": "READY_FOR_REMOTE_EXACT_HEAD_PREREGISTRATION_NO_HELDOUT_EXECUTED",
+  "training_aggregate": {
+    "aggregate_error_geometric_mean_ratio": 0.9078028148138113,
+    "angular_geometric_mean_ratio": 0.679435555733349,
+    "best_response_ratio": 0.4166915862442132,
+    "case_count": 7,
+    "physical_geometric_mean_ratio": 1.1713513622974658,
+    "response_cases_improved": 4,
+    "response_cases_improved_by_5pct": 2,
+    "response_error_geometric_mean_ratio": 0.9274988195482927,
+    "response_error_median_ratio": 0.9999999999999486,
+    "worst_response_ratio": 1.7260523979101332
+  },
+  "training_scientific_sha256": "d287ad758802ae2bf57144a5d915952d278f5dbddd4cf91e19f5d9be1365e168",
+  "validation_aggregate": {
+    "aggregate_error_geometric_mean_ratio": 0.7984031583029823,
+    "angular_geometric_mean_ratio": 0.5946265441749978,
+    "best_response_ratio": 0.3456187069162709,
+    "case_count": 7,
+    "physical_geometric_mean_ratio": 0.9368532595352684,
+    "response_cases_improved": 4,
+    "response_cases_improved_by_5pct": 3,
+    "response_error_geometric_mean_ratio": 0.7710097689759488,
+    "response_error_median_ratio": 0.9999999999999508,
+    "worst_response_ratio": 1.5434130327613378
+  },
+  "validation_scientific_sha256": "ce5afe6d031589156a2ee45baa37979cf8078b91eac0d175aa891e3c74a9d35e"
+}
