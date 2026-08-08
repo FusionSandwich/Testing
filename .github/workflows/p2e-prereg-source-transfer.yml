@@ -1,0 +1,61 @@
+name: P2E preregistration source transfer
+
+on:
+  push:
+    branches:
+      - agent/p2e-prereg-source-transfer-d46979d2
+
+permissions:
+  contents: write
+
+concurrency:
+  group: p2e-prereg-source-transfer
+  cancel-in-progress: false
+
+env:
+  TARGET_BRANCH: agent/afp-publication-p2e-preregistered-d46979d2
+  TARGET_PARENT: d46979d2aa52d502915eea2355a64cb788aae4f6
+  PAYLOAD_B64_SHA256: 24ddf8f05d2d95512b32a46fd229e8e98b5912da14689fdca9a229f01bc580c5
+  PAYLOAD_XZ_SHA256: 99e5938c41a620a3eeebf80b0612e086d46454bf11a9aa10ed16af4ee9a7f02b
+  INVENTORY_SHA256: 097a4c68538a595c2dce3a0da2c3fb11c70f15cc83379ff8bc3244357f2b2672
+
+jobs:
+  materialize-and-push:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Verify exact preregistration payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          work="${RUNNER_TEMP}/p2e-prereg-transfer"
+          mkdir -p "${work}"
+          cat .github/p2e-prereg-bootstrap/payload.part{00..07} > "${work}/payload.b64"
+          test "$(sha256sum "${work}/payload.b64" | awk '{print $1}')" = "${PAYLOAD_B64_SHA256}"
+          base64 --decode "${work}/payload.b64" > "${work}/payload.tar.xz"
+          test "$(sha256sum "${work}/payload.tar.xz" | awk '{print $1}')" = "${PAYLOAD_XZ_SHA256}"
+          tar -tJf "${work}/payload.tar.xz" | LC_ALL=C sort > "${work}/inventory.txt"
+          test "$(sha256sum "${work}/inventory.txt" | awk '{print $1}')" = "${INVENTORY_SHA256}"
+
+      - name: Publish exact non-workflow preregistration commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          work="${RUNNER_TEMP}/p2e-prereg-transfer"
+          git fetch origin "refs/heads/${TARGET_BRANCH}:refs/remotes/origin/${TARGET_BRANCH}"
+          test "$(git rev-parse "refs/remotes/origin/${TARGET_BRANCH}")" = "${TARGET_PARENT}"
+          git switch --force-create "${TARGET_BRANCH}" "refs/remotes/origin/${TARGET_BRANCH}"
+          tar -xJf "${work}/payload.tar.xz"
+          xargs -d '\n' git add -- < "${work}/inventory.txt"
+          git diff --cached --check
+          git diff --cached --name-only | LC_ALL=C sort > "${work}/changed.txt"
+          diff -u "${work}/inventory.txt" "${work}/changed.txt"
+          git config user.name FusionSandwich
+          git config user.email 145234893+FusionSandwich@users.noreply.github.com
+          git commit -m 'P2E: freeze benchmark preregistration inputs'
+          git push origin "HEAD:refs/heads/${TARGET_BRANCH}"
