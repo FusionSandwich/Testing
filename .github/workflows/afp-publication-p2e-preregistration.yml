@@ -1,0 +1,96 @@
+name: AFP publication P2E preregistration
+
+on:
+  push:
+    branches:
+      - agent/afp-publication-p2e-preregistered-d46979d2
+      - archive/afp-publication-p2e-preregistered
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  actions: read
+  contents: read
+
+env:
+  P2D_SHA: d46979d2aa52d502915eea2355a64cb788aae4f6
+  P2E_BRANCH: agent/afp-publication-p2e-preregistered-d46979d2
+  P2E_ARCHIVE: archive/afp-publication-p2e-preregistered
+  GIT_NO_REPLACE_OBJECTS: '1'
+  OMP_NUM_THREADS: '1'
+  OPENBLAS_NUM_THREADS: '1'
+  MKL_NUM_THREADS: '1'
+
+jobs:
+  preregistration-integrity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Verify literal P2D ancestry and no-held-out scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          git merge-base --is-ancestor "${P2D_SHA}" HEAD
+          test "$(git rev-list --count --merges "${P2D_SHA}..HEAD")" -eq 0
+          test ! -e afp_barrier_gate1/benchmarks/p2e/heldout
+          ! git ls-tree -r --name-only HEAD | grep -E 'P2E_HELDOUT|benchmarks/p2e/heldout'
+          git diff --check "${P2D_SHA}" HEAD
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+
+      - name: Install frozen execution stack
+        run: |
+          python -m pip install --disable-pip-version-check --no-input \
+            'numpy==2.3.2' 'scipy==1.18.0' 'pytest==8.4.2' 'sympy==1.14.0'
+          python -m pip freeze --all | sort > "${RUNNER_TEMP}/pip-freeze.txt"
+
+      - name: Run tests, training, validation, and audits only
+        working-directory: afp_barrier_gate1
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/p2e-prereg"; mkdir -p "${out}"
+          export PYTHONPYCACHEPREFIX="${RUNNER_TEMP}/p2e-pycache"
+          python -m compileall -q pure_math/benchmarking pure_math/tests/test_p2e_benchmarking.py
+          python -m pytest -p no:cacheprovider -q -ra pure_math/tests/test_p2e_benchmarking.py | tee "${out}/pytest.log"
+          python -m pure_math.benchmarking.runner training --output "${out}/training.json" | tee "${out}/training.log"
+          python -m pure_math.benchmarking.runner validation --output "${out}/validation.json" | tee "${out}/validation.log"
+          python -m pure_math.benchmarking.audit "${out}/training.json" --output "${out}/training-audit.json" | tee "${out}/training-audit.log"
+          python -m pure_math.benchmarking.audit "${out}/validation.json" --output "${out}/validation-audit.json" | tee "${out}/validation-audit.log"
+          grep -Fxq P2E_RESULT_AUDIT_PASS "${out}/training-audit.log"
+          grep -Fxq P2E_RESULT_AUDIT_PASS "${out}/validation-audit.log"
+          test ! -e "${out}/heldout.json"
+
+      - name: Retain P2D audit and hash records
+        working-directory: afp_barrier_gate1
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/p2e-prereg"
+          python -m pure_math.acceleration.audit | tee "${out}/p2d.log"
+          grep -Fxq P2D_ACCELERATION_AUDIT_PASS "${out}/p2d.log"
+          cp "${RUNNER_TEMP}/pip-freeze.txt" "${out}/"
+          printf 'repository=%s\nhead=%s\nparent=%s\nheldout_executed=false\n' \
+            "${GITHUB_REPOSITORY}" "${GITHUB_SHA}" "${P2D_SHA}" > "${out}/provenance.txt"
+          (cd "${out}" && find . -maxdepth 1 -type f ! -name records.sha256 -print0 | sort -z | xargs -0 sha256sum > records.sha256)
+          git diff --check
+          test -z "$(git status --short)"
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: afp-p2e-prereg-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/p2e-prereg
+          if-no-files-found: error
+          retention-days: 90
