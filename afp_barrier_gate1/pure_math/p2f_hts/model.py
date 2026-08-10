@@ -452,6 +452,7 @@ def build_manifest() -> dict[str, Any]:
         "medium_reference_nodes": 50,
         "record_float_significant_digits": 12,
         "record_zero_threshold": 1.0e-18,
+        "record_blas_core": "Haswell",
         "physics_firewall": {
             "neutral": "full positive Boltzmann kernel",
             "charged": "AFP/BFP only",

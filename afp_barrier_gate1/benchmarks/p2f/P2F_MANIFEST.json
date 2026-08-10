@@ -76,6 +76,7 @@
     "nuclear_data": "frozen positive verification surrogates; not evaluated data"
   },
   "production_nodes": 32,
+  "record_blas_core": "Haswell",
   "record_float_significant_digits": 12,
   "record_zero_threshold": 1e-18,
   "schema": "afp-p2f-hts-manifest-v1",

@@ -109,6 +109,10 @@ magnitude below `1e-18` are recorded as zero; this threshold is at least seven
 orders below the smallest physical flux in the audit and removes only
 symmetry-zero roundoff.
 
+The reproducibility workflow pins one OpenBLAS thread and the portable
+`Haswell` kernel target.  This prevents CPU-dispatch choices on different
+GitHub runners from changing cancellation-sensitive comparison records.
+
 ## Quantitative result
 
 | Incidence | Response comparisons | Resolved optimized improvements |

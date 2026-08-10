@@ -801,15 +801,15 @@
         },
         "charged_escape": {
           "H2_prediction": "optimized error should be smaller because its sampled H2 defect is smaller",
-          "baseline_absolute_error": 6.26623512076e-07,
+          "baseline_absolute_error": 6.26623512075e-07,
           "difference_resolved_by_reference": false,
           "observed_direction_matches_H2_prediction": false,
-          "optimized_absolute_error": 6.26623512076e-07,
+          "optimized_absolute_error": 6.26623512075e-07,
           "optimized_improves": false,
           "reference_uncertainty": {
             "angular_component": 1.03059668671e-05,
             "conservative_sum": 1.03391021025e-05,
-            "spatial_component": 3.31352354318e-08
+            "spatial_component": 3.3135235432e-08
           },
           "requires_higher_shell_or_transport_information": true,
           "resolved_improvement": false
@@ -853,7 +853,7 @@
             4.5093861677e-07
           ],
           "matrix_nonzeros": 136584,
-          "maximum_balance_residual": 1.39385257866e-14,
+          "maximum_balance_residual": 1.35668317657e-14,
           "minimum_flux": 4.53332717499e-09,
           "operator": "BFP angular diffusion using the declared generator only",
           "total_escape": 0.000582416803812
@@ -1945,7 +1945,7 @@
         },
         "neutral": {
           "matrix_nonzeros": 66000,
-          "maximum_balance_residual": 1.07632105555e-09,
+          "maximum_balance_residual": 1.0763209015e-09,
           "minimum_flux": 7.34243025305e-09,
           "operator": "full positive reversible Boltzmann kernels; never replaced by AFP",
           "total_escape": 0.90516995937
@@ -2697,7 +2697,7 @@
           },
           "neutral": {
             "matrix_nonzeros": 13696,
-            "maximum_balance_residual": 1.92068792133e-15,
+            "maximum_balance_residual": 2.11275671347e-15,
             "minimum_flux": 1.11331558982e-09,
             "operator": "full positive reversible Boltzmann kernels; never replaced by AFP",
             "total_escape": 0.860163705367
@@ -3108,7 +3108,7 @@
               4.81341732518e-07
             ],
             "matrix_nonzeros": 5376,
-            "maximum_balance_residual": 1.86022989003e-16,
+            "maximum_balance_residual": 2.00298527672e-16,
             "minimum_flux": 2.384004713e-08,
             "operator": "BFP angular diffusion using the declared generator only",
             "total_escape": 0.0005817901803
@@ -3448,7 +3448,7 @@
           },
           "neutral": {
             "matrix_nonzeros": 13696,
-            "maximum_balance_residual": 1.92068792133e-15,
+            "maximum_balance_residual": 2.11275671347e-15,
             "minimum_flux": 1.11331558982e-09,
             "operator": "full positive reversible Boltzmann kernels; never replaced by AFP",
             "total_escape": 0.860163705367
@@ -3867,7 +3867,7 @@
             8.15249770961e-07
           ],
           "matrix_nonzeros": 68256,
-          "maximum_balance_residual": 1.07309056266e-14,
+          "maximum_balance_residual": 1.11009368551e-14,
           "minimum_flux": 1.69559890868e-08,
           "operator": "BFP angular diffusion using the declared generator only",
           "total_escape": 0.000584553732846
@@ -4710,7 +4710,7 @@
             7.56906294602e-07
           ],
           "matrix_nonzeros": 136584,
-          "maximum_balance_residual": 1.07343837691e-14,
+          "maximum_balance_residual": 1.11045349335e-14,
           "minimum_flux": 6.12851457182e-09,
           "operator": "BFP angular diffusion using the declared generator only",
           "total_escape": 0.000584426718783
@@ -5462,7 +5462,7 @@
             9.47151739639e-06
           ],
           "matrix_nonzeros": 66000,
-          "maximum_balance_residual": 8.69877986478e-11,
+          "maximum_balance_residual": 8.69879819317e-11,
           "minimum_flux": 1.28192305612e-07,
           "operator": "BFP angular diffusion using the declared generator only",
           "total_escape": 0.000855624153467
@@ -5802,7 +5802,7 @@
         },
         "neutral": {
           "matrix_nonzeros": 66000,
-          "maximum_balance_residual": 1.10861969445e-09,
+          "maximum_balance_residual": 1.10861910163e-09,
           "minimum_flux": 2.84714041875e-09,
           "operator": "full positive reversible Boltzmann kernels; never replaced by AFP",
           "total_escape": 0.536970956221
@@ -6214,7 +6214,7 @@
               9.79135287432e-07
             ],
             "matrix_nonzeros": 4544,
-            "maximum_balance_residual": 3.73371857665e-16,
+            "maximum_balance_residual": 1.95489178565e-16,
             "minimum_flux": 4.01764461607e-08,
             "operator": "BFP angular diffusion using the declared generator only",
             "total_escape": 0.000579021147209
@@ -6965,7 +6965,7 @@
               9.79135287432e-07
             ],
             "matrix_nonzeros": 5376,
-            "maximum_balance_residual": 0.0,
+            "maximum_balance_residual": 3.73371857665e-16,
             "minimum_flux": 3.75925209301e-08,
             "operator": "BFP angular diffusion using the declared generator only",
             "total_escape": 0.000579021147209
@@ -7724,7 +7724,7 @@
             1.43642156131e-06
           ],
           "matrix_nonzeros": 68256,
-          "maximum_balance_residual": 1.55862051776e-14,
+          "maximum_balance_residual": 1.53937828914e-14,
           "minimum_flux": 2.99267432385e-08,
           "operator": "BFP angular diffusion using the declared generator only",
           "total_escape": 0.000561249007427
@@ -8567,7 +8567,7 @@
             1.37707932494e-06
           ],
           "matrix_nonzeros": 136584,
-          "maximum_balance_residual": 1.57973291928e-14,
+          "maximum_balance_residual": 1.59346972728e-14,
           "minimum_flux": 1.13600379684e-08,
           "operator": "BFP angular diffusion using the declared generator only",
           "total_escape": 0.00056201786847
@@ -10071,7 +10071,7 @@
               9.52543963237e-07
             ],
             "matrix_nonzeros": 4544,
-            "maximum_balance_residual": 1.89101601816e-16,
+            "maximum_balance_residual": 3.78203203631e-16,
             "minimum_flux": 3.86538414947e-08,
             "operator": "BFP angular diffusion using the declared generator only",
             "total_escape": 0.000571639873385
@@ -10411,7 +10411,7 @@
           },
           "neutral": {
             "matrix_nonzeros": 13696,
-            "maximum_balance_residual": 4.49139386118e-15,
+            "maximum_balance_residual": 4.36663292059e-15,
             "minimum_flux": 1.47517604515e-11,
             "operator": "full positive reversible Boltzmann kernels; never replaced by AFP",
             "total_escape": 0.338886868746
@@ -10822,7 +10822,7 @@
               9.52543963237e-07
             ],
             "matrix_nonzeros": 5376,
-            "maximum_balance_residual": 3.35286984296e-16,
+            "maximum_balance_residual": 2.01122402359e-16,
             "minimum_flux": 3.6182846036e-08,
             "operator": "BFP angular diffusion using the declared generator only",
             "total_escape": 0.000571639873385
@@ -11162,7 +11162,7 @@
           },
           "neutral": {
             "matrix_nonzeros": 13696,
-            "maximum_balance_residual": 4.49139386118e-15,
+            "maximum_balance_residual": 4.36663292059e-15,
             "minimum_flux": 1.47517604515e-11,
             "operator": "full positive reversible Boltzmann kernels; never replaced by AFP",
             "total_escape": 0.338886868746
@@ -11650,6 +11650,7 @@
       "nuclear_data": "frozen positive verification surrogates; not evaluated data"
     },
     "production_nodes": 32,
+    "record_blas_core": "Haswell",
     "record_float_significant_digits": 12,
     "record_zero_threshold": 1e-18,
     "schema": "afp-p2f-hts-manifest-v1",
@@ -11659,7 +11660,7 @@
   "production_operator_audits": {
     "moment_monotone_baseline": {
       "h0_residual": 1.7763568394e-15,
-      "h1_residual": 1.0311580682e-14,
+      "h1_residual": 9.57037040114e-15,
       "minimum_offdiagonal": 0.0,
       "positive": true,
       "rate_max": 5.61434865468,
@@ -11674,7 +11675,7 @@
     },
     "optimized_harmonic_fidelity": {
       "h0_residual": 2.6645352591e-15,
-      "h1_residual": 1.28375088337e-12,
+      "h1_residual": 1.2848611064e-12,
       "minimum_offdiagonal": 0.0,
       "positive": true,
       "rate_max": 9.8251101457,
@@ -11689,7 +11690,7 @@
     }
   },
   "schema": "afp-p2f-hts-results-v1",
-  "scientific_sha256": "a7c90a8cd617b4f393a140d20ebc68ab3b935c7e81fb72b16d4ef2aa46de63e0",
+  "scientific_sha256": "0c2f8adce446468f66b4df3747d74ae36dd2da9eddb86c2eb2a8c1306b5b009e",
   "summary": {
     "claim_rule": "Only resolved improvements may support an AFP response-benefit claim; all other differences are below reference resolution or unfavorable.",
     "resolved_improvement_count": 0,
