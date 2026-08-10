@@ -222,6 +222,7 @@ jobs:
           lake update
           lake exe cache get
           lake build
+          lake build AFPBarrier.AccelerationFixedPoint
           lake env lean AFPBarrier/P2DAccelerationAxiomAudit.lean
           ! grep -R -nE '(^|[^[:alnum:]_])(sorry|admit|sorryAx)([^[:alnum:]_]|$)' AFPBarrier
           git diff --check
