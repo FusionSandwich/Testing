@@ -76,6 +76,7 @@
     "nuclear_data": "frozen positive verification surrogates; not evaluated data"
   },
   "production_nodes": 32,
+  "record_float_significant_digits": 12,
   "schema": "afp-p2f-hts-manifest-v1",
   "stack_provenance": "bounded coated-conductor verification stack chosen within the HTS irradiation roadmap ranges; dimensions are representative, not a manufacturer certificate"
 }

@@ -101,6 +101,11 @@ A method difference is resolved only if the absolute difference between its
 response error and the baseline response error exceeds \(u_R\).  This is a
 conservative resolution test, not a statistical confidence interval.
 
+Floating-point evidence is canonicalized to 12 significant decimal digits
+after calculation and before hashing.  This is much tighter than every
+declared reference-uncertainty gate and prevents insignificant NumPy/BLAS
+serialization drift from changing the committed record.
+
 ## Quantitative result
 
 | Incidence | Response comparisons | Resolved optimized improvements |

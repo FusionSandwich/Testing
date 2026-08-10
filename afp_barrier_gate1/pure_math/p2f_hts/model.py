@@ -404,6 +404,29 @@ def _scientific_hash(payload: object) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
+def _canonicalize_floats(value: Any) -> Any:
+    """Remove insignificant BLAS/NumPy serialization drift from evidence.
+
+    Twelve significant decimal digits remain substantially tighter than every
+    declared P2F reference-uncertainty gate.  Canonicalizing only after all
+    calculations keeps the computation unchanged while making the committed
+    record reproducible across the pinned NumPy wheel and compatible patch
+    releases.
+    """
+    if isinstance(value, dict):
+        return {key: _canonicalize_floats(item) for key, item in value.items()}
+    if isinstance(value, list):
+        return [_canonicalize_floats(item) for item in value]
+    if isinstance(value, tuple):
+        return [_canonicalize_floats(item) for item in value]
+    if isinstance(value, (float, np.floating)):
+        finite = float(value)
+        if not math.isfinite(finite):
+            raise ValueError("P2F records must not contain non-finite values")
+        return float(f"{finite:.12g}")
+    return value
+
+
 def build_manifest() -> dict[str, Any]:
     return {
         "schema": "afp-p2f-hts-manifest-v1",
@@ -425,6 +448,7 @@ def build_manifest() -> dict[str, Any]:
         "production_nodes": 32,
         "fine_reference_nodes": 72,
         "medium_reference_nodes": 50,
+        "record_float_significant_digits": 12,
         "physics_firewall": {
             "neutral": "full positive Boltzmann kernel",
             "charged": "AFP/BFP only",
@@ -546,5 +570,6 @@ def run_p2f() -> dict[str, Any]:
             ),
         },
     }
+    result = _canonicalize_floats(result)
     result["scientific_sha256"] = _scientific_hash(result)
     return result
