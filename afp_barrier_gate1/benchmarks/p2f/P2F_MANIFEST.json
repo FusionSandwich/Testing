@@ -77,6 +77,7 @@
   },
   "production_nodes": 32,
   "record_float_significant_digits": 12,
+  "record_zero_threshold": 1e-18,
   "schema": "afp-p2f-hts-manifest-v1",
   "stack_provenance": "bounded coated-conductor verification stack chosen within the HTS irradiation roadmap ranges; dimensions are representative, not a manufacturer certificate"
 }

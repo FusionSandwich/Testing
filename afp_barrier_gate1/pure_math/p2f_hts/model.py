@@ -423,6 +423,8 @@ def _canonicalize_floats(value: Any) -> Any:
         finite = float(value)
         if not math.isfinite(finite):
             raise ValueError("P2F records must not contain non-finite values")
+        if abs(finite) < 1.0e-18:
+            return 0.0
         return float(f"{finite:.12g}")
     return value
 
@@ -449,6 +451,7 @@ def build_manifest() -> dict[str, Any]:
         "fine_reference_nodes": 72,
         "medium_reference_nodes": 50,
         "record_float_significant_digits": 12,
+        "record_zero_threshold": 1.0e-18,
         "physics_firewall": {
             "neutral": "full positive Boltzmann kernel",
             "charged": "AFP/BFP only",
