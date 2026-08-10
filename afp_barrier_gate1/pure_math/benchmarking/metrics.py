@@ -120,7 +120,12 @@ def equal_cost_record(
             "budget_seconds": float(max(baseline_time, optimized_time)),
             "baseline_error": float(baseline_error),
             "optimized_error": float(optimized_error),
-            "note": "same-node methods both completed within the common measured budget",
+            "is_true_equal_time_allocation_experiment": False,
+            "note": (
+                "compatibility field only: both one-shot same-node executions fit "
+                "inside the larger observed runtime; no work was reallocated to fill "
+                "a common wall-time budget"
+            ),
         },
         "wall_time_at_equal_response_error": {
             "target_error": float(target),

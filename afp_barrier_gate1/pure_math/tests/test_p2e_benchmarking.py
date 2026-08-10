@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import numpy as np
 
+from pure_math.benchmarking.audit import audit_results
 from pure_math.benchmarking.cases import individual_modes_case, random_bandlimited_case
 from pure_math.benchmarking.manifest import load_manifest
 from pure_math.benchmarking.operators import load_frozen_operators
@@ -13,6 +14,25 @@ from pure_math.benchmarking.slab import (
     reversible_positive_kernel,
     solve_steady_slab,
 )
+
+
+def test_p2e_audit_enforces_acceleration_threshold_and_honest_timing() -> None:
+    import json
+    from pathlib import Path
+
+    heldout = Path(__file__).parents[2] / "benchmarks" / "p2e" / "heldout" / "P2E_HELDOUT_RESULTS.json"
+    if not heldout.exists():
+        return
+    payload = json.loads(heldout.read_text(encoding="utf-8"))
+    audit = audit_results(payload)
+    assert audit["checks"]["acceleration_value_gate"]
+    assert audit["checks"]["acceleration_iteration_reduction"] >= 0.10
+    assert audit["checks"]["equal_wall_time_claim_honest"]
+    p2e07 = next(
+        row for row in audit["checks"]["uncertainty_interpretation"]
+        if row["id"] == "P2E-07"
+    )
+    assert not p2e07["resolved_relative_to_reference_uncertainty"]
 
 
 def test_manifest_and_registry_are_hash_bound() -> None:

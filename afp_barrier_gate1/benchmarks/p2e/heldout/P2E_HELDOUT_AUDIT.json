@@ -1,0 +1,41 @@
+{
+  "aggregate": {
+    "aggregate_error_geometric_mean_ratio": 0.8644269234307337,
+    "angular_geometric_mean_ratio": 0.6714625543219898,
+    "best_response_ratio": 0.4729305666151216,
+    "case_count": 7,
+    "physical_geometric_mean_ratio": 1.6597191251048864,
+    "response_cases_improved": 4,
+    "response_cases_improved_by_5pct": 3,
+    "response_error_geometric_mean_ratio": 1.1261611503037519,
+    "response_error_median_ratio": 0.9999999999999513,
+    "worst_response_ratio": 8.0684117565954
+  },
+  "checks": {
+    "ablation_inventory": true,
+    "accelerator_fixed_point": true,
+    "accelerator_inventory": true,
+    "angular_value_gate": true,
+    "balance_gate": true,
+    "case_inventory": true,
+    "complete_required_fields": true,
+    "invariant_gate": true,
+    "manifest_match": true,
+    "maximum_balance_residual": 3.0337533714645974e-15,
+    "maximum_h0_residual": 2.6645352591003757e-15,
+    "maximum_h1_residual": 1.2848611063986937e-12,
+    "median_value_gate": true,
+    "minimum_flux": 1.5950197656143252e-17,
+    "physical_value_gate": true,
+    "positivity_gate": true,
+    "quadrature_ablation_separate": true,
+    "registry_match": true,
+    "same_node_comparisons": true,
+    "same_space_energy": true,
+    "signed_scope_honest": true,
+    "worst_degradation_gate": false
+  },
+  "partition": "heldout",
+  "schema": "afp-p2e-result-audit-v1",
+  "status": "FAIL"
+}

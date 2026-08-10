@@ -1,0 +1,27 @@
+{
+  "aggregate": {
+    "aggregate_error_geometric_mean_ratio": 0.8644269234307337,
+    "angular_geometric_mean_ratio": 0.6714625543219898,
+    "best_response_ratio": 0.4729305666151216,
+    "case_count": 7,
+    "physical_geometric_mean_ratio": 1.6597191251048864,
+    "response_cases_improved": 4,
+    "response_cases_improved_by_5pct": 3,
+    "response_error_geometric_mean_ratio": 1.1261611503037519,
+    "response_error_median_ratio": 0.9999999999999513,
+    "worst_response_ratio": 8.0684117565954
+  },
+  "execution_complete": true,
+  "integrity_checks_passed": true,
+  "interpretation_rule": "A failed value gate is retained as a scientific result and is not repaired by changing the frozen operator or threshold.",
+  "no_posthoc_tuning": true,
+  "preregistered_value_hypothesis": "FAIL",
+  "schema": "afp-p2e-heldout-execution-status-v1",
+  "scientific_sha256": "4355a27c6fb828b18976a38318572b05c9f050939ee573f539e45e526731708b",
+  "value_gates": {
+    "angular_value_gate": true,
+    "median_value_gate": true,
+    "physical_value_gate": true,
+    "worst_degradation_gate": false
+  }
+}

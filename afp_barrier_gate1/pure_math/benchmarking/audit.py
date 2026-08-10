@@ -92,6 +92,25 @@ def audit_results(payload: dict[str, Any]) -> dict[str, Any]:
         and row["fixed_point_error"] < 5e-8
         for row in acceleration.values()
     )
+    baseline_iterations = int(acceleration["moment_monotone_baseline"]["iterations"])
+    optimized_iterations = int(acceleration["optimized_harmonic_fidelity"]["iterations"])
+    acceleration_reduction = (
+        (baseline_iterations - optimized_iterations) / baseline_iterations
+        if baseline_iterations > 0
+        else float("-inf")
+    )
+    checks["acceleration_iteration_reduction"] = float(acceleration_reduction)
+    checks["acceleration_value_gate"] = (
+        baseline_iterations > 0
+        and acceleration_reduction
+        >= float(manifest["success_criteria"]["acceleration_iteration_reduction_min"])
+    )
+    checks["equal_wall_time_claim_honest"] = all(
+        not bool(case["equal_cost_equal_error"]["equal_wall_time"].get(
+            "is_true_equal_time_allocation_experiment", False
+        ))
+        for case in payload["cases"]
+    )
     if partition == "heldout":
         criteria = manifest["success_criteria"]
         aggregate = payload["aggregate"]
@@ -99,6 +118,25 @@ def audit_results(payload: dict[str, Any]) -> dict[str, Any]:
         checks["physical_value_gate"] = aggregate["response_cases_improved_by_5pct"] >= criteria["minimum_total_cases_improved_by_5pct"]
         checks["median_value_gate"] = aggregate["response_error_median_ratio"] <= criteria["median_response_ratio_max"]
         checks["worst_degradation_gate"] = aggregate["worst_response_ratio"] <= criteria["worst_response_ratio_max"]
+        uncertainty_rows = []
+        for case in payload["cases"]:
+            baseline_error = float(case["methods"]["moment_monotone_baseline"]["response_error"])
+            optimized_error = float(case["methods"]["optimized_harmonic_fidelity"]["response_error"])
+            uncertainty = float(case["reference"]["uncertainty"])
+            difference = optimized_error - baseline_error
+            uncertainty_rows.append(
+                {
+                    "id": str(case["id"]),
+                    "optimized_minus_baseline_absolute_error": difference,
+                    "reference_uncertainty": uncertainty,
+                    "resolved_relative_to_reference_uncertainty": abs(difference) > uncertainty,
+                }
+            )
+        checks["uncertainty_interpretation"] = uncertainty_rows
+        checks["reference_resolved_case_count"] = sum(
+            bool(row["resolved_relative_to_reference_uncertainty"])
+            for row in uncertainty_rows
+        )
     passed = all(
         bool(value)
         for key, value in checks.items()
@@ -114,6 +152,7 @@ def audit_results(payload: dict[str, Any]) -> dict[str, Any]:
             "signed_scope_honest",
             "accelerator_inventory",
             "accelerator_fixed_point",
+            "equal_wall_time_claim_honest",
         }
     )
     return {
