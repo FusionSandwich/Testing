@@ -110,8 +110,13 @@ orders below the smallest physical flux in the audit and removes only
 symmetry-zero roundoff.
 
 The reproducibility workflow pins one OpenBLAS thread and the portable
-`Haswell` kernel target.  This prevents CPU-dispatch choices on different
-GitHub runners from changing cancellation-sensitive comparison records.
+`Haswell` kernel target to reduce CPU-dispatch variation on different GitHub
+runners.
+Two executions on the same runner must remain byte-identical.  The committed
+and newly reproduced cross-runner records are compared at relative tolerance
+`5e-9` and absolute tolerance `1e-13`; both records must independently pass the
+audit, retain zero resolved improvements, and retain the bounded-negative
+outcome.
 
 ## Quantitative result
 

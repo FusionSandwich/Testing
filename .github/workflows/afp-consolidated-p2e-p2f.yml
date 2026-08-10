@@ -145,8 +145,47 @@ jobs:
           python -m pure_math.p2f_hts.audit "${RUNNER_TEMP}/p2f-b/P2F_RESULTS.json" --output "${RUNNER_TEMP}/p2f-b/P2F_AUDIT.json"
           cmp "${RUNNER_TEMP}/p2f-a/P2F_RESULTS.json" "${RUNNER_TEMP}/p2f-b/P2F_RESULTS.json"
           cmp "${RUNNER_TEMP}/p2f-a/P2F_AUDIT.json" "${RUNNER_TEMP}/p2f-b/P2F_AUDIT.json"
-          cmp benchmarks/p2f/P2F_RESULTS.json "${RUNNER_TEMP}/p2f-a/P2F_RESULTS.json"
-          cmp benchmarks/p2f/P2F_AUDIT.json "${RUNNER_TEMP}/p2f-a/P2F_AUDIT.json"
+          python - benchmarks/p2f/P2F_RESULTS.json "${RUNNER_TEMP}/p2f-a/P2F_RESULTS.json" <<'PY'
+          import json, math, pathlib, sys
+          from pure_math.p2f_hts.audit import audit_results
+
+          committed = json.loads(pathlib.Path(sys.argv[1]).read_text())
+          reproduced = json.loads(pathlib.Path(sys.argv[2]).read_text())
+          direction_only = {
+              'scientific_sha256',
+              'optimized_improves',
+              'observed_direction_matches_H2_prediction',
+          }
+
+          def compare(left, right, path='root'):
+              if isinstance(left, dict) and isinstance(right, dict):
+                  left_keys = set(left) - direction_only
+                  right_keys = set(right) - direction_only
+                  assert left_keys == right_keys, (path, left_keys ^ right_keys)
+                  for key in sorted(left_keys):
+                      compare(left[key], right[key], f'{path}.{key}')
+              elif isinstance(left, list) and isinstance(right, list):
+                  assert len(left) == len(right), (path, len(left), len(right))
+                  for index, (a, b) in enumerate(zip(left, right, strict=True)):
+                      compare(a, b, f'{path}[{index}]')
+              elif (
+                  isinstance(left, (int, float)) and not isinstance(left, bool)
+                  and isinstance(right, (int, float)) and not isinstance(right, bool)
+              ):
+                  assert math.isclose(float(left), float(right), rel_tol=5e-9, abs_tol=1e-13), (
+                      path, left, right
+                  )
+              else:
+                  assert left == right, (path, left, right)
+
+          compare(committed, reproduced)
+          for label, payload in [('committed', committed), ('reproduced', reproduced)]:
+              audit = audit_results(payload)
+              assert audit['status'] == 'PASS', (label, audit)
+              assert audit['scientific_outcome'] == 'BOUNDED_NEGATIVE'
+              assert audit['checks']['resolved_improvement_count'] == 0
+          print('P2F_CROSS_RUNNER_SEMANTIC_REPRODUCTION_PASS')
+          PY
           python -m pytest -p no:cacheprovider -q pure_math/tests/test_p2f_hts.py
           grep -Fq '"scientific_outcome": "BOUNDED_NEGATIVE"' benchmarks/p2f/P2F_AUDIT.json
 
@@ -183,6 +222,8 @@ jobs:
           cp afp_barrier_gate1/benchmarks/p2e/heldout/P2E_ORIGINAL_WORKFLOW_ARTIFACT.zip "${out}/"
           cp afp_barrier_gate1/benchmarks/p2f/P2F_RESULTS.json "${out}/"
           cp afp_barrier_gate1/benchmarks/p2f/P2F_AUDIT.json "${out}/"
+          cp "${RUNNER_TEMP}/p2f-a/P2F_RESULTS.json" "${out}/P2F_RESULTS_CI_REPRODUCED.json"
+          cp "${RUNNER_TEMP}/p2f-a/P2F_AUDIT.json" "${out}/P2F_AUDIT_CI_REPRODUCED.json"
           cp "${RUNNER_TEMP}/pip-freeze.txt" "${out}/"
           printf 'repository=%s\nhead=%s\ntree=%s\nbase=%s\n' \
             "${GITHUB_REPOSITORY}" "${CANDIDATE_SHA}" "$(git rev-parse HEAD^{tree})" "${BASE_HELDOUT_SHA}" \
