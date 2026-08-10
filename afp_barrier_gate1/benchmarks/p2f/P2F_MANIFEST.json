@@ -1,0 +1,81 @@
+{
+  "charged_energy_MeV": [
+    2.0,
+    0.5,
+    0.1
+  ],
+  "fine_reference_nodes": 72,
+  "incidence_cases": [
+    {
+      "azimuth_degrees": 0.0,
+      "id": "normal",
+      "polar_degrees": 0.0
+    },
+    {
+      "azimuth_degrees": 23.0,
+      "id": "oblique",
+      "polar_degrees": 60.0
+    },
+    {
+      "azimuth_degrees": 23.0,
+      "id": "grazing",
+      "polar_degrees": 84.0
+    }
+  ],
+  "layers": [
+    {
+      "material": "Cu",
+      "name": "Cu_front",
+      "thickness_um": 20.0
+    },
+    {
+      "material": "Ag",
+      "name": "Ag_cap",
+      "thickness_um": 2.0
+    },
+    {
+      "material": "REBCO",
+      "name": "REBCO",
+      "thickness_um": 1.0
+    },
+    {
+      "material": "oxide_buffer",
+      "name": "oxide_buffer",
+      "thickness_um": 0.2
+    },
+    {
+      "material": "Hastelloy_C276",
+      "name": "Hastelloy_C276",
+      "thickness_um": 50.0
+    },
+    {
+      "material": "Cu",
+      "name": "Cu_back",
+      "thickness_um": 20.0
+    }
+  ],
+  "medium_reference_nodes": 50,
+  "neutral_energy_MeV": [
+    14.0,
+    2.0,
+    0.025
+  ],
+  "physics_firewall": {
+    "charged": "AFP/BFP only",
+    "excluded": [
+      "DPA",
+      "retained defects",
+      "annealing",
+      "Jc",
+      "Tc",
+      "H/He production",
+      "full PKA energy spectra",
+      "Monte Carlo replacement"
+    ],
+    "neutral": "full positive Boltzmann kernel",
+    "nuclear_data": "frozen positive verification surrogates; not evaluated data"
+  },
+  "production_nodes": 32,
+  "schema": "afp-p2f-hts-manifest-v1",
+  "stack_provenance": "bounded coated-conductor verification stack chosen within the HTS irradiation roadmap ranges; dimensions are representative, not a manufacturer certificate"
+}
