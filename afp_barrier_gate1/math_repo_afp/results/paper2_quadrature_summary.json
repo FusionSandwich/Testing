@@ -1,0 +1,34 @@
+{
+  "reference_nodes": 288,
+  "harmonic_dimension": 9,
+  "enriched_dimension": 14,
+  "harmonic_positive_support": 9,
+  "enriched_positive_support": 14,
+  "harmonic_max_residual": 6.175615574477433e-16,
+  "enriched_max_residual": 9.669498535203047e-11,
+  "density": {
+    "weighted_integral": 1.0,
+    "minimum_density": 0.011936620731894982,
+    "maximum_density": 1.9894372885123224
+  },
+  "conditioning": {
+    "harmonic_reference": {
+      "rank": 9.0,
+      "sigma_max": 1.0000000000000004,
+      "sigma_min_nonzero": 0.9999999999999997,
+      "condition_nonzero": 1.0000000000000009
+    },
+    "enriched_reference": {
+      "rank": 14.0,
+      "sigma_max": 1.7885412331502075,
+      "sigma_min_nonzero": 0.29389421887479994,
+      "condition_nonzero": 6.085663202215396
+    },
+    "harmonic_reduced": {
+      "rank": 9.0,
+      "sigma_max": 1.3836427858194509,
+      "sigma_min_nonzero": 0.40177162441671244,
+      "condition_nonzero": 3.4438539252945204
+    }
+  }
+}

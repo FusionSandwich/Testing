@@ -1,0 +1,10 @@
+{
+  "reference_polar_order": 12,
+  "reference_azimuth_order": 24,
+  "harmonic_degree": 2,
+  "response_density_alpha": 0.85,
+  "fixed_pool_sizes": [5, 8, 12, 16, 24],
+  "graph_sizes": [24, 48, 72],
+  "graph_k_nearest": 8,
+  "graph_regularization": 1.0e-8
+}

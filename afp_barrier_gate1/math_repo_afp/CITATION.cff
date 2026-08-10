@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+title: "Response-Preserving Transport Operators and Positive Adaptive Angular Discretization"
+message: "Cite this software and the associated manuscripts when using its methods or implementation."
+type: software
+authors:
+  - name: "FusionSandwich"
+repository-code: "https://github.com/FusionSandwich/Math"
+version: 0.6.0
+date-released: 2026-08-06
+keywords:
+  - Boltzmann transport
+  - response matrix
+  - discrete ordinates
+  - positive quadrature
+  - angular adaptivity
+  - high-temperature superconductors
+  - nuclear data
+  - uncertainty quantification
