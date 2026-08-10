@@ -1,0 +1,13 @@
+import AFPBarrier
+
+/-! Axiom audit for the Gate 5 equality, stability, duality, and optimality results. -/
+
+#print axioms AFPBarrier.lossVarianceAt_eq_zero_iff_active_losses_eq
+#print axioms AFPBarrier.rate_mul_peakDefect_eq_eigenvalue_sq_iff_active_losses_eq
+#print axioms AFPBarrier.rate_mul_peakDefect_eq_eigenvalue_sq_iff_active_losses_eq_mean
+#print axioms AFPBarrier.active_weight_mul_loss_deviation_sq_le_variance
+#print axioms AFPBarrier.lossVarianceAt_le_gap_div_rate
+#print axioms AFPBarrier.minActiveRate_mul_loss_deviation_sq_le_gap_div_rate
+#print axioms AFPBarrier.peakDefect_dual_tangent_lower_bound
+#print axioms AFPBarrier.peakDefect_ge_eigenvalue_sq_div_rate_via_dual
+#print axioms AFPBarrier.S2_rate_lower_of_peakDefect_upper

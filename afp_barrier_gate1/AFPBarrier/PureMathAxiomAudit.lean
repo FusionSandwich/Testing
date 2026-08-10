@@ -1,0 +1,310 @@
+import AFPBarrier.LocalSphericalFeasibility
+import AFPBarrier.ExactLocalRows
+import AFPBarrier.QuantitativeExactLocal
+import AFPBarrier.AntipodalFeasibility
+import AFPBarrier.SphericalFeasibilityAlgebra
+import AFPBarrier.QuantitativeSphericalFeasibility
+import AFPBarrier.GlobalLossRigidity
+import AFPBarrier.SharedEdgeEquilibrium
+import AFPBarrier.GroupAveraging
+import AFPBarrier.GlobalSharedEdgeDuality
+import AFPBarrier.SpectralProductAlgebra
+import AFPBarrier.QuadraticCovariance
+import AFPBarrier.QuadraticSampling
+import AFPBarrier.QuadraticSphereResidual
+import AFPBarrier.QuadraticFidelityFoundation
+import AFPBarrier.QuadraticFidelityLowerBound
+import AFPBarrier.QuadraticEqualityGeometry
+import AFPBarrier.QuadraticFidelityStability
+import AFPBarrier.QuadraticFidelityConstruction
+import AFPBarrier.OneShellQuadraticRigidity
+import AFPBarrier.SpectralSamplingObstruction
+import AFPBarrier.SphericalQEqualityRigidity
+import AFPBarrier.QuantitativeGlobalNearRigidity
+import AFPBarrier.QEqualityCovariance
+import AFPBarrier.SharpProductBarriers
+import AFPBarrier.ConvexGeneratorDesign
+import AFPBarrier.HarmonicDefectTransport
+
+/-! Focused axiom audit for the pure-mathematics branch. -/
+
+#print axioms AFPBarrier.scaledSphericalRowRate_nonneg
+#print axioms AFPBarrier.scaledSphericalRowRate_pos
+#print axioms AFPBarrier.scaledSphericalRowRate_tangent_balance
+#print axioms AFPBarrier.scaledSphericalRowRate_normal_balance
+#print axioms AFPBarrier.tangentDependenceWeight_nonneg
+#print axioms AFPBarrier.tangentDependenceWeight_balance
+#print axioms AFPBarrier.tangentDependenceWeight_normal_scale
+#print axioms AFPBarrier.normalizedAngularScale_pos
+#print axioms AFPBarrier.exactLocalRowRate_normal_balance
+#print axioms AFPBarrier.exactLocalRowRate_sum
+#print axioms AFPBarrier.exactLocalRowRate_recover
+#print axioms AFPBarrier.normalizedWeightedSum_bounds
+#print axioms AFPBarrier.exactLocalRowRate_sum_bounds
+#print axioms AFPBarrier.uniformDependenceMixture_sum
+#print axioms AFPBarrier.uniformDependenceMixture_lower
+#print axioms AFPBarrier.exactLocalRowRate_twoFactor_bounds
+#print axioms AFPBarrier.antipodalOnlyFeasible_iff_simplex
+#print axioms AFPBarrier.uniformAntipodalRate_strictly_feasible
+#print axioms AFPBarrier.mixedRow_from_tangentBudget
+#print axioms AFPBarrier.mixedRow_to_tangentBudget
+#print axioms AFPBarrier.mixedRow_tangentNormalBudget_bounds
+#print axioms AFPBarrier.mixedRowFeasible_iff_exists_tangentParameter
+#print axioms AFPBarrier.tangentNormalScale_pos
+#print axioms AFPBarrier.normalBalance_outgoingRate_lower
+#print axioms AFPBarrier.normalBalance_outgoingRate_upper
+#print axioms AFPBarrier.sharedEdge_equilibrium_implies_weightedCentering
+#print axioms AFPBarrier.squareLocalRate_coordinate_exact
+#print axioms AFPBarrier.squareDual_transpose_zero
+#print axioms AFPBarrier.squareDual_work
+#print axioms AFPBarrier.square_sharedEdge_infeasible
+#print axioms AFPBarrier.coordinateBalance_averagedConductance
+#print axioms AFPBarrier.groupOrbitAverage_reconciliation
+#print axioms AFPBarrier.groupOrbitAverage_reconciliation_of_edgeRepresentative
+#print axioms AFPBarrier.sharedEdgeDualWork_radial
+#print axioms AFPBarrier.positiveLP_complementarySlackness
+#print axioms AFPBarrier.jumpGenerator_product_identity
+#print axioms AFPBarrier.spectralProduct_arbitraryTarget
+#print axioms AFPBarrier.spectralProduct_resonance_iff
+#print axioms AFPBarrier.spectralSquare_resonance_iff
+#print axioms AFPBarrier.jumpGenerator_sampledQuadratic
+#print axioms AFPBarrier.sampledQuadratic_arbitraryTarget
+#print axioms AFPBarrier.sampledQuadratic_eigen_iff
+#print axioms AFPBarrier.samplingKernel_subset_formExact
+#print axioms AFPBarrier.sampledExact_iff_range_inter_targetKernel
+#print axioms AFPBarrier.linear_samplingKernel_le_residualKernel
+#print axioms AFPBarrier.linearSampledResidual_finrank_le_sampling
+#print axioms AFPBarrier.weighted_sum_jumpGenerator_eq_zero_of_detailedBalance
+#print axioms AFPBarrier.detailedBalance_eigen_implies_weightedMean_zero
+#print axioms AFPBarrier.sampledQuadratic_center_eq_weightedMean
+#print axioms AFPBarrier.sampledQuadratic_zeroTarget_center_independent
+#print axioms AFPBarrier.linearSampledExactRange_eq_range_inf_targetKernel
+#print axioms AFPBarrier.linearSampledExactRange_finrank_eq_formExact_sub_samplingKernel
+#print axioms AFPBarrier.linearSampledExactRange_finrank_eq_samplingRank_sub_residualRank
+#print axioms AFPBarrier.matrixFrobeniusPairing_eq_trace_mul_of_isSymm_right
+#print axioms AFPBarrier.trace_sphereResidualMatrix_eq_zero
+#print axioms AFPBarrier.sphereResidualMatrix_isSymm
+#print axioms AFPBarrier.sphereResidual_factorization
+#print axioms AFPBarrier.matrixFrobeniusPairing_sphereResidualMatrix_eq_trace
+#print axioms AFPBarrier.sphereResidual_factorization_trace
+#print axioms AFPBarrier.sphereFormExact_eq_residualOrthogonal
+#print axioms AFPBarrier.sphereSamplingKernel_le_formExact
+#print axioms AFPBarrier.sphereSampledExact_eq_range_inf_targetKernel
+#print axioms AFPBarrier.sphereSampledExact_finrank_eq_form_sub_alias
+#print axioms AFPBarrier.sphereSampledExact_finrank_eq_samplingRank_sub_residualRank
+#print axioms AFPBarrier.weightedFrobeniusRowSynthesis_adjoint
+#print axioms AFPBarrier.weightedFrobeniusRowGram_pairing
+#print axioms AFPBarrier.weightedFrobeniusRowGram_quadratic
+#print axioms AFPBarrier.sphereSamplingLinear_eq_frobeniusRowAnalysis
+#print axioms AFPBarrier.sphereSamplingWeightedGram_pairing
+#print axioms AFPBarrier.sphereSamplingWeightedGram_quadratic
+#print axioms AFPBarrier.sphereResidualWeightedGram_pairing
+#print axioms AFPBarrier.sphereResidualWeightedGram_quadratic
+#print axioms AFPBarrier.frobeniusRowRemainder_pairing
+#print axioms AFPBarrier.matrixFrobeniusNormSq_rowRemainder
+#print axioms AFPBarrier.quadraticTwoDefectRemainder_orthogonal
+#print axioms AFPBarrier.quadraticTwoDefect_pythagorean
+#print axioms AFPBarrier.exactLossSecondMoment_decomposition
+#print axioms AFPBarrier.oneShell_radial_rate
+#print axioms AFPBarrier.oneShell_tangent_balance
+#print axioms AFPBarrier.oneShell_covariance_decomposition
+#print axioms AFPBarrier.oneShell_actual_covariance_decomposition
+#print axioms AFPBarrier.oneShell_traceFree_residual_pairing
+#print axioms AFPBarrier.oneShell_sphereResidual_row
+#print axioms AFPBarrier.oneShell_sphereResidual_factorization
+#print axioms AFPBarrier.oneShell_sphereResidualKernel_eq_samplingKernel
+#print axioms AFPBarrier.oneShell_sphereResidualRank_eq_samplingRank
+#print axioms AFPBarrier.oneShell_sphereSampledExactRange_eq_bot
+#print axioms AFPBarrier.spectralSampledSpaces_iSupIndep
+#print axioms AFPBarrier.spectralSampledSpaces_pairwise_disjoint
+#print axioms AFPBarrier.spectralSampledSpaces_finrank_sum_le
+#print axioms AFPBarrier.spectralSampledFunctions_finrank_sum_le
+#print axioms AFPBarrier.sphericalEigenvalue_injective
+#print axioms AFPBarrier.harmonicSampledSpaces_iSupIndep
+#print axioms AFPBarrier.sphericalEigenvalue_dimension_one_collision
+#print axioms AFPBarrier.sphericalEigenvalue_dimension_one_not_injective
+#print axioms AFPBarrier.internalScalarOperator_apply_of_mem
+#print axioms AFPBarrier.internalScalarOperator_constants_eq_zero
+
+/-! Prompt P1E: finite construction identities. -/
+
+#print axioms AFPBarrier.construction_constant_reproduction
+#print axioms AFPBarrier.construction_increment_decomposition
+#print axioms AFPBarrier.tangentForce_zero_radialMass_exactForce
+#print axioms AFPBarrier.tangentForce_zero_radialMass_hOne
+#print axioms AFPBarrier.sharedConductance_detailedBalance_entry
+#print axioms AFPBarrier.unnormalizedMoment_div_mass_entry
+#print axioms AFPBarrier.unnormalizedMomentSum_div_mass_entry
+#print axioms AFPBarrier.constructionCorrection_closes
+#print axioms AFPBarrier.constructionCorrection_force_zero
+#print axioms AFPBarrier.fourPointConnector_firstMoment
+#print axioms AFPBarrier.fourPointConnector_cubicMoment
+#print axioms AFPBarrier.fourPointConnector_weight_pos
+#print axioms AFPBarrier.chordMass_outgoingConductance_bound
+#print axioms AFPBarrier.chordMass_normalizedRate_bound
+#print axioms AFPBarrier.regularPolygon_hOne_scalar_recurrence
+#print axioms AFPBarrier.regularPolygon_hTwo_scalar_residual
+#print axioms AFPBarrier.regularPolygon_hTwo_scalar_eigenvalue
+
+/-! Prompt P2A: convex-generator finite identities. -/
+
+#print axioms AFPBarrier.convexDesign_constant_exact
+#print axioms AFPBarrier.convexDesign_rate_nonneg
+#print axioms AFPBarrier.convexDesign_detailedBalance
+#print axioms AFPBarrier.conductanceMix_nonneg
+#print axioms AFPBarrier.sharedEdgeApply_conductanceMix
+#print axioms AFPBarrier.sharedEdge_exact_conductanceMix
+#print axioms AFPBarrier.finiteMatrixApply_conductanceMix_le
+#print axioms AFPBarrier.affineShellResidual_conductanceMix
+#print axioms AFPBarrier.sum_incidentLossMass
+#print axioms AFPBarrier.lossWeightedTotal_fixed_of_radialExact
+#print axioms AFPBarrier.S2_lossWeightedTotal_one
+#print axioms AFPBarrier.totalConductance_fixed_of_constantLoss
+#print axioms AFPBarrier.rateCapped_dualWork_nonneg
+#print axioms AFPBarrier.rateCapped_negative_dualWork_certifies_infeasible
+
+/-! Prompt P2B: finite transport-error algebra. -/
+
+#print axioms AFPBarrier.finiteDuhamel_norm_le
+#print axioms AFPBarrier.transientKernel_nonneg
+#print axioms AFPBarrier.resolvent_residual_identity
+#print axioms AFPBarrier.resolvent_residual_norm_le
+#print axioms AFPBarrier.sixError_telescope
+#print axioms AFPBarrier.sixError_norm_le
+#print axioms AFPBarrier.finitePair_transpose_apply
+#print axioms AFPBarrier.adjointWeightedResidual_exact
+#print axioms AFPBarrier.adjointWeightedResidual_approx
+#print axioms AFPBarrier.energyResidual_young
+#print axioms AFPBarrier.coerciveResidual_bound
+#print axioms AFPBarrier.preconditionedIteration_geometric
+#print axioms AFPBarrier.preconditionedGeometricSeries_le
+
+#print axioms AFPBarrier.rate_eq_of_symmetric_active_loss
+#print axioms AFPBarrier.rate_eq_of_active_reflTransGen
+#print axioms AFPBarrier.connected_active_loss_rigidity
+
+/-! Prompt 3: exact spherical equality and global propagation. -/
+
+#print axioms AFPBarrier.sphericalChordLoss_symmetric
+#print axioms AFPBarrier.jumpGenerator_sphericalPairing
+#print axioms AFPBarrier.coordinateEigenmap_lossMoment_two
+#print axioms AFPBarrier.normalizedOmega_barycenter_of_coordinateEigenmap
+#print axioms AFPBarrier.jumpRate_pos_of_lossMoment_two
+#print axioms AFPBarrier.normalizedEdgeWeight_sum_one
+#print axioms AFPBarrier.normalizedLossScale_mean_one
+#print axioms AFPBarrier.normalizedLossScale_secondMoment
+#print axioms AFPBarrier.weightedSecondMoment_sub_one_eq_variance
+#print axioms AFPBarrier.sphericalQ_sub_one_eq_normalizedLossVariance
+#print axioms AFPBarrier.one_le_sphericalQAt
+#print axioms AFPBarrier.sphericalQ_eq_one_active_loss
+#print axioms AFPBarrier.active_symmetric_of_shared_conductance
+#print axioms AFPBarrier.connected_spherical_active_loss_rigidity
+#print axioms AFPBarrier.finite_spherical_qOne_global_rigidity
+
+/-! Prompt 3: explicit graph-global near-rigidity. -/
+
+#print axioms AFPBarrier.abs_sub_one_le_of_sq_le_delta_sq
+#print axioms AFPBarrier.pointwise_delta_bound
+#print axioms AFPBarrier.sphericalQ_pointwise_delta_bound
+#print axioms AFPBarrier.normalized_scale_interval_of_abs
+#print axioms AFPBarrier.normalized_scale_qDelta_cross_bounds
+#print axioms AFPBarrier.one_le_qDelta
+#print axioms AFPBarrier.adjacent_rate_cross_bounds
+#print axioms AFPBarrier.adjacent_rate_ratio_bounds
+#print axioms AFPBarrier.adjacent_rate_relative_error_bound
+#print axioms AFPBarrier.adjacent_rate_qDelta_cross_bounds
+#print axioms AFPBarrier.incident_loss_cross_bounds
+#print axioms AFPBarrier.incident_loss_ratio_bounds
+#print axioms AFPBarrier.path_rate_cross_bounds
+#print axioms AFPBarrier.path_rate_ratio_bounds
+#print axioms AFPBarrier.path_loss_ratio_bounds
+#print axioms AFPBarrier.abs_log_rate_sub_le_of_cross_bounds
+#print axioms AFPBarrier.adjacent_log_rate_bound
+#print axioms AFPBarrier.path_log_rate_bound
+#print axioms AFPBarrier.abs_log_normalized_scale_le_hDelta
+#print axioms AFPBarrier.reference_loss_log_bound
+#print axioms AFPBarrier.diameter_log_rate_bound
+#print axioms AFPBarrier.pow_le_pow_of_one_le_of_nat_le
+#print axioms AFPBarrier.diameter_rate_ratio_bounds
+#print axioms AFPBarrier.radial_covariance_error_bounds
+
+/-! Prompt 3: covariance and anisotropy boundary. -/
+
+#print axioms AFPBarrier.covarianceTrace_eq_four_of_normLoss
+#print axioms AFPBarrier.radialCovariance_eq_sphericalEpsilon
+#print axioms AFPBarrier.sphericalEpsilon_eq_four_mul_Q_div_rate
+#print axioms AFPBarrier.normalizedTangent_centered_of_barycenter
+#print axioms AFPBarrier.normalizedTangentSecondMoment_trace_one
+#print axioms AFPBarrier.weighted_centered_affine_product_sum
+#print axioms AFPBarrier.qOne_covarianceEntry_decomposition
+#print axioms AFPBarrier.jumpCovariance_eq_rate_mul_normalized
+#print axioms AFPBarrier.qOne_jumpCovariance_decomposition
+#print axioms AFPBarrier.qOne_covariance_axial_iff_tangentHalf
+#print axioms AFPBarrier.oneShellSecondMoment_eq_rate_mul_normalized
+#print axioms AFPBarrier.normalizedTangentHalf_iff_d3_oneShellSecondMoment
+#print axioms AFPBarrier.qOne_residual_entry_algebra
+#print axioms AFPBarrier.sphereResidualMatrix_entry_of_trace_six
+#print axioms AFPBarrier.qOne_sphereResidual_entry_decomposition
+#print axioms AFPBarrier.weightedOctahedron_axis_axial_iff
+#print axioms AFPBarrier.weightedOctahedron_all_axes_axial_iff
+
+/-! Prompt 4: sharp product barriers, extremal algebra, and incidence. -/
+
+#print axioms AFPBarrier.squarePolarQualityFromStep
+#print axioms AFPBarrier.squarePolarQualityFromStep_formula
+#print axioms AFPBarrier.squarePolar_rates_forced
+#print axioms AFPBarrier.squarePolar_totalRate_forced
+#print axioms AFPBarrier.squarePolar_forced_quartic_lower
+#print axioms AFPBarrier.cscSquaredTruncation
+#print axioms AFPBarrier.squarePolarRateMainStep
+#print axioms AFPBarrier.cscSquaredTruncation_rate_identity
+#print axioms AFPBarrier.squarePolarRateMainStep_grid
+#print axioms AFPBarrier.squarePolarQualityMainStep
+#print axioms AFPBarrier.squarePolarQualityMainStep_grid
+#print axioms AFPBarrier.universal_rate_lower_of_defect_upper
+#print axioms AFPBarrier.finiteExtremal_defect_lower
+#print axioms AFPBarrier.projectiveQuality_from_fixedMoment
+#print axioms AFPBarrier.twoLossWeightedQuality_sub_one
+#print axioms AFPBarrier.twoLossQuality_sub_one
+#print axioms AFPBarrier.biregular_interRing_incidence
+#print axioms AFPBarrier.perfectMatching_ringCounts_eq
+
+/-! P1B: sharp genuinely sampled quadratic-defect bound. -/
+
+#print axioms AFPBarrier.coordinateRowAnalysis_coordinateUnit
+#print axioms AFPBarrier.weightedCoordinateTrace_le_of_energy_domination
+#print axioms AFPBarrier.quadraticDefect_twoDefect_lower_sq
+#print axioms AFPBarrier.quadraticDefect_rate_product_lower
+#print axioms AFPBarrier.sTwo_quadraticDefect_rate_product_lower
+
+/-! P1C: exact equality geometry and guarded tangent-frame normalization. -/
+
+#print axioms AFPBarrier.increment_radial_tangent_decomposition
+#print axioms AFPBarrier.projectedTangentIncrement_orthogonal
+#print axioms AFPBarrier.projectedTangentIncrement_normSq
+#print axioms AFPBarrier.equalityRemainderEntry_zero_iff_axialCovariance
+#print axioms AFPBarrier.oneShell_axialCovariance_iff_tangentSecondMoment
+#print axioms AFPBarrier.oneShellSecondMoment_scaled
+#print axioms AFPBarrier.normalizedTangentTightFrame_iff_oneShellSecondMoment
+#print axioms AFPBarrier.oneShell_normalizedWeights_sum_one
+#print axioms AFPBarrier.scaledTangentTightFrame_iff_normalized
+#print axioms AFPBarrier.scaledTangentTightFrame_iff_normalized_of_nonantipodal
+#print axioms AFPBarrier.quadraticEquality_rate_product
+
+/-! P1D: elementary quantitative-stability budget. -/
+
+#print axioms AFPBarrier.quadraticStability_slack_identity
+#print axioms AFPBarrier.quadraticStability_total_sq_budget
+#print axioms AFPBarrier.quadraticStability_total_linear_budget
+#print axioms AFPBarrier.quadraticStability_component_sq_budget
+#print axioms AFPBarrier.quadraticStability_pointwise_sq_budget
+#print axioms AFPBarrier.quadraticStability_pointwise_sq_budget_of_wmin
+#print axioms AFPBarrier.quadraticStability_badVertexMass
+#print axioms AFPBarrier.quadraticStability_badVertexMass_sharp
+#print axioms AFPBarrier.quadraticStability_pointwise_full_budget
+#print axioms AFPBarrier.quadraticStability_tensor_budget
+#print axioms AFPBarrier.quadraticStability_tensor_rate_bound
+#print axioms AFPBarrier.quadraticStability_scaledVariance_sq_budget
+#print axioms AFPBarrier.quadraticStability_master_square_consequences
+#print axioms AFPBarrier.quadraticStability_mean_le_delta
+#print axioms AFPBarrier.quadraticStability_weightedMean_le_delta

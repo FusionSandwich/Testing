@@ -1,0 +1,174 @@
+{
+  "schema": "math-repo-afp-import-v1",
+  "source_repository": "FusionSandwich/Math",
+  "source_commit": "ccc75ff90ddd8348aa805178f9f1925b9b10cd16",
+  "imported_at": "2026-08-10",
+  "scope": "Self-contained hts_angular code, direct tests/examples/manuscripts, and direct benchmark evidence. Other Math transport-paper code is intentionally excluded.",
+  "files": [
+    {
+      "source_path": "src/hts_angular/__init__.py",
+      "source_blob_sha": "4bfd12abc5897e69f82eb9d5bfd8e9f19732c26c",
+      "import_path": "math_repo_afp/src/hts_angular/__init__.py"
+    },
+    {
+      "source_path": "src/hts_angular/adaptive_sn2d.py",
+      "source_blob_sha": "c57ead4f6a5504e32ed6f9415a82713dacd9ea5c",
+      "import_path": "math_repo_afp/src/hts_angular/adaptive_sn2d.py"
+    },
+    {
+      "source_path": "src/hts_angular/adaptivity.py",
+      "source_blob_sha": "0437a32fdca1806280508572bd37460d95f515ee",
+      "import_path": "math_repo_afp/src/hts_angular/adaptivity.py"
+    },
+    {
+      "source_path": "src/hts_angular/global_quadrature.py",
+      "source_blob_sha": "00bbbf7f9b494044b331413d73dd424def0e4575",
+      "import_path": "math_repo_afp/src/hts_angular/global_quadrature.py"
+    },
+    {
+      "source_path": "src/hts_angular/graph_convergence.py",
+      "source_blob_sha": "82982251ef205e5d16860fd7138b96b0eb55733a",
+      "import_path": "math_repo_afp/src/hts_angular/graph_convergence.py"
+    },
+    {
+      "source_path": "src/hts_angular/graph_generator.py",
+      "source_blob_sha": "cc92c8495ed3d382efd5f57c2e85e3086659c7b7",
+      "import_path": "math_repo_afp/src/hts_angular/graph_generator.py"
+    },
+    {
+      "source_path": "src/hts_angular/io.py",
+      "source_blob_sha": "d1fa586e727496d80d5945fd883e06ac798b07e4",
+      "import_path": "math_repo_afp/src/hts_angular/io.py"
+    },
+    {
+      "source_path": "src/hts_angular/py.typed",
+      "source_blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "import_path": "math_repo_afp/src/hts_angular/py.typed"
+    },
+    {
+      "source_path": "src/hts_angular/quadrature.py",
+      "source_blob_sha": "ef0682a56a14ce69f5d72501cebdb47023f66a4c",
+      "import_path": "math_repo_afp/src/hts_angular/quadrature.py"
+    },
+    {
+      "source_path": "src/hts_angular/sn2d.py",
+      "source_blob_sha": "69a29a89c86c754f5975a8f8519bf68da3c8d80c",
+      "import_path": "math_repo_afp/src/hts_angular/sn2d.py"
+    },
+    {
+      "source_path": "src/hts_angular/sn3d.py",
+      "source_blob_sha": "2c96804fdd02f06840cbb3a9f89270a03ed631aa",
+      "import_path": "math_repo_afp/src/hts_angular/sn3d.py"
+    },
+    {
+      "source_path": "src/hts_angular/transfer.py",
+      "source_blob_sha": "cd5bd39fc27bb8b5f84e13f8bbc9c89122245952",
+      "import_path": "math_repo_afp/src/hts_angular/transfer.py"
+    },
+    {
+      "source_path": "tests/test_adaptive_sn2d.py",
+      "source_blob_sha": "a9749f91f6d78852e71bc31707bc7d1188ae4691",
+      "import_path": "math_repo_afp/tests/test_adaptive_sn2d.py"
+    },
+    {
+      "source_path": "tests/test_angular.py",
+      "source_blob_sha": "a0c3f6fb8948c591f728f7b039ce184b7e567138",
+      "import_path": "math_repo_afp/tests/test_angular.py"
+    },
+    {
+      "source_path": "tests/test_sn2d.py",
+      "source_blob_sha": "08ac466f0bd2d73205a809ac0d6fa3f4197c1e97",
+      "import_path": "math_repo_afp/tests/test_sn2d.py"
+    },
+    {
+      "source_path": "tests/test_v02_global_graph.py",
+      "source_blob_sha": "45eb3c9295a27751d6396c4bbef02972b25248e3",
+      "import_path": "math_repo_afp/tests/test_v02_global_graph.py"
+    },
+    {
+      "source_path": "tests/test_v02_sn3d.py",
+      "source_blob_sha": "c59f48ac1b8f59b9d8cffdd90cdee3f4c00c22dc",
+      "import_path": "math_repo_afp/tests/test_v02_sn3d.py"
+    },
+    {
+      "source_path": "examples/adaptive_angular_transport.py",
+      "source_blob_sha": "cc17bd928e3fed40ad9e0eface40408614767cee",
+      "import_path": "math_repo_afp/examples/adaptive_angular_transport.py"
+    },
+    {
+      "source_path": "examples/global_quadrature_certificate.py",
+      "source_blob_sha": "9130681af54727061c07cdb0ee56865da5eeb3b4",
+      "import_path": "math_repo_afp/examples/global_quadrature_certificate.py"
+    },
+    {
+      "source_path": "examples/graph_family_convergence.py",
+      "source_blob_sha": "ae0bfbd2b0b1d3c5741884e72bd581a50a71aae1",
+      "import_path": "math_repo_afp/examples/graph_family_convergence.py"
+    },
+    {
+      "source_path": "examples/positive_response_quadrature.py",
+      "source_blob_sha": "1727dc6488dee443aa0745ad35f759d7bccfd7c2",
+      "import_path": "math_repo_afp/examples/positive_response_quadrature.py"
+    },
+    {
+      "source_path": "examples/three_dimensional_transport.py",
+      "source_blob_sha": "bba61b832b7347b76ad072e79d619bbeb1c30730",
+      "import_path": "math_repo_afp/examples/three_dimensional_transport.py"
+    },
+    {
+      "source_path": "manuscripts/PAPER2_ADAPTIVE_ANGULAR.md",
+      "source_blob_sha": "c9ae28bfd5e4ff5dc6888d043d9ef4a4fb2f9b24",
+      "import_path": "math_repo_afp/manuscripts/PAPER2_ADAPTIVE_ANGULAR.md"
+    },
+    {
+      "source_path": "manuscripts/PAPER2_POSITIVE_QUADRATURE.md",
+      "source_blob_sha": "d750e908ec92c6c1834fac2e605296dc8a9f72b1",
+      "import_path": "math_repo_afp/manuscripts/PAPER2_POSITIVE_QUADRATURE.md"
+    },
+    {
+      "source_path": "manuscripts/V0_2_RESEARCH_EXTENSIONS.md",
+      "source_blob_sha": "1795b5b15a10adeadf840e1b23afabd7c7ac834c",
+      "import_path": "math_repo_afp/manuscripts/V0_2_RESEARCH_EXTENSIONS.md"
+    },
+    {
+      "source_path": "benchmarks/configs/paper2_quadrature.json",
+      "source_blob_sha": "7681abe826fd19576ae903a2456fdf19b15b50ef",
+      "import_path": "math_repo_afp/benchmarks/configs/paper2_quadrature.json"
+    },
+    {
+      "source_path": "benchmarks/run_v02.py",
+      "source_blob_sha": "758928d654e3a1cf45ae2ef797bb47ea247e361a",
+      "import_path": "math_repo_afp/benchmarks/run_v02.py"
+    },
+    {
+      "source_path": "benchmarks/run_all.py",
+      "source_blob_sha": "19dbae8ce6bc885a52f6fafb2d3cd0bd30da9a27",
+      "import_path": "math_repo_afp/benchmarks/run_all.py"
+    },
+    {
+      "source_path": "results/paper2_graph_convergence.csv",
+      "source_blob_sha": "7b9ed2f09ab6a448957543e1cf89ff9ce89e3003",
+      "import_path": "math_repo_afp/results/paper2_graph_convergence.csv"
+    },
+    {
+      "source_path": "results/paper2_quadrature_summary.json",
+      "source_blob_sha": "8aeb3c36dea883ab74705d60288f783bdabd2a68",
+      "import_path": "math_repo_afp/results/paper2_quadrature_summary.json"
+    },
+    {
+      "source_path": "results/v02_graph_family.csv",
+      "source_blob_sha": "7f3ea889cfc7c1a6e2d9306ad4b5593b98443de2",
+      "import_path": "math_repo_afp/results/v02_graph_family.csv"
+    },
+    {
+      "source_path": "LICENSE-NOTICE.md",
+      "source_blob_sha": "b958df01d9f75581ef3332047687b5e4c9ce0ed7",
+      "import_path": "math_repo_afp/LICENSE-NOTICE.md"
+    },
+    {
+      "source_path": "CITATION.cff",
+      "source_blob_sha": "740f159c75af22426a32145a52c043510bdc0d60",
+      "import_path": "math_repo_afp/CITATION.cff"
+    }
+  ]
+}

@@ -1,0 +1,175 @@
+name: AFP Lean Gate 5
+
+# Gate 5 is closed. The workflow remains attached to its original PR for an
+# independently visible final check; later PRs may parse the workflow but the
+# job is skipped unless the head branch is the frozen Gate 5 branch.
+on:
+  pull_request:
+    branches:
+      - testing
+    paths:
+      - 'afp_barrier_gate1/AFPBarrier/**'
+      - 'afp_barrier_gate1/AFPBarrier.lean'
+      - 'afp_barrier_gate1/GATE5.md'
+      - 'afp_barrier_gate1/gate5/**'
+      - 'afp_barrier_gate1/gate4/icosphere_spherical_laplacian_audit.py'
+      - 'afp_barrier_gate1/lakefile.lean'
+      - 'afp_barrier_gate1/lean-toolchain'
+      - 'afp_barrier_gate1/lake-manifest.json'
+      - '.github/workflows/afp-barrier-gate5.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  mathematics:
+    if: github.event_name == 'workflow_dispatch' || github.head_ref == 'agent/afp-gate5-sharpness'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: afp_barrier_gate1
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up deterministic Python runtime
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Deterministic sharpness and variance audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python gate5/sharpness_audit.py \
+            --max-level 5 --output-dir gate5/generated \
+            2>&1 | tee gate5-deterministic-audit.log
+
+      - name: Deterministic low-mode and rotational-bias audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python gate5/spectral_bias_audit.py \
+            --max-level 5 --output-dir gate5/generated \
+            2>&1 | tee gate5-spectral-bias-audit.log
+
+      - name: Install Elan and pinned Lean toolchain
+        working-directory: .
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
+            | sh -s -- -y --default-toolchain "$(cat afp_barrier_gate1/lean-toolchain)"
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+
+      - name: Record toolchain versions
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "commit=${GITHUB_SHA}"
+            python --version
+            lean --version
+            lake --version
+          } | tee gate5-toolchain.log
+
+      - name: Resolve pinned dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake update 2>&1 | tee gate5-lake-update.log
+
+      - name: Download Mathlib compiled cache
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake exe cache get 2>&1 | tee gate5-mathlib-cache.log
+
+      - name: Lean kernel build
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake build 2>&1 | tee gate5-lean-build.log
+
+      - name: Axiom audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake env lean AFPBarrier/AxiomAudit.lean 2>&1 | tee gate5-axiom-audit.log
+          lake env lean AFPBarrier/Gate5AxiomAudit.lean 2>&1 | tee gate5-sharpness-axiom-audit.log
+          if grep -q 'sorryAx' gate5-axiom-audit.log gate5-sharpness-axiom-audit.log; then
+            echo "A theorem depends on Lean's sorry axiom." >&2
+            exit 1
+          fi
+
+      - name: Source placeholder audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -RInE --include='*.lean' '(^|[^[:alnum:]_])(sorry|admit)([^[:alnum:]_]|$)' AFPBarrier AFPBarrier.lean; then
+            echo "Proof placeholder found." >&2
+            exit 1
+          fi
+          if grep -RInE --include='*.lean' '^[[:space:]]*axiom([[:space:]]|$)' AFPBarrier AFPBarrier.lean; then
+            echo "User axiom declaration found." >&2
+            exit 1
+          fi
+          echo "No proof placeholders or user axiom declarations found." | tee gate5-source-audit.log
+
+      - name: Write Gate 5 report
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "AFP Barrier Gate 5 sharpness validation"
+            echo "commit=${GITHUB_SHA}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "run_attempt=${GITHUB_RUN_ATTEMPT}"
+            echo "toolchain=$(cat lean-toolchain)"
+            echo "timestamp_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } > gate5-report.txt
+
+      - name: Pack exact source snapshot
+        if: always()
+        working-directory: .
+        shell: bash
+        run: |
+          set -euo pipefail
+          tar \
+            --exclude='afp_barrier_gate1/.lake' \
+            --exclude='afp_barrier_gate1/*.log' \
+            --exclude='afp_barrier_gate1/gate5-report.txt' \
+            -czf afp-barrier-gate5-source-${GITHUB_SHA}.tar.gz \
+            afp_barrier_gate1 \
+            .github/workflows/afp-barrier-gate5.yml
+
+      - name: Upload Gate 5 records
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: afp-lean-gate5-${{ github.run_id }}
+          path: |
+            afp_barrier_gate1/gate5-report.txt
+            afp_barrier_gate1/gate5-toolchain.log
+            afp_barrier_gate1/gate5-deterministic-audit.log
+            afp_barrier_gate1/gate5-spectral-bias-audit.log
+            afp_barrier_gate1/gate5/generated/sharpness_audit.md
+            afp_barrier_gate1/gate5/generated/sharpness_audit.csv
+            afp_barrier_gate1/gate5/generated/spectral_bias_audit.md
+            afp_barrier_gate1/gate5/generated/spectral_bias_audit.csv
+            afp_barrier_gate1/gate5-lake-update.log
+            afp_barrier_gate1/gate5-mathlib-cache.log
+            afp_barrier_gate1/gate5-lean-build.log
+            afp_barrier_gate1/gate5-axiom-audit.log
+            afp_barrier_gate1/gate5-sharpness-axiom-audit.log
+            afp_barrier_gate1/gate5-source-audit.log
+            afp_barrier_gate1/lake-manifest.json
+            afp-barrier-gate5-source-*.tar.gz
+          if-no-files-found: warn

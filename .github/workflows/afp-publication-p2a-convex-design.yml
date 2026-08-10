@@ -1,0 +1,521 @@
+name: AFP publication P2A fixed-quadrature convex design
+
+on:
+  push:
+    branches:
+      - agent/afp-publication-p2a-convex-design-ab155b8e
+      - archive/afp-publication-p2a-convex-design-verified
+  pull_request:
+    branches:
+      - archive/afp-publication-p1f-flagship-paper-verified
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  actions: read
+  contents: read
+
+env:
+  EXPECTED_REPOSITORY: FusionSandwich/Testing
+  PR_HEAD_REPOSITORY: ${{ github.event.pull_request.head.repo.full_name || '' }}
+  CANDIDATE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+  P2A_BRANCH: agent/afp-publication-p2a-convex-design-ab155b8e
+  P2A_ARCHIVE: archive/afp-publication-p2a-convex-design-verified
+  P1F_COMMIT: ab155b8e04bdf00306351b581739fb5feeb2979e
+  P1F_TREE: 61a07c6c187d3002d5ca433be16b26fb1bad73f1
+  P1F_ARCHIVE: archive/afp-publication-p1f-flagship-paper-verified
+  GIT_NO_REPLACE_OBJECTS: '1'
+
+jobs:
+  exact-design-and-regressions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    outputs:
+      artifact-id: ${{ steps.upload.outputs.artifact-id }}
+      artifact-digest: ${{ steps.upload.outputs.artifact-digest }}
+      source-sha256: ${{ steps.hash.outputs.source-sha256 }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          ref: ${{ env.CANDIDATE_SHA }}
+          persist-credentials: false
+
+      - name: Verify exact P2A head, scope, ancestry, and refs
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/p2a-exact"; mkdir -p "${out}"
+          test "${GITHUB_REPOSITORY}" = "${EXPECTED_REPOSITORY}"
+          if [[ "${GITHUB_EVENT_NAME}" = pull_request ]]; then
+            test "${GITHUB_HEAD_REF}" = "${P2A_BRANCH}"
+            test "${GITHUB_BASE_REF}" = "${P1F_ARCHIVE}"
+            test "${PR_HEAD_REPOSITORY}" = "${EXPECTED_REPOSITORY}"
+          fi
+          test "$(git rev-parse HEAD)" = "${CANDIDATE_SHA}"
+          test "$(git rev-parse "${P1F_COMMIT}^{tree}")" = "${P1F_TREE}"
+          git merge-base --is-ancestor "${P1F_COMMIT}" "${CANDIDATE_SHA}"
+          test "$(git rev-list --count --merges "${P1F_COMMIT}..${CANDIDATE_SHA}")" -eq 0
+          python - "${P1F_COMMIT}" "${CANDIDATE_SHA}" <<'PY' | tee "${out}/scope.log"
+          import os, subprocess, sys
+
+          base, head = sys.argv[1:]
+          allowed = {
+              ".github/workflows/afp-publication-p2a-convex-design.yml",
+              "afp_barrier_gate1/AFPBarrier.lean",
+              "afp_barrier_gate1/AFPBarrier/AxiomAudit.lean",
+              "afp_barrier_gate1/AFPBarrier/ConvexGeneratorDesign.lean",
+              "afp_barrier_gate1/AFPBarrier/PureMathAxiomAudit.lean",
+              "afp_barrier_gate1/pure_math/optimization/__init__.py",
+              "afp_barrier_gate1/pure_math/optimization/audit.py",
+              "afp_barrier_gate1/pure_math/optimization/certificates.py",
+              "afp_barrier_gate1/pure_math/optimization/exact_audit.py",
+              "afp_barrier_gate1/pure_math/optimization/fixtures.py",
+              "afp_barrier_gate1/pure_math/optimization/model.py",
+              "afp_barrier_gate1/pure_math/optimization/programs.py",
+              "afp_barrier_gate1/pure_math/tests/test_p2a_convex_design.py",
+              "docs/publication_program/APPROACH_REGISTRY.md",
+              "docs/publication_program/P2A_APPROACH_REGISTRY.md",
+              "docs/publication_program/P2A_CLAIM_MAP.md",
+              "docs/publication_program/P2A_FIXED_QUADRATURE_CONVEX_DESIGN.md",
+              "docs/publication_program/P2A_PRIOR_ART_AND_HOSTILE_AUDIT.md",
+              "docs/publication_program/P2A_STAGE_REPORT.md",
+              "docs/publication_program/PAPER_BOUNDARY_MATRIX.md",
+              "docs/publication_program/PRIOR_ART_MATRIX.md",
+              "docs/publication_program/PROGRAM_BASELINE.md",
+              "docs/publication_program/THEOREM_REGISTRY.md",
+              "docs/publication_program/VALUE_REGISTRY.md",
+          }
+          raw = subprocess.check_output(
+              ["git", "diff", "--no-renames", "--name-only", "-z", base, head]
+          )
+          changed = {os.fsdecode(item) for item in raw.split(b"\0") if item}
+          if changed != allowed:
+              raise SystemExit(
+                  f"P2A scope mismatch; missing={sorted(allowed-changed)} "
+                  f"outside={sorted(changed-allowed)}"
+              )
+          forbidden_bytes = set(range(32)) - {9, 10, 13}
+          forbidden_bytes.add(127)
+          for path in sorted(changed):
+              row = subprocess.check_output(
+                  ["git", "ls-tree", head, "--", path], text=True
+              ).strip()
+              if not row.startswith("100644 blob "):
+                  raise SystemExit(f"not a regular blob: {path}: {row!r}")
+              payload = subprocess.check_output(["git", "show", f"{head}:{path}"])
+              if not payload:
+                  raise SystemExit(f"empty P2A path: {path}")
+              payload.decode("utf-8")
+              bad = sorted({byte for byte in payload if byte in forbidden_bytes})
+              if bad:
+                  raise SystemExit(f"forbidden control bytes in {path}: {bad}")
+          print(f"P2A allowlist and UTF-8/control-byte audit: EXACT ({len(changed)} paths)")
+          PY
+          git diff --check "${P1F_COMMIT}" "${CANDIDATE_SHA}"
+          test "$(git ls-remote --exit-code --heads origin "refs/heads/${P2A_BRANCH}" | awk 'NR==1 {print $1}')" = "${CANDIDATE_SHA}"
+          test "$(git ls-remote --exit-code --heads origin "refs/heads/${P1F_ARCHIVE}" | awk 'NR==1 {print $1}')" = "${P1F_COMMIT}"
+          set +e
+          line=$(git ls-remote --exit-code --heads origin "refs/heads/${P2A_ARCHIVE}"); status=$?
+          set -e
+          if [[ ${status} -eq 0 ]]; then
+            archive_head=$(awk 'NR==1 {print $1}' <<<"${line}")
+            test "${archive_head}" = "${CANDIDATE_SHA}"
+            echo "${P2A_ARCHIVE} ${archive_head} PRESENT_EXACT" | tee "${out}/archive.log"
+          elif [[ ${status} -eq 2 && "${GITHUB_REF}" != "refs/heads/${P2A_ARCHIVE}" ]]; then
+            echo "${P2A_ARCHIVE} ABSENT_BEFORE_CREATE_ONLY_FREEZE" | tee "${out}/archive.log"
+          else
+            exit 1
+          fi
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+
+      - name: Install pinned convex-design dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/p2a-exact"
+          sudo apt-get update -qq
+          sudo apt-get install --no-install-recommends -y ripgrep | tee "${out}/apt.log"
+          python -m pip install --disable-pip-version-check --no-input \
+            'clarabel==0.11.1' \
+            'cvxpy==1.7.3' \
+            'numpy==2.3.2' \
+            'osqp==1.0.4' \
+            'pytest==8.4.2' \
+            'scipy==1.18.0' \
+            'scs==3.2.9' \
+            'sympy==1.14.0' | tee "${out}/dependencies.log"
+          python - <<'PY' | tee "${out}/solver-inventory.log"
+          import clarabel, cvxpy, numpy, osqp, scipy, scs, sympy
+          observed = {name.upper() for name in cvxpy.installed_solvers()}
+          required = {"CLARABEL", "OSQP", "SCIPY", "SCS"}
+          if not required <= observed:
+              raise SystemExit(f"missing solvers: {sorted(required-observed)}")
+          print("P2A pinned versions:", cvxpy.__version__, numpy.__version__, scipy.__version__, sympy.__version__)
+          print("P2A solver inventory: EXACT", sorted(required))
+          PY
+
+      - name: Run P2A implementation, certificate, and mutation suite
+        working-directory: afp_barrier_gate1
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/p2a-exact"
+          export PYTHONPYCACHEPREFIX="${RUNNER_TEMP}/p2a-pycache"
+          python -m compileall -q pure_math/optimization pure_math/tests/test_p2a_convex_design.py
+          python -m pure_math.optimization.exact_audit | tee "${out}/p2a-exact-audit.log"
+          grep -Fxq 'P2A exact symmetric/Farkas audit: PASS' "${out}/p2a-exact-audit.log"
+          grep -Fxq '    "unequal_cycle_farkas_work": "-2/3"' "${out}/p2a-exact-audit.log"
+          grep -Fxq '    "selected_minor_determinant": "1152*q*s/625"' "${out}/p2a-exact-audit.log"
+          python -m pure_math.optimization.audit --solver CLARABEL | tee "${out}/p2a-clarabel-audit.log"
+          python -m pure_math.optimization.audit --solver SCS | tee "${out}/p2a-scs-audit.log"
+          grep -Fxq 'P2A convex design audit (CLARABEL): PASS' "${out}/p2a-clarabel-audit.log"
+          grep -Fxq 'P2A convex design audit (SCS): PASS' "${out}/p2a-scs-audit.log"
+          grep -Fxq '    "prune_attempts": 6,' "${out}/p2a-clarabel-audit.log"
+          grep -Fxq '    "full_rank": 5,' "${out}/p2a-clarabel-audit.log"
+          python -m pytest -p no:cacheprovider -q -ra pure_math/tests/test_p2a_convex_design.py | tee "${out}/p2a-pytest.log"
+          grep -Eq '^[0-9]+ passed(, [0-9]+ [a-z]+)* in ' "${out}/p2a-pytest.log"
+          python - <<'PY' | tee "${out}/two-backend.log"
+          from pure_math.optimization import DesignRequest, SolverConfig, solve_design
+          from pure_math.optimization.fixtures import tetrahedron_fixture
+
+          model, _, _ = tetrahedron_fixture()
+          request = DesignRequest.minimum_defect(rate_cap=1.5)
+          for backend, tolerance in (("CLARABEL", 2e-5), ("SCS", 8e-5)):
+              result = solve_design(model, request, SolverConfig(solver=backend))
+              if not result.feasible_candidate or result.verification is None:
+                  raise SystemExit(f"{backend} returned no verifiable candidate: {result.status}")
+              if not result.verification.passed:
+                  raise SystemExit(f"{backend} independent verification failed: {result.verification.failures}")
+              if abs(float(result.objective) - 4.0) > tolerance:
+                  raise SystemExit(f"{backend} tetrahedral objective is {result.objective}, expected 4")
+          print("P2A two-backend tetrahedral SDP: PASS")
+          PY
+          grep -Fxq 'P2A two-backend tetrahedral SDP: PASS' "${out}/two-backend.log"
+
+      - name: Run accepted Paper-I P1A and P1B regressions
+        working-directory: afp_barrier_gate1
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/p2a-exact"
+          export PYTHONPYCACHEPREFIX="${RUNNER_TEMP}/p2a-pycache"
+          python pure_math/covariance/p1a_quadratic_fidelity_audit.py | tee "${out}/p1a.log"
+          grep -Fxq 'P1A exact quadratic-fidelity audit: PASS' "${out}/p1a.log"
+          python pure_math/covariance/p1b_sharp_quadratic_defect_audit.py | tee "${out}/p1b.log"
+          grep -Fxq 'strong two-defect coefficient audit: EXACT' "${out}/p1b.log"
+          grep -Fxq 'zero-sampling-rank under stated hypotheses: IMPOSSIBLE' "${out}/p1b.log"
+          grep -Fxq 'P1B sharp quadratic-defect audit: PASS' "${out}/p1b.log"
+
+      - name: Audit claim map, sentinels, and rejected overclaims
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/p2a-exact"
+          main=docs/publication_program/P2A_FIXED_QUADRATURE_CONVEX_DESIGN.md
+          claims=docs/publication_program/P2A_CLAIM_MAP.md
+          theorem=docs/publication_program/THEOREM_REGISTRY.md
+          test "$(head -n 1 "${main}")" = '# P2A: kernel-correct convex design on a fixed spherical quadrature'
+          for heading in \
+            '## 2. The global shared-conductance affine system' \
+            '## 3. Exact removal of sampling aliases' \
+            '## 4. Seven convex design formulations' \
+            '## 5. Exact dual programs' \
+            '## 6. Slater, strong duality, and complementary slackness' \
+            '## 7. Solver-independent certificates' \
+            '## 8. Conductance penalties and honest sparsity' \
+            '## 9. Exact benchmarks and deterministic failures' \
+            '## 10. Comparison with the sharp Paper-I lower bound'; do
+            rg -Fxq "${heading}" "${main}"
+          done
+          python - "${main}" "${claims}" "${theorem}" <<'PY' | tee "${out}/claim-map.log"
+          import pathlib, re, sys
+
+          paths = [pathlib.Path(item) for item in sys.argv[1:]]
+          texts = [path.read_text(encoding="utf-8") for path in paths]
+          keys = {
+              "P2A-AFFINE", "P2A-QUOTIENT", "P2A-PRIMAL", "P2A-DUAL",
+              "P2A-CERT", "P2A-SPARSITY", "P2A-SHARP", "P2A-RESPONSE", "P2A-FORMAL",
+          }
+          for path, text in zip(paths, texts, strict=True):
+              missing = sorted(key for key in keys if key not in text)
+              if missing:
+                  raise SystemExit(f"{path} misses registry keys {missing}")
+          placeholders = re.compile(
+              r"(?im)(?:^|\s)(?:TODO|TBD|FIXME|XXX):|STATUS_PENDING|"
+              r"MISSING[ _-]PROOF|INSERT[ _-]CITATION|NotImplementedError"
+          )
+          scan_roots = [
+              pathlib.Path("docs/publication_program"),
+              pathlib.Path("afp_barrier_gate1/pure_math/optimization"),
+              pathlib.Path("afp_barrier_gate1/pure_math/tests/test_p2a_convex_design.py"),
+              pathlib.Path("afp_barrier_gate1/AFPBarrier/ConvexGeneratorDesign.lean"),
+          ]
+          candidates = []
+          for root in scan_roots:
+              if root.is_file():
+                  candidates.append(root)
+              elif root.name == "publication_program":
+                  candidates.extend(sorted(path for path in root.glob("P2A*") if path.is_file()))
+              else:
+                  candidates.extend(sorted(
+                      path for path in root.rglob("*")
+                      if path.is_file() and path.suffix in {".py", ".lean", ".md"}
+                  ))
+          for path in candidates:
+              text = path.read_text(encoding="utf-8")
+              match = placeholders.search(text)
+              if match:
+                  raise SystemExit(f"placeholder in {path}: {match.group(0)!r}")
+          print("P2A claim registry and placeholder audit: EXACT")
+          PY
+          ! rg -n -i 'proves transport improvement|universally sparse|local feasibility implies global|solver status proves|first ever convex' \
+            docs/publication_program/P2A*.md
+          git diff --check
+          test -z "$(git status --short)"
+
+      - name: Hash exact P2A records
+        id: hash
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/p2a-exact"
+          name="afp-publication-p2a-source-${CANDIDATE_SHA}.tar.gz"
+          git archive --format=tar.gz --output="${out}/${name}" "${CANDIDATE_SHA}" -- \
+            .github/workflows/afp-publication-p2a-convex-design.yml \
+            docs/publication_program \
+            afp_barrier_gate1/AFPBarrier.lean \
+            afp_barrier_gate1/AFPBarrier/ConvexGeneratorDesign.lean \
+            afp_barrier_gate1/AFPBarrier/AxiomAudit.lean \
+            afp_barrier_gate1/AFPBarrier/PureMathAxiomAudit.lean \
+            afp_barrier_gate1/pure_math/optimization \
+            afp_barrier_gate1/pure_math/tests/test_p2a_convex_design.py
+          sha256sum "${out}/${name}" > "${out}/${name}.sha256"
+          digest=$(awk 'NR==1 {print $1}' "${out}/${name}.sha256")
+          echo "source-sha256=${digest}" >> "${GITHUB_OUTPUT}"
+          printf 'commit=%s\ntree=%s\nbase=%s\nworkflow-blob=%s\nrun=%s\nattempt=%s\n' \
+            "${CANDIDATE_SHA}" "$(git rev-parse HEAD^{tree})" "${P1F_COMMIT}" \
+            "$(git rev-parse HEAD:.github/workflows/afp-publication-p2a-convex-design.yml)" \
+            "${GITHUB_RUN_ID}" "${GITHUB_RUN_ATTEMPT}" > "${out}/report.txt"
+          find afp_barrier_gate1/pure_math/optimization \
+            docs/publication_program/P2A_CLAIM_MAP.md \
+            docs/publication_program/P2A_FIXED_QUADRATURE_CONVEX_DESIGN.md \
+            docs/publication_program/P2A_PRIOR_ART_AND_HOSTILE_AUDIT.md \
+            docs/publication_program/P2A_STAGE_REPORT.md \
+            -type f -print0 | sort -z | xargs -0 sha256sum > "${out}/release-files.sha256"
+          (cd "${out}" && find . -maxdepth 1 -type f ! -name records.sha256 -print0 | sort -z | xargs -0 sha256sum > records.sha256)
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        id: upload
+        with:
+          name: afp-publication-p2a-exact-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/p2a-exact
+          if-no-files-found: error
+
+  lean-kernel:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    outputs:
+      artifact-id: ${{ steps.upload.outputs.artifact-id }}
+      artifact-digest: ${{ steps.upload.outputs.artifact-digest }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          ref: ${{ env.CANDIDATE_SHA }}
+          persist-credentials: false
+      - name: Verify focused Lean checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "${GITHUB_REPOSITORY}" = "${EXPECTED_REPOSITORY}"
+          test "$(git rev-parse HEAD)" = "${CANDIDATE_SHA}"
+          test "$(git rev-parse "${P1F_COMMIT}^{tree}")" = "${P1F_TREE}"
+          git merge-base --is-ancestor "${P1F_COMMIT}" "${CANDIDATE_SHA}"
+          test "$(git ls-remote --exit-code --heads origin "refs/heads/${P2A_BRANCH}" | awk 'NR==1 {print $1}')" = "${CANDIDATE_SHA}"
+          mkdir -p "${RUNNER_TEMP}/p2a-lean"
+      - uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9
+        with:
+          lake-package-directory: afp_barrier_gate1
+          build: false
+          test: false
+          lint: false
+          nanoda: false
+          use-mathlib-cache: false
+          use-github-cache: false
+      - name: Build focused finite core and audit axioms
+        working-directory: afp_barrier_gate1
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/p2a-lean"
+          lean --version | tee "${out}/lean-version.log"
+          lake --version | tee "${out}/lake-version.log"
+          lake update | tee "${out}/lake-update.log"
+          lake exe cache get | tee "${out}/cache.log"
+          lake build | tee "${out}/lean-build.log"
+          lake env lean AFPBarrier/ConvexGeneratorDesign.lean | tee "${out}/focused.log"
+          lake env lean AFPBarrier/AxiomAudit.lean | tee "${out}/all-axioms.log"
+          lake env lean AFPBarrier/PureMathAxiomAudit.lean | tee "${out}/pure-axioms.log"
+          python - "${out}/pure-axioms.log" <<'PY' | tee "${out}/axiom-set.log"
+          import re, sys
+          text = open(sys.argv[1], encoding="utf-8").read()
+          groups = re.findall(r"depends on axioms:\s*\[(.*?)\]", text, re.S)
+          if not groups:
+              raise SystemExit("focused axiom audit produced no records")
+          observed = {item.strip() for group in groups for item in group.split(",") if item.strip()}
+          allowed = {"propext", "Classical.choice", "Quot.sound"}
+          if observed != allowed:
+              raise SystemExit(f"unexpected axiom dependency set: {sorted(observed)}")
+          required = {
+              "convexDesign_constant_exact", "conductanceMix_nonneg",
+              "affineShellResidual_conductanceMix", "S2_lossWeightedTotal_one",
+              "rateCapped_negative_dualWork_certifies_infeasible",
+          }
+          missing = sorted(name for name in required if name not in text)
+          if missing:
+              raise SystemExit(f"P2A theorem prints missing from pure axiom audit: {missing}")
+          print("P2A focused axiom dependency set: EXACT", sorted(observed))
+          PY
+          sudo apt-get update -qq
+          sudo apt-get install --no-install-recommends -y ripgrep
+          ! rg --glob '*.lean' '(^|[^[:alnum:]_])(sorry|admit|sorryAx)([^[:alnum:]_]|$)' AFPBarrier AFPBarrier.lean
+          ! rg --glob '*.lean' '^[[:space:]]*(@\[[^]]*\][[:space:]]*)*((private|protected|noncomputable|unsafe|scoped|local)[[:space:]]+)*(axiom|axioms)([[:space:]]|$)' AFPBarrier AFPBarrier.lean
+          ! rg '^[[:space:]]*(@\[[^]]*\][[:space:]]*)*((private|protected|noncomputable|unsafe|scoped|local)[[:space:]]+)*(constant|constants)([[:space:]]|$)' \
+            AFPBarrier.lean AFPBarrier/ConvexGeneratorDesign.lean AFPBarrier/AxiomAudit.lean AFPBarrier/PureMathAxiomAudit.lean
+          git diff --check
+          test -z "$(git status --short)"
+      - name: Hash formal records
+        working-directory: afp_barrier_gate1
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/p2a-lean"
+          printf 'commit=%s\ntree=%s\nbase=%s\n' "${CANDIDATE_SHA}" "$(git rev-parse HEAD^{tree})" "${P1F_COMMIT}" > "${out}/report.txt"
+          sha256sum AFPBarrier/ConvexGeneratorDesign.lean AFPBarrier/AxiomAudit.lean AFPBarrier/PureMathAxiomAudit.lean > "${out}/formal-files.sha256"
+          (cd "${out}" && find . -maxdepth 1 -type f ! -name records.sha256 -print0 | sort -z | xargs -0 sha256sum > records.sha256)
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        id: upload
+        with:
+          name: afp-publication-p2a-lean-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/p2a-lean
+          if-no-files-found: error
+
+  final-candidate-integrity:
+    needs: [exact-design-and-regressions, lean-kernel]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      artifact-id: ${{ steps.upload.outputs.artifact-id }}
+      artifact-digest: ${{ steps.upload.outputs.artifact-digest }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          ref: ${{ env.CANDIDATE_SHA }}
+          persist-credentials: false
+      - name: Resolve exact candidate evidence
+        shell: bash
+        env:
+          EXACT_RESULT: ${{ needs.exact-design-and-regressions.result }}
+          LEAN_RESULT: ${{ needs.lean-kernel.result }}
+          EXACT_ID: ${{ needs.exact-design-and-regressions.outputs.artifact-id }}
+          EXACT_DIGEST: ${{ needs.exact-design-and-regressions.outputs.artifact-digest }}
+          LEAN_ID: ${{ needs.lean-kernel.outputs.artifact-id }}
+          LEAN_DIGEST: ${{ needs.lean-kernel.outputs.artifact-digest }}
+          SOURCE_SHA: ${{ needs.exact-design-and-regressions.outputs.source-sha256 }}
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/p2a-final"; mkdir -p "${out}"
+          test "${EXACT_RESULT}" = success
+          test "${LEAN_RESULT}" = success
+          test -n "${EXACT_ID}"; test -n "${LEAN_ID}"
+          [[ "${EXACT_DIGEST}" =~ ^(sha256:)?[0-9a-f]{64}$ ]]
+          [[ "${LEAN_DIGEST}" =~ ^(sha256:)?[0-9a-f]{64}$ ]]
+          [[ "${SOURCE_SHA}" =~ ^[0-9a-f]{64}$ ]]
+          test "$(git rev-parse HEAD)" = "${CANDIDATE_SHA}"
+          git merge-base --is-ancestor "${P1F_COMMIT}" "${CANDIDATE_SHA}"
+          branch_head=$(git ls-remote --exit-code --heads origin "refs/heads/${P2A_BRANCH}" | awk 'NR==1 {print $1}')
+          test "${branch_head}" = "${CANDIDATE_SHA}"
+          set +e
+          line=$(git ls-remote --exit-code --heads origin "refs/heads/${P2A_ARCHIVE}"); status=$?
+          set -e
+          if [[ ${status} -eq 0 ]]; then
+            archive_head=$(awk 'NR==1 {print $1}' <<<"${line}")
+            test "${archive_head}" = "${CANDIDATE_SHA}"
+            archive=PRESENT_EXACT
+          elif [[ ${status} -eq 2 && "${GITHUB_REF}" != "refs/heads/${P2A_ARCHIVE}" ]]; then
+            archive_head=ABSENT
+            archive=ABSENT_BEFORE_CREATE_ONLY_FREEZE
+          else
+            exit 1
+          fi
+          cat > "${out}/resolved.txt" <<EOF
+          commit=${CANDIDATE_SHA}
+          tree=$(git rev-parse HEAD^{tree})
+          workflow-blob=$(git rev-parse HEAD:.github/workflows/afp-publication-p2a-convex-design.yml)
+          run=${GITHUB_RUN_ID}
+          attempt=${GITHUB_RUN_ATTEMPT}
+          p1f-base=${P1F_COMMIT}
+          p1f-tree=${P1F_TREE}
+          p2a-branch-head=${branch_head}
+          p2a-archive=${archive}
+          p2a-archive-head=${archive_head}
+          exact-artifact=${EXACT_ID}
+          exact-digest=${EXACT_DIGEST}
+          lean-artifact=${LEAN_ID}
+          lean-digest=${LEAN_DIGEST}
+          source-tar-sha256=${SOURCE_SHA}
+          EOF
+          git diff --check "${P1F_COMMIT}" "${CANDIDATE_SHA}"
+          test -z "$(git status --short)"
+          sha256sum "${out}/resolved.txt" > "${out}/records.sha256"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        id: upload
+        with:
+          name: afp-publication-p2a-final-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/p2a-final
+          if-no-files-found: error
+
+  freeze-create-only-archive:
+    needs: [exact-design-and-regressions, lean-kernel, final-candidate-integrity]
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/agent/afp-publication-p2a-convex-design-ab155b8e' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          ref: ${{ env.CANDIDATE_SHA }}
+          persist-credentials: true
+      - name: Freeze the verified head without moving an archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "${{ needs.exact-design-and-regressions.result }}" = success
+          test "${{ needs.lean-kernel.result }}" = success
+          test "${{ needs.final-candidate-integrity.result }}" = success
+          test "$(git rev-parse HEAD)" = "${CANDIDATE_SHA}"
+          test "$(git ls-remote --exit-code --heads origin "refs/heads/${P2A_BRANCH}" | awk 'NR==1 {print $1}')" = "${CANDIDATE_SHA}"
+          set +e
+          line=$(git ls-remote --exit-code --heads origin "refs/heads/${P2A_ARCHIVE}"); status=$?
+          set -e
+          if [[ ${status} -eq 0 ]]; then
+            test "$(awk 'NR==1 {print $1}' <<<"${line}")" = "${CANDIDATE_SHA}"
+          elif [[ ${status} -eq 2 ]]; then
+            git push --force-with-lease="refs/heads/${P2A_ARCHIVE}:" origin \
+              "${CANDIDATE_SHA}:refs/heads/${P2A_ARCHIVE}"
+          else
+            exit 1
+          fi
+          test "$(git ls-remote --exit-code --heads origin "refs/heads/${P2A_ARCHIVE}" | awk 'NR==1 {print $1}')" = "${CANDIDATE_SHA}"
+          printf 'archive=%s\ncommit=%s\ntree=%s\nmode=create-only-absent-ref-lease\n' \
+            "${P2A_ARCHIVE}" "${CANDIDATE_SHA}" "$(git rev-parse HEAD^{tree})" >> "${GITHUB_STEP_SUMMARY}"

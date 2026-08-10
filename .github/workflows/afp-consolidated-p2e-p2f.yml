@@ -1,0 +1,292 @@
+name: AFP consolidated P2E-P2F and Math import
+
+on:
+  push:
+    branches:
+      - agent/afp-consolidated-p2e-p2f-e60f5c7
+      - archive/afp-consolidated-p2e-p2f-verified
+  pull_request:
+    branches:
+      - testing
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  actions: read
+  contents: read
+
+env:
+  BASE_HELDOUT_SHA: e60f5c7d6bb6dd3cf7557d504716d7f13403dd72
+  P2D_ARCHIVE_SHA: d46979d2aa52d502915eea2355a64cb788aae4f6
+  P2E_PREREG_SHA: df6f0e285cb176f183930815967e43c36166928a
+  FINAL_BRANCH: agent/afp-consolidated-p2e-p2f-e60f5c7
+  FINAL_ARCHIVE: archive/afp-consolidated-p2e-p2f-verified
+  CANDIDATE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+  OMP_NUM_THREADS: '1'
+  OPENBLAS_NUM_THREADS: '1'
+  OPENBLAS_CORETYPE: Haswell
+  MKL_NUM_THREADS: '1'
+  NUMEXPR_NUM_THREADS: '1'
+  PYTHONHASHSEED: '0'
+  GIT_NO_REPLACE_OBJECTS: '1'
+
+jobs:
+  provenance-and-numerical:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.CANDIDATE_SHA }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Verify linear ancestry, frozen refs, and consolidation scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${CANDIDATE_SHA}"
+          git merge-base --is-ancestor "${BASE_HELDOUT_SHA}" HEAD
+          test "$(git rev-list --count --merges "${BASE_HELDOUT_SHA}..HEAD")" -eq 0
+          test "$(git ls-remote --heads origin refs/heads/archive/afp-publication-p2d-complete-verified | awk 'NR==1 {print $1}')" = "${P2D_ARCHIVE_SHA}"
+          test "$(git ls-remote --heads origin refs/heads/archive/afp-publication-p2e-preregistered | awk 'NR==1 {print $1}')" = "${P2E_PREREG_SHA}"
+          python - <<'PY'
+          import os, subprocess
+          base = os.environ['BASE_HELDOUT_SHA']
+          changed = subprocess.check_output(
+              ['git', 'diff', '--name-only', '-z', base, 'HEAD']
+          ).split(b'\0')
+          allowed_prefixes = (
+              '.github/workflows/afp-consolidated-p2e-p2f.yml',
+              'docs/consolidation/',
+              'docs/publication_program/P2E_',
+              'docs/publication_program/P2F_',
+              'afp_barrier_gate1/benchmarks/p2e/heldout/',
+              'afp_barrier_gate1/benchmarks/p2f/',
+              'afp_barrier_gate1/math_repo_afp/',
+              'afp_barrier_gate1/pure_math/benchmarking/audit.py',
+              'afp_barrier_gate1/pure_math/benchmarking/metrics.py',
+              'afp_barrier_gate1/pure_math/p2f_hts/',
+              'afp_barrier_gate1/pure_math/tests/test_p2e_benchmarking.py',
+              'afp_barrier_gate1/pure_math/tests/test_p2f_hts.py',
+              'afp_barrier_gate1/pure_math/manuscripts/PAPER_II_AFP_HARMONIC_FIDELITY.md',
+          )
+          paths = [os.fsdecode(item) for item in changed if item]
+          outside = [path for path in paths if not any(
+              path == prefix or path.startswith(prefix)
+              for prefix in allowed_prefixes
+          )]
+          if outside:
+              raise SystemExit(f'outside consolidation scope: {outside}')
+          print(f'AFP_CONSOLIDATION_SCOPE:{len(paths)}')
+          PY
+          test -f afp_barrier_gate1/benchmarks/p2e/heldout/P2E_ORIGINAL_WORKFLOW_ARTIFACT.zip
+          git diff --check "${BASE_HELDOUT_SHA}" HEAD
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+
+      - name: Install pinned numerical stack
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check --no-input \
+            'clarabel==0.11.1' 'cvxpy==1.7.3' 'h5py==3.16.0' \
+            'numpy==2.3.2' 'osqp==1.0.4' 'pytest==8.4.2' \
+            'scipy==1.18.0' 'scs==3.2.9' 'sympy==1.14.0'
+          python -m pip freeze --all | sort > "${RUNNER_TEMP}/pip-freeze.txt"
+
+      - name: Retain P2A-P2D and test corrected P2E
+        working-directory: afp_barrier_gate1
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m compileall -q pure_math
+          python -m pure_math.optimization.exact_audit
+          python -m pure_math.dynamics.exact_audit
+          python -m pure_math.codesign.exact_audit
+          python -m pure_math.acceleration.audit > "${RUNNER_TEMP}/p2d-audit.log"
+          grep -Fxq 'P2D_ACCELERATION_AUDIT_PASS' "${RUNNER_TEMP}/p2d-audit.log"
+          python -m pytest -p no:cacheprovider -q \
+            pure_math/tests/test_p2d_acceleration.py \
+            pure_math/tests/test_p2e_benchmarking.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from pure_math.benchmarking.audit import audit_results
+          source = Path('benchmarks/p2e/heldout/P2E_HELDOUT_RESULTS.json')
+          audit = audit_results(json.loads(source.read_text(encoding='utf-8')))
+          checks = audit['checks']
+          assert audit['status'] == 'FAIL'
+          assert checks['worst_degradation_gate'] is False
+          assert checks['acceleration_value_gate'] is True
+          assert checks['acceleration_iteration_reduction'] >= 0.10
+          assert checks['reference_resolved_case_count'] == 2
+          p2e07 = next(row for row in checks['uncertainty_interpretation'] if row['id'] == 'P2E-07')
+          assert not p2e07['resolved_relative_to_reference_uncertainty']
+          committed = json.loads(Path('benchmarks/p2e/heldout/P2E_HELDOUT_AUDIT_CORRECTED.json').read_text())
+          assert committed == audit
+          print('P2E_CORRECTED_NEGATIVE_AUDIT_PASS')
+          PY
+
+      - name: Reproduce and audit P2F twice
+        working-directory: afp_barrier_gate1
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "${RUNNER_TEMP}/p2f-a" "${RUNNER_TEMP}/p2f-b"
+          python -m pure_math.p2f_hts.runner --output "${RUNNER_TEMP}/p2f-a/P2F_RESULTS.json"
+          python -m pure_math.p2f_hts.audit "${RUNNER_TEMP}/p2f-a/P2F_RESULTS.json" --output "${RUNNER_TEMP}/p2f-a/P2F_AUDIT.json"
+          python -m pure_math.p2f_hts.runner --output "${RUNNER_TEMP}/p2f-b/P2F_RESULTS.json"
+          python -m pure_math.p2f_hts.audit "${RUNNER_TEMP}/p2f-b/P2F_RESULTS.json" --output "${RUNNER_TEMP}/p2f-b/P2F_AUDIT.json"
+          cmp "${RUNNER_TEMP}/p2f-a/P2F_RESULTS.json" "${RUNNER_TEMP}/p2f-b/P2F_RESULTS.json"
+          cmp "${RUNNER_TEMP}/p2f-a/P2F_AUDIT.json" "${RUNNER_TEMP}/p2f-b/P2F_AUDIT.json"
+          python - benchmarks/p2f/P2F_RESULTS.json "${RUNNER_TEMP}/p2f-a/P2F_RESULTS.json" <<'PY'
+          import json, math, pathlib, sys
+          from pure_math.p2f_hts.audit import audit_results
+
+          committed = json.loads(pathlib.Path(sys.argv[1]).read_text())
+          reproduced = json.loads(pathlib.Path(sys.argv[2]).read_text())
+          direction_only = {
+              'scientific_sha256',
+              'optimized_improves',
+              'observed_direction_matches_H2_prediction',
+          }
+
+          def compare(left, right, path='root'):
+              if isinstance(left, dict) and isinstance(right, dict):
+                  left_keys = set(left) - direction_only
+                  right_keys = set(right) - direction_only
+                  assert left_keys == right_keys, (path, left_keys ^ right_keys)
+                  for key in sorted(left_keys):
+                      compare(left[key], right[key], f'{path}.{key}')
+              elif isinstance(left, list) and isinstance(right, list):
+                  assert len(left) == len(right), (path, len(left), len(right))
+                  for index, (a, b) in enumerate(zip(left, right, strict=True)):
+                      compare(a, b, f'{path}[{index}]')
+              elif (
+                  isinstance(left, (int, float)) and not isinstance(left, bool)
+                  and isinstance(right, (int, float)) and not isinstance(right, bool)
+              ):
+                  assert math.isclose(float(left), float(right), rel_tol=5e-9, abs_tol=1e-13), (
+                      path, left, right
+                  )
+              else:
+                  assert left == right, (path, left, right)
+
+          compare(committed, reproduced)
+          for label, payload in [('committed', committed), ('reproduced', reproduced)]:
+              audit = audit_results(payload)
+              assert audit['status'] == 'PASS', (label, audit)
+              assert audit['scientific_outcome'] == 'BOUNDED_NEGATIVE'
+              assert audit['checks']['resolved_improvement_count'] == 0
+          print('P2F_CROSS_RUNNER_SEMANTIC_REPRODUCTION_PASS')
+          PY
+          python -m pytest -p no:cacheprovider -q pure_math/tests/test_p2f_hts.py
+          grep -Fq '"scientific_outcome": "BOUNDED_NEGATIVE"' benchmarks/p2f/P2F_AUDIT.json
+
+      - name: Verify imported Math angular blobs and direct tests
+        working-directory: afp_barrier_gate1
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, subprocess
+          from pathlib import Path
+          root = Path('math_repo_afp')
+          payload = json.loads((root / 'PROVENANCE.json').read_text())
+          assert payload['source_commit'] == 'ccc75ff90ddd8348aa805178f9f1925b9b10cd16'
+          for row in payload['files']:
+              path = root / row['source_path']
+              actual = subprocess.check_output(['git', 'hash-object', str(path)], text=True).strip()
+              assert actual == row['source_blob_sha'], (path, actual, row['source_blob_sha'])
+          print(f"MATH_AFP_BLOBS_EXACT:{len(payload['files'])}")
+          PY
+          PYTHONPATH=math_repo_afp/src python -m pytest -p no:cacheprovider -q \
+            math_repo_afp/tests/test_angular.py \
+            math_repo_afp/tests/test_sn2d.py \
+            math_repo_afp/tests/test_adaptive_sn2d.py \
+            math_repo_afp/tests/test_v02_global_graph.py \
+            math_repo_afp/tests/test_v02_sn3d.py
+
+      - name: Package exact evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/afp-consolidated"; mkdir -p "${out}"
+          git archive --format=tar.gz --output="${out}/source-${CANDIDATE_SHA}.tar.gz" "${CANDIDATE_SHA}"
+          cp afp_barrier_gate1/benchmarks/p2e/heldout/P2E_ORIGINAL_WORKFLOW_ARTIFACT.zip "${out}/"
+          cp afp_barrier_gate1/benchmarks/p2f/P2F_RESULTS.json "${out}/"
+          cp afp_barrier_gate1/benchmarks/p2f/P2F_AUDIT.json "${out}/"
+          cp "${RUNNER_TEMP}/p2f-a/P2F_RESULTS.json" "${out}/P2F_RESULTS_CI_REPRODUCED.json"
+          cp "${RUNNER_TEMP}/p2f-a/P2F_AUDIT.json" "${out}/P2F_AUDIT_CI_REPRODUCED.json"
+          cp "${RUNNER_TEMP}/pip-freeze.txt" "${out}/"
+          printf 'repository=%s\nhead=%s\ntree=%s\nbase=%s\n' \
+            "${GITHUB_REPOSITORY}" "${CANDIDATE_SHA}" "$(git rev-parse HEAD^{tree})" "${BASE_HELDOUT_SHA}" \
+            > "${out}/provenance.txt"
+          (cd "${out}" && find . -maxdepth 1 -type f ! -name records.sha256 -print0 | sort -z | xargs -0 sha256sum > records.sha256)
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: afp-consolidated-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/afp-consolidated
+          if-no-files-found: error
+          retention-days: 90
+
+  retained-lean:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.CANDIDATE_SHA }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9
+        with:
+          lake-package-directory: afp_barrier_gate1
+          build: false
+          test: false
+          lint: false
+          nanoda: false
+          use-mathlib-cache: false
+          use-github-cache: false
+      - name: Build full formal project and focused axiom audits
+        working-directory: afp_barrier_gate1
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake update
+          lake exe cache get
+          lake build
+          lake build AFPBarrier.AccelerationFixedPoint
+          lake env lean AFPBarrier/P2DAccelerationAxiomAudit.lean
+          ! grep -R -nE '(^|[^[:alnum:]_])(sorry|admit|sorryAx)([^[:alnum:]_]|$)' AFPBarrier
+          git diff --check
+          test -z "$(git status --short)"
+
+  final-integrity:
+    needs: [provenance-and-numerical, retained-lean]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.CANDIDATE_SHA }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify exact tested refs and clean tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${CANDIDATE_SHA}"
+          git merge-base --is-ancestor "${BASE_HELDOUT_SHA}" HEAD
+          test "$(git rev-list --count --merges "${BASE_HELDOUT_SHA}..HEAD")" -eq 0
+          if [[ "${GITHUB_REF}" = "refs/heads/${FINAL_ARCHIVE}" ]]; then
+            test "$(git ls-remote --heads origin "refs/heads/${FINAL_ARCHIVE}" | awk 'NR==1 {print $1}')" = "${CANDIDATE_SHA}"
+          fi
+          git diff --check
+          test -z "$(git status --short)"

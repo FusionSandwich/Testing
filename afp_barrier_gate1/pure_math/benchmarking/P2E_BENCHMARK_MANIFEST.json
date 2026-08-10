@@ -1,0 +1,144 @@
+{
+  "ablations": [
+    "remove_H2_objective",
+    "remove_rate_cap",
+    "remove_rotation_penalty",
+    "alter_graph_locality",
+    "alter_quadrature_separate_codesign",
+    "signed_higher_accuracy",
+    "accelerator_only_unchanged_production_operator"
+  ],
+  "comparison_firewall": {
+    "accelerator_only": "high-order production matrix and right-hand side remain unchanged",
+    "operator_quality": "baseline and optimized use identical product-4x8 nodes, masses, spatial meshes, energy groups, material coefficients, sources, solver tolerances, and reference definitions",
+    "quadrature_changes": "reported only in co_design_ablation",
+    "signed_operator": "accuracy comparator only; positivity and production eligibility are not claimed"
+  },
+  "heldout_firewall": "No heldout function may be executed before this manifest and the operator registry are committed to the real P2D-descendant branch.",
+  "mandatory_hierarchy": [
+    {
+      "id": "P2E-01",
+      "name": "individual Y_lm decay",
+      "reference": "analytic shell decay"
+    },
+    {
+      "id": "P2E-02",
+      "name": "random band-limited data",
+      "reference": "analytic shell decay with frozen coefficients"
+    },
+    {
+      "id": "P2E-03",
+      "name": "narrow-beam angular diffusion",
+      "reference": "fine sampled spectral Laplace-Beltrami solution"
+    },
+    {
+      "id": "P2E-04",
+      "name": "published-geometry 10 MeV electron water deposition",
+      "reference": "fine-angular spectral BFP verification solution",
+      "scope": "published geometry and grouping; frozen positive surrogate coefficients, not Radiant cross sections"
+    },
+    {
+      "id": "P2E-05",
+      "name": "forward-elastic neutron BFP",
+      "reference": "fine-angular full positive reversible Boltzmann kernel"
+    },
+    {
+      "id": "P2E-06",
+      "name": "proton multiple scattering layered target",
+      "reference": "fine-angular spectral BFP solution"
+    },
+    {
+      "id": "P2E-07",
+      "name": "oblique HTS tape stack",
+      "reference": "fine-angular spectral BFP solution",
+      "scope": "charged layered benchmark; P2F adds neutral and secondary physics"
+    }
+  ],
+  "operator_registry_sha256": "0380a84199eae0818bc135c869a7dfa0a69a3c93bdfcd4ab95415f1922181fa8",
+  "parent_p2d_archive": "archive/afp-publication-p2d-complete-verified",
+  "parent_p2d_sha": "d46979d2aa52d502915eea2355a64cb788aae4f6",
+  "partitions": {
+    "heldout": [
+      "P2E-01",
+      "P2E-02",
+      "P2E-03",
+      "P2E-04",
+      "P2E-05",
+      "P2E-06",
+      "P2E-07"
+    ],
+    "training": [
+      "P2E-01",
+      "P2E-02",
+      "P2E-03",
+      "P2E-04",
+      "P2E-05",
+      "P2E-06",
+      "P2E-07"
+    ],
+    "validation": [
+      "P2E-01",
+      "P2E-02",
+      "P2E-03",
+      "P2E-04",
+      "P2E-05",
+      "P2E-06",
+      "P2E-07"
+    ]
+  },
+  "reference_uncertainty_rule": "absolute response difference between declared fine and medium independent angular references; analytic cases use zero reference uncertainty",
+  "required_case_fields": [
+    "conservation and positivity",
+    "H0/H1 exactness",
+    "H2 and higher-shell defects",
+    "scalar current tensor and q_normal errors",
+    "response error",
+    "rotation spread when directionally applicable",
+    "rate/stiffness",
+    "iterations runtime memory",
+    "equal-direction error",
+    "equal-wall-time error",
+    "wall time at equal response error"
+  ],
+  "schema": "afp-p2e-benchmark-manifest-v1",
+  "scientific_sha256": "c947d2b0954210af640780ba35240d4271cf66c60e5bcd623f8bdb23725499db",
+  "software": {
+    "blas_threads": 1,
+    "numpy": "2.3.2",
+    "pytest": "8.4.2",
+    "python": "3.12.x",
+    "random_seed": 20260807,
+    "scipy": "1.18.0"
+  },
+  "source_file_sha256": {
+    "__init__.py": "9e1cf9216ac2ee50ac80742e193aa3bdfa845eedd93d76aca49fe4a6e590ae72",
+    "ablations.py": "23f147c201cca7463bdba1ef3b14af23d6d5ea70680aea38f8fcc89be1befe21",
+    "audit.py": "60dd124b4a8191f6e276c887ad22bfbeda8113ccf974d97196501a94e056a4f8",
+    "cases.py": "a12ef959e9230cce13095cf9cab05517535096c4c6f01f7b24501bbe1de51c2c",
+    "manifest.py": "bd0a3c99f1df670ebb64ceeed42c173b0a20d37498b18565a6557f674c02e366",
+    "metrics.py": "c406fdb877b9369d9e6758c7f9c622c1936d346a5e2748a56f8b60bb7a728024",
+    "operators.py": "505fe7a7905dfeb2bc9f2f7024eb7bc5b96f73a134e5a0f3d858dc513f8d1461",
+    "runner.py": "3d6808d7d87815ac8673b9404656eb8a94c391c43e235544bd8ffddb7fe0d6ad",
+    "slab.py": "5ebfd37915a4991254fc544e76052a4e2294b068a4c050d1af2d502573d1385c"
+  },
+  "sources": {
+    "HTS_geometry": "Torsello et al. 2025 roadmap ranges: 2-12 mm width, 50-150 um total, 1-2 um REBCO",
+    "P2D": "archive/afp-publication-p2d-complete-verified",
+    "electron_geometry": "Bienvenue et al. 2025 10 MeV water / 40 logarithmic groups / 1 keV cutoff",
+    "forward_peaked_acceleration": "Kuczek, Patel, Vasques 2021 and P2D accepted implementation",
+    "stopping_data_scope": "NIST ESTAR/PSTAR methodology informs coefficient scale and uncertainty, but P2E verification coefficients are frozen surrogates"
+  },
+  "status": "PREREGISTERED_NO_HELDOUT_EXECUTED",
+  "success_criteria": {
+    "acceleration_iteration_reduction_min": 0.1,
+    "angular_geometric_mean_ratio_max": 0.9,
+    "fixed_point_error_max": 5e-08,
+    "maximum_H0_residual": 5e-08,
+    "maximum_H1_residual": 5e-07,
+    "maximum_balance_residual": 5e-06,
+    "median_response_ratio_max": 1.05,
+    "minimum_flux": -2e-09,
+    "minimum_total_cases_improved_by_5pct": 2,
+    "worst_response_ratio_max": 1.8
+  }
+}

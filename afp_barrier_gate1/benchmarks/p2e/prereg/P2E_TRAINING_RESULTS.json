@@ -1,0 +1,1622 @@
+{
+  "ablations": {
+    "accelerator_only_unchanged_production_operator": {
+      "h2_poor_positive": {
+        "converged": true,
+        "fixed_point_error": 1.717178752136819e-10,
+        "iterations": 24,
+        "low_order_solves": 27,
+        "matvecs": 27,
+        "memory_bytes": 8320,
+        "production_operator_unchanged": true,
+        "setup_seconds": 2.757599986580317e-05,
+        "solve_seconds": 0.0032862260000001697
+      },
+      "moment_monotone_baseline": {
+        "converged": true,
+        "fixed_point_error": 7.735260196260033e-11,
+        "iterations": 23,
+        "low_order_solves": 26,
+        "matvecs": 26,
+        "memory_bytes": 8320,
+        "production_operator_unchanged": true,
+        "setup_seconds": 4.872899990004953e-05,
+        "solve_seconds": 0.0030884039997545187
+      },
+      "none": {
+        "converged": true,
+        "fixed_point_error": 3.139341964105457e-10,
+        "iterations": 35,
+        "low_order_solves": 0,
+        "matvecs": 38,
+        "memory_bytes": 0,
+        "production_operator_unchanged": true,
+        "setup_seconds": 0.0,
+        "solve_seconds": 0.004187303999970027
+      },
+      "optimized_harmonic_fidelity": {
+        "converged": true,
+        "fixed_point_error": 6.080900700481129e-11,
+        "iterations": 17,
+        "low_order_solves": 19,
+        "matvecs": 19,
+        "memory_bytes": 8320,
+        "production_operator_unchanged": true,
+        "setup_seconds": 2.9551000352512347e-05,
+        "solve_seconds": 0.002160811000067042
+      }
+    },
+    "co_design_ablation": {
+      "alter_quadrature": {
+        "comparison_scope": "separate co-design study; not a same-node operator-quality comparison",
+        "directions": 24,
+        "node_family": "product_3x8",
+        "q_normal_error": 0.0388878341393174,
+        "response_error": 0.014528054184175021,
+        "runtime_seconds": 0.00014525400001730304,
+        "tensor_error": 0.13508168446492783
+      }
+    },
+    "reference": {
+      "directions": 98,
+      "response": 0.7986012397229356,
+      "type": "fine sampled spectral Laplace-Beltrami"
+    },
+    "same_node_operator_ablations": {
+      "alter_graph_locality": {
+        "memory_bytes": 66742,
+        "method": "alter_graph_locality",
+        "minimum_offdiagonal": 0.0,
+        "minimum_solution": 1.3899517373273096e-06,
+        "positivity_expected": true,
+        "q_normal_error": 0.034066472020381044,
+        "response_error": 0.01937076725135023,
+        "runtime_seconds": 0.00014665199978480814,
+        "same_nodes_as_production": true,
+        "tensor_error": 0.2290414610392433
+      },
+      "production": {
+        "memory_bytes": 66742,
+        "method": "optimized_harmonic_fidelity",
+        "minimum_offdiagonal": 0.0,
+        "minimum_solution": 1.178854030279328e-06,
+        "positivity_expected": true,
+        "q_normal_error": 0.03411361426402926,
+        "response_error": 0.01938962414881107,
+        "runtime_seconds": 0.0002061820000562875,
+        "same_nodes_as_production": true,
+        "tensor_error": 0.22869464428269298
+      },
+      "remove_H2_objective": {
+        "memory_bytes": 66742,
+        "method": "no_h2_objective",
+        "minimum_offdiagonal": 0.0,
+        "minimum_solution": 1.424537874690307e-05,
+        "positivity_expected": true,
+        "q_normal_error": 0.027977560342818952,
+        "response_error": 0.016935202580325104,
+        "runtime_seconds": 0.00015943699963827385,
+        "same_nodes_as_production": true,
+        "tensor_error": 0.2256787921757484
+      },
+      "remove_rate_cap": {
+        "memory_bytes": 66742,
+        "method": "remove_rate_cap",
+        "minimum_offdiagonal": 0.0,
+        "minimum_solution": 9.198455098530311e-07,
+        "positivity_expected": true,
+        "q_normal_error": 0.03697355984840578,
+        "response_error": 0.020533602382559968,
+        "runtime_seconds": 0.00014676799992230372,
+        "same_nodes_as_production": true,
+        "tensor_error": 0.2310637790147841
+      },
+      "remove_rotation_penalty": {
+        "memory_bytes": 66742,
+        "method": "remove_rotation_penalty",
+        "minimum_offdiagonal": 0.0,
+        "minimum_solution": 1.4375577713865895e-06,
+        "positivity_expected": true,
+        "q_normal_error": 0.03405626682778751,
+        "response_error": 0.01936668517431661,
+        "runtime_seconds": 0.0001426210001227446,
+        "same_nodes_as_production": true,
+        "tensor_error": 0.229117479005653
+      },
+      "signed_higher_accuracy": {
+        "memory_bytes": 66742,
+        "method": "signed_higher_accuracy",
+        "minimum_offdiagonal": -2.4155135889603763,
+        "minimum_solution": -0.5738237940078625,
+        "positivity_expected": false,
+        "q_normal_error": 0.04145005411490493,
+        "response_error": 0.022324200089159696,
+        "runtime_seconds": 0.00014185999998517218,
+        "same_nodes_as_production": true,
+        "tensor_error": 0.2248145531991866
+      }
+    }
+  },
+  "accelerator_only_ablation": {
+    "h2_poor_positive": {
+      "converged": true,
+      "fixed_point_error": 1.717178752136819e-10,
+      "iterations": 24,
+      "low_order_solves": 27,
+      "matvecs": 27,
+      "memory_bytes": 8320,
+      "production_operator_unchanged": true,
+      "setup_seconds": 2.428599964332534e-05,
+      "solve_seconds": 0.0021367360000112967
+    },
+    "moment_monotone_baseline": {
+      "converged": true,
+      "fixed_point_error": 7.735260196260033e-11,
+      "iterations": 23,
+      "low_order_solves": 26,
+      "matvecs": 26,
+      "memory_bytes": 8320,
+      "production_operator_unchanged": true,
+      "setup_seconds": 9.107500000027358e-05,
+      "solve_seconds": 0.002230064000286802
+    },
+    "none": {
+      "converged": true,
+      "fixed_point_error": 3.139341964105457e-10,
+      "iterations": 35,
+      "low_order_solves": 0,
+      "matvecs": 38,
+      "memory_bytes": 0,
+      "production_operator_unchanged": true,
+      "setup_seconds": 0.0,
+      "solve_seconds": 0.0028634580003199517
+    },
+    "optimized_harmonic_fidelity": {
+      "converged": true,
+      "fixed_point_error": 6.080900700481129e-11,
+      "iterations": 17,
+      "low_order_solves": 19,
+      "matvecs": 19,
+      "memory_bytes": 8320,
+      "production_operator_unchanged": true,
+      "setup_seconds": 2.8406000183167635e-05,
+      "solve_seconds": 0.0015762079997330147
+    }
+  },
+  "aggregate": {
+    "aggregate_error_geometric_mean_ratio": 0.9078028148138113,
+    "angular_geometric_mean_ratio": 0.679435555733349,
+    "best_response_ratio": 0.4166915862442132,
+    "case_count": 7,
+    "physical_geometric_mean_ratio": 1.1713513622974658,
+    "response_cases_improved": 4,
+    "response_cases_improved_by_5pct": 2,
+    "response_error_geometric_mean_ratio": 0.9274988195482927,
+    "response_error_median_ratio": 0.9999999999999486,
+    "worst_response_ratio": 1.7260523979101332
+  },
+  "cases": [
+    {
+      "category": "individual_Ylm_decay",
+      "direction_count": 32,
+      "equal_cost_equal_error": {
+        "equal_direction_count": {
+          "baseline_error": 0.11257676204638391,
+          "directions": 32,
+          "optimized_error": 0.04672473804249203,
+          "optimized_to_baseline_ratio": 0.41504780554303466
+        },
+        "equal_wall_time": {
+          "baseline_error": 0.11257676204638391,
+          "budget_seconds": 0.0004613150003933697,
+          "note": "same-node methods both completed within the common measured budget",
+          "optimized_error": 0.04672473804249203
+        },
+        "wall_time_at_equal_response_error": {
+          "baseline_seconds": null,
+          "baseline_status": "not_reached_same_nodes",
+          "optimized_seconds": 0.00020383899982334697,
+          "optimized_status": "reached",
+          "target_error": 0.04672473804249203
+        }
+      },
+      "id": "P2E-01",
+      "methods": {
+        "moment_monotone_baseline": {
+          "aggregate_error": 0.11257676204638391,
+          "angular_l2_error": 0.020007819952917776,
+          "conservation_residual": 1.7763568394002505e-15,
+          "current_error": 1.4176124795464318e-17,
+          "h0_residual": 1.7763568394002505e-15,
+          "h1_residual": 1.0311580682032346e-14,
+          "input_nonnegative": false,
+          "iterations": 1,
+          "linear_response_value": 0.1974570594896266,
+          "linear_solves": 0,
+          "mass_error": 5.927335795861481e-20,
+          "matvecs": 1,
+          "memory_bytes": 66814,
+          "minimum_flux": -0.32916777824541116,
+          "minimum_offdiagonal": 0.0,
+          "positive_generator": true,
+          "positivity": true,
+          "positivity_applicable": false,
+          "q_normal_error": 0.003328680991560213,
+          "rate_max": 5.614348654684913,
+          "response": {
+            "current": [
+              2.5370330836160804e-17,
+              1.0842021724855044e-18,
+              -1.1275702593849246e-17
+            ],
+            "q_normal": 0.03331155398718303,
+            "response": 0.01332462159487321,
+            "scalar": -2.806741627902782e-18,
+            "tensor": [
+              [
+                7.549213794795838e-18,
+                -3.2526065174565133e-18,
+                0.050983193532960734
+              ],
+              [
+                -2.927345865710862e-18,
+                -5.8948931440244175e-18,
+                3.469446951953614e-18
+              ],
+              [
+                0.050983193532960734,
+                3.469446951953614e-18,
+                5.018996736400589e-19
+              ]
+            ]
+          },
+          "response_error": 0.01973103869082138,
+          "reversibility_residual": 6.938893903907228e-18,
+          "runtime_seconds": 0.0004613150003933697,
+          "scalar_error": 1.9393798899143786e-18,
+          "shell_defects": {
+            "2": 1.3879745242638535,
+            "3": 6.766766963624131,
+            "4": 14.315956272685204,
+            "5": 24.607066658505467,
+            "6": 37.28964703805526
+          },
+          "stiffness": 5.614348654684913,
+          "tensor_error": 0.00720475664931338
+        },
+        "optimized_harmonic_fidelity": {
+          "aggregate_error": 0.04672473804249203,
+          "angular_l2_error": 0.008304201765158666,
+          "conservation_residual": 2.6645352591003757e-15,
+          "current_error": 4.105291117088334e-16,
+          "h0_residual": 2.6645352591003757e-15,
+          "h1_residual": 1.2837508833740685e-12,
+          "input_nonnegative": false,
+          "iterations": 1,
+          "linear_response_value": 0.18594777860912953,
+          "linear_solves": 0,
+          "mass_error": 1.896162261255223e-18,
+          "matvecs": 1,
+          "memory_bytes": 66742,
+          "minimum_flux": -0.3134592756839157,
+          "minimum_offdiagonal": 0.0,
+          "positive_generator": true,
+          "positivity": true,
+          "positivity_applicable": false,
+          "q_normal_error": 0.001387660526980767,
+          "rate_max": 9.825110145698876,
+          "response": {
+            "current": [
+              4.180683577104105e-16,
+              6.136584296267955e-17,
+              1.474514954580286e-17
+            ],
+            "q_normal": 0.031370533522603584,
+            "response": 0.012548213409041468,
+            "scalar": -9.698527246061739e-19,
+            "tensor": [
+              [
+                3.9970984826497094e-06,
+                -1.9358887435204017e-06,
+                0.04801150998782817
+              ],
+              [
+                -1.9358887435208354e-06,
+                -3.997098482736666e-06,
+                -2.254404562335166e-12
+              ],
+              [
+                0.04801150998782817,
+                -2.2544039118138626e-12,
+                8.619209630238735e-17
+              ]
+            ]
+          },
+          "response_error": 0.008221757810324304,
+          "reversibility_residual": 1.5612511283791264e-17,
+          "runtime_seconds": 0.00020383899982334697,
+          "scalar_error": 1.0249098661777044e-19,
+          "shell_defects": {
+            "2": 0.9325380771199195,
+            "3": 4.230440796430389,
+            "4": 10.759228918501343,
+            "5": 22.278019114917175,
+            "6": 36.932538077119915
+          },
+          "stiffness": 9.825110145698876,
+          "tensor_error": 0.0030021680467855615
+        }
+      },
+      "optimized_to_baseline_aggregate_error_ratio": 0.41504780554303466,
+      "optimized_to_baseline_response_error_ratio": 0.4166915862442132,
+      "partition": "training",
+      "reference": {
+        "degree": 2,
+        "order_index": 1,
+        "type": "analytic_harmonic_decay",
+        "uncertainty": 0.0
+      },
+      "reference_response": {
+        "current": [
+          1.2576745200831851e-17,
+          4.336808689942018e-19,
+          -5.204170427930421e-18
+        ],
+        "q_normal": 0.029982872995622818,
+        "response": 0.011993149198249129,
+        "scalar": -8.6736173798840345e-19,
+        "tensor": [
+          [
+            5.059610138265687e-19,
+            -1.0842021724855044e-18,
+            0.045888661249432375
+          ],
+          [
+            -1.734723475976807e-18,
+            2.8912057932946783e-19,
+            2.6020852139652106e-18
+          ],
+          [
+            0.045888661249432375,
+            2.168404344971009e-18,
+            7.228014483236696e-19
+          ]
+        ]
+      },
+      "same_nodes": true,
+      "same_spatial_energy_discretization": true
+    },
+    {
+      "category": "random_band_limited_data",
+      "direction_count": 32,
+      "equal_cost_equal_error": {
+        "equal_direction_count": {
+          "baseline_error": 0.04980165591954963,
+          "directions": 32,
+          "optimized_error": 0.040232007656475,
+          "optimized_to_baseline_ratio": 0.8078447777211748
+        },
+        "equal_wall_time": {
+          "baseline_error": 0.04980165591954963,
+          "budget_seconds": 0.00019206999968446326,
+          "note": "same-node methods both completed within the common measured budget",
+          "optimized_error": 0.040232007656475
+        },
+        "wall_time_at_equal_response_error": {
+          "baseline_seconds": null,
+          "baseline_status": "not_reached_same_nodes",
+          "optimized_seconds": 0.00018231900003229384,
+          "optimized_status": "reached",
+          "target_error": 0.040232007656475
+        }
+      },
+      "id": "P2E-02",
+      "methods": {
+        "moment_monotone_baseline": {
+          "aggregate_error": 0.04980165591954963,
+          "angular_l2_error": 0.02912351242672247,
+          "conservation_residual": 1.7763568394002505e-15,
+          "current_error": 2.893662274657725e-17,
+          "h0_residual": 1.7763568394002505e-15,
+          "h1_residual": 1.0311580682032346e-14,
+          "input_nonnegative": true,
+          "iterations": 1,
+          "linear_response_value": 0.5892381777402179,
+          "linear_solves": 0,
+          "mass_error": 0.0,
+          "matvecs": 1,
+          "memory_bytes": 66766,
+          "minimum_flux": 0.10802039161154786,
+          "minimum_offdiagonal": 0.0,
+          "positive_generator": true,
+          "positivity": true,
+          "positivity_applicable": true,
+          "q_normal_error": 0.0005352971382138055,
+          "rate_max": 5.614348654684913,
+          "response": {
+            "current": [
+              -0.05765959330903191,
+              0.005931569964156545,
+              0.03804356556222763
+            ],
+            "q_normal": 0.016984971013130176,
+            "response": 0.21238632340744806,
+            "scalar": 0.5525672336136931,
+            "tensor": [
+              [
+                -0.02386578385004809,
+                -0.006885277523370906,
+                0.016274938253863582
+              ],
+              [
+                -0.006885277523370904,
+                0.017939907355214613,
+                0.01608467181691755
+              ],
+              [
+                0.016274938253863582,
+                0.016084671816917546,
+                0.0059258764948333376
+              ]
+            ]
+          },
+          "response_error": 0.0076395942412460505,
+          "reversibility_residual": 6.938893903907228e-18,
+          "runtime_seconds": 0.00019206999968446326,
+          "scalar_error": 0.0,
+          "shell_defects": {
+            "2": 1.3879745242638535,
+            "3": 6.766766963624131,
+            "4": 14.315956272685204,
+            "5": 24.607066658505467,
+            "6": 37.28964703805526
+          },
+          "stiffness": 5.614348654684913,
+          "tensor_error": 0.0018458677889472196
+        },
+        "optimized_harmonic_fidelity": {
+          "aggregate_error": 0.040232007656475,
+          "angular_l2_error": 0.023527277422825486,
+          "conservation_residual": 2.6645352591003757e-15,
+          "current_error": 6.384371604714059e-16,
+          "h0_residual": 2.6645352591003757e-15,
+          "h1_residual": 1.2837508833740685e-12,
+          "input_nonnegative": true,
+          "iterations": 1,
+          "linear_response_value": 0.5875650091594864,
+          "linear_solves": 0,
+          "mass_error": 1.1102230246251565e-16,
+          "matvecs": 1,
+          "memory_bytes": 66742,
+          "minimum_flux": 0.10630879402465371,
+          "minimum_offdiagonal": 0.0,
+          "positive_generator": true,
+          "positivity": true,
+          "positivity_applicable": true,
+          "q_normal_error": 0.0003451617021335493,
+          "rate_max": 9.825110145698876,
+          "response": {
+            "current": [
+              -0.05765959330903135,
+              0.005931569964156346,
+              0.03804356556222735
+            ],
+            "q_normal": 0.01679483557704992,
+            "response": 0.21231026923301574,
+            "scalar": 0.552567233613693,
+            "tensor": [
+              [
+                -0.02367848515548468,
+                -0.0068482475363993,
+                0.015789932260293696
+              ],
+              [
+                -0.006848247536399299,
+                0.017752608660651398,
+                0.01568745280316334
+              ],
+              [
+                0.015789932260293703,
+                0.01568745280316334,
+                0.005925876494833282
+              ]
+            ]
+          },
+          "response_error": 0.005966425660514529,
+          "reversibility_residual": 1.5612511283791264e-17,
+          "runtime_seconds": 0.00018231900003229384,
+          "scalar_error": 1.1102230246251565e-16,
+          "shell_defects": {
+            "2": 0.9325380771199195,
+            "3": 4.230440796430389,
+            "4": 10.759228918501343,
+            "5": 22.278019114917175,
+            "6": 36.932538077119915
+          },
+          "stiffness": 9.825110145698876,
+          "tensor_error": 0.0010086918240183548
+        }
+      },
+      "optimized_to_baseline_aggregate_error_ratio": 0.8078447777211748,
+      "optimized_to_baseline_response_error_ratio": 0.7809872451473784,
+      "partition": "training",
+      "reference": {
+        "coefficient_l2": 0.8828055065600281,
+        "maximum_degree": 4,
+        "seed": 1027,
+        "type": "analytic_shell_decay",
+        "uncertainty": 0.0
+      },
+      "reference_response": {
+        "current": [
+          -0.057659593309031885,
+          0.005931569964156549,
+          0.038043565562227634
+        ],
+        "q_normal": 0.01644967387491637,
+        "response": 0.21217220455216254,
+        "scalar": 0.5525672336136931,
+        "tensor": [
+          [
+            -0.023079720491810035,
+            -0.006699311017201162,
+            0.015447493262414133
+          ],
+          [
+            -0.006699311017201161,
+            0.01732377442144059,
+            0.015398254072651928
+          ],
+          [
+            0.01544749326241414,
+            0.015398254072651928,
+            0.005755946070369333
+          ]
+        ]
+      },
+      "same_nodes": true,
+      "same_spatial_energy_discretization": true
+    },
+    {
+      "category": "narrow_beam_angular_diffusion",
+      "direction_count": 32,
+      "equal_cost_equal_error": {
+        "equal_direction_count": {
+          "baseline_error": 0.21635913341276206,
+          "directions": 32,
+          "optimized_error": 0.21153283830430605,
+          "optimized_to_baseline_ratio": 0.9776931297869058
+        },
+        "equal_wall_time": {
+          "baseline_error": 0.21635913341276206,
+          "budget_seconds": 0.00025350100031573675,
+          "note": "same-node methods both completed within the common measured budget",
+          "optimized_error": 0.21153283830430605
+        },
+        "wall_time_at_equal_response_error": {
+          "baseline_seconds": null,
+          "baseline_status": "not_reached_same_nodes",
+          "optimized_seconds": 0.0002162539999517321,
+          "optimized_status": "reached",
+          "target_error": 0.21153283830430605
+        }
+      },
+      "id": "P2E-03",
+      "methods": {
+        "moment_monotone_baseline": {
+          "aggregate_error": 0.21635913341276206,
+          "angular_l2_error": null,
+          "conservation_residual": 1.7763568394002505e-15,
+          "current_error": 0.1920340063758389,
+          "h0_residual": 1.7763568394002505e-15,
+          "h1_residual": 1.0311580682032346e-14,
+          "input_nonnegative": true,
+          "iterations": 1,
+          "linear_response_value": null,
+          "linear_solves": 0,
+          "mass_error": 0.0,
+          "matvecs": 1,
+          "memory_bytes": 66742,
+          "minimum_flux": 3.34850087229898e-05,
+          "minimum_offdiagonal": 0.0,
+          "positive_generator": true,
+          "positivity": true,
+          "positivity_applicable": true,
+          "q_normal_error": 0.04849004115942063,
+          "rate_max": 5.614348654684913,
+          "response": {
+            "current": [
+              0.35864362684085854,
+              0.179672558715537,
+              0.8267024186470162
+            ],
+            "q_normal": 0.26793675304027076,
+            "response": 0.6437547045580073,
+            "scalar": 1.0,
+            "tensor": [
+              [
+                -0.1493582921015984,
+                0.04689002178625874,
+                0.29123289661473506
+              ],
+              [
+                0.04689002178625874,
+                -0.21876416063465737,
+                0.14590121628118552
+              ],
+              [
+                0.29123289661473506,
+                0.14590121628118552,
+                0.3681224527362558
+              ]
+            ]
+          },
+          "response_error": 0.02544962156524011,
+          "reversibility_residual": 6.938893903907228e-18,
+          "rotation_responses": [
+            0.5251891763629007,
+            0.6585069499577776,
+            0.3200561810668463,
+            0.6991930962658441
+          ],
+          "rotation_spread": 0.37913691519899784,
+          "runtime_seconds": 0.00025350100031573675,
+          "scalar_error": 5.551115123125783e-16,
+          "shell_defects": {
+            "2": 1.3879745242638535,
+            "3": 6.766766963624131,
+            "4": 14.315956272685204,
+            "5": 24.607066658505467,
+            "6": 37.28964703805526
+          },
+          "stiffness": 5.614348654684913,
+          "tensor_error": 0.24687735052053367
+        },
+        "optimized_harmonic_fidelity": {
+          "aggregate_error": 0.21153283830430605,
+          "angular_l2_error": null,
+          "conservation_residual": 2.6645352591003757e-15,
+          "current_error": 0.1920340063758343,
+          "h0_residual": 2.6645352591003757e-15,
+          "h1_residual": 1.2837508833740685e-12,
+          "input_nonnegative": true,
+          "iterations": 1,
+          "linear_response_value": null,
+          "linear_solves": 0,
+          "mass_error": 0.0,
+          "matvecs": 1,
+          "memory_bytes": 66742,
+          "minimum_flux": 4.2416015617862924e-06,
+          "minimum_offdiagonal": 0.0,
+          "positive_generator": true,
+          "positivity": true,
+          "positivity_applicable": true,
+          "q_normal_error": 0.04618673977466309,
+          "rate_max": 9.825110145698876,
+          "response": {
+            "current": [
+              0.3586436268408531,
+              0.17967255871553386,
+              0.8267024186470133
+            ],
+            "q_normal": 0.2656334516555132,
+            "response": 0.6428333840041031,
+            "scalar": 1.0,
+            "tensor": [
+              [
+                -0.1503100085378173,
+                0.045605703060889645,
+                0.2875119080202721
+              ],
+              [
+                0.045605703060889645,
+                -0.21781244419843537,
+                0.14400825560497021
+              ],
+              [
+                0.2875119080202721,
+                0.1440082556049702,
+                0.3681224527362527
+              ]
+            ]
+          },
+          "response_error": 0.02452830101133585,
+          "reversibility_residual": 1.5612511283791264e-17,
+          "rotation_responses": [
+            0.5251891763628999,
+            0.6565700631591602,
+            0.32131092248657966,
+            0.6969253911796588
+          ],
+          "rotation_spread": 0.37561446869307913,
+          "runtime_seconds": 0.0002162539999517321,
+          "scalar_error": 5.551115123125783e-16,
+          "shell_defects": {
+            "2": 0.9325380771199195,
+            "3": 4.230440796430389,
+            "4": 10.759228918501343,
+            "5": 22.278019114917175,
+            "6": 36.932538077119915
+          },
+          "stiffness": 9.825110145698876,
+          "tensor_error": 0.24185319750150977
+        }
+      },
+      "optimized_to_baseline_aggregate_error_ratio": 0.9776931297869058,
+      "optimized_to_baseline_response_error_ratio": 0.9637982611433945,
+      "partition": "training",
+      "reference": {
+        "directions": 98,
+        "medium_directions": 72,
+        "type": "fine_sampled_spectral_Laplace_Beltrami",
+        "uncertainty": 0.007224568958909217
+      },
+      "reference_response": {
+        "current": [
+          0.20099423663452143,
+          0.1004971167074084,
+          0.9025639949234373
+        ],
+        "q_normal": 0.21944671188085013,
+        "response": 0.6183050829927672,
+        "scalar": 0.9999999999999994,
+        "tensor": [
+          [
+            -0.23384970168284128,
+            0.014000869947608498,
+            0.1716727015777207
+          ],
+          [
+            0.014000869947608501,
+            -0.2548510138019855,
+            0.08583634969463601
+          ],
+          [
+            0.1716727015777207,
+            0.085836349694636,
+            0.48870071548482674
+          ]
+        ]
+      },
+      "same_nodes": true,
+      "same_spatial_energy_discretization": true
+    },
+    {
+      "category": "published_geometry_10MeV_electron_water_deposition",
+      "direction_count": 32,
+      "equal_cost_equal_error": {
+        "equal_direction_count": {
+          "baseline_error": 0.17413542416656994,
+          "directions": 32,
+          "optimized_error": 0.17413542416659836,
+          "optimized_to_baseline_ratio": 1.0000000000001632
+        },
+        "equal_wall_time": {
+          "baseline_error": 0.17413542416656994,
+          "budget_seconds": 0.08186198899875308,
+          "note": "same-node methods both completed within the common measured budget",
+          "optimized_error": 0.17413542416659836
+        },
+        "wall_time_at_equal_response_error": {
+          "baseline_seconds": 0.08123823700361754,
+          "baseline_status": "reached",
+          "optimized_seconds": 0.08186198899875308,
+          "optimized_status": "reached",
+          "target_error": 0.17413542416656994
+        }
+      },
+      "id": "P2E-04",
+      "methods": {
+        "moment_monotone_baseline": {
+          "aggregate_error": 0.17413542416656994,
+          "conservation_residual": 1.7763568394002505e-15,
+          "current_error": 0.36140010710938864,
+          "deposition_error": 0.15560708945836144,
+          "h0_residual": 1.7763568394002505e-15,
+          "h1_residual": 1.0311580682032346e-14,
+          "input_nonnegative": true,
+          "iterations": 40,
+          "lateral_escape": 0.0,
+          "left_outflow": 2.4449523550386227e-05,
+          "linear_solves": 40,
+          "matrix_nonzeros": 8416,
+          "matvecs": 0,
+          "memory_bytes": 8444,
+          "minimum_flux": 2.1151488272541815e-05,
+          "minimum_offdiagonal": 0.0,
+          "positive_generator": true,
+          "positivity": true,
+          "positivity_applicable": true,
+          "q_normal_error": 0.15215171167894692,
+          "rate_max": 5.614348654684913,
+          "response": {
+            "current": [
+              -9.945747928933693e-16,
+              -3.0646781408923585e-16,
+              2.4793392834200656
+            ],
+            "deposition": 1.345953966057483,
+            "q_normal": 0.4846440695825821,
+            "response": 1.345953966057483,
+            "response_kind": "deposition",
+            "scalar": 7.662735111534603,
+            "tensor": [
+              [
+                -0.2423220347912913,
+                -1.8070036208091705e-19,
+                -4.1235822626865363e-16
+              ],
+              [
+                -4.698209414103854e-18,
+                -0.2423220347912906,
+                1.8431436932253575e-17
+              ],
+              [
+                -4.0766001685454957e-16,
+                5.782411586589352e-18,
+                0.48464406958258205
+              ]
+            ]
+          },
+          "response_error": 0.15560708945836144,
+          "reversibility_residual": 6.938893903907228e-18,
+          "right_outflow": 2.4451900536784212e-05,
+          "runtime_seconds": 0.08123823700361754,
+          "scalar_error": 0.8754553737148125,
+          "shell_defects": {
+            "2": 1.3879745242638535,
+            "3": 6.766766963624131,
+            "4": 14.315956272685204,
+            "5": 24.607066658505467,
+            "6": 37.28964703805526
+          },
+          "stiffness": 5.614348654684913,
+          "tensor_error": 0.18634702855224206,
+          "transport_balance_residual": 4.519296812628461e-16
+        },
+        "optimized_harmonic_fidelity": {
+          "aggregate_error": 0.17413542416659836,
+          "conservation_residual": 2.6645352591003757e-15,
+          "current_error": 0.36140010710944415,
+          "deposition_error": 0.15560708945835344,
+          "h0_residual": 2.6645352591003757e-15,
+          "h1_residual": 1.2837508833740685e-12,
+          "input_nonnegative": true,
+          "iterations": 40,
+          "lateral_escape": 0.0,
+          "left_outflow": 2.4449523550386593e-05,
+          "linear_solves": 40,
+          "matrix_nonzeros": 9952,
+          "matvecs": 0,
+          "memory_bytes": 8444,
+          "minimum_flux": 2.115148827254297e-05,
+          "minimum_offdiagonal": 0.0,
+          "positive_generator": true,
+          "positivity": true,
+          "positivity_applicable": true,
+          "q_normal_error": 0.152151711678978,
+          "rate_max": 9.825110145698876,
+          "response": {
+            "current": [
+              7.522917474152754e-15,
+              -3.943604702053942e-15,
+              2.47933928342001
+            ],
+            "deposition": 1.345953966057491,
+            "q_normal": 0.484644069582551,
+            "response": 1.345953966057491,
+            "response_kind": "deposition",
+            "scalar": 7.662735111534644,
+            "tensor": [
+              [
+                -0.24232203479127323,
+                1.0305341649474718e-15,
+                1.293453191775207e-15
+              ],
+              [
+                1.0204149446709405e-15,
+                -0.2423220347912778,
+                7.48099499014998e-17
+              ],
+              [
+                1.2970671990168254e-15,
+                8.0953762212251e-17,
+                0.48464406958255096
+              ]
+            ]
+          },
+          "response_error": 0.15560708945835344,
+          "reversibility_residual": 1.5612511283791264e-17,
+          "right_outflow": 2.4451900536784588e-05,
+          "runtime_seconds": 0.08186198899875308,
+          "scalar_error": 0.8754553737147717,
+          "shell_defects": {
+            "2": 0.9325380771199195,
+            "3": 4.230440796430389,
+            "4": 10.759228918501343,
+            "5": 22.278019114917175,
+            "6": 36.932538077119915
+          },
+          "stiffness": 9.825110145698876,
+          "tensor_error": 0.18634702855228003,
+          "transport_balance_residual": 3.967819841764273e-16
+        }
+      },
+      "optimized_to_baseline_aggregate_error_ratio": 1.0000000000001632,
+      "optimized_to_baseline_response_error_ratio": 0.9999999999999486,
+      "partition": "training",
+      "reference": {
+        "coefficient_scope": "frozen positive verification surrogate; not Radiant/evaluated cross sections",
+        "fine_directions": 72,
+        "geometry_provenance": "Bienvenue et al. 2025: 10 MeV electron, water, 5 cm, 40 log groups, 1 keV cutoff",
+        "medium_directions": 50,
+        "type": "fine_angular_spectral_reference",
+        "uncertainty": 0.0007174635313846878
+      },
+      "reference_response": {
+        "current": [
+          1.1352500247733635e-16,
+          2.0966550074522547e-15,
+          2.8407393905294542
+        ],
+        "deposition": 1.5015610555158445,
+        "q_normal": 0.636795781261529,
+        "response": 1.5015610555158445,
+        "response_kind": "deposition",
+        "scalar": 8.538190485249416,
+        "tensor": [
+          [
+            -0.3183978906307645,
+            -6.15917184152807e-16,
+            -1.0552901145525578e-16
+          ],
+          [
+            -6.241842257180089e-16,
+            -0.3183978906307648,
+            3.891382297412556e-16
+          ],
+          [
+            -1.0697461435190311e-16,
+            4.1199682554449173e-16,
+            0.6367957812615288
+          ]
+        ]
+      },
+      "same_nodes": true,
+      "same_spatial_energy_discretization": true
+    },
+    {
+      "category": "justified_forward_elastic_neutron_BFP",
+      "direction_count": 32,
+      "equal_cost_equal_error": {
+        "equal_direction_count": {
+          "baseline_error": 0.8986099112613553,
+          "directions": 32,
+          "optimized_error": 0.9063371302637246,
+          "optimized_to_baseline_ratio": 1.0085990805415477
+        },
+        "equal_wall_time": {
+          "baseline_error": 0.8986099112613553,
+          "budget_seconds": 0.0022911869996278256,
+          "note": "same-node methods both completed within the common measured budget",
+          "optimized_error": 0.9063371302637246
+        },
+        "wall_time_at_equal_response_error": {
+          "baseline_seconds": 0.0022911869996278256,
+          "baseline_status": "reached",
+          "optimized_seconds": null,
+          "optimized_status": "not_reached_same_nodes",
+          "target_error": 0.8986099112613553
+        }
+      },
+      "id": "P2E-05",
+      "methods": {
+        "moment_monotone_baseline": {
+          "aggregate_error": 0.8986099112613553,
+          "conservation_residual": 1.7763568394002505e-15,
+          "current_error": 5.072853827958929,
+          "diffusion_scale": 0.39622312047043867,
+          "h0_residual": 1.7763568394002505e-15,
+          "h1_residual": 1.0311580682032346e-14,
+          "input_nonnegative": true,
+          "iterations": 1,
+          "linear_solves": 1,
+          "matched_first_moment": 0.03360214519405191,
+          "matrix_nonzeros": 8416,
+          "matvecs": 0,
+          "memory_bytes": 8444,
+          "minimum_flux": 0.027007145394899765,
+          "minimum_offdiagonal": 0.0,
+          "positive_generator": true,
+          "positivity": true,
+          "positivity_applicable": true,
+          "q_normal_error": 2.1199327861154442,
+          "rate_max": 5.614348654684913,
+          "response": {
+            "current": [
+              0.7174038504154255,
+              -0.054511120374012526,
+              1.2910063574240147
+            ],
+            "deposition": 0.36944820562978564,
+            "q_normal": 0.2391918569009564,
+            "response": 0.2391918569009564,
+            "response_kind": "q_normal",
+            "scalar": 10.555663017993874,
+            "tensor": [
+              [
+                -0.0032550186199780434,
+                0.01340822364009561,
+                0.18252298129914982
+              ],
+              [
+                0.013408223640095595,
+                -0.15561474553906868,
+                0.03047920852934237
+              ],
+              [
+                0.18252298129914987,
+                0.03047920852934233,
+                0.1588697641590463
+              ]
+            ]
+          },
+          "response_error": 2.1199327861154442,
+          "reversibility_residual": 6.938893903907228e-18,
+          "runtime_seconds": 0.0022911869996278256,
+          "scalar_error": 1.6537719180004462,
+          "shell_defects": {
+            "2": 1.3879745242638535,
+            "3": 6.766766963624131,
+            "4": 14.315956272685204,
+            "5": 24.607066658505467,
+            "6": 37.28964703805526
+          },
+          "stiffness": 5.614348654684913,
+          "tensor_error": 3.2482386133146557,
+          "transport_balance_residual": 2.9980768344743885e-15
+        },
+        "optimized_harmonic_fidelity": {
+          "aggregate_error": 0.9063371302637246,
+          "conservation_residual": 2.6645352591003757e-15,
+          "current_error": 5.071942238814395,
+          "diffusion_scale": 0.39622312047043867,
+          "h0_residual": 2.6645352591003757e-15,
+          "h1_residual": 1.2837508833740685e-12,
+          "input_nonnegative": true,
+          "iterations": 1,
+          "linear_solves": 1,
+          "matched_first_moment": 0.03360214519405191,
+          "matrix_nonzeros": 9952,
+          "matvecs": 0,
+          "memory_bytes": 8444,
+          "minimum_flux": 0.025395233214568155,
+          "minimum_offdiagonal": 0.0,
+          "positive_generator": true,
+          "positivity": true,
+          "positivity_applicable": true,
+          "q_normal_error": 2.1381622588859184,
+          "rate_max": 9.825110145698876,
+          "response": {
+            "current": [
+              0.7145939223339806,
+              -0.05585559137902457,
+              1.292907921344126
+            ],
+            "deposition": 0.3708875512213254,
+            "q_normal": 0.22096238413048225,
+            "response": 0.22096238413048225,
+            "response_kind": "q_normal",
+            "scalar": 10.596787177752155,
+            "tensor": [
+              [
+                -0.02299014126521117,
+                0.011665669315773095,
+                0.16049956899015094
+              ],
+              [
+                0.011665669315773116,
+                -0.1350711095759416,
+                0.026537093019648846
+              ],
+              [
+                0.16049956899015091,
+                0.02653709301964885,
+                0.15806125084115225
+              ]
+            ]
+          },
+          "response_error": 2.1381622588859184,
+          "reversibility_residual": 1.5612511283791264e-17,
+          "runtime_seconds": 0.0020289539997975226,
+          "scalar_error": 1.6948960777587274,
+          "shell_defects": {
+            "2": 0.9325380771199195,
+            "3": 4.230440796430389,
+            "4": 10.759228918501343,
+            "5": 22.278019114917175,
+            "6": 36.932538077119915
+          },
+          "stiffness": 9.825110145698876,
+          "tensor_error": 3.265741623171782,
+          "transport_balance_residual": 1.960281007156331e-15
+        }
+      },
+      "optimized_to_baseline_aggregate_error_ratio": 1.0085990805415477,
+      "optimized_to_baseline_response_error_ratio": 1.0085990805415477,
+      "partition": "training",
+      "reference": {
+        "approximation_scope": "first-moment-matched forward-peaked BFP verification",
+        "fine_directions": 72,
+        "kernel_concentration": 18.0,
+        "medium_directions": 50,
+        "type": "full_positive_reversible_Boltzmann_kernel_fine_angular",
+        "uncertainty": 0.3119629389301637
+      },
+      "reference_response": {
+        "current": [
+          1.8721082956377608,
+          0.933344184775132,
+          6.1309077510590155
+        ],
+        "deposition": 0.31156618849977,
+        "q_normal": 2.3591246430164006,
+        "response": 2.3591246430164006,
+        "response_kind": "q_normal",
+        "scalar": 8.901891099993428,
+        "tensor": [
+          [
+            -1.0829678387984831,
+            0.14583175214554542,
+            1.2430200452590694
+          ],
+          [
+            0.14583175214554545,
+            -1.3630326478502262,
+            0.4843896376087181
+          ],
+          [
+            1.2430200452590694,
+            0.4843896376087181,
+            2.446000486648709
+          ]
+        ]
+      },
+      "same_nodes": true,
+      "same_spatial_energy_discretization": true
+    },
+    {
+      "category": "proton_multiple_scattering_layered_target",
+      "direction_count": 32,
+      "equal_cost_equal_error": {
+        "equal_direction_count": {
+          "baseline_error": 0.1670798767708923,
+          "directions": 32,
+          "optimized_error": 0.16853161666125496,
+          "optimized_to_baseline_ratio": 1.0086888973012194
+        },
+        "equal_wall_time": {
+          "baseline_error": 0.1670798767708923,
+          "budget_seconds": 0.01638186600030167,
+          "note": "same-node methods both completed within the common measured budget",
+          "optimized_error": 0.16853161666125496
+        },
+        "wall_time_at_equal_response_error": {
+          "baseline_seconds": 0.01638186600030167,
+          "baseline_status": "reached",
+          "optimized_seconds": null,
+          "optimized_status": "not_reached_same_nodes",
+          "target_error": 0.1670798767708923
+        }
+      },
+      "id": "P2E-06",
+      "methods": {
+        "moment_monotone_baseline": {
+          "aggregate_error": 0.1670798767708923,
+          "conservation_residual": 1.7763568394002505e-15,
+          "current_error": 0.004325845951616625,
+          "deposition_error": 0.0005963260308134988,
+          "h0_residual": 1.7763568394002505e-15,
+          "h1_residual": 1.0311580682032346e-14,
+          "input_nonnegative": true,
+          "iterations": 10,
+          "lateral_escape": 0.0,
+          "left_outflow": 2.2249284046412006e-08,
+          "linear_solves": 10,
+          "matrix_nonzeros": 4896,
+          "matvecs": 0,
+          "memory_bytes": 5884,
+          "minimum_flux": 6.774361409818089e-10,
+          "minimum_offdiagonal": 0.0,
+          "positive_generator": true,
+          "positivity": true,
+          "positivity_applicable": true,
+          "q_normal_error": 0.0013196251794820209,
+          "rate_max": 5.614348654684913,
+          "response": {
+            "current": [
+              -0.0012414605641594455,
+              0.014985943235174846,
+              0.025746471179329163
+            ],
+            "deposition": 0.01214102393765577,
+            "q_normal": 0.014994381255972349,
+            "response": 0.014994381255972349,
+            "response_kind": "q_normal",
+            "scalar": 0.03369309581331717,
+            "tensor": [
+              [
+                -0.008962393331060057,
+                -0.0003461437559078436,
+                -0.0006293313170197202
+              ],
+              [
+                -0.0003461437559078436,
+                -0.0018708404024971653,
+                0.011788145517299998
+              ],
+              [
+                -0.0006293313170197202,
+                0.011788145517299998,
+                0.010833233733557218
+              ]
+            ]
+          },
+          "response_error": 0.0013196251794820209,
+          "reversibility_residual": 6.938893903907228e-18,
+          "right_outflow": 2.204731804233574e-08,
+          "runtime_seconds": 0.01638186600030167,
+          "scalar_error": 0.001637947258071884,
+          "shell_defects": {
+            "2": 1.3879745242638535,
+            "3": 6.766766963624131,
+            "4": 14.315956272685204,
+            "5": 24.607066658505467,
+            "6": 37.28964703805526
+          },
+          "stiffness": 5.614348654684913,
+          "tensor_error": 0.006769468594309958,
+          "transport_balance_residual": 1.2867604325315995e-15
+        },
+        "optimized_harmonic_fidelity": {
+          "aggregate_error": 0.16853161666125496,
+          "conservation_residual": 2.6645352591003757e-15,
+          "current_error": 0.004583832136583906,
+          "deposition_error": 0.0004474797860079191,
+          "h0_residual": 2.6645352591003757e-15,
+          "h1_residual": 1.2837508833740685e-12,
+          "input_nonnegative": true,
+          "iterations": 10,
+          "lateral_escape": 0.0,
+          "left_outflow": 1.0577181295487588e-08,
+          "linear_solves": 10,
+          "matrix_nonzeros": 5792,
+          "matvecs": 0,
+          "memory_bytes": 5884,
+          "minimum_flux": 2.700641736943149e-10,
+          "minimum_offdiagonal": 0.0,
+          "positive_generator": true,
+          "positivity": true,
+          "positivity_applicable": true,
+          "q_normal_error": 0.0014270092824298919,
+          "rate_max": 9.825110145698876,
+          "response": {
+            "current": [
+              -0.0013857294094647243,
+              0.015341367089041692,
+              0.025697203273985548
+            ],
+            "deposition": 0.01199217769285019,
+            "q_normal": 0.01510176535892022,
+            "response": 0.01510176535892022,
+            "response_kind": "q_normal",
+            "scalar": 0.03328492035268205,
+            "tensor": [
+              [
+                -0.008979698997237249,
+                -0.0002083191845948092,
+                -0.000656984198767482
+              ],
+              [
+                -0.00020831918459480921,
+                -0.0019808079883324187,
+                0.01180681242498874
+              ],
+              [
+                -0.0006569841987674819,
+                0.01180681242498874,
+                0.010960506985569671
+              ]
+            ]
+          },
+          "response_error": 0.0014270092824298919,
+          "reversibility_residual": 1.5612511283791264e-17,
+          "right_outflow": 1.0386106829241472e-08,
+          "runtime_seconds": 0.014430157000333566,
+          "scalar_error": 0.001229771797436767,
+          "shell_defects": {
+            "2": 0.9325380771199195,
+            "3": 4.230440796430389,
+            "4": 10.759228918501343,
+            "5": 22.278019114917175,
+            "6": 36.932538077119915
+          },
+          "stiffness": 9.825110145698876,
+          "tensor_error": 0.00669227663716479,
+          "transport_balance_residual": 1.1697822113923646e-15
+        }
+      },
+      "optimized_to_baseline_aggregate_error_ratio": 1.0086888973012194,
+      "optimized_to_baseline_response_error_ratio": 1.0813746998901774,
+      "partition": "training",
+      "reference": {
+        "fine_directions": 72,
+        "medium_directions": 50,
+        "response_layer": "Cu",
+        "type": "fine_angular_spectral_BFP_reference",
+        "uncertainty": 0.0003131547818103937
+      },
+      "reference_response": {
+        "current": [
+          -0.0031645795930494154,
+          0.011378121034741819,
+          0.02716003948963533
+        ],
+        "deposition": 0.011544697906842271,
+        "q_normal": 0.013674756076490328,
+        "response": 0.013674756076490328,
+        "response_kind": "q_normal",
+        "scalar": 0.032055148555245286,
+        "tensor": [
+          [
+            -0.008775950770207304,
+            -0.0010940853630338038,
+            -0.002430927124494106
+          ],
+          [
+            -0.0010940853630338036,
+            -0.005225816797788252,
+            0.008882535190229992
+          ],
+          [
+            -0.002430927124494106,
+            0.008882535190229992,
+            0.014001767567995553
+          ]
+        ]
+      },
+      "same_nodes": true,
+      "same_spatial_energy_discretization": true
+    },
+    {
+      "category": "oblique_HTS_tape_stack",
+      "direction_count": 32,
+      "equal_cost_equal_error": {
+        "equal_direction_count": {
+          "baseline_error": 0.5683660560881343,
+          "directions": 32,
+          "optimized_error": 0.8658933265847049,
+          "optimized_to_baseline_ratio": 1.523478253688032
+        },
+        "equal_wall_time": {
+          "baseline_error": 0.5683660560881343,
+          "budget_seconds": 0.011825303999557946,
+          "note": "same-node methods both completed within the common measured budget",
+          "optimized_error": 0.8658933265847049
+        },
+        "wall_time_at_equal_response_error": {
+          "baseline_seconds": 0.011825303999557946,
+          "baseline_status": "reached",
+          "optimized_seconds": null,
+          "optimized_status": "not_reached_same_nodes",
+          "target_error": 0.5683660560881343
+        }
+      },
+      "id": "P2E-07",
+      "methods": {
+        "moment_monotone_baseline": {
+          "aggregate_error": 0.5683660560881343,
+          "conservation_residual": 1.7763568394002505e-15,
+          "current_error": 5.1881523857503946e-05,
+          "deposition_error": 2.2531712117102e-05,
+          "h0_residual": 1.7763568394002505e-15,
+          "h1_residual": 1.0311580682032346e-14,
+          "input_nonnegative": true,
+          "iterations": 8,
+          "lateral_escape": 7.238886110155609e-16,
+          "left_outflow": 1.6437186128841098e-14,
+          "linear_solves": 8,
+          "matrix_nonzeros": 4192,
+          "matvecs": 0,
+          "memory_bytes": 5372,
+          "minimum_flux": 5.029280733113673e-16,
+          "minimum_offdiagonal": 0.0,
+          "positive_generator": true,
+          "positivity": true,
+          "positivity_applicable": true,
+          "q_normal_error": 6.388233631335912e-06,
+          "rate_max": 5.614348654684913,
+          "response": {
+            "current": [
+              -8.273748752390806e-05,
+              7.736500791138626e-05,
+              4.387066021753903e-05
+            ],
+            "deposition": 0.0001949697605556685,
+            "q_normal": -1.5134961202321546e-05,
+            "response": -1.5134961202321546e-05,
+            "response_kind": "q_normal",
+            "scalar": 0.00012972337971646765,
+            "tensor": [
+              [
+                1.2767028048780527e-05,
+                -4.853715369059837e-05,
+                -2.721706493575774e-05
+              ],
+              [
+                -4.853715369059837e-05,
+                8.567586775351343e-06,
+                2.511103909317737e-05
+              ],
+              [
+                -2.7217064935757736e-05,
+                2.5111039093177362e-05,
+                -2.1334614824131896e-05
+              ]
+            ]
+          },
+          "response_error": 6.388233631335912e-06,
+          "reversibility_residual": 6.938893903907228e-18,
+          "right_outflow": 1.7451111256738984e-14,
+          "rotation_responses": [
+            7.455630965466056e-05,
+            4.662622072858562e-05,
+            -1.3500735528353833e-05,
+            -2.7515809266546465e-05
+          ],
+          "rotation_spread": 0.00010207211892120704,
+          "runtime_seconds": 0.011825303999557946,
+          "scalar_error": 1.4984042453929726e-05,
+          "shell_defects": {
+            "2": 1.3879745242638535,
+            "3": 6.766766963624131,
+            "4": 14.315956272685204,
+            "5": 24.607066658505467,
+            "6": 37.28964703805526
+          },
+          "stiffness": 5.614348654684913,
+          "tensor_error": 6.530429426292614e-05,
+          "transport_balance_residual": 3.5617702215919833e-16
+        },
+        "optimized_harmonic_fidelity": {
+          "aggregate_error": 0.8658933265847049,
+          "conservation_residual": 2.6645352591003757e-15,
+          "current_error": 5.2184497980578906e-05,
+          "deposition_error": 1.9102338252115127e-06,
+          "h0_residual": 2.6645352591003757e-15,
+          "h1_residual": 1.2837508833740685e-12,
+          "input_nonnegative": true,
+          "iterations": 8,
+          "lateral_escape": 5.820124080451129e-16,
+          "left_outflow": 1.551605287008053e-14,
+          "linear_solves": 8,
+          "matrix_nonzeros": 4960,
+          "matvecs": 0,
+          "memory_bytes": 5372,
+          "minimum_flux": 3.8666446743800183e-16,
+          "minimum_offdiagonal": 0.0,
+          "positive_generator": true,
+          "positivity": true,
+          "positivity_applicable": true,
+          "q_normal_error": 1.1026425977777509e-05,
+          "rate_max": 9.825110145698876,
+          "response": {
+            "current": [
+              -9.398352864970166e-05,
+              8.1282243450735e-05,
+              4.3410623415589435e-05
+            ],
+            "deposition": 0.00021559123884755898,
+            "q_normal": -1.9773153548763143e-05,
+            "response": -1.9773153548763143e-05,
+            "response_kind": "q_normal",
+            "scalar": 0.0001434287771074523,
+            "tensor": [
+              [
+                1.6867889303063697e-05,
+                -5.187752279991308e-05,
+                -2.69880465281893e-05
+              ],
+              [
+                -5.187752279991308e-05,
+                7.402134610859793e-06,
+                2.2825478641011963e-05
+              ],
+              [
+                -2.69880465281893e-05,
+                2.282547864101196e-05,
+                -2.427002391392349e-05
+              ]
+            ]
+          },
+          "response_error": 1.1026425977777509e-05,
+          "reversibility_residual": 1.5612511283791264e-17,
+          "right_outflow": 1.5557316448176356e-14,
+          "rotation_responses": [
+            7.479941292368827e-05,
+            4.7705591229403385e-05,
+            -1.7881641518913756e-05,
+            -2.3709934939352973e-05
+          ],
+          "rotation_spread": 9.850934786304124e-05,
+          "runtime_seconds": 0.010722236999754386,
+          "scalar_error": 1.2786450629450729e-06,
+          "shell_defects": {
+            "2": 0.9325380771199195,
+            "3": 4.230440796430389,
+            "4": 10.759228918501343,
+            "5": 22.278019114917175,
+            "6": 36.932538077119915
+          },
+          "stiffness": 9.825110145698876,
+          "tensor_error": 6.781889968062802e-05,
+          "transport_balance_residual": 9.49805392424528e-16
+        }
+      },
+      "optimized_to_baseline_aggregate_error_ratio": 1.523478253688032,
+      "optimized_to_baseline_response_error_ratio": 1.7260523979101332,
+      "partition": "training",
+      "reference": {
+        "fine_directions": 72,
+        "medium_directions": 50,
+        "response_layer": "REBCO",
+        "scope": "charged-particle layered benchmark; full neutral/secondary P2F model is separate",
+        "type": "fine_angular_spectral_BFP_reference",
+        "uncertainty": 9.181802378526687e-06
+      },
+      "reference_response": {
+        "current": [
+          -9.969562686687403e-05,
+          4.733606966245403e-05,
+          8.263116712138532e-05
+        ],
+        "deposition": 0.0002175014726727705,
+        "q_normal": -8.746727570985634e-06,
+        "response": -8.746727570985634e-06,
+        "response_kind": "q_normal",
+        "scalar": 0.00014470742217039738,
+        "tensor": [
+          [
+            2.310383013051888e-05,
+            -3.0911476919156845e-05,
+            -5.426090362424943e-05
+          ],
+          [
+            -3.0911476919156845e-05,
+            -2.8213009787607718e-05,
+            2.8400981075084808e-05
+          ],
+          [
+            -5.426090362424943e-05,
+            2.840098107508481e-05,
+            5.109179657088856e-06
+          ]
+        ]
+      },
+      "same_nodes": true,
+      "same_spatial_energy_discretization": true
+    }
+  ],
+  "elapsed_seconds": 2.849021895000078,
+  "manifest_sha256": "c947d2b0954210af640780ba35240d4271cf66c60e5bcd623f8bdb23725499db",
+  "operator_registry_sha256": "0380a84199eae0818bc135c869a7dfa0a69a3c93bdfcd4ab95415f1922181fa8",
+  "partition": "training",
+  "process_peak_rss_bytes": 157036544,
+  "schema": "afp-p2e-benchmark-results-v1",
+  "scientific_sha256": "d287ad758802ae2bf57144a5d915952d278f5dbddd4cf91e19f5d9be1365e168",
+  "software": {
+    "numpy": "2.3.5",
+    "python": "3.13.5",
+    "scipy": "1.17.0"
+  }
+}

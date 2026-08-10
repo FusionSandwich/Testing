@@ -1,0 +1,89 @@
+{
+  "aggregate": {
+    "aggregate_error_geometric_mean_ratio": 0.8644269234307337,
+    "angular_geometric_mean_ratio": 0.6714625543219898,
+    "best_response_ratio": 0.4729305666151216,
+    "case_count": 7,
+    "physical_geometric_mean_ratio": 1.6597191251048864,
+    "response_cases_improved": 4,
+    "response_cases_improved_by_5pct": 3,
+    "response_error_geometric_mean_ratio": 1.1261611503037519,
+    "response_error_median_ratio": 0.9999999999999513,
+    "worst_response_ratio": 8.0684117565954
+  },
+  "checks": {
+    "ablation_inventory": true,
+    "acceleration_iteration_reduction": 0.2608695652173913,
+    "acceleration_value_gate": true,
+    "accelerator_fixed_point": true,
+    "accelerator_inventory": true,
+    "angular_value_gate": true,
+    "balance_gate": true,
+    "case_inventory": true,
+    "complete_required_fields": true,
+    "equal_wall_time_claim_honest": true,
+    "invariant_gate": true,
+    "manifest_match": true,
+    "maximum_balance_residual": 3.0337533714645974e-15,
+    "maximum_h0_residual": 2.6645352591003757e-15,
+    "maximum_h1_residual": 1.2848611063986937e-12,
+    "median_value_gate": true,
+    "minimum_flux": 1.5950197656143252e-17,
+    "physical_value_gate": true,
+    "positivity_gate": true,
+    "quadrature_ablation_separate": true,
+    "reference_resolved_case_count": 2,
+    "registry_match": true,
+    "same_node_comparisons": true,
+    "same_space_energy": true,
+    "signed_scope_honest": true,
+    "uncertainty_interpretation": [
+      {
+        "id": "P2E-01",
+        "optimized_minus_baseline_absolute_error": -0.05895337422228142,
+        "reference_uncertainty": 0.0,
+        "resolved_relative_to_reference_uncertainty": true
+      },
+      {
+        "id": "P2E-02",
+        "optimized_minus_baseline_absolute_error": -0.0031782791513834674,
+        "reference_uncertainty": 0.0,
+        "resolved_relative_to_reference_uncertainty": true
+      },
+      {
+        "id": "P2E-03",
+        "optimized_minus_baseline_absolute_error": 0.0003444102971441598,
+        "reference_uncertainty": 0.042603735852763835,
+        "resolved_relative_to_reference_uncertainty": false
+      },
+      {
+        "id": "P2E-04",
+        "optimized_minus_baseline_absolute_error": -7.771561172376096e-15,
+        "reference_uncertainty": 0.005863740052319155,
+        "resolved_relative_to_reference_uncertainty": false
+      },
+      {
+        "id": "P2E-05",
+        "optimized_minus_baseline_absolute_error": 0.0189671272883305,
+        "reference_uncertainty": 0.619459391110869,
+        "resolved_relative_to_reference_uncertainty": false
+      },
+      {
+        "id": "P2E-06",
+        "optimized_minus_baseline_absolute_error": -0.00030830001712691193,
+        "reference_uncertainty": 0.002448948998304692,
+        "resolved_relative_to_reference_uncertainty": false
+      },
+      {
+        "id": "P2E-07",
+        "optimized_minus_baseline_absolute_error": 5.528213409777455e-06,
+        "reference_uncertainty": 1.892123842708093e-05,
+        "resolved_relative_to_reference_uncertainty": false
+      }
+    ],
+    "worst_degradation_gate": false
+  },
+  "partition": "heldout",
+  "schema": "afp-p2e-result-audit-v1",
+  "status": "FAIL"
+}
