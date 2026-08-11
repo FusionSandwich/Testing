@@ -43,16 +43,57 @@ jobs:
           test "$(git rev-parse "${AUTHORITATIVE_PARENT}^{tree}")" = "${AUTHORITATIVE_TREE}"
           python afp_barrier_gate1/pure_math/covariance/p1e_robustness_claim_inventory.py \
             --root . --report "${RUNNER_TEMP}/prop73-inventory.json"
-          python -m py_compile afp_barrier_gate1/pure_math/covariance/p1e_robustness_claim_inventory.py
+          python -m py_compile \
+            tools/apply_p1e_outcome_b.py \
+            afp_barrier_gate1/pure_math/covariance/p1e_robustness_claim_inventory.py \
+            afp_barrier_gate1/pure_math/covariance/p1e_fixed_level_persistence_audit.py
           echo 'FLAGSHIP_RESULT_HEADINGS_BEGIN'
           grep -nE '^#{2,4} (Theorem|Proposition|Lemma|Corollary) [0-9]' \
             docs/publication_program/p1f_manuscript/FLAGSHIP_MANUSCRIPT.md || true
           echo 'FLAGSHIP_RESULT_HEADINGS_END'
-          echo 'P1E_INDIRECT_CLAIMS_BEGIN'
-          grep -RniE 'robust|latitude perturb|all-level|uniform.*perturb' \
-            docs/publication_program afp_barrier_gate1 \
-            --include='*.md' --include='*.py' --include='*.lean' \
-            | grep -E 'P1E|P1F|FLAGSHIP|APPROACH_REGISTRY|THEOREM_REGISTRY|VALUE_REGISTRY|PROSE_OVERCLAIM' \
-            || true
-          echo 'P1E_INDIRECT_CLAIMS_END'
           git diff --check "${AUTHORITATIVE_PARENT}" HEAD
+
+  migration-dry-run:
+    needs: inventory
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Apply migration in isolated workspace
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "${GITHUB_REPOSITORY}" = "${EXPECTED_REPOSITORY}"
+          test "${GITHUB_REF_NAME}" = "${REPAIR_BRANCH}"
+          test "$(git rev-parse "${AUTHORITATIVE_PARENT}^{tree}")" = "${AUTHORITATIVE_TREE}"
+          git merge-base --is-ancestor "${AUTHORITATIVE_PARENT}" HEAD
+          python tools/apply_p1e_outcome_b.py --root . | tee "${RUNNER_TEMP}/migration.log"
+          grep -Eq '^MIGRATION_CHANGED_COUNT [1-9][0-9]*$' "${RUNNER_TEMP}/migration.log"
+          git diff --check
+          python afp_barrier_gate1/pure_math/covariance/p1e_fixed_level_persistence_audit.py \
+            --root . | tee "${RUNNER_TEMP}/persistence-audit.log"
+          grep -Fxq 'P1E fixed-level local-persistence audit: PASS' \
+            "${RUNNER_TEMP}/persistence-audit.log"
+          python tools/apply_p1e_outcome_b.py --root . --check | tee "${RUNNER_TEMP}/idempotence.log"
+          grep -Fxq 'MIGRATION_CHANGED_COUNT 0' "${RUNNER_TEMP}/idempotence.log"
+      - name: Display migration scope and residual perturbation references
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo 'MIGRATION_DIFF_STAT_BEGIN'
+          git diff --stat
+          echo 'MIGRATION_DIFF_STAT_END'
+          echo 'MIGRATION_PATHS_BEGIN'
+          git diff --name-only
+          echo 'MIGRATION_PATHS_END'
+          echo 'RESIDUAL_PERTURBATION_REFERENCES_BEGIN'
+          grep -RniE 'robust|latitude perturb|uniform.*perturb|all-level.*perturb' \
+            docs/publication_program afp_barrier_gate1 \
+            --include='*.md' --include='*.py' --include='*.lean' || true
+          echo 'RESIDUAL_PERTURBATION_REFERENCES_END'
