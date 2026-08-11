@@ -18,15 +18,15 @@ CHANGED: list[str] = []
 
 def replace_once_or_present(path: Path, old: str, new: str, label: str) -> None:
     text = path.read_text(encoding="utf-8")
-    if old in text:
+    if new in text:
+        print(f"ALREADY_PREPARED {label}")
+    elif old in text:
         count = text.count(old)
         if count != 1:
             raise AssertionError(f"{label}: expected one occurrence, found {count}")
         path.write_text(text.replace(old, new, 1), encoding="utf-8")
-        CHANGED.append(path.relative_to(path.parents[1]).as_posix() if len(path.parents) > 1 else path.as_posix())
+        CHANGED.append(path.as_posix())
         print(f"PREPARED {label}")
-    elif new in text:
-        print(f"ALREADY_PREPARED {label}")
     else:
         raise AssertionError(f"{label}: neither source nor prepared text found")
 
