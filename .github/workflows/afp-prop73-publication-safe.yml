@@ -1,0 +1,47 @@
+name: AFP Proposition 7.3 publication-safe repair
+
+on:
+  push:
+    branches:
+      - agent/afp-prop73-publication-safe-20260810
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  EXPECTED_REPOSITORY: FusionSandwich/Testing
+  REPAIR_BRANCH: agent/afp-prop73-publication-safe-20260810
+  AUTHORITATIVE_PARENT: b8912c282a22420e8077c75929b16c7a33d189b2
+  AUTHORITATIVE_TREE: 4c2175463a661ce3f2bb206f0cb7b5038183b2ab
+  GIT_NO_REPLACE_OBJECTS: '1'
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify provenance and inventory the blocker
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "${GITHUB_REPOSITORY}" = "${EXPECTED_REPOSITORY}"
+          test "${GITHUB_REF_NAME}" = "${REPAIR_BRANCH}"
+          git merge-base --is-ancestor "${AUTHORITATIVE_PARENT}" HEAD
+          test "$(git rev-parse "${AUTHORITATIVE_PARENT}^{tree}")" = "${AUTHORITATIVE_TREE}"
+          python afp_barrier_gate1/pure_math/covariance/p1e_robustness_claim_inventory.py \
+            --root . --report "${RUNNER_TEMP}/prop73-inventory.json"
+          python -m py_compile afp_barrier_gate1/pure_math/covariance/p1e_robustness_claim_inventory.py
+          git diff --check "${AUTHORITATIVE_PARENT}" HEAD
