@@ -45,6 +45,7 @@ jobs:
             --root . --report "${RUNNER_TEMP}/prop73-inventory.json"
           python -m py_compile \
             tools/apply_p1e_outcome_b.py \
+            tools/finalize_p1e_repair.py \
             afp_barrier_gate1/pure_math/covariance/p1e_robustness_claim_inventory.py \
             afp_barrier_gate1/pure_math/covariance/p1e_fixed_level_persistence_audit.py
           echo 'FLAGSHIP_RESULT_HEADINGS_BEGIN'
@@ -73,6 +74,19 @@ jobs:
           test "${GITHUB_REF_NAME}" = "${REPAIR_BRANCH}"
           test "$(git rev-parse "${AUTHORITATIVE_PARENT}^{tree}")" = "${AUTHORITATIVE_TREE}"
           git merge-base --is-ancestor "${AUTHORITATIVE_PARENT}" HEAD
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('tools/apply_p1e_outcome_b.py')
+          text = path.read_text(encoding='utf-8')
+          old = 'a global six-moment right inverse is proved.'
+          new = 'a global six-moment right inverse with quantitative norm is later proved.'
+          if old in text:
+              if text.count(old) != 1:
+                  raise SystemExit('unexpected migration-guard occurrence count')
+              path.write_text(text.replace(old, new, 1), encoding='utf-8')
+          elif new not in text:
+              raise SystemExit('migration-guard source not found')
+          PY
           python tools/apply_p1e_outcome_b.py --root . | tee "${RUNNER_TEMP}/migration.log"
           grep -Eq '^MIGRATION_CHANGED_COUNT [1-9][0-9]*$' "${RUNNER_TEMP}/migration.log"
           git diff --check
