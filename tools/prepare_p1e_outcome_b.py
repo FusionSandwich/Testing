@@ -64,6 +64,13 @@ def main() -> None:
         "value-registry matcher",
     )
 
+    replace_once_or_present(
+        migration,
+        '    if "historical arithmetic regression; not a construction certificate" in text:\n',
+        '    if "historical_exponent_recurrence" in text:\n',
+        "independent-audit idempotence sentinel",
+    )
+
     verifier = root / "afp_barrier_gate1/pure_math/covariance/p1e_fixed_level_persistence_audit.py"
     old_marker_loop = (
         "    for relative, markers in requirements.items():\n"
