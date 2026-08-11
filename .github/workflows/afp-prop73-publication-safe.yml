@@ -44,6 +44,7 @@ jobs:
           python afp_barrier_gate1/pure_math/covariance/p1e_robustness_claim_inventory.py \
             --root . --report "${RUNNER_TEMP}/prop73-inventory.json"
           python -m py_compile \
+            tools/prepare_p1e_outcome_b.py \
             tools/apply_p1e_outcome_b.py \
             tools/finalize_p1e_repair.py \
             afp_barrier_gate1/pure_math/covariance/p1e_robustness_claim_inventory.py \
@@ -74,76 +75,8 @@ jobs:
           test "${GITHUB_REF_NAME}" = "${REPAIR_BRANCH}"
           test "$(git rev-parse "${AUTHORITATIVE_PARENT}^{tree}")" = "${AUTHORITATIVE_TREE}"
           git merge-base --is-ancestor "${AUTHORITATIVE_PARENT}" HEAD
-          python - <<'PY'
-          from pathlib import Path
-
-          migration = Path('tools/apply_p1e_outcome_b.py')
-          text = migration.read_text(encoding='utf-8')
-          old = 'a global six-moment right inverse is proved.'
-          new = 'a global six-moment right inverse with quantitative norm is later proved.'
-          if old in text:
-              if text.count(old) != 1:
-                  raise SystemExit('unexpected P1E approach-guard occurrence count')
-              text = text.replace(old, new, 1)
-          elif new not in text:
-              raise SystemExit('P1E approach-guard source not found')
-          migration.write_text(text, encoding='utf-8')
-
-          registry = Path('docs/publication_program/VALUE_REGISTRY.md')
-          text = registry.read_text(encoding='utf-8')
-          old = (
-              'The `d=3` perturbation constants apply only to support-preserving reflected\n'
-              'latitude perturbations with fixed combinatorial data. No exact-head workflow\n'
-              'execution, artifact digest, or frozen P1E commit is recorded in this value\n'
-              'table.'
-          )
-          new = (
-              'The accepted `d=3` perturbation constants apply only to support-preserving\n'
-              'latitude perturbations with fixed combinatorial data. No exact-head workflow\n'
-              'status is inferred from these mathematical constants.'
-          )
-          if old in text:
-              if text.count(old) != 1:
-                  raise SystemExit('unexpected value-registry occurrence count')
-              text = text.replace(old, new, 1)
-          elif new not in text:
-              raise SystemExit('value-registry source not found')
-          registry.write_text(text, encoding='utf-8')
-
-          verifier = Path('afp_barrier_gate1/pure_math/covariance/p1e_fixed_level_persistence_audit.py')
-          text = verifier.read_text(encoding='utf-8')
-          old = '            "No positive lower bound uniform in `J`",'
-          new = '            "No positive lower\\nbound uniform in `J`",'
-          if old in text:
-              if text.count(old) != 1:
-                  raise SystemExit('unexpected proof-marker occurrence count')
-              text = text.replace(old, new, 1)
-          elif new not in text:
-              raise SystemExit('proof-marker source not found')
-          old = (
-              '    for relative, markers in requirements.items():\n'
-              '        text = read_text(root, relative)\n'
-              '        for marker in markers:\n'
-              '            if marker not in text:\n'
-              '                raise AssertionError(f"missing marker in {relative}: {marker!r}")\n'
-          )
-          new = (
-              '    for relative, markers in requirements.items():\n'
-              '        text = read_text(root, relative)\n'
-              '        normalized_text = " ".join(text.split())\n'
-              '        for marker in markers:\n'
-              '            normalized_marker = " ".join(marker.split())\n'
-              '            if marker not in text and normalized_marker not in normalized_text:\n'
-              '                raise AssertionError(f"missing marker in {relative}: {marker!r}")\n'
-          )
-          if old in text:
-              if text.count(old) != 1:
-                  raise SystemExit('unexpected marker-loop occurrence count')
-              text = text.replace(old, new, 1)
-          elif new not in text:
-              raise SystemExit('marker-loop source not found')
-          verifier.write_text(text, encoding='utf-8')
-          PY
+          python tools/prepare_p1e_outcome_b.py --root . | tee "${RUNNER_TEMP}/preparation.log"
+          grep -Eq '^PREPARATION_CHANGED_COUNT [1-9][0-9]*$' "${RUNNER_TEMP}/preparation.log"
           python tools/apply_p1e_outcome_b.py --root . | tee "${RUNNER_TEMP}/migration.log"
           grep -Eq '^MIGRATION_CHANGED_COUNT [1-9][0-9]*$' "${RUNNER_TEMP}/migration.log"
           git diff --check
@@ -151,8 +84,10 @@ jobs:
             --root . | tee "${RUNNER_TEMP}/persistence-audit.log"
           grep -Fxq 'P1E fixed-level local-persistence audit: PASS' \
             "${RUNNER_TEMP}/persistence-audit.log"
-          python tools/apply_p1e_outcome_b.py --root . --check | tee "${RUNNER_TEMP}/idempotence.log"
-          grep -Fxq 'MIGRATION_CHANGED_COUNT 0' "${RUNNER_TEMP}/idempotence.log"
+          python tools/prepare_p1e_outcome_b.py --root . --check | tee "${RUNNER_TEMP}/preparation-idempotence.log"
+          grep -Fxq 'PREPARATION_CHANGED_COUNT 0' "${RUNNER_TEMP}/preparation-idempotence.log"
+          python tools/apply_p1e_outcome_b.py --root . --check | tee "${RUNNER_TEMP}/migration-idempotence.log"
+          grep -Fxq 'MIGRATION_CHANGED_COUNT 0' "${RUNNER_TEMP}/migration-idempotence.log"
       - name: Display migration scope and residual perturbation references
         shell: bash
         run: |
