@@ -3,8 +3,9 @@
 
 The preparation is deterministic and idempotent. It aligns strict migration
 matchers with the authoritative-parent wording, strengthens publication-marker
-checks, and corrects two accepted-surface scope summaries that sit outside the
-main migration table. Historical rejected-route documents are not rewritten.
+checks, corrects accepted-surface scope summaries, and keeps validation on the
+repository-pinned Lean manifest. Historical rejected-route documents are not
+rewritten.
 """
 
 from __future__ import annotations
@@ -160,6 +161,20 @@ def main() -> None:
         '    "docs/publication_program/P1E_PROP73_APPROACH_REGISTRY.md",\n',
         '    "docs/publication_program/P1E_PROP73_APPROACH_REGISTRY.md",\n    "docs/publication_program/P1E_PROP73_VALIDATION_LOG.md",\n',
         "validation-log reproducibility hash",
+    )
+
+    driver = root / "tools/run_p1e_prop73_repair.sh"
+    replace_once_or_present(
+        driver,
+        '  lake update | tee "${OUT}/lake-update.log"\n',
+        '  lake env lean --version | tee "${OUT}/lake-env-version.log"\n',
+        "repository-pinned Lean manifest",
+    )
+    replace_once_or_present(
+        driver,
+        '  popd >/dev/null\n  git diff --check\n  test -z "$(git status --short)"\n\n  paper=',
+        '  popd >/dev/null\n  git diff --check\n  git status --short | tee "${OUT}/post-lean-status.log"\n  test ! -s "${OUT}/post-lean-status.log"\n\n  paper=',
+        "post-Lean cleanliness record",
     )
 
     print(f"PREPARATION_CHANGED_COUNT {len(CHANGED)}")
