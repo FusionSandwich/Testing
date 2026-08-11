@@ -1,0 +1,177 @@
+{
+  "audit_candidate": {
+    "branch": "agent/afp-consolidated-p2e-p2f-e60f5c7",
+    "commit": "b8912c282a22420e8077c75929b16c7a33d189b2",
+    "pull_request": 51,
+    "tree": "4c2175463a661ce3f2bb206f0cb7b5038183b2ab"
+  },
+  "audit_date": "2026-08-10",
+  "github_actions_artifacts": [
+    {
+      "artifact_id": 9072648576,
+      "expires_at": "2026-11-08T17:24:28Z",
+      "head_commit": "b8912c282a22420e8077c75929b16c7a33d189b2",
+      "name": "afp-consolidated-31413862682-1",
+      "role": "original audited PR #51 archive",
+      "sha256": "b74eeb6202910efdb775b697a1cbaea9b53d7e52b3406c4837fe79d5e1bc75a4",
+      "size_bytes": 11768769,
+      "source_archive_sha256": "99f659b605b3372149bdcf96632ca4f6e945e98c96f50ba21006d802f69fd037",
+      "workflow_run": 31413862682
+    },
+    {
+      "artifact_id": 9085943106,
+      "expires_at": "2026-11-09T01:37:12Z",
+      "head_commit": "d13e795a2cd09594b20812c88312278227bb5513",
+      "name": "afp-consolidated-31449858619-1",
+      "role": "repair PR #52 exact-head archive",
+      "sha256": "ed5aa2ce4de182e17e0a1ffe7bef3337af6dbd966f7bcf6c5fd4a39836792c29",
+      "size_bytes": 11787146,
+      "source_archive_sha256": "f538794dcac57658d9d19c95e807b9fe565c6070870f1351258478d16b2a810e",
+      "workflow_run": 31449858619
+    }
+  ],
+  "independent_audit_bundle": {
+    "encoding": "base64 split into nine lexically ordered text parts; newline characters are ignored during reconstruction",
+    "filename": "AFP_INDEPENDENT_AUDIT_BUNDLE.zip",
+    "members": [
+      {
+        "crc32": "f85889a8",
+        "path": "AFP_INDEPENDENT_AUDIT_REPORT.md",
+        "size_bytes": 42498
+      },
+      {
+        "crc32": "cffb7283",
+        "path": "AFP_CLAIM_CONFIDENCE_MATRIX.csv",
+        "size_bytes": 4745
+      },
+      {
+        "crc32": "4040b4d2",
+        "path": "AFP_THEOREM_GATE_MATRIX.csv",
+        "size_bytes": 103531
+      },
+      {
+        "crc32": "66806bbe",
+        "path": "AFP_REPRODUCIBILITY_MATRIX.csv",
+        "size_bytes": 3674
+      },
+      {
+        "crc32": "d22632d9",
+        "path": "AFP_BRANCH_REF_DISPOSITION.csv",
+        "size_bytes": 39087
+      },
+      {
+        "crc32": "f92157df",
+        "path": "AFP_NOVELTY_MATRIX.csv",
+        "size_bytes": 2993
+      },
+      {
+        "crc32": "a22d42c6",
+        "path": "AFP_EXACT_EXAMPLES_AND_MUTATIONS.csv",
+        "size_bytes": 2386
+      },
+      {
+        "crc32": "a9323ec2",
+        "path": "AFP_P2F_METHOD_SENSITIVITY.csv",
+        "size_bytes": 2080
+      },
+      {
+        "crc32": "be5c1802",
+        "path": "AFP_P2F_LAYER_FIELD_SENSITIVITY.csv",
+        "size_bytes": 7152
+      },
+      {
+        "crc32": "18ad2933",
+        "path": "AFP_P2F_GRAZING_REFERENCE_SWEEP.csv",
+        "size_bytes": 715
+      },
+      {
+        "crc32": "fe1b9a5c",
+        "path": "AFP_P2F_INDEPENDENT_DIAGNOSTIC.json",
+        "size_bytes": 23543
+      },
+      {
+        "crc32": "053b0c6f",
+        "path": "afp_p2f_independent_diagnostic.py",
+        "size_bytes": 4228
+      },
+      {
+        "crc32": "91f556c1",
+        "path": "AFP_AUDIT_ARTIFACTS_SHA256.txt",
+        "size_bytes": 1179
+      }
+    ],
+    "parts": [
+      {
+        "filename": "AFP_INDEPENDENT_AUDIT_BUNDLE.zip.b64.part-00",
+        "git_blob_sha1": "090b5ea66c566ff762a4d4574b26d204ba63803b",
+        "sha256": "83c71bbf67414dea21c40d65c5d4a3e281af32e6e523ec6fdd3b535345d619ac",
+        "size_bytes": 16001
+      },
+      {
+        "filename": "AFP_INDEPENDENT_AUDIT_BUNDLE.zip.b64.part-01",
+        "git_blob_sha1": "b628a4d678a3e26c8e0991b12c02decb17931b35",
+        "sha256": "17f11b00654f38e5c24cd456f7cda855107f1cde9207ea092f8bd6a7557a63ca",
+        "size_bytes": 16001
+      },
+      {
+        "filename": "AFP_INDEPENDENT_AUDIT_BUNDLE.zip.b64.part-02",
+        "git_blob_sha1": "6183c3fd1636285ed033f197589fc1a9edbc6480",
+        "sha256": "cb014cfac313fc0d474e81f2f1b6973e7a1eaeff1ba0e8c16154b9034a8a0241",
+        "size_bytes": 16000
+      },
+      {
+        "filename": "AFP_INDEPENDENT_AUDIT_BUNDLE.zip.b64.part-03a",
+        "git_blob_sha1": "0bf76aec7a0b63419911f68f220ef586bdb2f701",
+        "sha256": "94c2ff1ee5da43f3445d82a52c8fa42dbe209553d2639cc8e49fa1a7cd97f77d",
+        "size_bytes": 8000
+      },
+      {
+        "filename": "AFP_INDEPENDENT_AUDIT_BUNDLE.zip.b64.part-03b",
+        "git_blob_sha1": "77f38e2507057b79ef095f582ac90854506bebe7",
+        "sha256": "15b6295872ed5f202c78c1329c00867dd227804a468e481e308fc657530dcb4e",
+        "size_bytes": 8000
+      },
+      {
+        "filename": "AFP_INDEPENDENT_AUDIT_BUNDLE.zip.b64.part-04a",
+        "git_blob_sha1": "771f9a7377943b280955d7b01ebd68f64d41bf70",
+        "sha256": "c414a3b7ff31be216e812f81fcae832ce21cebf79a1b14da1c224392138dc7d2",
+        "size_bytes": 8000
+      },
+      {
+        "filename": "AFP_INDEPENDENT_AUDIT_BUNDLE.zip.b64.part-04b1",
+        "git_blob_sha1": "994e5b168715576ab5d41be0371778dd1cea30e7",
+        "sha256": "34ba06b1425606cc60dcc2e56a6ef2ac57869d93ac7ff30231200e4c32d730e3",
+        "size_bytes": 3000
+      },
+      {
+        "filename": "AFP_INDEPENDENT_AUDIT_BUNDLE.zip.b64.part-04b2",
+        "git_blob_sha1": "19c03fbcb138a18cd38e0c22cf79467112a926c9",
+        "sha256": "d8fcfd9e6885b5dcabe171518b459ae8bd9df0fbf60be382a96513e7d6e8575d",
+        "size_bytes": 3000
+      },
+      {
+        "filename": "AFP_INDEPENDENT_AUDIT_BUNDLE.zip.b64.part-04b3",
+        "git_blob_sha1": "fe2ebd6ada9bba60674b549119f655eb2ebdc62c",
+        "sha256": "7429ffdbbf535202c441c207649bce1eefed44cdf04111595223a413531ce10c",
+        "size_bytes": 684
+      }
+    ],
+    "sha256": "ab361d9013d82db4fc890cfc264fc05e557431bb892bdd86eea1d3c9747707ef",
+    "size_bytes": 59012
+  },
+  "preservation_scope": [
+    "All source, manuscript, registry, benchmark and workflow changes are in PR #52 Git history.",
+    "Every independent-audit deliverable is in the reconstructed audit ZIP.",
+    "The complete original and repaired validation archives are stored as GitHub Actions artifacts with recorded IDs and digests.",
+    "The large source tarballs inside those artifacts are reconstructible from the exact Git commits and are hash-bound above."
+  ],
+  "repair_candidate": {
+    "branch": "agent/afp-audit-major-revisions-b8912c2",
+    "preservation_commit": "the Git commit containing this manifest",
+    "preservation_parent_commit": "d13e795a2cd09594b20812c88312278227bb5513",
+    "preservation_parent_tree": "30caf52fcd7ce8ff1c73a6ac1f310a1455416e03",
+    "pull_request": 52
+  },
+  "repository": "FusionSandwich/Testing",
+  "schema": "afp-github-preservation-v1"
+}
