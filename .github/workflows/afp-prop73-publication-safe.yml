@@ -44,4 +44,15 @@ jobs:
           python afp_barrier_gate1/pure_math/covariance/p1e_robustness_claim_inventory.py \
             --root . --report "${RUNNER_TEMP}/prop73-inventory.json"
           python -m py_compile afp_barrier_gate1/pure_math/covariance/p1e_robustness_claim_inventory.py
+          echo 'FLAGSHIP_RESULT_HEADINGS_BEGIN'
+          grep -nE '^#{2,4} (Theorem|Proposition|Lemma|Corollary) [0-9]' \
+            docs/publication_program/p1f_manuscript/FLAGSHIP_MANUSCRIPT.md || true
+          echo 'FLAGSHIP_RESULT_HEADINGS_END'
+          echo 'P1E_INDIRECT_CLAIMS_BEGIN'
+          grep -RniE 'robust|latitude perturb|all-level|uniform.*perturb' \
+            docs/publication_program afp_barrier_gate1 \
+            --include='*.md' --include='*.py' --include='*.lean' \
+            | grep -E 'P1E|P1F|FLAGSHIP|APPROACH_REGISTRY|THEOREM_REGISTRY|VALUE_REGISTRY|PROSE_OVERCLAIM' \
+            || true
+          echo 'P1E_INDIRECT_CLAIMS_END'
           git diff --check "${AUTHORITATIVE_PARENT}" HEAD
