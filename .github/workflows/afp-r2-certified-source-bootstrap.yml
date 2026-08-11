@@ -1,0 +1,53 @@
+name: AFP R2 certified source bootstrap
+
+on:
+  push:
+    branches:
+      - agent/afp-practical-threshold-r2-certified-20260811
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 1
+
+      - name: Record exact source object
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf 'head=%s\ntree=%s\nparent=%s\n' \
+            "$(git rev-parse HEAD)" \
+            "$(git rev-parse HEAD^{tree})" \
+            "$(git rev-parse HEAD^)" \
+            > "${RUNNER_TEMP}/afp-r2-source-object.txt"
+
+      - name: Create source snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          tar \
+            --exclude='.git' \
+            --exclude='*.ipynb' \
+            --exclude='output' \
+            --exclude='tmp' \
+            --exclude='__pycache__' \
+            --exclude='.lake' \
+            -czf "${RUNNER_TEMP}/afp-r2-certified-source.tar.gz" .
+          sha256sum "${RUNNER_TEMP}/afp-r2-certified-source.tar.gz" > "${RUNNER_TEMP}/afp-r2-certified-source.tar.gz.sha256"
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: afp-r2-certified-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/afp-r2-certified-source.tar.gz
+            ${{ runner.temp }}/afp-r2-certified-source.tar.gz.sha256
+            ${{ runner.temp }}/afp-r2-source-object.txt
+          if-no-files-found: error
+          compression-level: 0
