@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Normalize live-source wording before applying the Outcome B migration.
+"""Prepare the authoritative live sources for the Outcome B migration.
 
-The preparation is deterministic and idempotent. It repairs strict migration
-matchers to the exact authoritative-parent wording and makes publication-marker
-checks insensitive to line wrapping and capitalization. It does not alter any
-mathematical statement by itself.
+The preparation is deterministic and idempotent. It aligns strict migration
+matchers with the authoritative-parent wording, strengthens publication-marker
+checks, and corrects two accepted-surface scope summaries that sit outside the
+main migration table. Historical rejected-route documents are not rewritten.
 """
 
 from __future__ import annotations
@@ -23,7 +23,7 @@ def replace_once_or_present(path: Path, old: str, new: str, label: str) -> None:
         if count != 1:
             raise AssertionError(f"{label}: expected one occurrence, found {count}")
         path.write_text(text.replace(old, new, 1), encoding="utf-8")
-        CHANGED.append(path.as_posix())
+        CHANGED.append(path.relative_to(path.parents[1]).as_posix() if len(path.parents) > 1 else path.as_posix())
         print(f"PREPARED {label}")
     elif new in text:
         print(f"ALREADY_PREPARED {label}")
@@ -71,6 +71,27 @@ def main() -> None:
         "independent-audit idempotence sentinel",
     )
 
+    sampling_report = root / "docs/publication_program/p1f_manuscript/SAMPLING_ALIAS_EQUALITY_HOSTILE_REFEREE_REPORT.md"
+    replace_once_or_present(
+        sampling_report,
+        "6. Robustness fixes support, counts, phases, masks, horizontal jumps and\n"
+        "   reflection; arbitrary motion is not claimed.",
+        "6. At each fixed level, the frozen-support reflected latitude perturbations\n"
+        "   have an existential level-dependent persistence radius. Counts, phases,\n"
+        "   masks, horizontal jumps, support, and reflection remain fixed; no radius\n"
+        "   uniform in the level, mesh-power law, perturbed all-level constants, or\n"
+        "   arbitrary motion is claimed.",
+        "sampling-alias persistence boundary",
+    )
+
+    boundary_matrix = root / "docs/publication_program/PAPER_BOUNDARY_MATRIX.md"
+    replace_once_or_present(
+        boundary_matrix,
+        "| structured robustness | construction stability boundary | mesh diagnostic | none | fixed counts, phases, masks, horizontal jumps, reflection and a common rotation | independent longitude or arbitrary node motion is outside the theorem | I |",
+        "| fixed-level local persistence | construction stability boundary | mesh diagnostic | none | for each fixed `J`, frozen counts, phases, masks, horizontal jumps, support, reflection and a common rotation; existential `delta_J` | no radius uniform in `J`, no mesh-power law or perturbed all-level constants; independent longitude and arbitrary node motion are outside the theorem | I |",
+        "paper-boundary persistence row",
+    )
+
     verifier = root / "afp_barrier_gate1/pure_math/covariance/p1e_fixed_level_persistence_audit.py"
     old_marker_loop = (
         "    for relative, markers in requirements.items():\n"
@@ -93,6 +114,46 @@ def main() -> None:
         old_marker_loop,
         new_marker_loop,
         "publication-marker normalization",
+    )
+
+    old_requirements_tail = (
+        '        "docs/publication_program/P1E_PROP73_APPROACH_REGISTRY.md": (\n'
+        '            "OUTCOME B SELECTED",\n'
+        '            "literal expression DAG absent",\n'
+        '            "fixed-level continuity",\n'
+        '        ),\n'
+        '    }\n'
+    )
+    new_requirements_tail = (
+        '        "docs/publication_program/P1E_PROP73_APPROACH_REGISTRY.md": (\n'
+        '            "OUTCOME B SELECTED",\n'
+        '            "literal expression DAG absent",\n'
+        '            "fixed-level continuity",\n'
+        '        ),\n'
+        '        "docs/publication_program/p1f_manuscript/SAMPLING_ALIAS_EQUALITY_HOSTILE_REFEREE_REPORT.md": (\n'
+        '            "existential level-dependent persistence radius",\n'
+        '            "no radius uniform in the level",\n'
+        '        ),\n'
+        '        "docs/publication_program/PAPER_BOUNDARY_MATRIX.md": (\n'
+        '            "| fixed-level local persistence |",\n'
+        '            "existential `delta_J`",\n'
+        '            "no radius uniform in `J`",\n'
+        '        ),\n'
+        '    }\n'
+    )
+    replace_once_or_present(
+        verifier,
+        old_requirements_tail,
+        new_requirements_tail,
+        "accepted-surface persistence markers",
+    )
+
+    finalizer = root / "tools/finalize_p1e_repair.py"
+    replace_once_or_present(
+        finalizer,
+        '    "tools/apply_p1e_outcome_b.py",\n',
+        '    "tools/prepare_p1e_outcome_b.py",\n    "tools/apply_p1e_outcome_b.py",\n',
+        "preparation-helper reproducibility hash",
     )
 
     print(f"PREPARATION_CHANGED_COUNT {len(CHANGED)}")
