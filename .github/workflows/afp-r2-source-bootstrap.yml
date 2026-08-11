@@ -1,0 +1,42 @@
+name: AFP R2 source bootstrap
+
+on:
+  push:
+    branches:
+      - agent/afp-practical-threshold-r2-20260811
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 1
+
+      - name: Create source snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          tar \
+            --exclude='.git' \
+            --exclude='*.ipynb' \
+            --exclude='output' \
+            --exclude='tmp' \
+            --exclude='__pycache__' \
+            --exclude='.lake' \
+            -czf afp-r2-source.tar.gz .
+          sha256sum afp-r2-source.tar.gz > afp-r2-source.tar.gz.sha256
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: afp-r2-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            afp-r2-source.tar.gz
+            afp-r2-source.tar.gz.sha256
+          if-no-files-found: error
+          compression-level: 0
