@@ -120,6 +120,28 @@ jobs:
               text = text.replace(old, new, 1)
           elif new not in text:
               raise SystemExit('proof-marker source not found')
+          old = (
+              '    for relative, markers in requirements.items():\n'
+              '        text = read_text(root, relative)\n'
+              '        for marker in markers:\n'
+              '            if marker not in text:\n'
+              '                raise AssertionError(f"missing marker in {relative}: {marker!r}")\n'
+          )
+          new = (
+              '    for relative, markers in requirements.items():\n'
+              '        text = read_text(root, relative)\n'
+              '        normalized_text = " ".join(text.split())\n'
+              '        for marker in markers:\n'
+              '            normalized_marker = " ".join(marker.split())\n'
+              '            if marker not in text and normalized_marker not in normalized_text:\n'
+              '                raise AssertionError(f"missing marker in {relative}: {marker!r}")\n'
+          )
+          if old in text:
+              if text.count(old) != 1:
+                  raise SystemExit('unexpected marker-loop occurrence count')
+              text = text.replace(old, new, 1)
+          elif new not in text:
+              raise SystemExit('marker-loop source not found')
           verifier.write_text(text, encoding='utf-8')
           PY
           python tools/apply_p1e_outcome_b.py --root . | tee "${RUNNER_TEMP}/migration.log"
