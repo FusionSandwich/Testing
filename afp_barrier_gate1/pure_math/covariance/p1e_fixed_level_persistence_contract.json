@@ -1,0 +1,77 @@
+{
+  "schema": "afp-fixed-level-local-persistence-v1",
+  "theorem_id": "P1E-LOCAL-PERSIST",
+  "outcome": "B_EXACT_WEAKENING",
+  "dimension": 3,
+  "level_quantifier": "for_each_fixed_level_J",
+  "radius": {
+    "symbol": "delta_J",
+    "existence": "existential",
+    "positive": true,
+    "level_dependent": true,
+    "explicit": false,
+    "uniform_in_J": false,
+    "prescribed_h_power": null
+  },
+  "frozen_data": [
+    "pole",
+    "equator",
+    "ring_counts",
+    "longitude_phases",
+    "radial_masks",
+    "horizontal_jump_integers",
+    "undirected_support_graph",
+    "north_south_reflection"
+  ],
+  "permitted_motion": [
+    "reflected_latitude_displacements",
+    "one_common_ambient_rotation"
+  ],
+  "unperturbed_hypotheses": [
+    "finite_level_construction",
+    "strictly_positive_latitude_gaps",
+    "strictly_positive_active_chord_losses",
+    "every_local_system_nonsingular",
+    "every_recovered_conductance_strictly_positive"
+  ],
+  "proof_mechanism": [
+    "guarded_open_parameter_domain",
+    "continuity_of_local_system_entries",
+    "continuity_of_determinants",
+    "continuity_of_finite_recursive_solutions",
+    "finite_positive_conductance_margin",
+    "open_good_set_contains_unperturbed_point"
+  ],
+  "conclusions": [
+    "unique_local_solvability",
+    "strictly_positive_recovered_conductances",
+    "shared_undirected_conductances",
+    "positive_stationary_masses",
+    "reversibility",
+    "exact_H0_fidelity",
+    "exact_H1_fidelity"
+  ],
+  "normalization": {
+    "mass_formula_factor": "1/2",
+    "coordinate_eigenvalue": -2,
+    "one_conductance_per_undirected_edge": true
+  },
+  "not_claimed": [
+    "uniform_radius_over_all_levels",
+    "level_independent_lower_bound_for_delta_J",
+    "delta_J_equal_to_constant_times_h_power",
+    "perturbed_all_level_rate_constant",
+    "perturbed_all_level_quadratic_defect_constant",
+    "changed_ring_counts",
+    "changed_longitude_phases",
+    "changed_radial_masks",
+    "changed_horizontal_jumps",
+    "changed_support_graph",
+    "independent_longitude_motion",
+    "arbitrary_node_motion"
+  ],
+  "ordinary_proof": "docs/publication_program/P1E_FIXED_LEVEL_LOCAL_PERSISTENCE.md",
+  "rejected_claim_record": "docs/publication_program/P1E_REJECTED_UNIFORM_ROBUSTNESS_CLAIM.md",
+  "lean_scope": "finite_stress_to_generator_algebra_only",
+  "computational_scope": "contract_and_repository_regression_only"
+}
