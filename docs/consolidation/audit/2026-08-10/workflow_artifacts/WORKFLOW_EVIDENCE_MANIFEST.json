@@ -1,0 +1,118 @@
+{
+  "artifacts": [
+    {
+      "artifact_id": 9072648576,
+      "extracted_records": [
+        {
+          "path": "P2E_ORIGINAL_WORKFLOW_ARTIFACT.zip",
+          "sha256": "335355e7c7f32b149ea6ba369ad4a016a05279c3c2a5858c2cd87900891faf1c",
+          "size_bytes": 29804
+        },
+        {
+          "path": "P2F_AUDIT.json",
+          "sha256": "55d39d611d9fad0c5dbcac6d49150c0310af97dc95a063ef0dc9709d1e49ceaf",
+          "size_bytes": 947
+        },
+        {
+          "path": "P2F_AUDIT_CI_REPRODUCED.json",
+          "sha256": "1e2b829435192f1b43050a1533bfbaae1f181fbba4932ebb55034174b4ce9156",
+          "size_bytes": 947
+        },
+        {
+          "path": "P2F_RESULTS.json",
+          "sha256": "2346c15e2dcc65b7604ad5d172411cd04d9c8f7a83ba0e989817abb90107a355",
+          "size_bytes": 356661
+        },
+        {
+          "path": "P2F_RESULTS_CI_REPRODUCED.json",
+          "sha256": "fee67945df857f240a880609c20e0aa14fac6ec674f523b42546a3526005af62",
+          "size_bytes": 356663
+        },
+        {
+          "path": "pip-freeze.txt",
+          "sha256": "cb6ec3a80a0be2c567fcbdb819aac9b0195c7bd0ac0780ec2058b38edc6598c1",
+          "size_bytes": 303
+        },
+        {
+          "path": "provenance.txt",
+          "sha256": "5e974a4db51bc95f264b25476bb1f65652d2822abc06d1458ab0f2f2f885d672",
+          "size_bytes": 172
+        },
+        {
+          "path": "records.sha256",
+          "sha256": "8b6bc0cba14416edc836539515554fc30fd707c1e9b46b205935d3b86cbe46ff",
+          "size_bytes": 756
+        }
+      ],
+      "head_commit": "b8912c282a22420e8077c75929b16c7a33d189b2",
+      "label": "pr51",
+      "outer_sha256": "b74eeb6202910efdb775b697a1cbaea9b53d7e52b3406c4837fe79d5e1bc75a4",
+      "source_archive": {
+        "path": "source-b8912c282a22420e8077c75929b16c7a33d189b2.tar.gz",
+        "preservation": "not duplicated; exact Git tree is permanent and the archive hash remains recorded",
+        "sha256": "99f659b605b3372149bdcf96632ca4f6e945e98c96f50ba21006d802f69fd037"
+      },
+      "tree": "4c2175463a661ce3f2bb206f0cb7b5038183b2ab",
+      "workflow_run": 31413862682
+    },
+    {
+      "artifact_id": 9085943106,
+      "extracted_records": [
+        {
+          "path": "P2E_ORIGINAL_WORKFLOW_ARTIFACT.zip",
+          "sha256": "335355e7c7f32b149ea6ba369ad4a016a05279c3c2a5858c2cd87900891faf1c",
+          "size_bytes": 29804
+        },
+        {
+          "path": "P2F_AUDIT.json",
+          "sha256": "56e81d024e8c14608112f9e659c9452143f6e0fd08cc77caca26d7a63f39b393",
+          "size_bytes": 1555
+        },
+        {
+          "path": "P2F_AUDIT_CI_REPRODUCED.json",
+          "sha256": "bfdc50b3959464ee3df87b1f01889eb65acedbcd46c930c36b78be3224c106f9",
+          "size_bytes": 1555
+        },
+        {
+          "path": "P2F_RESULTS.json",
+          "sha256": "b52c920a4dc43f50198b61968fe77a9ff4870759de5c94e6cba08c354e81ee36",
+          "size_bytes": 370706
+        },
+        {
+          "path": "P2F_RESULTS_CI_REPRODUCED.json",
+          "sha256": "502494a9cc866729386e8fd0df9790584769330ff5d990f1aa7551f423cb7042",
+          "size_bytes": 370694
+        },
+        {
+          "path": "pip-freeze.txt",
+          "sha256": "cb6ec3a80a0be2c567fcbdb819aac9b0195c7bd0ac0780ec2058b38edc6598c1",
+          "size_bytes": 303
+        },
+        {
+          "path": "provenance.txt",
+          "sha256": "a5b0fec1aaef849a79c8bb8e9789aa094bd37188f206de8c34d00958687956a8",
+          "size_bytes": 172
+        },
+        {
+          "path": "records.sha256",
+          "sha256": "4c85fa974396cbda0eebd0a5f67bdb8f3f90ec4d3918bf2485716839e7208e41",
+          "size_bytes": 756
+        }
+      ],
+      "head_commit": "d13e795a2cd09594b20812c88312278227bb5513",
+      "label": "pr52",
+      "outer_sha256": "ed5aa2ce4de182e17e0a1ffe7bef3337af6dbd966f7bcf6c5fd4a39836792c29",
+      "source_archive": {
+        "path": "source-d13e795a2cd09594b20812c88312278227bb5513.tar.gz",
+        "preservation": "not duplicated; exact Git tree is permanent and the archive hash remains recorded",
+        "sha256": "f538794dcac57658d9d19c95e807b9fe565c6070870f1351258478d16b2a810e"
+      },
+      "tree": "30caf52fcd7ce8ff1c73a6ac1f310a1455416e03",
+      "workflow_run": 31449858619
+    }
+  ],
+  "materializer_run": 31456389012,
+  "repository": "FusionSandwich/Testing",
+  "schema": "afp-workflow-evidence-preservation-v1",
+  "target_parent": "03575dd4a6c4b6cd35d025afdbff09738c0e8ba7"
+}
