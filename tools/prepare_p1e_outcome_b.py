@@ -155,6 +155,12 @@ def main() -> None:
         '    "tools/prepare_p1e_outcome_b.py",\n    "tools/apply_p1e_outcome_b.py",\n',
         "preparation-helper reproducibility hash",
     )
+    replace_once_or_present(
+        finalizer,
+        '    "docs/publication_program/P1E_PROP73_APPROACH_REGISTRY.md",\n',
+        '    "docs/publication_program/P1E_PROP73_APPROACH_REGISTRY.md",\n    "docs/publication_program/P1E_PROP73_VALIDATION_LOG.md",\n',
+        "validation-log reproducibility hash",
+    )
 
     print(f"PREPARATION_CHANGED_COUNT {len(CHANGED)}")
     if args.check and CHANGED:
