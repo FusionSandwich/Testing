@@ -1,0 +1,16 @@
+{
+  "base_archive": {
+    "filename": "AFP_POST_AUDIT_BASELINE_BUNDLE.tar.xz",
+    "sha256": "6028c41f3474144d60fca43dc6bf67e0765cd9e4d23edee40c96a9c97b57123e"
+  },
+  "classification": "packaging-only checksum correction; no theorem, source, import, workflow evidence, preregistration, held-out result, or generated evidence changes",
+  "overlay": {
+    "command": "cp BUNDLE_README.md extracted-baseline/README.md",
+    "source_git_blob_sha1": "8b6b79e91d67daf0e7b22297e5c46862b287ad2d",
+    "source_path": "BUNDLE_README.md",
+    "source_sha256": "e6b947e675938019a8d1b405de2473676e108c541e24af59551497665116ff87",
+    "target_path": "README.md"
+  },
+  "reason": "The transport-wrapper README was inserted into the compressed base archive after the embedded line-oriented manifest was generated. The embedded manifest already records the intended neutral README. Applying this committed overlay makes every embedded SHA-256 and Git-blob record exact.",
+  "schema": "afp-bundle-overlay-v1"
+}

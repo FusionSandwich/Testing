@@ -1,0 +1,22 @@
+{
+  "authoritative_parent": "d56db0ba8c24b63e56ec107e2f044449c726ce20",
+  "base_archive_sha256": "6028c41f3474144d60fca43dc6bf67e0765cd9e4d23edee40c96a9c97b57123e",
+  "base_commit": "a5c3d5298c8f04b5fe7c325087e24234396ca4e1",
+  "base_tree": "7c21266488f59b486f23d9ceedc40aafb303e107",
+  "checks": {
+    "all_25_embedded_sha256_records_after_overlay": "pass",
+    "archive_member_count": 26,
+    "generated_evidence_records": 62,
+    "import_records": 33,
+    "json_parse": "pass",
+    "no_gitlinks": "pass",
+    "no_submodules": "pass",
+    "no_symlinks": "pass",
+    "ref_records": 131,
+    "theorem_evidence_rows": 151,
+    "workflow_registrations": 126
+  },
+  "overlay_git_blob_sha1": "8b6b79e91d67daf0e7b22297e5c46862b287ad2d",
+  "overlay_sha256": "e6b947e675938019a8d1b405de2473676e108c541e24af59551497665116ff87",
+  "schema": "afp-post-commit-verification-v1"
+}
