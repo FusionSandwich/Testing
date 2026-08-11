@@ -11,10 +11,12 @@
 | F07 | Layer scalar/current/tensor/\(q_n\) outputs exist | Per-layer result records | COMPLETE |
 | F08 | Heating, crossing, escape, and PKA descriptors exist | Per-layer/global response records | COMPLETE |
 | F09 | Species-resolved PKA source and directional tensor exist | Species records; PSD/symmetry audit | COMPLETE, not recoil spectra |
-| F10 | Orientation sensitivity is evaluated | 0°, 60°, and 84° cases | COMPLETE |
-| F11 | Independent reference and uncertainty are separated | 72/50 direction plus two-level mesh change | COMPLETE finite certificate |
-| F12 | Improved \(H_2\) fidelity predicts all responses | 0/18 resolved improvements | DISPROVED for this finite hierarchy |
-| F13 | Optimized AFP improves HTS response | No resolved improvement | NOT SUPPORTED |
-| F14 | Evaluated nuclear-data performance | No evaluated data used | OUT OF SCOPE |
-| F15 | DPA/defect/\(J_c\)/\(T_c\) benefit | No damage/property model | PROHIBITED |
-| F16 | P2F integrity package is deterministic and fail-closed | Scientific hash, audit, tests, workflow | COMPLETE |
+| F10 | Orientation sensitivity is evaluated | 0°, 60°, and 84° cases | COMPLETE as a surrogate diagnostic |
+| F11 | The nominal 72/50 plus spatial difference is a converged uncertainty | 50/72/98/128 sweep | FALSE; every incidence fails the declared convergence gate |
+| F12 | Improved \(H_2\) fidelity predicts the selected responses | Maximum method-response relative difference `1.9424e-14` | NOT TESTED BY THIS FIXTURE; response map is operator-insensitive |
+| F13 | Optimized AFP improves HTS response | 0/18 resolved improvements | NOT SUPPORTED |
+| F14 | Optimized AFP degrades HTS response | 0/18 resolved degradations | NOT SUPPORTED |
+| F15 | The P2F scientific conclusion is bounded negative | Revised audit | WITHDRAWN; outcome is `INCONCLUSIVE_REFERENCE_NOT_CONVERGED` |
+| F16 | Evaluated nuclear-data performance | No evaluated data used | OUT OF SCOPE |
+| F17 | DPA/defect/\(J_c\)/\(T_c\) benefit | No damage/property model | PROHIBITED |
+| F18 | P2F integrity package is deterministic and fail-closed | Scientific hash, audit, tests, workflow | COMPLETE for record integrity, not scientific transfer |

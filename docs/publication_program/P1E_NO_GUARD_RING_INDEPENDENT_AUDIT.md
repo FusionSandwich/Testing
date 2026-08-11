@@ -2,17 +2,15 @@
 
 ## Final verdict
 
-**ACCEPTED AS AN INDEPENDENT AUDIT OF THE COMPLETE \(d=3\) THEOREM.**
+**ACCEPTED FOR THE UNPERTURBED \(d=3\) CONSTRUCTION ONLY; THE ROBUSTNESS EXTENSION IS OPEN.**
 
-The opening audit found five defects in an earlier submission.  Sections 4,
-5, 11, and 12 below supply the reachable integer-stencil margin, the global
-transition product estimate, an analytic all-orders closure, and the
-support-preserving robustness theorem.  The final construction source uses
-the sharper rational Cauchy certificates in
-`P1E_SHORT_GAP_S2_CONSTRUCTION.md` with \(M_0=2^{80}\); those certificates
-replace the deliberately gigantic fallback constant in Section 11.  The
-earlier failures are retained here as hostile regressions, not as current
-blockers.
+The opening audit found five defects in an earlier submission.  Sections 4
+and 5 repair the reachable integer-stencil margin and global transition
+product estimate used by the unperturbed theorem.  Sections 11 and 12 record
+a candidate all-orders compiler and perturbation route, but they do not
+supply the literal emitted program, verified operation count, complete
+denominator inventory, or recurrence certificate required for theorem
+status.  Those sections are retained as diagnostics and future-work notes.
 
 The integer schedule is well defined and closes exactly at the equator. The
 reachable transition phase is smaller than the candidate's declared box, the
@@ -630,7 +628,7 @@ Thus every output has
  K_L:=2^{28\cdot2^L}.                                \tag{11.2}
 \]
 
-This is a literal induction, not an appeal to compactness.
+The induction is valid for a specified straight-line program, but the literal program and its node count are not committed here.
 
 ### Transition application
 
@@ -675,17 +673,16 @@ every numerator has the stated zero order is a finite polynomial identity
 obtained from the row formulas and is part of the DAG emitter, not a
 numerical limit.
 
-The six-by-six system, including all 42 matrix/right-hand-side entries,
-uses far fewer than
+The six-by-six system is asserted to use fewer than
 
 \[
  L=10^6
 \]
 
-nodes when written without expansion. This bound can be checked simply by
-assigning one node to every displayed arithmetic operation; it is
-intentionally six orders of magnitude looser than the literal formula.
-The fundamental theorem of calculus and (11.2) then give
+nodes when written without expansion.  No literal emitted program or
+machine-checked count is included, so this assertion is not a certificate.
+If that missing program and every reciprocal guard were verified, the
+fundamental theorem of calculus and (11.2) would give
 
 \[
  \|A-A_0\|_{\max},\ \|b-b_0\|_\infty
@@ -741,10 +738,12 @@ Every adjugate entry is less than \(512\) in absolute value, so
 \]
 
 The limiting solution has norm less than \(64\) and minimum greater than
-\(1/20\). The cancellation-free normalized finite matrix has the same atom
-and denominator guards as above and fewer than \(10^6\) nodes. Therefore
-the same \(K_L\) bounds its change, and \(M_0>2^{40}K_L\) preserves a
-positive margin.
+\(1/20\). A proposed cancellation-free normalized finite matrix would use
+the same atom and denominator guards as above. However, the literal expression
+DAG and its node count have not been committed, so the asserted bound by the
+same \(K_L\) is conditional. Consequently the implication that
+\(M_0>2^{40}K_L\) preserves a positive margin is a proof template, not an
+established estimate.
 
 ### One explicit choice
 
@@ -756,20 +755,22 @@ Take
  \boxed{M_0=2^N.}                                    \tag{11.7}
 \]
 
-Then \(M_0>2^{100}K_L\), so both the transition and first-row Neumann
-arguments close. All schedule, degree, separation, rate, and defect
+If the missing compiler certificate established the advertised \(K_L\)
+bound, then \(M_0>2^{100}K_L\) and the transition and first-row Neumann
+arguments would close. The schedule, degree, separation, rate, and defect
 arguments use only that \(M_0\) is a fixed dyadic above their stated lower
-thresholds, and remain valid after this replacement.
+thresholds.
 
-To turn Lemma 11.1 into a machine audit, the generator should emit the
-cancellation-free expression DAG and count its nodes while checking the
-listed reciprocal guards. The mathematical proof is the induction
-(11.1), not the numerical evaluation of any refinement level.
+To turn this route into a proof, the generator must emit the
+cancellation-free expression DAG, count its nodes, and check every listed
+reciprocal guard.  Until that artifact exists, the induction (11.1) is a
+conditional template rather than a completed all-orders certificate.
 
-## 12. A rigorously support-preserving perturbation theorem
+## 12. Candidate support-preserving perturbation statement — open
 
-The analytic closure also supplies a nontrivial robustness statement, but
-only within the symmetry class actually used by the construction.
+The following calculation describes a possible robustness statement within
+the symmetry class used by the construction.  Because Section 11 lacks the
+literal compiler certificate, the statement is not proved.
 
 For one level, perturb each northern ring latitude by
 
@@ -793,8 +794,9 @@ invertible: its explicit solution has
 \]
 
 and the determinant factors consist only of the positive radial factor,
-\(x_+-x_->0\), and the positive factor \(T\) in (4.8). The same
-cancellation-free \(C^1\) compiler bounds the inverse uniformly.
+\(x_+-x_->0\), and the positive factor \(T\) in (4.8). A literal cancellation-free \(C^1\) compiler with verified denominator
+guards would be needed to bound the inverse uniformly; that artifact is not
+present.
 
 Indeed, before harmless row normalizations, with
 \(A_h=\sin h\), \(\ell=1-\cos h\), and horizontal losses \(u,v\), the
@@ -828,12 +830,14 @@ Hence their total logarithmic perturbation is \(O(K_L/M_0)\). The first row
 is handled by (11.4)--(11.6), and the equator remains exact by reflection
 with its positive horizontal coefficient re-solved explicitly.
 
-Because (11.7) gives \(K_L/M_0<2^{-100}\), all local coefficients stay
-positive and the global conductance product changes by less than a fixed
-factor two. The perturbed family therefore remains positive, reversible,
-exact on \(H_0,H_1\), and satisfies the same \(O(h^2)\) quotient bound with
-slightly enlarged edge-window constants.
+Subject to a future certificate proving the stated \(K_L\) bound, (11.7)
+would give \(K_L/M_0<2^{-100}\); the local coefficients would then stay
+positive and the global conductance product would change by less than a fixed
+factor two. Together with the missing recurrence certificate, these
+conditional estimates would imply positivity, reversibility, exactness on
+\(H_0,H_1\), and the same \(O(h^2)\) quotient order with enlarged
+edge-window constants. No such theorem is claimed here.
 
-This theorem does not cover independent longitude perturbations or arbitrary
-node motion. Those destroy the reflection reduction and still require a
-global six-moment right inverse.
+This candidate statement would not cover independent longitude perturbations
+or arbitrary node motion. Those destroy the reflection reduction and still
+require a global six-moment right inverse.

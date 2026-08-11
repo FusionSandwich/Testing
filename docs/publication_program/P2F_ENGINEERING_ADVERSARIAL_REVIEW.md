@@ -2,66 +2,79 @@
 
 ## Verdict
 
-`ACCEPT_INTEGRITY_AND_BOUNDED_NEGATIVE_CLAIM`; reject any claim of production
-HTS benefit.
+`ACCEPT_INTEGRITY_ONLY`; reject the former `BOUNDED_NEGATIVE` transfer claim
+and reject any production HTS benefit or degradation claim.
 
 ## Thin layers
 
 The 0.2–2 µm buffer/REBCO/Ag layers are represented explicitly.  The coarse
-mesh uses one or two cells in each thin layer and the reference doubles that
-resolution.  Integrated response differences are included in the spatial
-uncertainty.  The calculation does not resolve charged-particle track
-structure, interface roughness, epitaxial texture, or nanoscale energy-loss
-physics.
+mesh uses one or two cells in each thin layer and the spatial diagnostic
+doubles that resolution.  Integrated changes are recorded, but the model does
+not resolve charged-particle track structure, interface roughness, epitaxial
+texture, or nanoscale energy-loss physics.
 
 ## Grazing paths and finite width
 
 The 84° case increases the streaming path and activates a 4 mm lateral-leakage
-surrogate.  This detects sensitivity to a grazing-like geometry, but it is not
-the nonlocal grazing surface equation required for rigorous thin-interface
-limits, and it does not model tape edges, curvature, folds, or cable contact.
-Those belong to the separate mixed-dimensional transport program.
+surrogate.  It is not the nonlocal grazing surface equation required for a
+rigorous thin-interface limit and does not model tape edges, curvature, folds,
+or cable contact.
+
+The angular reference is not converged.  The 50/72/98/128-direction grazing
+sequence alternates between low and high response branches.  For total
+heating the values are approximately `1.02e-7`, `3.79e-3`, `4.05e-5`, and
+`3.69e-3`; the relative span is essentially one.  The same failure occurs for
+every selected grazing response.  A 72-versus-50 difference therefore cannot
+be treated as a credible reference uncertainty.
 
 ## Nuclear-data dependence
 
 All material coefficients and secondary yields are positive frozen
 verification surrogates.  They exercise conservation, positivity, material
 separation, and response plumbing.  They are not ENDF/TENDL/JEFF data and have
-no covariance provenance.  Consequently absolute heating, reaction, PKA, and
-escape values are not engineering predictions.
+no covariance provenance.  Absolute heating, reaction, PKA, and escape values
+are not engineering predictions.
 
 ## Neutral/charged separation
 
 The neutral matrix is a full positive reversible Boltzmann kernel and is
-bitwise identical between baseline and optimized runs.  AFP enters only the
-charged-secondary BFP block.  The audit fails if this separation is removed.
-This closes the main physical-overreach risk.
+identical between baseline and optimized runs.  AFP enters only the charged-
+secondary BFP block.  The audit fails if this separation is removed.  This is
+a valid implementation firewall.
 
-## Ray effects and angular convergence
+Three of the 18 selected comparisons—the substrate PKA-source total in each
+incidence—are neutral-only by construction.  They cannot carry information
+about the AFP operator.  The remaining selected responses are also nearly
+identical: the largest relative baseline/optimized response difference is
+`1.9424183391e-14`.  The current fixture is therefore not operator-sensitive.
 
-The production comparison uses the frozen 32-node rule.  Independent 50- and
-72-direction references are used, but they remain structured product rules.
-The conservative uncertainty is larger than every observed method advantage.
-No ray-effect cancellation or asymptotic angular convergence rate is claimed.
+## Conservation and numerical integrity
 
-## Spatial convergence
+The minimum flux is positive to the declared tolerance, the largest balance
+residual is approximately `5.02e-15`, the PKA tensors are symmetric positive
+semidefinite, and the same-run outputs are deterministic.  These facts support
+software integrity; they do not repair reference nonconvergence or response
+insensitivity.
 
-The declared uncertainty separates angular and two-level spatial components.
-Two-level change is not an all-orders convergence proof.  The result is valid
-as a bounded finite study only.
+## Required successor experiment
 
-## Damage and superconducting-property firewall
+A transfer benchmark should not be rerun with post-hoc thresholds.  A new,
+separately preregistered experiment must:
 
-The PKA tensor is a directional reaction-source descriptor.  It cannot be
-mapped directly to DPA, defect survival, oxygen disorder, pinning, \(J_c\),
-\(T_c\), or magnet performance.  Such a map requires evaluated recoil data,
-atomistic/mesoscale damage evolution, temperature history, and experimental
-calibration.
+1. choose responses with demonstrated first-order sensitivity to the angular
+   generator while keeping the neutral physics fixed;
+2. use a rotated/averaged or adaptively refined angular reference that passes a
+   declared convergence gate, or compare against an independent production
+   method;
+3. separate neutral-only, charged-sensitive, and mixed responses;
+4. compare equal work or equal accuracy rather than only common completion;
+5. classify resolved improvement, resolved degradation, mixed response, and
+   unresolved outcomes separately; and
+6. retain the surrogate/engineering boundary unless evaluated data and an
+   independently validated damage model are introduced.
 
-## Cost and value
+## Final classification
 
-P2E shows a valid 26.1% iteration reduction in one frozen acceleration fixture,
-but its physical response hypothesis fails.  P2F shows zero resolved response
-improvements out of 18 comparisons.  The defensible publication claim is a
-negative transfer result plus a verified separation architecture, not an HTS
-accuracy or cost advantage.
+The committed calculation is a useful structural and reproducibility
+diagnostic.  Its scientific transfer result is **inconclusive**, not bounded
+negative.

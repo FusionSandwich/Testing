@@ -26,7 +26,7 @@ ordinary proofs, exact audits, or eventual release workflow.
 | `d=2` mesh parameter normalized inconsistently | Theorem 7.1; abstract; registries | PASS | `h=pi/N` is fill/separation, active edge angle is `2h`, `R_2=pi^2/8`, `C_2=4`, `c_2=16/pi^2` |
 | `d=3` construction promoted from fitted slopes | Abstract; contribution list; Theorem 7.2; Appendices B--C | PASS | the proof uses literal symbolic row systems, rational Cauchy guards, exact recurrence and positivity margins; finite generator output is regression only |
 | Construction generalized beyond proved dimensions | Abstract; hierarchy; Theorems 7.1--7.2; limitations | PASS | matching families are stated only for `d=2,3`; the all-dimensional scope is reserved for the lower frontier, equality and stability |
-| Generic perturbation robustness inferred | Theorem 7.2; limitations | PASS | counts, phases, masks, horizontal jumps, pole/equator data and reflection are fixed; only latitude perturbations at the displayed scale and a common rotation are allowed |
+| Generic perturbation robustness inferred | Abstract; Open problem 7.3; limitations | PASS | no robustness theorem, perturbation radius, or constants are claimed; the fixed-support reflected-latitude calculation is explicitly `OPEN_UNCERTIFIED` |
 | Local row feasibility treated as global reversibility | Theorems 5.3 and 7.2; rejected-claim table | PASS | P1C keeps detailed balance/Gram/cycle compatibility; P1E assigns one conductance per undirected edge and proves the global recurrence |
 | Positivity assumed to survive correction | Section 7.2 | PASS | strict transition, ordinary, polar and global conductance margins precede normalization |
 | Equality conflated with exact sampled `H_2` | Theorem 5.1; examples; rejected claims | PASS | frontier equality is `R_2=c_*S_2` with `c_*>0`; the sampled exact shell is zero |
@@ -50,7 +50,7 @@ All mathematical activation conditions are now met in the controlling sources:
 - [x] rowwise `B_i=0` and sampling-safe scalar residual;
 - [x] `R_3=64pi^2`, `C_3=75/2`, and P1B transfer
       `c_3=3/(32pi^2)`;
-- [x] structured robustness stated at exactly the proved scale;
+- [x] unsupported structured robustness removed and recorded as an open certification problem;
 - [x] independent symbolic, Cauchy, first-row, recurrence, generator and
       hostile-mutation audits;
 - [x] abstract, contribution list, dependency graph, source map, limitations
@@ -62,7 +62,9 @@ theorem and must remain outside the theorem prose.
 
 ## Editorial disposition
 
-The manuscript is safe for publication assembly with the present theorem
-scope. Any later edit that changes the mesh parameter, `d=3` row multiplier,
-rate constants, perturbation class, or all-dimensional language requires a new
-normalization and overclaim audit.
+The manuscript is safe with respect to the corrected theorem scope, but this
+prose audit is not an overall publication-readiness decision. The revised PDF,
+source hashes, novelty positioning, and consolidated validation still require
+independent release checks. Any later edit that changes the mesh parameter,
+`d=3` row multiplier, rate constants, perturbation status, or all-dimensional
+language requires a new normalization and overclaim audit.

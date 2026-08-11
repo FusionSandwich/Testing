@@ -1,10 +1,31 @@
 {
+  "angular_reference_sweep": [
+    {
+      "n_mu": 5,
+      "n_phi": 10,
+      "nodes": 50
+    },
+    {
+      "n_mu": 6,
+      "n_phi": 12,
+      "nodes": 72
+    },
+    {
+      "n_mu": 7,
+      "n_phi": 14,
+      "nodes": 98
+    },
+    {
+      "n_mu": 8,
+      "n_phi": 16,
+      "nodes": 128
+    }
+  ],
   "charged_energy_MeV": [
     2.0,
     0.5,
     0.1
   ],
-  "fine_reference_nodes": 72,
   "incidence_cases": [
     {
       "azimuth_degrees": 0.0,
@@ -60,6 +81,8 @@
     2.0,
     0.025
   ],
+  "nominal_reference_nodes": 72,
+  "operator_response_relative_difference_tolerance": 1e-10,
   "physics_firewall": {
     "charged": "AFP/BFP only",
     "excluded": [
@@ -79,6 +102,7 @@
   "record_blas_core": "Haswell",
   "record_float_significant_digits": 12,
   "record_zero_threshold": 1e-18,
-  "schema": "afp-p2f-hts-manifest-v1",
+  "reference_convergence_relative_span_limit": 0.05,
+  "schema": "afp-p2f-hts-manifest-v2",
   "stack_provenance": "bounded coated-conductor verification stack chosen within the HTS irradiation roadmap ranges; dimensions are representative, not a manufacturer certificate"
 }

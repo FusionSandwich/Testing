@@ -51,8 +51,9 @@ $$
 \le\inf_{L\in\mathcal G_h(64\pi^2)}\mathfrak D_2(L)
 \le\frac{75}{2}h^2.
 $$
-The three-dimensional robustness proposition is restricted to
-support-preserving reflected latitude perturbations.
+A perturbative robustness theorem for the three-dimensional construction is
+not claimed here.  The fixed-support perturbation route is retained only as an
+open certification problem.
 
 ## 1. Introduction
 
@@ -1030,11 +1031,6 @@ $$
 \tag{7.18}
 $$
 
-For the structured robustness proposition below, set
-$$
-K_*=2^{28\cdot2^{10^6}},
-\tag{7.19}
-$$
 
 #### Proof
 
@@ -1055,7 +1051,7 @@ W=\sum_i\mu_i,
 w_i=\frac{\mu_i}{W},
 \qquad
 \gamma_{ij}=\frac{\Gamma_{ij}}W.
-\tag{7.20}
+\tag{7.19}
 $$
 The tangent force equation and radial contraction give
 $$
@@ -1068,7 +1064,7 @@ $$
 M_i=\frac1{\mu_i}
 \operatorname{diag}(R_i,-R_i/2,-R_i/2)
 =\frac{3R_i}{2\mu_i}Z_i.
-\tag{7.21}
+\tag{7.20}
 $$
 This proves $B_i=0$ and (7.16) with
 $c_i=3R_i/(2\mu_i)$. Since every active edge has angle at most $5h$,
@@ -1089,48 +1085,23 @@ which proves (7.17). The lower half of (7.18) is Theorem 4.1:
 $\mathfrak D_2\ge6/r_{\max}\ge6h^2/\mathsf R_3$.
 $\square$
 
-### Proposition 7.3 (structured support-preserving robustness)
+### Open problem 7.3 (support-preserving perturbations)
 
-At any level, preserve every ring count, longitude phase, radial mask,
-horizontal jump integer, the pole, the equator, and north--south reflection.
-Perturb each northern ring latitude by at most $h^3/K_*$, reflect the
-perturbation southward, and allow one common ambient rotation. Re-solving the
-same row systems produces a positive reversible generator with exact
-$H_0,H_1$ and
-$$
-r_{\max}\le\mathsf R_{\rm rob}h^{-2},
-\qquad
-\mathfrak D_2\le C_{\rm rob}h^2,
-\qquad
-\mathsf R_{\rm rob}=256\pi^2,
-\quad C_{\rm rob}=54.
-\tag{7.22}
-$$
-This proposition does not cover independent longitude perturbations or
-arbitrary node motion.
+The fixed-support reflected-latitude perturbation route remains plausible, but
+it is **not** a theorem of this paper.  The repository does not contain the
+literal cancellation-free straight-line program, verified operation count,
+complete denominator-guard inventory, or machine-checkable derivative and
+global-recurrence certificate needed to justify the previously advertised
+universal constant.  The associated scripts are retained as diagnostics and
+falsification aids only.
 
-#### Proof
-
-The cancellation-free differentiated row programs have derivative bound
-$K_*$. The factor $K_*^{-1}$ in the perturbation scale makes ordinary
-normalized rows change by $O(h^2)$ and transition rows by $O(h)$; there are
-$O(h^{-1})$ ordinary rows, while $Jh<14/M_0$. The fixed margins
-(7.12)--(7.14), the separately guarded first row, and equatorial reflection
-therefore preserve the shared positive recurrence.
-
-Moving either endpoint by at most $h^3/K_*$ changes an active angular length
-by at most $2h^3/K_*$. Since $h<1$ and $K_*>32$, the perturbed active window is
-contained in $[h/16,6h]$. Thus
-$$
-\ell_{\min}\ge\frac{2}{\pi^2}\left(\frac h{16}\right)^2
-=\frac{h^2}{128\pi^2},
-\qquad
-\ell_{\max}\le\frac{(6h)^2}{2}=18h^2.
-$$
-Re-solving (7.10)--(7.11) and repeating (7.20)--(7.21) gives exact
-reproduction and the row multiplier. Hence
-$r_{\max}\le2/\ell_{\min}=256\pi^2h^{-2}$ and
-$\mathfrak D_2\le3\ell_{\max}=54h^2$. $\square$
+A complete robustness theorem would have to preserve the ring counts,
+longitude phases, radial masks, horizontal jump integers, pole and equator,
+and north--south reflection; enumerate the exact normalized row programs;
+certify every reciprocal guard and derivative bound; and propagate the local
+bounds through the shared-conductance recurrence.  Until such a certificate is
+committed and independently checked, no perturbation radius or constants
+$\mathsf R_{\rm rob}$ and $C_{\rm rob}$ are asserted.
 
 ## 8. Exact examples
 
@@ -1245,7 +1216,7 @@ regression evidence but is not a substitute for proof.
 | Theorem 7.1, regular-polygon matching family | Section 7.1, direct Fourier proof | `p1e_asymptotic_family_audit.py`; `QuadraticFidelityConstruction.lean` | P1E-POLYGON | accepted for `d=2` |
 | Theorem 7.2, adaptive-ring mesh, positivity and exact `H_0,H_1` | `docs/publication_program/P1E_SHORT_GAP_S2_CONSTRUCTION.md`, Sections 1--8 | symbolic, Cauchy, polar, family, proof, referee and independent audits listed below | P1E-RING | accepted for `d=3` |
 | Theorem 7.2, sampled quotient multiplier and matching constants | same P1E source, Section 9 | `p1e_short_gap_proof_audit.py`; `p1e_short_gap_cauchy_hostile_audit.py` | P1E-ROW; F-CONSTRUCT | accepted for `d=3` |
-| Proposition 7.3, structured robustness with $\mathsf R_{\rm rob}=256\pi^2$, $C_{\rm rob}=54$ | P1E source, Section 10, plus the active-window calculation in Proposition 7.3 | `p1e_no_guard_ring_independent_audit.py`; final hostile guard audit | P1E-RING | accepted only for the fixed-support reflected class |
+| Open problem 7.3, support-preserving perturbations | P1E source, Section 10, and retained diagnostic calculations | `p1e_no_guard_ring_independent_audit.py` | P1E-ROBUST | open; no perturbation radius or robustness constants are claimed |
 
 The controlling registry is
 `docs/publication_program/THEOREM_REGISTRY.md`. Any change in theorem
@@ -1290,7 +1261,8 @@ The required audit programs are:
 - `p1e_short_gap_polar_guard_audit.py`,
   `p1e_short_gap_proof_audit.py`, and
   `p1e_no_guard_ring_independent_audit.py` for the first row, exact constants,
-  recurrence, reachable-domain margins, and perturbation arithmetic; and
+  recurrence, and reachable-domain margins; its perturbation arithmetic is a
+  retained candidate diagnostic, not theorem evidence; and
 
 - `p1e_short_gap_family_audit.py` and
   `p1e_short_gap_referee_audit.py` for finite generator reconstruction and

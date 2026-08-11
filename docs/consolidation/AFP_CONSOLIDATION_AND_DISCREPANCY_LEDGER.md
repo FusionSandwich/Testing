@@ -55,7 +55,7 @@ into the P2E/P2F implementation.
 - Historical stage PRs remain evidentiary records.
 - The new stacked PR train is linear.  Each stage targets only its immediate
   predecessor; the final integration PR targets `testing`.
-- P2E and P2F scientific outcomes are negative-result outcomes.  They are not
+- P2E and P2F scientific outcomes are P2E negative/mixed and P2F inconclusive outcomes.  They are not
   converted to positive results by changing the frozen operator, thresholds,
   or held-out cases.
 - The archive refs are branch refs, not intrinsically immutable Git objects.

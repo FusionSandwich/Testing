@@ -5,7 +5,9 @@
 `PROVED_P1E` means that the ordinary all-orders proof has survived the final
 independent hostile audit. `EXACT_IDENTITY_AUDITED` means only the displayed
 finite identity has a deterministic exact check. `COMPUTATIONAL_CANDIDATE`
-means finite-level generator evidence. `REJECTED_AS_STANDALONE_ROUTE` means an
+means finite-level generator evidence. `OPEN_UNCERTIFIED` means that a proposed
+extension has useful diagnostics but lacks a complete theorem certificate.
+`REJECTED_AS_STANDALONE_ROUTE` means an
 exact obstruction defeats that proposed route as written; it is not a
 nonexistence theorem for every construction in the family.
 
@@ -21,7 +23,7 @@ nonexistence theorem for every construction in the family.
 | exact `H_0/H_1` and reversibility | PROVED_P1E | shared positive conductances, masses from chord loss, row force identity | finite generator remains regression evidence, not proof |
 | scalar row multiplier on sampled `H_2` quotient | PROVED_P1E | `B_i=0` and `R_2A(i)=c_iS_2A(i)` | quotient by `K_X`; no sampling-frame denominator |
 | rate/fidelity constants | PROVED_P1E | `R_3=64 pi^2`, `C_3=75/2`, `c_3=3/(32 pi^2)` | P1B transfer uses unit nodes, positivity, exact `H_1`, and the rate cap |
-| structured perturbation theorem | PROVED_P1E | support-preserving latitude perturbations plus a common rotation | retain fixed counts, masks, phases, jumps, and reflection; do not generalize to arbitrary motion |
+| structured perturbation route | OPEN_UNCERTIFIED | candidate support-preserving latitude perturbations plus a common rotation | commit the literal straight-line program, operation count, denominator guards, derivative bound, and global recurrence certificate before stating a theorem |
 | finite family generator | COMPUTATIONAL_CANDIDATE | nodes, conductances, weights, exactness residuals, mesh/rate/quotient measurements, failed mutations | finite levels and fitted slopes cannot replace the all-orders proof |
 | Lean finite algebra | EXACT_IDENTITY_AUDITED | force, balance, moment, connector, rate, and polygon identities | full build and axiom audit; analytic mesh theorem remains outside the module |
 
@@ -46,8 +48,10 @@ nonexistence theorem for every construction in the family.
   and range-invariance assumptions are forbidden substitutions.
 - The accepted construction is only for `d=3`. No suspension, join, Coxeter, or
   product argument supplies the missing higher-dimensional theorem.
-- Robustness is only the explicitly support-preserving structured class unless
-  a global six-moment right inverse with quantitative norm is later proved.
+- No perturbative robustness theorem is part of P1E. The retained
+  support-preserving calculations are an open certification route; arbitrary
+  motion would additionally require a global six-moment right inverse with a
+  quantitative norm.
 
 ## Promotion rule
 

@@ -1,0 +1,29 @@
+{
+  "checks": {
+    "balance_gate": true,
+    "case_inventory": true,
+    "grazing_case": true,
+    "incidence_inventory": true,
+    "layer_inventory": true,
+    "layer_outputs": true,
+    "maximum_balance_residual": 4.89476949949e-15,
+    "minimum_flux": 1.47517604515e-11,
+    "neutral_not_replaced": true,
+    "operator_invariants": true,
+    "outcome_consistency": true,
+    "physics_firewall": true,
+    "pka_tensor_gate": true,
+    "positivity_gate": true,
+    "realistic_bounded_dimensions": true,
+    "reference_uncertainty_separated": true,
+    "resolved_improvement_count": 0,
+    "response_inventory": true,
+    "same_discretization": true,
+    "schema": true,
+    "scientific_hash": true
+  },
+  "claim_boundary": "Integrity PASS does not imply physical superiority. A BOUNDED_NEGATIVE outcome forbids an HTS response-benefit claim.",
+  "schema": "afp-p2f-hts-audit-v1",
+  "scientific_outcome": "BOUNDED_NEGATIVE",
+  "status": "PASS"
+}

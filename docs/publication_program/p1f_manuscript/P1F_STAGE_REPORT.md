@@ -3,9 +3,9 @@
 ## Status
 
 ```text
-MANUSCRIPT_THEOREM_HIERARCHY_ASSEMBLED
-P1E_ACCEPTANCE_GATE_GREEN_AND_ARCHIVE_FROZEN
-P1F_RELEASE_CANDIDATE_PREPARED
+MANUSCRIPT_MAJOR_REVISION_IN_PROGRESS
+P1E_UNPERTURBED_CONSTRUCTION_RETAINED
+P1E_ROBUSTNESS_RECLASSIFIED_OPEN
 ```
 
 The manuscript now assembles the accepted P1A--P1E mathematics.  The literal
@@ -44,10 +44,10 @@ c_3 = 3/(32 pi^2).
 ```
 
 The frontier, equality, and stability theorems remain all-dimensional. The
-construction does not extend to `d>3`, and the `d=3` robustness proposition covers
-only fixed-support reflected latitude perturbations with the construction's
-counts, phases, masks, horizontal jumps, pole/equator data, and a common
-ambient rotation preserved.
+construction does not extend to `d>3`.  The former `d=3` robustness proposition
+has been removed: the fixed-support reflected-latitude route is an open
+certification problem and contributes no theorem, perturbation radius, or
+constants to this manuscript.
 
 ## Manuscript evidence set
 
@@ -58,9 +58,9 @@ ambient rotation preserved.
 | bibliography | `priority_sources.bib` | primary-source records only |
 | sampling/equality referee | `SAMPLING_ALIAS_EQUALITY_HOSTILE_REFEREE_REPORT.md` | quotient, leakage, trace, equality and stability conventions |
 | construction/formal release audit | `FORMAL_AND_RELEASE_AUDIT.md` | finite Lean surface and deterministic P1E audit boundary |
-| prose audit | `PROSE_OVERCLAIM_AUDIT.md` | dimension, robustness, priority, signed-operator and transport guards |
-| reproducibility manifest | `P1F_REPRODUCIBILITY_MANIFEST.md` | immutable P1E base, content hashes, build environment and exact P1F gate |
-| publication artifact | `output/pdf/FLAGSHIP_MANUSCRIPT.pdf` | rendered 23-page paper built from the checked-in source and bibliography |
+| prose audit | `PROSE_OVERCLAIM_AUDIT.md` | dimension, open-robustness, priority, signed-operator and transport guards |
+| reproducibility manifest | `P1F_REPRODUCIBILITY_MANIFEST.md` | historical P1E base, revised content hashes, build environment, and explicit boundary between the historical P1F gate and this major-revision gate |
+| publication artifact | `output/pdf/FLAGSHIP_MANUSCRIPT.pdf` | rendered 24-page paper built from the checked-in source and bibliography |
 
 The manuscript's Appendix B maps every displayed theorem to one ordinary
 proof source, deterministic audit source, and global theorem-registry entry.
@@ -86,20 +86,20 @@ and a telescoping global conductance recurrence.
 
 ## Release boundary
 
-The dedicated P1F exact-head workflow is based on the literal P1E archive
-commit and tree. It allowlists only the
-manuscript, its five audit/bibliography companions, any P1F stage metadata,
-the reproducible build inputs, the rendered figure, and the publication PDF.
-It must:
+The historical dedicated P1F workflow certifies only the original 14-path
+publication layer over the P1E archive. It does not certify this audit-driven
+major-revision delta, which also changes the controlling P1E claim registries
+and the P2F experiment. The consolidated revision workflow must:
 
-- verify exact P1E ancestry and immutable refs;
-- parse the manuscript and bibliography;
-- reject stale placeholder or `BLOCKED` construction language;
-- check every theorem/source/test/registry mapping;
-- rerun P1A--P1E deterministic audits and the full Lean build;
-- record release-specific hashes and artifacts only in reproducibility data.
+- verify ancestry from the accepted P2E execution and preserve the historical
+  P1E/P2E refs without moving them;
+- enforce the open status of the robustness extension and the finite-only Lean
+  boundary;
+- reproduce and audit the revised P2F reference sweep twice;
+- rerun the retained exact numerical and Lean gates; and
+- bind the revised Markdown, PDF, result records, environment, and hashes in a
+  new immutable tagged release.
 
-No candidate P1F commit/tree can be embedded in its own report.  Exact P1F
-workflow and archive status are therefore external GitHub release metadata;
-the immutable P1E base and content hashes are recorded in
-`P1F_REPRODUCIBILITY_MANIFEST.md`.
+No candidate commit can embed its own hash. Exact revision workflow and release
+identifiers therefore remain external metadata. The historical P1E base and
+current content hashes are recorded in `P1F_REPRODUCIBILITY_MANIFEST.md`.

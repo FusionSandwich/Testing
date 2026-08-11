@@ -429,9 +429,34 @@ def _canonicalize_floats(value: Any) -> Any:
     return value
 
 
+def _relative_difference(left: float, right: float) -> float:
+    scale = max(abs(left), abs(right), 1.0e-300)
+    return abs(left - right) / scale
+
+
+def _classify_scientific_outcome(
+    *,
+    resolved_improvements: int,
+    resolved_degradations: int,
+    reference_converged: bool,
+    operator_response_insensitive: bool,
+) -> str:
+    if not reference_converged:
+        return "INCONCLUSIVE_REFERENCE_NOT_CONVERGED"
+    if resolved_improvements and resolved_degradations:
+        return "MIXED_RESOLVED_RESPONSE_CHANGES"
+    if resolved_improvements:
+        return "RESOLVED_IMPROVEMENT_PRESENT"
+    if resolved_degradations:
+        return "RESOLVED_DEGRADATION_PRESENT"
+    if operator_response_insensitive:
+        return "INCONCLUSIVE_OPERATOR_INSENSITIVE"
+    return "INCONCLUSIVE_BELOW_REFERENCE_RESOLUTION"
+
+
 def build_manifest() -> dict[str, Any]:
     return {
-        "schema": "afp-p2f-hts-manifest-v1",
+        "schema": "afp-p2f-hts-manifest-v2",
         "stack_provenance": (
             "bounded coated-conductor verification stack chosen within the HTS irradiation "
             "roadmap ranges; dimensions are representative, not a manufacturer certificate"
@@ -448,8 +473,16 @@ def build_manifest() -> dict[str, Any]:
         "neutral_energy_MeV": NEUTRAL_ENERGIES_MEV.tolist(),
         "charged_energy_MeV": CHARGED_ENERGIES_MEV.tolist(),
         "production_nodes": 32,
-        "fine_reference_nodes": 72,
+        "nominal_reference_nodes": 72,
         "medium_reference_nodes": 50,
+        "angular_reference_sweep": [
+            {"n_mu": 5, "n_phi": 10, "nodes": 50},
+            {"n_mu": 6, "n_phi": 12, "nodes": 72},
+            {"n_mu": 7, "n_phi": 14, "nodes": 98},
+            {"n_mu": 8, "n_phi": 16, "nodes": 128},
+        ],
+        "reference_convergence_relative_span_limit": 0.05,
+        "operator_response_relative_difference_tolerance": 1.0e-10,
         "record_float_significant_digits": 12,
         "record_zero_threshold": 1.0e-18,
         "record_blas_core": "Haswell",
@@ -469,23 +502,60 @@ def run_p2f() -> dict[str, Any]:
     ops: FrozenOperators = load_frozen_operators()
     mesh = build_mesh(tape_layers(refinement=1))
     fine_mesh = build_mesh(tape_layers(refinement=2))
-    fine_nodes, fine_weights = product_quadrature(6, 12)
-    medium_nodes, medium_weights = product_quadrature(5, 10)
-    fine_generator = _positive_reference_generator(fine_nodes, fine_weights)
-    medium_generator = _positive_reference_generator(medium_nodes, medium_weights)
     manifest = build_manifest()
+
+    reference_operators: dict[str, tuple[int, int, FloatArray, FloatArray, FloatArray]] = {}
+    for spec in manifest["angular_reference_sweep"]:
+        n_mu = int(spec["n_mu"])
+        n_phi = int(spec["n_phi"])
+        nodes, weights = product_quadrature(n_mu, n_phi)
+        reference_operators[str(len(weights))] = (
+            n_mu,
+            n_phi,
+            nodes,
+            weights,
+            _positive_reference_generator(nodes, weights),
+        )
+
     cases: list[dict[str, Any]] = []
     for incidence in manifest["incidence_cases"]:
         polar = float(incidence["polar_degrees"])
         azimuth = float(incidence["azimuth_degrees"])
-        fine = _run_one(fine_mesh, fine_nodes, fine_weights, fine_generator, polar, azimuth)
-        medium = _run_one(fine_mesh, medium_nodes, medium_weights, medium_generator, polar, azimuth)
+        reference_runs: dict[str, dict[str, Any]] = {}
+        reference_sweep: dict[str, Any] = {}
+        for node_key, (n_mu, n_phi, nodes, weights, generator) in reference_operators.items():
+            reference = _run_one(fine_mesh, nodes, weights, generator, polar, azimuth)
+            reference_runs[node_key] = reference
+            reference_sweep[node_key] = {
+                "n_mu": n_mu,
+                "n_phi": n_phi,
+                "responses": reference["responses"],
+            }
+
+        fine = reference_runs["72"]
+        medium = reference_runs["50"]
+        fine_nodes = reference_operators["72"][2]
+        fine_weights = reference_operators["72"][3]
+        fine_generator = reference_operators["72"][4]
         spatial = _run_one(mesh, fine_nodes, fine_weights, fine_generator, polar, azimuth)
         methods = {
             name: _run_one(mesh, ops.nodes, ops.weights, ops.matrices[name], polar, azimuth)
             for name in ("moment_monotone_baseline", "optimized_harmonic_fidelity")
         }
-        uncertainty = {}
+
+        convergence_by_response: dict[str, Any] = {}
+        span_limit = float(manifest["reference_convergence_relative_span_limit"])
+        for key in fine["responses"]:
+            values = [float(reference_sweep[node_key]["responses"][key]) for node_key in ("50", "72", "98", "128")]
+            scale = max(max(abs(value) for value in values), 1.0e-300)
+            relative_span = (max(values) - min(values)) / scale
+            convergence_by_response[key] = {
+                "relative_span": relative_span,
+                "converged": bool(relative_span <= span_limit),
+            }
+        reference_converged = all(row["converged"] for row in convergence_by_response.values())
+
+        uncertainty: dict[str, Any] = {}
         for key in fine["responses"]:
             angular_component = abs(float(fine["responses"][key]) - float(medium["responses"][key]))
             spatial_component = abs(float(fine["responses"][key]) - float(spatial["responses"][key]))
@@ -493,32 +563,46 @@ def run_p2f() -> dict[str, Any]:
                 "angular_component": angular_component,
                 "spatial_component": spatial_component,
                 "conservative_sum": angular_component + spatial_component,
+                "nominal_reference_converged": bool(convergence_by_response[key]["converged"]),
             }
+
         errors: dict[str, Any] = {}
         for name, result in methods.items():
             errors[name] = {
                 key: abs(float(result["responses"][key]) - float(fine["responses"][key]))
                 for key in fine["responses"]
             }
+
         comparisons: dict[str, Any] = {}
         for key in fine["responses"]:
-            baseline_error = errors["moment_monotone_baseline"][key]
-            optimized_error = errors["optimized_harmonic_fidelity"][key]
+            baseline_response = float(methods["moment_monotone_baseline"]["responses"][key])
+            optimized_response = float(methods["optimized_harmonic_fidelity"]["responses"][key])
+            baseline_error = float(errors["moment_monotone_baseline"][key])
+            optimized_error = float(errors["optimized_harmonic_fidelity"][key])
             delta = baseline_error - optimized_error
-            resolved = abs(delta) > uncertainty[key]["conservative_sum"]
+            response_reference_converged = bool(convergence_by_response[key]["converged"])
+            resolved = response_reference_converged and (
+                abs(delta) > float(uncertainty[key]["conservative_sum"])
+            )
             comparisons[key] = {
+                "baseline_response": baseline_response,
+                "optimized_response": optimized_response,
+                "method_absolute_difference": abs(baseline_response - optimized_response),
+                "method_relative_difference": _relative_difference(baseline_response, optimized_response),
                 "baseline_absolute_error": baseline_error,
                 "optimized_absolute_error": optimized_error,
                 "reference_uncertainty": uncertainty[key],
                 "optimized_improves": optimized_error < baseline_error,
                 "difference_resolved_by_reference": resolved,
                 "resolved_improvement": bool(resolved and optimized_error < baseline_error),
+                "resolved_degradation": bool(resolved and optimized_error > baseline_error),
                 "H2_prediction": "optimized error should be smaller because its sampled H2 defect is smaller",
                 "observed_direction_matches_H2_prediction": bool(optimized_error < baseline_error),
                 "requires_higher_shell_or_transport_information": bool(
                     not (resolved and optimized_error < baseline_error)
                 ),
             }
+
         neutral_hashes = {
             name: _scientific_hash(result["neutral"])
             for name, result in methods.items()
@@ -531,13 +615,20 @@ def run_p2f() -> dict[str, Any]:
                 "same_nodes_between_methods": True,
                 "same_spatial_energy_discretization": True,
                 "neutral_operator_identical_between_methods": len(set(neutral_hashes.values())) == 1,
-                "fine_reference": fine,
+                "nominal_reference": fine,
                 "medium_angular_reference": medium,
                 "coarse_spatial_reference": spatial,
+                "angular_reference_sweep": reference_sweep,
+                "reference_convergence": {
+                    "relative_span_limit": span_limit,
+                    "responses": convergence_by_response,
+                    "all_responses_converged": reference_converged,
+                },
                 "methods": methods,
                 "comparisons": comparisons,
             }
         )
+
     production_audits = {
         name: {
             "h0_residual": report.h0_residual,
@@ -551,26 +642,41 @@ def run_p2f() -> dict[str, Any]:
         for name in ("moment_monotone_baseline", "optimized_harmonic_fidelity")
         for report in [audit_generator(name, ops.nodes, ops.weights, ops.matrices[name], degrees=(2, 3, 4, 5, 6))]
     }
-    resolved_improvements = sum(
-        int(row["resolved_improvement"])
-        for case in cases
-        for row in case["comparisons"].values()
+
+    comparisons = [row for case in cases for row in case["comparisons"].values()]
+    resolved_improvements = sum(int(row["resolved_improvement"]) for row in comparisons)
+    resolved_degradations = sum(int(row["resolved_degradation"]) for row in comparisons)
+    resolved_differences = sum(int(row["difference_resolved_by_reference"]) for row in comparisons)
+    max_method_relative_difference = max(float(row["method_relative_difference"]) for row in comparisons)
+    reference_converged = all(bool(case["reference_convergence"]["all_responses_converged"]) for case in cases)
+    operator_tolerance = float(manifest["operator_response_relative_difference_tolerance"])
+    operator_response_insensitive = max_method_relative_difference <= operator_tolerance
+    scientific_outcome = _classify_scientific_outcome(
+        resolved_improvements=resolved_improvements,
+        resolved_degradations=resolved_degradations,
+        reference_converged=reference_converged,
+        operator_response_insensitive=operator_response_insensitive,
     )
+
     result = {
-        "schema": "afp-p2f-hts-results-v1",
+        "schema": "afp-p2f-hts-results-v2",
         "manifest": manifest,
         "operator_registry_sha256": ops.registry["scientific_sha256"],
         "production_operator_audits": production_audits,
         "cases": cases,
         "summary": {
             "resolved_improvement_count": int(resolved_improvements),
-            "response_comparison_count": int(sum(len(case["comparisons"]) for case in cases)),
-            "scientific_outcome": (
-                "BOUNDED_POSITIVE" if resolved_improvements > 0 else "BOUNDED_NEGATIVE"
-            ),
+            "resolved_degradation_count": int(resolved_degradations),
+            "resolved_difference_count": int(resolved_differences),
+            "response_comparison_count": int(len(comparisons)),
+            "reference_convergence_gate": bool(reference_converged),
+            "operator_response_max_relative_difference": max_method_relative_difference,
+            "operator_response_insensitive": bool(operator_response_insensitive),
+            "scientific_outcome": scientific_outcome,
             "claim_rule": (
-                "Only resolved improvements may support an AFP response-benefit claim; "
-                "all other differences are below reference resolution or unfavorable."
+                "No AFP response-performance claim is permitted unless the declared reference "
+                "convergence gate passes and a baseline/optimized error difference is resolved. "
+                "A structurally valid run may therefore have an inconclusive scientific outcome."
             ),
         },
     }
