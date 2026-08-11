@@ -109,6 +109,18 @@ jobs:
           elif new not in text:
               raise SystemExit('value-registry source not found')
           registry.write_text(text, encoding='utf-8')
+
+          verifier = Path('afp_barrier_gate1/pure_math/covariance/p1e_fixed_level_persistence_audit.py')
+          text = verifier.read_text(encoding='utf-8')
+          old = '            "No positive lower bound uniform in `J`",'
+          new = '            "No positive lower\\nbound uniform in `J`",'
+          if old in text:
+              if text.count(old) != 1:
+                  raise SystemExit('unexpected proof-marker occurrence count')
+              text = text.replace(old, new, 1)
+          elif new not in text:
+              raise SystemExit('proof-marker source not found')
+          verifier.write_text(text, encoding='utf-8')
           PY
           python tools/apply_p1e_outcome_b.py --root . | tee "${RUNNER_TEMP}/migration.log"
           grep -Eq '^MIGRATION_CHANGED_COUNT [1-9][0-9]*$' "${RUNNER_TEMP}/migration.log"
