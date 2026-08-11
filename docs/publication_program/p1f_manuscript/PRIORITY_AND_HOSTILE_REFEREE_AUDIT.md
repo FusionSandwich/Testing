@@ -318,7 +318,8 @@ Acceptance should require all of the following.
    weighted-average statement is rewritten as parameter-free geometric rigidity.
 8. The asymptotic upper theorem remains restricted to `d=2,3` and retains the
    exact \(H_1\), positivity, reversibility, locality, degree/rate, all-orders
-   remainder, sampling-quotient, and structured-robustness hypotheses proved by P1E.
+   remainder, and sampling-quotient hypotheses proved for the unperturbed P1E
+   family.  The open perturbation route is not cited as a theorem.
 9. Transport or application relevance is presented as motivation or future work
    unless a separate transfer theorem is proved.
 10. “First,” “unprecedented,” and “the only” claims are omitted unless supported by

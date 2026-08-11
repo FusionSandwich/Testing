@@ -2,30 +2,37 @@
 
 ## Status
 
-`COMPLETED_WITH_BOUNDED_NEGATIVE_SCIENTIFIC_RESULT`.
+`COMPLETED_DIAGNOSTIC_WITH_INCONCLUSIVE_SCIENTIFIC_RESULT`.
 
-P2F supplies the previously absent layered HTS implementation, result set,
-engineering hostile review, Paper-II synthesis manuscript, deterministic
-runner, fail-closed audit, tests, reproducibility records, and exact-head
-workflow.
+The implementation, balance, positivity, provenance, and deterministic-record
+gates pass.  The transfer interpretation has been revised after independent
+adversarial analysis.
 
-## Scientific outcome
+## Frozen outputs
 
-- Integrity: PASS.
-- Positivity and balance: PASS.
-- Physics separation: PASS.
-- Layer/response/PKA inventories: PASS.
-- Resolved optimized-response improvements: `0/18`.
-- Outcome: `BOUNDED_NEGATIVE`.
+- Layers: Cu / Ag / REBCO / oxide buffer / Hastelloy C-276 / Cu.
+- Incidences: 0°, 60°, and 84°.
+- Selected response comparisons: `18`.
+- Resolved improvements: `0`.
+- Resolved degradations: `0`.
+- Resolved method differences: `0`.
+- Maximum relative baseline/optimized response difference:
+  `1.9424183391e-14`.
+- 50/72/98/128 angular-reference convergence gate: failed in all three
+  incidence cases.
+- Scientific outcome: `INCONCLUSIVE_REFERENCE_NOT_CONVERGED`.
 
-This is completion of the experiment and claim boundary, not conversion of the
-negative result into a positive method claim.
+## Interpretation
 
-## Paper-II decision
+The result does not demonstrate that optimized AFP improves or worsens HTS
+responses.  The selected response map is effectively insensitive to the
+operator replacement, and the angular reference hierarchy is not converged.
+The former `BOUNDED_NEGATIVE` label is withdrawn.
 
-The original decision rule states that lowering \(\mathfrak D_2\) without a
-resolved physical-response benefit should be retained as a methods result or
-folded into the Paper-I supplement.  P2E and P2F activate that rule.  The
-manuscript is therefore publication-ready as a bounded negative-transfer and
-verification-architecture paper, not as a paper claiming improved HTS
-irradiation prediction.
+## Publication boundary
+
+The software and physics-firewall evidence may be retained in a reproducibility
+appendix or negative-methods discussion.  The P2F experiment is not ready as a
+standalone transfer-result paper.  A successor must be separately
+preregistered and must use operator-sensitive responses and a converged or
+independently validated reference.

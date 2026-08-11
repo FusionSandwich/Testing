@@ -633,70 +633,37 @@ gives positive shared conductances, (9.3) gives positive normalized weights,
 cap.  Thus no mesh regularity or sampling injectivity assumption is being
 silently imported into the P1B application.
 
-## 10. Support-preserving robustness and certification manifest
+## 10. Certification manifest and open robustness problem
 
-There is a nontrivial but deliberately narrow robustness class.  Let
-\[
- K_*=2^{28\cdot2^{10^6}}.
-\]
-At one level, perturb every northern ring latitude by at most \(h^3/K_*\),
-fix the pole and equator, and reflect the perturbation in the south.  Keep
-every count, longitude phase, radial mask, and horizontal jump integer fixed;
-also allow one common ambient rotation.  All gaps then remain in
-\([gh/2,2h]\).
-
-Starting with the pole conductance, solve the full three even equations at
-each ordinary row for its outgoing radial and two horizontal conductances,
-and solve the full transition block (3.5) at a count change.  At an
-unperturbed ordinary row the determinant of the columns
-\((U_+,H_u,H_v)\) factors exactly as
-\[
- 4\sin h\,cs^3uv(u-v)
- \{2s^2-(1+c^2)(1-\cos h)-\sin h\,cs\}.              \tag{10.1}
-\]
-The last brace is the positive factor in (8.3a), while \(u\ne v\) by
-(8.3), so the row inverse is uniform after the natural
-\((h,h^3,h^2)\) normalization.
-
-A cancellation-free straight-line differentiation bound with at most
-\(10^6\) operations gives derivative bound \(K_*\): if \(W_k\ge1\) bounds
-values and first derivatives through operation \(k\), the guarded addition,
-multiplication, and reciprocal rules all obey
-\(W_{k+1}\le2^{12}W_k^2\).  From \(W_0\le2^{16}\), induction gives
-\(W_k\le2^{28\cdot2^k}\).  The denominator guards in Section 6 and
-Taylor divided-difference atoms through order four remove every artificial
-power of \(r\), \(s\), or \(1-c\).  The stated latitude
-perturbation therefore changes each normalized ordinary row by \(O(h^2)\)
-and each normalized transition row by \(O(h)\).  Across \(O(h^{-1})\)
-ordinary rows the logarithmic recurrence changes by \(O(h)\); across the
-\(J\) transitions it changes by \(O(Jh)\), and
-\(Jh<14/M_0\).  The first row uses its certified inverse, and reflection
-keeps the equator exact after re-solving (8.8).  Hence all conductances retain
-positive margins, the global product changes by less than a fixed factor,
-and exact \(H_0,H_1\) plus the \(O(h^2)\) quotient bound persist.
-
-This theorem does not cover independent longitude perturbations or arbitrary
-node motion; those destroy the reflection reduction and require a global
-six-moment right inverse.
-
-The certification suite consists of the following literal checks:
+Sections 1--9 prove the unperturbed adaptive-ring construction.  The
+certification suite for that theorem consists of the following checks:
 
 1. `p1e_short_gap_symbolic_matrix_audit.py` constructs (4.5) and derives
    (5.1)--(5.2) exactly;
 2. `p1e_short_gap_cauchy_guard_audit.py` proves the continuous all-orders
    entry bounds (6.2b) using rational majorants;
 3. `p1e_short_gap_polar_guard_audit.py` constructs and encloses the literal
-   finite-\(h\) first-row matrix;
+   finite-$h$ first-row matrix;
 4. `p1e_short_gap_family_audit.py` returns nodes, undirected conductances,
    masses, and weights, and checks pole, first ring, ordinary cap/bands, both
    transition endpoints, equator, mesh/rate/window/quotient constants, and
-   deterministic failed mutations;
+   deterministic failed mutations; and
 5. `p1e_short_gap_proof_audit.py` checks the exact phase cone, recurrence,
    constants, and Neumann arithmetic.
-6. `p1e_no_guard_ring_independent_audit.py` independently checks the
-   reachable \(R>19/10\) repair, actual floor/ceiling conductance margins,
-   both determinant factorizations, and perturbation arithmetic.
 
-All six checks pass.  `p1e_short_gap_referee_audit.py` retains the rejected
-old-formula and old-cap mutations so that those failures cannot silently
-re-enter the theorem source.
+These checks support the fixed, unperturbed family only.  The proposed
+support-preserving latitude-perturbation extension is **open**.  In
+particular, the repository does not contain a literal emitted
+cancellation-free straight-line program for every normalized ordinary,
+transition, first-row, and equatorial solve; a verified operation count; a
+complete reciprocal-guard list; or a machine-checkable derivative and
+shared-recurrence stability certificate.  The very large candidate constant
+previously denoted by $K_*$ therefore has no theorem status.
+
+`p1e_no_guard_ring_independent_audit.py` retains useful determinant
+factorizations, reachable-domain calculations, and perturbation arithmetic,
+but those calculations are diagnostic evidence rather than an all-orders
+proof.  A future robustness theorem must commit the literal program and
+certificate, verify all denominator separations, and propagate the resulting
+bounds through the global conductance recurrence.  No perturbation radius or
+robustness constants are claimed in the present theorem package.

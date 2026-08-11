@@ -1,4 +1,4 @@
-# Positive angular Fokker–Planck generators: design, transport certificates, and a negative HTS transfer result
+# Positive angular Fokker–Planck generators: design, transport certificates, and an inconclusive HTS transfer diagnostic
 
 ## Abstract
 
@@ -12,16 +12,21 @@ quadrature–generator co-design, and fixed-point-preserving acceleration theory
 with a preregistered benchmark hierarchy.  The optimized generator reduces the
 frozen angular-error geometric mean to 0.671 of the baseline and reduces one
 preconditioned solve from 23 to 17 iterations.  Nevertheless the
-preregistered physical-response hypothesis fails: the worst response-error
+preregistered P2E physical-response hypothesis fails: the worst response-error
 ratio is 8.068, and all physical method differences are unresolved relative to
-declared reference uncertainty.  A separately resolved Cu/Ag/REBCO/buffer/
-Hastelloy coated-conductor case likewise yields zero resolved optimized
-improvements in 18 comparisons.  This negative transfer result shows that
-degree-two angular fidelity is a useful design coordinate and acceleration
-ingredient, but not a sufficient predictor of transport response.  The
-implementation enforces a physics firewall: full neutral Boltzmann collision
-operators are unchanged, and AFP is used only on a justified charged/BFP
-component.
+the declared reference uncertainty.
+
+A separate Cu/Ag/REBCO/buffer/Hastelloy surrogate verifies the neutral/charged
+physics firewall, positivity, balance, and layer-resolved response plumbing,
+but it does not yield a transfer conclusion.  None of its 18 method-error
+differences is resolved, the maximum relative baseline/optimized response
+difference is $1.94\times10^{-14}$, and a 50/72/98/128-direction reference
+sweep fails the declared convergence gate.  The P2F outcome is therefore
+inconclusive rather than bounded negative.  The combined evidence supports
+sampled degree-two fidelity as a mathematical design coordinate and, in
+selected cases, an acceleration ingredient; it does not establish improved or
+degraded HTS response.  Full neutral Boltzmann collision operators remain
+unchanged, and AFP is used only on the declared charged/BFP component.
 
 ## 1. Scope
 
@@ -221,25 +226,38 @@ source tensor is
 It is symmetric positive semidefinite by construction.  It is a source
 descriptor, not a recoil-energy distribution or a damage metric.
 
-### 8.4 Reference error
+### 8.4 Reference diagnostics
 
-The fine reference uses 72 directions and a positive reversible heat-kernel
-generator calibrated to the coordinate shell.  A 50-direction solve and a
-two-times-refined spatial mesh give separate angular and spatial changes.  For
-response \(R\), the conservative resolution is
+The nominal reference uses 72 directions and a positive reversible heat-kernel
+generator calibrated to the coordinate shell.  The legacy nominal resolution
+quantity is
 
 \[
  u_R=|R_{72,h/2}-R_{50,h/2}|+|R_{72,h/2}-R_{72,h}|.
 \]
 
+The revised audit does not treat this two-level quantity as proof of angular
+convergence.  It additionally computes 50-, 72-, 98-, and 128-direction
+references and requires the relative span across the sweep to be at most 5%
+for every selected response.  The all-response convergence gate fails at
+normal, oblique, and grazing incidence.  At 84°, total heating alternates from
+approximately $1.02\times10^{-7}$ to $3.79\times10^{-3}$,
+$4.05\times10^{-5}$, and $3.69\times10^{-3}$ across the four levels.  The
+nominal uncertainty is therefore retained as a diagnostic quantity, not a
+converged error certificate.
+
 ### 8.5 Result
 
-All positivity, balance, layer-inventory, PKA-tensor, and physics-firewall
-checks pass.  The minimum flux is \(1.48\times10^{-11}\) and the maximum
-relative balance residual is \(5.02\times10^{-15}\).  The optimized generator
-has the smaller sampled \(H_2\) defect, 0.9325 versus 1.3880, but none of the
-18 response-error differences exceeds \(u_R\).  The terminal HTS outcome is
-therefore `BOUNDED_NEGATIVE`.
+All structural positivity, balance, layer-inventory, PKA-tensor, and physics-
+firewall checks pass.  The minimum flux is $1.48\times10^{-11}$ and the maximum
+balance residual is $5.02\times10^{-15}$.  The optimized generator has the
+smaller sampled $H_2$ defect, 0.9325 versus 1.3880, but there are zero resolved
+improvements, zero resolved degradations, and zero resolved method differences
+among the 18 comparisons.  The largest relative baseline/optimized response
+difference is $1.94\times10^{-14}$, indicating that the selected response map
+is effectively insensitive to the operator replacement.  Because the angular
+reference sweep also fails, the terminal HTS outcome is
+`INCONCLUSIVE_REFERENCE_NOT_CONVERGED`.
 
 ## 9. Interpretation
 
@@ -253,11 +271,15 @@ The combined benchmark evidence distinguishes three statements:
 3. Neither fact establishes lower physical-response error in a layered HTS
    calculation.
 
-The negative transfer is structurally plausible.  Neutral collision physics
-dominates several responses and is deliberately unchanged.  Heating and PKA
-sources depend on material reaction coefficients.  Escape and grazing behavior
-mix streaming, boundaries, and higher angular shells.  A single \(H_2\) metric
-does not encode those mechanisms.
+The P2F diagnostic is inconclusive for two independent reasons.  First, the
+selected response map is nearly invariant under the baseline/optimized
+operator replacement; three substrate-PKA comparisons are neutral-only by
+construction, and the remaining selected responses differ only at roughly
+machine precision.  Second, the product-quadrature reference hierarchy is not
+converged, especially for the grazing beam.  Neutral collision physics,
+material reaction coefficients, streaming, boundaries, and higher angular
+shells remain mechanisms that a single \(H_2\) metric does not encode, but the
+present fixture cannot quantify their transfer effect.
 
 ## 10. Limitations
 
@@ -281,10 +303,13 @@ deterministic tests, imported Math angular implementation with blob-level
 provenance, and exact-head workflows.  Scientific hashes exclude no reported
 response data.
 
-The appropriate publication decision is a bounded negative-transfer methods
-paper or a supplement to the mathematical paper.  The evidence does not
-support the originally hoped-for claim that the optimized AFP generator
-improves HTS irradiation responses at equal cost.
+The P2E held-out benchmark may be reported as a mixed/negative preregistered
+result.  P2F should remain an implementation and claim-firewall appendix, not a
+transfer-result paper: its selected responses are operator-insensitive and its
+angular reference hierarchy is not converged.  A successor transfer experiment
+requires separately preregistered operator-sensitive responses, a converged or
+independently validated reference, and an equal-work or equal-accuracy
+comparison.
 
 ## Data and code availability
 

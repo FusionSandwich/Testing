@@ -189,7 +189,8 @@ constants are regression values, not replacements for the all-orders proof.
 | P1E-D3-LOWER | P1B product bound under the `R_3` cap | `c_3=6/R_3=3/(32pi^2)` | I |
 | P1E-D3-ORDER | admissible class `mathcal G_h(R_3)` containing the ring generator | `c_3h^2 <= inf mathfrak D_2 <= C_3h^2` | I |
 
-The `d=3` perturbation constants apply only to support-preserving reflected
-latitude perturbations with fixed combinatorial data. No exact-head workflow
-execution, artifact digest, or frozen P1E commit is recorded in this value
-table.
+No `d=3` perturbation constants are publication values. The
+support-preserving reflected-latitude route is open pending a literal compiler,
+operation-count, denominator-guard, derivative, and global recurrence
+certificate. No exact-head workflow execution, artifact digest, or frozen P1E
+commit is recorded in this value table.

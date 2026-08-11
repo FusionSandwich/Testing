@@ -60,12 +60,14 @@ C_3 = 75/2,
 c_3 = 6/R_3 = 3/(32 pi^2).
 ```
 
-These constants are accepted for the stated `d=3` family. They are not
-asserted for `d>3`. The perturbation statement is deliberately
-restricted to support-preserving latitude perturbations with the fixed ring
-counts, phases, masks, horizontal jumps, equatorial reflection, and a common
-ambient rotation. It is not a theorem for independent longitude motion or
-arbitrary node perturbations.
+These constants are accepted for the stated fixed, unperturbed `d=3`
+family. They are not asserted for `d>3`. No perturbation theorem is accepted.
+The retained support-preserving latitude calculations keep the ring counts,
+phases, masks, horizontal jumps, equatorial reflection, and one common ambient
+rotation fixed, but they lack the literal compiler, operation-count,
+denominator-guard, derivative, and recurrence certificate needed for a
+theorem. Independent longitude motion and arbitrary node perturbations are
+outside even that candidate route.
 
 The sampling claim uses the accepted P1A quotient
 
@@ -104,7 +106,7 @@ registries named by the release workflow.
 |---|---|---|
 | ordinary theorem | `docs/publication_program/P1E_SHORT_GAP_S2_CONSTRUCTION.md` | controlling all-orders `d=3` proof |
 | final hostile all-orders audit | `docs/publication_program/P1E_SHORT_GAP_CAUCHY_HOSTILE_AUDIT.md` | accepts the transition and first-row guards; records one harmless expository overbound |
-| independent schedule/recurrence audit | `docs/publication_program/P1E_NO_GUARD_RING_INDEPENDENT_AUDIT.md` | pre-repair findings plus exact reachable-domain, recurrence, and perturbation checks |
+| independent schedule/recurrence audit | `docs/publication_program/P1E_NO_GUARD_RING_INDEPENDENT_AUDIT.md` | exact reachable-domain and unperturbed recurrence checks; perturbation calculations are diagnostic only |
 | literal transition algebra | `p1e_short_gap_symbolic_matrix_audit.py` | exact removable limit, not by itself a uniform remainder proof |
 | transition remainder guard | `p1e_short_gap_cauchy_guard_audit.py` | rational majorant on the stated guarded domain |
 | polar-row guard | `p1e_short_gap_polar_guard_audit.py` | exact first-row enclosure only |
@@ -112,7 +114,7 @@ registries named by the release workflow.
 | exact constants and recurrence | `p1e_short_gap_proof_audit.py` | exact algebra paired with the analytic guard |
 | hostile rejected mutations | `p1e_short_gap_referee_audit.py` | prevents superseded mask/cap claims from re-entering |
 | final hostile guard fixtures | `p1e_short_gap_cauchy_hostile_audit.py` | independent exact check of every Cauchy and first-row estimate |
-| independent exact fixtures | `p1e_no_guard_ring_independent_audit.py` | reachable-floor, determinant, recurrence, and perturbation checks |
+| independent exact fixtures | `p1e_no_guard_ring_independent_audit.py` | reachable-floor, determinant, and recurrence checks; candidate perturbation arithmetic is not an all-orders certificate |
 
 All Python paths in the table are relative to
 `afp_barrier_gate1/pure_math/covariance/`.
@@ -148,8 +150,9 @@ division-safe identities used after a shared stress has been constructed:
 - regular-polygon `H_1` and scalar `H_2` identities.
 
 It does not formalize the integer mesh schedule, analytic Cauchy enclosures,
-global conductance recurrence, or structured perturbation theorem. Those
-remain obligations of the ordinary proof and exact audits. The aggregate
+or global conductance recurrence. Those remain obligations of the ordinary
+unperturbed proof and exact audits. The structured perturbation extension is
+open rather than an unformalized theorem. The aggregate
 import and focused axiom audit must compile without project axioms,
 placeholders, or project constants.
 
@@ -167,7 +170,8 @@ not evidence that the gate has run. On the literal release head it must:
    and reject placeholders, project axioms, and project constants;
 4. hash the source and evidence records and recheck the exact final state.
 
-The ordinary mathematical theorem is accepted. Repository freezing remains a
+The ordinary fixed-family mathematical theorem is accepted; no robustness
+theorem is included. Repository freezing remains a
 separate operational step: no CI status or immutable exact-head record exists
 until this workflow succeeds on the literal release commit and its create-only
 archive.

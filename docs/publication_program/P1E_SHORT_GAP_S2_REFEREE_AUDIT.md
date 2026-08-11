@@ -10,8 +10,9 @@ submission.  Every item in Section 11 is discharged in the later complete
 source `P1E_SHORT_GAP_S2_CONSTRUCTION.md` and its symbolic, rational
 Cauchy, polar, independent, and hostile audits.  In particular, the corrected
 mask moment, no-guard schedule, adaptive integer bracket, literal finite
-matrices, global conductance recurrence, direct quotient identity, and narrow
-robustness theorem are now proved.  The blocking regressions below remain in
+matrices, global conductance recurrence, and direct quotient identity are now
+proved for the fixed family. The narrow robustness extension remains open and
+is no longer part of the accepted theorem. The blocking regressions below remain in
 the repository so that those earlier errors cannot silently return.
 
 The shortened transition is a credible local mechanism, and several exact

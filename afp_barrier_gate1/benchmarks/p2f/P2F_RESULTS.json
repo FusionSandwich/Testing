@@ -1,6 +1,56 @@
 {
   "cases": [
     {
+      "angular_reference_sweep": {
+        "128": {
+          "n_mu": 8,
+          "n_phi": 16,
+          "responses": {
+            "REBCO_charged_heating": 4.80874565735e-08,
+            "REBCO_charged_q_normal": 1.9957736804e-09,
+            "REBCO_charged_scalar": 3.76277598702e-08,
+            "charged_escape": 0.000582431092244,
+            "substrate_total_PKA_source": 0.000416544854598,
+            "total_heating": 0.00391990794439
+          }
+        },
+        "50": {
+          "n_mu": 5,
+          "n_phi": 10,
+          "responses": {
+            "REBCO_charged_heating": 1.02957703519e-07,
+            "REBCO_charged_q_normal": -1.32791348346e-08,
+            "REBCO_charged_scalar": 8.32141095058e-08,
+            "charged_escape": 0.000592722770679,
+            "substrate_total_PKA_source": 0.000431800081063,
+            "total_heating": 0.00394531850144
+          }
+        },
+        "72": {
+          "n_mu": 6,
+          "n_phi": 12,
+          "responses": {
+            "REBCO_charged_heating": 4.66305575095e-08,
+            "REBCO_charged_q_normal": 1.74815918771e-09,
+            "REBCO_charged_scalar": 3.64668326605e-08,
+            "charged_escape": 0.000582416803812,
+            "substrate_total_PKA_source": 0.000416482839593,
+            "total_heating": 0.00391987528624
+          }
+        },
+        "98": {
+          "n_mu": 7,
+          "n_phi": 14,
+          "responses": {
+            "REBCO_charged_heating": 5.30212031759e-08,
+            "REBCO_charged_q_normal": 9.66565008141e-10,
+            "REBCO_charged_scalar": 4.15571859466e-08,
+            "charged_escape": 0.000588207078248,
+            "substrate_total_PKA_source": 0.000424406419664,
+            "total_heating": 0.00392803323116
+          }
+        }
+      },
       "azimuth_degrees": 0.0,
       "coarse_spatial_reference": {
         "charged": {
@@ -757,843 +807,128 @@
         "REBCO_charged_heating": {
           "H2_prediction": "optimized error should be smaller because its sampled H2 defect is smaller",
           "baseline_absolute_error": 4.9650059928e-10,
+          "baseline_response": 4.71270581088e-08,
           "difference_resolved_by_reference": false,
+          "method_absolute_difference": 0.0,
+          "method_relative_difference": 5.33584985585e-15,
           "observed_direction_matches_H2_prediction": false,
           "optimized_absolute_error": 4.9650059928e-10,
           "optimized_improves": false,
+          "optimized_response": 4.71270581088e-08,
           "reference_uncertainty": {
             "angular_component": 5.63271460099e-08,
             "conservative_sum": 5.63729966691e-08,
+            "nominal_reference_converged": false,
             "spatial_component": 4.58506591728e-11
           },
           "requires_higher_shell_or_transport_information": true,
+          "resolved_degradation": false,
           "resolved_improvement": false
         },
         "REBCO_charged_q_normal": {
           "H2_prediction": "optimized error should be smaller because its sampled H2 defect is smaller",
           "baseline_absolute_error": 3.46772584181e-10,
+          "baseline_response": 1.40138660353e-09,
           "difference_resolved_by_reference": false,
+          "method_absolute_difference": 0.0,
+          "method_relative_difference": 1.35759497349e-14,
           "observed_direction_matches_H2_prediction": false,
           "optimized_absolute_error": 3.46772584181e-10,
           "optimized_improves": false,
+          "optimized_response": 1.40138660353e-09,
           "reference_uncertainty": {
             "angular_component": 1.50272940223e-08,
             "conservative_sum": 1.5067905499e-08,
+            "nominal_reference_converged": false,
             "spatial_component": 4.06114766949e-11
           },
           "requires_higher_shell_or_transport_information": true,
+          "resolved_degradation": false,
           "resolved_improvement": false
         },
         "REBCO_charged_scalar": {
           "H2_prediction": "optimized error should be smaller because its sampled H2 defect is smaller",
           "baseline_absolute_error": 3.59395831464e-10,
+          "baseline_response": 3.68262284919e-08,
           "difference_resolved_by_reference": false,
+          "method_absolute_difference": 0.0,
+          "method_relative_difference": 5.21112017089e-15,
           "observed_direction_matches_H2_prediction": false,
           "optimized_absolute_error": 3.59395831465e-10,
           "optimized_improves": false,
+          "optimized_response": 3.68262284919e-08,
           "reference_uncertainty": {
             "angular_component": 4.67472768454e-08,
             "conservative_sum": 4.68053631636e-08,
+            "nominal_reference_converged": false,
             "spatial_component": 5.80863182666e-11
           },
           "requires_higher_shell_or_transport_information": true,
+          "resolved_degradation": false,
           "resolved_improvement": false
         },
         "charged_escape": {
           "H2_prediction": "optimized error should be smaller because its sampled H2 defect is smaller",
           "baseline_absolute_error": 6.26623512075e-07,
+          "baseline_response": 0.0005817901803,
           "difference_resolved_by_reference": false,
+          "method_absolute_difference": 0.0,
+          "method_relative_difference": 0.0,
           "observed_direction_matches_H2_prediction": false,
           "optimized_absolute_error": 6.26623512075e-07,
           "optimized_improves": false,
+          "optimized_response": 0.0005817901803,
           "reference_uncertainty": {
             "angular_component": 1.03059668671e-05,
             "conservative_sum": 1.03391021025e-05,
+            "nominal_reference_converged": true,
             "spatial_component": 3.3135235432e-08
           },
           "requires_higher_shell_or_transport_information": true,
+          "resolved_degradation": false,
           "resolved_improvement": false
         },
         "substrate_total_PKA_source": {
           "H2_prediction": "optimized error should be smaller because its sampled H2 defect is smaller",
           "baseline_absolute_error": 4.12370215885e-07,
+          "baseline_response": 0.000416070469377,
           "difference_resolved_by_reference": false,
+          "method_absolute_difference": 0.0,
+          "method_relative_difference": 0.0,
           "observed_direction_matches_H2_prediction": false,
           "optimized_absolute_error": 4.12370215885e-07,
           "optimized_improves": false,
+          "optimized_response": 0.000416070469377,
           "reference_uncertainty": {
             "angular_component": 1.531724147e-05,
             "conservative_sum": 1.54096788424e-05,
+            "nominal_reference_converged": true,
             "spatial_component": 9.24373724184e-08
           },
           "requires_higher_shell_or_transport_information": true,
+          "resolved_degradation": false,
           "resolved_improvement": false
         },
         "total_heating": {
           "H2_prediction": "optimized error should be smaller because its sampled H2 defect is smaller",
           "baseline_absolute_error": 3.14070824388e-06,
+          "baseline_response": 0.003916734578,
           "difference_resolved_by_reference": false,
+          "method_absolute_difference": 0.0,
+          "method_relative_difference": 0.0,
           "observed_direction_matches_H2_prediction": false,
           "optimized_absolute_error": 3.14070824388e-06,
           "optimized_improves": false,
+          "optimized_response": 0.003916734578,
           "reference_uncertainty": {
             "angular_component": 2.54432152025e-05,
             "conservative_sum": 2.59347629107e-05,
+            "nominal_reference_converged": true,
             "spatial_component": 4.91547708197e-07
           },
           "requires_higher_shell_or_transport_information": true,
+          "resolved_degradation": false,
           "resolved_improvement": false
-        }
-      },
-      "fine_reference": {
-        "charged": {
-          "escape_by_group": [
-            0.000570813216803,
-            1.11526483922e-05,
-            4.5093861677e-07
-          ],
-          "matrix_nonzeros": 136584,
-          "maximum_balance_residual": 1.35668317657e-14,
-          "minimum_flux": 4.53332717499e-09,
-          "operator": "BFP angular diffusion using the declared generator only",
-          "total_escape": 0.000582416803812
-        },
-        "charged_interface_crossing": {
-          "Ag_cap->REBCO": 0.000191191350337,
-          "Cu_front->Ag_cap": 0.000183685181109,
-          "Hastelloy_C276->Cu_back": 0.000421515081836,
-          "REBCO->oxide_buffer": 0.000196571487703,
-          "oxide_buffer->Hastelloy_C276": 0.000197226843018
-        },
-        "layers": {
-          "Ag_cap": {
-            "charged_current_integral": [
-              0.0,
-              0.0,
-              7.47435483215e-09
-            ],
-            "charged_heating_proxy": 6.36073754237e-08,
-            "charged_q_normal": 3.10654445424e-09,
-            "charged_scalar_flux_integral": 7.15935687705e-08,
-            "charged_traceless_second_moment": [
-              [
-                -1.55327222712e-09,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                -1.55327222712e-09,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                3.10654445424e-09
-              ]
-            ],
-            "material": "Ag",
-            "neutral_current_integral": [
-              0.0,
-              0.0,
-              0.000186389514387
-            ],
-            "neutral_heating_proxy": 6.61665983912e-05,
-            "neutral_q_normal": 0.000106998395065,
-            "neutral_scalar_flux_integral": 0.000200277530937,
-            "neutral_traceless_second_moment": [
-              [
-                -5.34991975327e-05,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                -5.34991975327e-05,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                0.000106998395065
-              ]
-            ],
-            "thickness_um": 2.0
-          },
-          "Cu_back": {
-            "charged_current_integral": [
-              0.0,
-              0.0,
-              8.83474681646e-07
-            ],
-            "charged_heating_proxy": 1.49883448549e-06,
-            "charged_q_normal": 3.07519095037e-07,
-            "charged_scalar_flux_integral": 1.37828987404e-06,
-            "charged_traceless_second_moment": [
-              [
-                -1.53759547518e-07,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                -1.53759547518e-07,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                3.07519095037e-07
-              ]
-            ],
-            "material": "Cu",
-            "neutral_current_integral": [
-              0.0,
-              0.0,
-              0.00186249740421
-            ],
-            "neutral_heating_proxy": 0.00080803189716,
-            "neutral_q_normal": 0.00106318054763,
-            "neutral_scalar_flux_integral": 0.00200645735552,
-            "neutral_traceless_second_moment": [
-              [
-                -0.000531590273815,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                -0.000531590273815,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                0.00106318054763
-              ]
-            ],
-            "thickness_um": 20.0
-          },
-          "Cu_front": {
-            "charged_current_integral": [
-              0.0,
-              0.0,
-              -3.53826397132e-08
-            ],
-            "charged_heating_proxy": 6.57105447938e-07,
-            "charged_q_normal": 2.90107650984e-09,
-            "charged_scalar_flux_integral": 6.07449894193e-07,
-            "charged_traceless_second_moment": [
-              [
-                -1.45053825492e-09,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                -1.45053825492e-09,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                2.90107650984e-09
-              ]
-            ],
-            "material": "Cu",
-            "neutral_current_integral": [
-              0.0,
-              0.0,
-              0.00186404436294
-            ],
-            "neutral_heating_proxy": 0.000806776878043,
-            "neutral_q_normal": 0.00107084297463,
-            "neutral_scalar_flux_integral": 0.00200238394263,
-            "neutral_traceless_second_moment": [
-              [
-                -0.000535421487316,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                -0.000535421487316,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                0.00107084297463
-              ]
-            ],
-            "thickness_um": 20.0
-          },
-          "Hastelloy_C276": {
-            "charged_current_integral": [
-              0.0,
-              0.0,
-              1.10866860031e-06
-            ],
-            "charged_heating_proxy": 3.1546194494e-06,
-            "charged_q_normal": 3.74206979853e-07,
-            "charged_scalar_flux_integral": 2.68946201087e-06,
-            "charged_traceless_second_moment": [
-              [
-                -1.87103489927e-07,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                -1.87103489927e-07,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                3.74206979853e-07
-              ]
-            ],
-            "material": "Hastelloy_C276",
-            "neutral_current_integral": [
-              0.0,
-              0.0,
-              0.00465808763388
-            ],
-            "neutral_heating_proxy": 0.00218005472805,
-            "neutral_q_normal": 0.00266711056553,
-            "neutral_scalar_flux_integral": 0.00501128423992,
-            "neutral_traceless_second_moment": [
-              [
-                -0.00133355528277,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                -0.00133355528277,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                0.00266711056553
-              ]
-            ],
-            "thickness_um": 50.0
-          },
-          "REBCO": {
-            "charged_current_integral": [
-              0.0,
-              0.0,
-              4.4633118994e-09
-            ],
-            "charged_heating_proxy": 4.66305575095e-08,
-            "charged_q_normal": 1.74815918771e-09,
-            "charged_scalar_flux_integral": 3.64668326605e-08,
-            "charged_traceless_second_moment": [
-              [
-                -8.74079593857e-10,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                -8.74079593857e-10,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.74815918771e-09
-              ]
-            ],
-            "material": "REBCO",
-            "neutral_current_integral": [
-              0.0,
-              0.0,
-              9.31937698309e-05
-            ],
-            "neutral_heating_proxy": 4.76087088481e-05,
-            "neutral_q_normal": 5.3493550512e-05,
-            "neutral_scalar_flux_integral": 0.000100141352555,
-            "neutral_traceless_second_moment": [
-              [
-                -2.6746775256e-05,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                -2.6746775256e-05,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                5.3493550512e-05
-              ]
-            ],
-            "thickness_um": 1.0
-          },
-          "oxide_buffer": {
-            "charged_current_integral": [
-              0.0,
-              0.0,
-              9.61979705375e-10
-            ],
-            "charged_heating_proxy": 5.74117500167e-09,
-            "charged_q_normal": 3.68506408401e-10,
-            "charged_scalar_flux_integral": 7.35774983797e-09,
-            "charged_traceless_second_moment": [
-              [
-                -1.842532042e-10,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                -1.842532042e-10,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                3.68506408401e-10
-              ]
-            ],
-            "material": "oxide_buffer",
-            "neutral_current_integral": [
-              0.0,
-              0.0,
-              1.86386574463e-05
-            ],
-            "neutral_heating_proxy": 5.80993725456e-06,
-            "neutral_q_normal": 1.06981676338e-05,
-            "neutral_scalar_flux_integral": 2.00285234562e-05,
-            "neutral_traceless_second_moment": [
-              [
-                -5.34908381691e-06,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                -5.34908381691e-06,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.06981676338e-05
-              ]
-            ],
-            "thickness_um": 0.2
-          }
-        },
-        "neutral": {
-          "matrix_nonzeros": 136584,
-          "maximum_balance_residual": 1.14903774277e-14,
-          "minimum_flux": 2.21100023598e-11,
-          "operator": "full positive reversible Boltzmann kernels; never replaced by AFP",
-          "total_escape": 0.931495962886
-        },
-        "responses": {
-          "REBCO_charged_heating": 4.66305575095e-08,
-          "REBCO_charged_q_normal": 1.74815918771e-09,
-          "REBCO_charged_scalar": 3.64668326605e-08,
-          "charged_escape": 0.000582416803812,
-          "substrate_total_PKA_source": 0.000416482839593,
-          "total_heating": 0.00391987528624
-        },
-        "species_resolved_pka": {
-          "Ag_cap": {
-            "Ag": {
-              "directional_tensor": [
-                [
-                  8.41755564665e-07,
-                  0.0,
-                  0.0
-                ],
-                [
-                  0.0,
-                  8.41755564665e-07,
-                  0.0
-                ],
-                [
-                  0.0,
-                  0.0,
-                  1.09484986764e-05
-                ]
-              ],
-              "group_source": [
-                1.25999991912e-05,
-                3.18198297455e-08,
-                1.90784708225e-10
-              ],
-              "total_source": 1.26320098057e-05
-            }
-          },
-          "Cu_back": {
-            "Cu": {
-              "directional_tensor": [
-                [
-                  1.06332168581e-05,
-                  0.0,
-                  0.0
-                ],
-                [
-                  0.0,
-                  1.06332168581e-05,
-                  0.0
-                ],
-                [
-                  0.0,
-                  0.0,
-                  0.000133205122649
-                ]
-              ],
-              "group_source": [
-                0.000153849294236,
-                6.19249772338e-07,
-                3.01235657544e-09
-              ],
-              "total_source": 0.000154471556365
-            }
-          },
-          "Cu_front": {
-            "Cu": {
-              "directional_tensor": [
-                [
-                  1.02240936353e-05,
-                  0.0,
-                  0.0
-                ],
-                [
-                  0.0,
-                  1.02240936353e-05,
-                  0.0
-                ],
-                [
-                  0.0,
-                  0.0,
-                  0.000133561206284
-                ]
-              ],
-              "group_source": [
-                0.000153634818232,
-                3.71965251271e-07,
-                2.61007185059e-09
-              ],
-              "total_source": 0.000154009393555
-            }
-          },
-          "Hastelloy_C276": {
-            "Co": {
-              "directional_tensor": [
-                [
-                  2.81841409203e-07,
-                  0.0,
-                  0.0
-                ],
-                [
-                  0.0,
-                  2.81841409203e-07,
-                  0.0
-                ],
-                [
-                  0.0,
-                  0.0,
-                  3.60114557752e-06
-                ]
-              ],
-              "group_source": [
-                4.15113040532e-06,
-                1.36319291953e-08,
-                6.6061406334e-11
-              ],
-              "total_source": 4.16482839593e-06
-            },
-            "Cr": {
-              "directional_tensor": [
-                [
-                  4.50946254725e-06,
-                  0.0,
-                  0.0
-                ],
-                [
-                  0.0,
-                  4.50946254725e-06,
-                  0.0
-                ],
-                [
-                  0.0,
-                  0.0,
-                  5.76183292403e-05
-                ]
-              ],
-              "group_source": [
-                6.64180864852e-05,
-                2.18110867125e-07,
-                1.05698250134e-09
-              ],
-              "total_source": 6.66372543348e-05
-            },
-            "Fe": {
-              "directional_tensor": [
-                [
-                  1.69104845522e-06,
-                  0.0,
-                  0.0
-                ],
-                [
-                  0.0,
-                  1.69104845522e-06,
-                  0.0
-                ],
-                [
-                  0.0,
-                  0.0,
-                  2.16068734651e-05
-                ]
-              ],
-              "group_source": [
-                2.49067824319e-05,
-                8.17915751717e-08,
-                3.96368438004e-10
-              ],
-              "total_source": 2.49889703756e-05
-            },
-            "Mo": {
-              "directional_tensor": [
-                [
-                  4.50946254725e-06,
-                  0.0,
-                  0.0
-                ],
-                [
-                  0.0,
-                  4.50946254725e-06,
-                  0.0
-                ],
-                [
-                  0.0,
-                  0.0,
-                  5.76183292403e-05
-                ]
-              ],
-              "group_source": [
-                6.64180864852e-05,
-                2.18110867125e-07,
-                1.05698250134e-09
-              ],
-              "total_source": 6.66372543348e-05
-            },
-            "Ni": {
-              "directional_tensor": [
-                [
-                  1.60649603246e-05,
-                  0.0,
-                  0.0
-                ],
-                [
-                  0.0,
-                  1.60649603246e-05,
-                  0.0
-                ],
-                [
-                  0.0,
-                  0.0,
-                  0.000205265297919
-                ]
-              ],
-              "group_source": [
-                0.000236614433103,
-                7.77019964132e-07,
-                3.76550016104e-09
-              ],
-              "total_source": 0.000237395218568
-            },
-            "W": {
-              "directional_tensor": [
-                [
-                  1.12736563681e-06,
-                  0.0,
-                  0.0
-                ],
-                [
-                  0.0,
-                  1.12736563681e-06,
-                  0.0
-                ],
-                [
-                  0.0,
-                  0.0,
-                  1.44045823101e-05
-                ]
-              ],
-              "group_source": [
-                1.66045216213e-05,
-                5.45277167812e-08,
-                2.64245625336e-10
-              ],
-              "total_source": 1.66593135837e-05
-            }
-          },
-          "REBCO": {
-            "Ba": {
-              "directional_tensor": [
-                [
-                  9.32267745514e-08,
-                  0.0,
-                  0.0
-                ],
-                [
-                  0.0,
-                  9.32267745514e-08,
-                  0.0
-                ],
-                [
-                  0.0,
-                  0.0,
-                  1.21188402541e-06
-                ]
-              ],
-              "group_source": [
-                1.39477500602e-06,
-                3.5417248482e-09,
-                2.08436437782e-11
-              ],
-              "total_source": 1.39833757451e-06
-            },
-            "Cu": {
-              "directional_tensor": [
-                [
-                  1.39840161827e-07,
-                  0.0,
-                  0.0
-                ],
-                [
-                  0.0,
-                  1.39840161827e-07,
-                  0.0
-                ],
-                [
-                  0.0,
-                  0.0,
-                  1.81782603811e-06
-                ]
-              ],
-              "group_source": [
-                2.09216250903e-06,
-                5.3125872723e-09,
-                3.12654656673e-11
-              ],
-              "total_source": 2.09750636177e-06
-            },
-            "O": {
-              "directional_tensor": [
-                [
-                  3.2629371093e-07,
-                  0.0,
-                  0.0
-                ],
-                [
-                  0.0,
-                  3.2629371093e-07,
-                  0.0
-                ],
-                [
-                  0.0,
-                  0.0,
-                  4.24159408893e-06
-                ]
-              ],
-              "group_source": [
-                4.88171252107e-06,
-                1.23960369687e-08,
-                7.29527532237e-11
-              ],
-              "total_source": 4.89418151079e-06
-            },
-            "Y": {
-              "directional_tensor": [
-                [
-                  4.66133872757e-08,
-                  0.0,
-                  0.0
-                ],
-                [
-                  0.0,
-                  4.66133872757e-08,
-                  0.0
-                ],
-                [
-                  0.0,
-                  0.0,
-                  6.05942012704e-07
-                ]
-              ],
-              "group_source": [
-                6.9738750301e-07,
-                1.7708624241e-09,
-                1.04218218891e-11
-              ],
-              "total_source": 6.99168787256e-07
-            }
-          },
-          "oxide_buffer": {
-            "Mg": {
-              "directional_tensor": [
-                [
-                  3.69842040338e-08,
-                  0.0,
-                  0.0
-                ],
-                [
-                  0.0,
-                  3.69842040338e-08,
-                  0.0
-                ],
-                [
-                  0.0,
-                  0.0,
-                  4.80635870194e-07
-                ]
-              ],
-              "group_source": [
-                5.53187353926e-07,
-                1.40870525939e-09,
-                8.2190763711e-12
-              ],
-              "total_source": 5.54604278262e-07
-            },
-            "O": {
-              "directional_tensor": [
-                [
-                  3.69842040338e-08,
-                  0.0,
-                  0.0
-                ],
-                [
-                  0.0,
-                  3.69842040338e-08,
-                  0.0
-                ],
-                [
-                  0.0,
-                  0.0,
-                  4.80635870194e-07
-                ]
-              ],
-              "group_source": [
-                5.53187353926e-07,
-                1.40870525939e-09,
-                8.2190763711e-12
-              ],
-              "total_source": 5.54604278262e-07
-            }
-          }
         }
       },
       "id": "normal",
@@ -3853,11 +3188,842 @@
         }
       },
       "neutral_operator_identical_between_methods": true,
+      "nominal_reference": {
+        "charged": {
+          "escape_by_group": [
+            0.000570813216803,
+            1.11526483922e-05,
+            4.5093861677e-07
+          ],
+          "matrix_nonzeros": 136584,
+          "maximum_balance_residual": 1.35668317657e-14,
+          "minimum_flux": 4.53332717499e-09,
+          "operator": "BFP angular diffusion using the declared generator only",
+          "total_escape": 0.000582416803812
+        },
+        "charged_interface_crossing": {
+          "Ag_cap->REBCO": 0.000191191350337,
+          "Cu_front->Ag_cap": 0.000183685181109,
+          "Hastelloy_C276->Cu_back": 0.000421515081836,
+          "REBCO->oxide_buffer": 0.000196571487703,
+          "oxide_buffer->Hastelloy_C276": 0.000197226843018
+        },
+        "layers": {
+          "Ag_cap": {
+            "charged_current_integral": [
+              0.0,
+              0.0,
+              7.47435483215e-09
+            ],
+            "charged_heating_proxy": 6.36073754237e-08,
+            "charged_q_normal": 3.10654445424e-09,
+            "charged_scalar_flux_integral": 7.15935687705e-08,
+            "charged_traceless_second_moment": [
+              [
+                -1.55327222712e-09,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                -1.55327222712e-09,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                3.10654445424e-09
+              ]
+            ],
+            "material": "Ag",
+            "neutral_current_integral": [
+              0.0,
+              0.0,
+              0.000186389514387
+            ],
+            "neutral_heating_proxy": 6.61665983912e-05,
+            "neutral_q_normal": 0.000106998395065,
+            "neutral_scalar_flux_integral": 0.000200277530937,
+            "neutral_traceless_second_moment": [
+              [
+                -5.34991975327e-05,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                -5.34991975327e-05,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.000106998395065
+              ]
+            ],
+            "thickness_um": 2.0
+          },
+          "Cu_back": {
+            "charged_current_integral": [
+              0.0,
+              0.0,
+              8.83474681646e-07
+            ],
+            "charged_heating_proxy": 1.49883448549e-06,
+            "charged_q_normal": 3.07519095037e-07,
+            "charged_scalar_flux_integral": 1.37828987404e-06,
+            "charged_traceless_second_moment": [
+              [
+                -1.53759547518e-07,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                -1.53759547518e-07,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                3.07519095037e-07
+              ]
+            ],
+            "material": "Cu",
+            "neutral_current_integral": [
+              0.0,
+              0.0,
+              0.00186249740421
+            ],
+            "neutral_heating_proxy": 0.00080803189716,
+            "neutral_q_normal": 0.00106318054763,
+            "neutral_scalar_flux_integral": 0.00200645735552,
+            "neutral_traceless_second_moment": [
+              [
+                -0.000531590273815,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                -0.000531590273815,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.00106318054763
+              ]
+            ],
+            "thickness_um": 20.0
+          },
+          "Cu_front": {
+            "charged_current_integral": [
+              0.0,
+              0.0,
+              -3.53826397132e-08
+            ],
+            "charged_heating_proxy": 6.57105447938e-07,
+            "charged_q_normal": 2.90107650984e-09,
+            "charged_scalar_flux_integral": 6.07449894193e-07,
+            "charged_traceless_second_moment": [
+              [
+                -1.45053825492e-09,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                -1.45053825492e-09,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                2.90107650984e-09
+              ]
+            ],
+            "material": "Cu",
+            "neutral_current_integral": [
+              0.0,
+              0.0,
+              0.00186404436294
+            ],
+            "neutral_heating_proxy": 0.000806776878043,
+            "neutral_q_normal": 0.00107084297463,
+            "neutral_scalar_flux_integral": 0.00200238394263,
+            "neutral_traceless_second_moment": [
+              [
+                -0.000535421487316,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                -0.000535421487316,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.00107084297463
+              ]
+            ],
+            "thickness_um": 20.0
+          },
+          "Hastelloy_C276": {
+            "charged_current_integral": [
+              0.0,
+              0.0,
+              1.10866860031e-06
+            ],
+            "charged_heating_proxy": 3.1546194494e-06,
+            "charged_q_normal": 3.74206979853e-07,
+            "charged_scalar_flux_integral": 2.68946201087e-06,
+            "charged_traceless_second_moment": [
+              [
+                -1.87103489927e-07,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                -1.87103489927e-07,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                3.74206979853e-07
+              ]
+            ],
+            "material": "Hastelloy_C276",
+            "neutral_current_integral": [
+              0.0,
+              0.0,
+              0.00465808763388
+            ],
+            "neutral_heating_proxy": 0.00218005472805,
+            "neutral_q_normal": 0.00266711056553,
+            "neutral_scalar_flux_integral": 0.00501128423992,
+            "neutral_traceless_second_moment": [
+              [
+                -0.00133355528277,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                -0.00133355528277,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.00266711056553
+              ]
+            ],
+            "thickness_um": 50.0
+          },
+          "REBCO": {
+            "charged_current_integral": [
+              0.0,
+              0.0,
+              4.4633118994e-09
+            ],
+            "charged_heating_proxy": 4.66305575095e-08,
+            "charged_q_normal": 1.74815918771e-09,
+            "charged_scalar_flux_integral": 3.64668326605e-08,
+            "charged_traceless_second_moment": [
+              [
+                -8.74079593857e-10,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                -8.74079593857e-10,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.74815918771e-09
+              ]
+            ],
+            "material": "REBCO",
+            "neutral_current_integral": [
+              0.0,
+              0.0,
+              9.31937698309e-05
+            ],
+            "neutral_heating_proxy": 4.76087088481e-05,
+            "neutral_q_normal": 5.3493550512e-05,
+            "neutral_scalar_flux_integral": 0.000100141352555,
+            "neutral_traceless_second_moment": [
+              [
+                -2.6746775256e-05,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                -2.6746775256e-05,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                5.3493550512e-05
+              ]
+            ],
+            "thickness_um": 1.0
+          },
+          "oxide_buffer": {
+            "charged_current_integral": [
+              0.0,
+              0.0,
+              9.61979705375e-10
+            ],
+            "charged_heating_proxy": 5.74117500167e-09,
+            "charged_q_normal": 3.68506408401e-10,
+            "charged_scalar_flux_integral": 7.35774983797e-09,
+            "charged_traceless_second_moment": [
+              [
+                -1.842532042e-10,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                -1.842532042e-10,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                3.68506408401e-10
+              ]
+            ],
+            "material": "oxide_buffer",
+            "neutral_current_integral": [
+              0.0,
+              0.0,
+              1.86386574463e-05
+            ],
+            "neutral_heating_proxy": 5.80993725456e-06,
+            "neutral_q_normal": 1.06981676338e-05,
+            "neutral_scalar_flux_integral": 2.00285234562e-05,
+            "neutral_traceless_second_moment": [
+              [
+                -5.34908381691e-06,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                -5.34908381691e-06,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.06981676338e-05
+              ]
+            ],
+            "thickness_um": 0.2
+          }
+        },
+        "neutral": {
+          "matrix_nonzeros": 136584,
+          "maximum_balance_residual": 1.14903774277e-14,
+          "minimum_flux": 2.21100023598e-11,
+          "operator": "full positive reversible Boltzmann kernels; never replaced by AFP",
+          "total_escape": 0.931495962886
+        },
+        "responses": {
+          "REBCO_charged_heating": 4.66305575095e-08,
+          "REBCO_charged_q_normal": 1.74815918771e-09,
+          "REBCO_charged_scalar": 3.64668326605e-08,
+          "charged_escape": 0.000582416803812,
+          "substrate_total_PKA_source": 0.000416482839593,
+          "total_heating": 0.00391987528624
+        },
+        "species_resolved_pka": {
+          "Ag_cap": {
+            "Ag": {
+              "directional_tensor": [
+                [
+                  8.41755564665e-07,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  8.41755564665e-07,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.09484986764e-05
+                ]
+              ],
+              "group_source": [
+                1.25999991912e-05,
+                3.18198297455e-08,
+                1.90784708225e-10
+              ],
+              "total_source": 1.26320098057e-05
+            }
+          },
+          "Cu_back": {
+            "Cu": {
+              "directional_tensor": [
+                [
+                  1.06332168581e-05,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.06332168581e-05,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.000133205122649
+                ]
+              ],
+              "group_source": [
+                0.000153849294236,
+                6.19249772338e-07,
+                3.01235657544e-09
+              ],
+              "total_source": 0.000154471556365
+            }
+          },
+          "Cu_front": {
+            "Cu": {
+              "directional_tensor": [
+                [
+                  1.02240936353e-05,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.02240936353e-05,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.000133561206284
+                ]
+              ],
+              "group_source": [
+                0.000153634818232,
+                3.71965251271e-07,
+                2.61007185059e-09
+              ],
+              "total_source": 0.000154009393555
+            }
+          },
+          "Hastelloy_C276": {
+            "Co": {
+              "directional_tensor": [
+                [
+                  2.81841409203e-07,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  2.81841409203e-07,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  3.60114557752e-06
+                ]
+              ],
+              "group_source": [
+                4.15113040532e-06,
+                1.36319291953e-08,
+                6.6061406334e-11
+              ],
+              "total_source": 4.16482839593e-06
+            },
+            "Cr": {
+              "directional_tensor": [
+                [
+                  4.50946254725e-06,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  4.50946254725e-06,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  5.76183292403e-05
+                ]
+              ],
+              "group_source": [
+                6.64180864852e-05,
+                2.18110867125e-07,
+                1.05698250134e-09
+              ],
+              "total_source": 6.66372543348e-05
+            },
+            "Fe": {
+              "directional_tensor": [
+                [
+                  1.69104845522e-06,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.69104845522e-06,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  2.16068734651e-05
+                ]
+              ],
+              "group_source": [
+                2.49067824319e-05,
+                8.17915751717e-08,
+                3.96368438004e-10
+              ],
+              "total_source": 2.49889703756e-05
+            },
+            "Mo": {
+              "directional_tensor": [
+                [
+                  4.50946254725e-06,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  4.50946254725e-06,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  5.76183292403e-05
+                ]
+              ],
+              "group_source": [
+                6.64180864852e-05,
+                2.18110867125e-07,
+                1.05698250134e-09
+              ],
+              "total_source": 6.66372543348e-05
+            },
+            "Ni": {
+              "directional_tensor": [
+                [
+                  1.60649603246e-05,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.60649603246e-05,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.000205265297919
+                ]
+              ],
+              "group_source": [
+                0.000236614433103,
+                7.77019964132e-07,
+                3.76550016104e-09
+              ],
+              "total_source": 0.000237395218568
+            },
+            "W": {
+              "directional_tensor": [
+                [
+                  1.12736563681e-06,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.12736563681e-06,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.44045823101e-05
+                ]
+              ],
+              "group_source": [
+                1.66045216213e-05,
+                5.45277167812e-08,
+                2.64245625336e-10
+              ],
+              "total_source": 1.66593135837e-05
+            }
+          },
+          "REBCO": {
+            "Ba": {
+              "directional_tensor": [
+                [
+                  9.32267745514e-08,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  9.32267745514e-08,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.21188402541e-06
+                ]
+              ],
+              "group_source": [
+                1.39477500602e-06,
+                3.5417248482e-09,
+                2.08436437782e-11
+              ],
+              "total_source": 1.39833757451e-06
+            },
+            "Cu": {
+              "directional_tensor": [
+                [
+                  1.39840161827e-07,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.39840161827e-07,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.81782603811e-06
+                ]
+              ],
+              "group_source": [
+                2.09216250903e-06,
+                5.3125872723e-09,
+                3.12654656673e-11
+              ],
+              "total_source": 2.09750636177e-06
+            },
+            "O": {
+              "directional_tensor": [
+                [
+                  3.2629371093e-07,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  3.2629371093e-07,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  4.24159408893e-06
+                ]
+              ],
+              "group_source": [
+                4.88171252107e-06,
+                1.23960369687e-08,
+                7.29527532237e-11
+              ],
+              "total_source": 4.89418151079e-06
+            },
+            "Y": {
+              "directional_tensor": [
+                [
+                  4.66133872757e-08,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  4.66133872757e-08,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  6.05942012704e-07
+                ]
+              ],
+              "group_source": [
+                6.9738750301e-07,
+                1.7708624241e-09,
+                1.04218218891e-11
+              ],
+              "total_source": 6.99168787256e-07
+            }
+          },
+          "oxide_buffer": {
+            "Mg": {
+              "directional_tensor": [
+                [
+                  3.69842040338e-08,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  3.69842040338e-08,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  4.80635870194e-07
+                ]
+              ],
+              "group_source": [
+                5.53187353926e-07,
+                1.40870525939e-09,
+                8.2190763711e-12
+              ],
+              "total_source": 5.54604278262e-07
+            },
+            "O": {
+              "directional_tensor": [
+                [
+                  3.69842040338e-08,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  3.69842040338e-08,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  4.80635870194e-07
+                ]
+              ],
+              "group_source": [
+                5.53187353926e-07,
+                1.40870525939e-09,
+                8.2190763711e-12
+              ],
+              "total_source": 5.54604278262e-07
+            }
+          }
+        }
+      },
       "polar_degrees": 0.0,
+      "reference_convergence": {
+        "all_responses_converged": false,
+        "relative_span_limit": 0.05,
+        "responses": {
+          "REBCO_charged_heating": {
+            "converged": false,
+            "relative_span": 0.547090155321
+          },
+          "REBCO_charged_q_normal": {
+            "converged": false,
+            "relative_span": 1.15029395403
+          },
+          "REBCO_charged_scalar": {
+            "converged": false,
+            "relative_span": 0.561771040067
+          },
+          "charged_escape": {
+            "converged": true,
+            "relative_span": 0.0173874994802
+          },
+          "substrate_total_PKA_source": {
+            "converged": true,
+            "relative_span": 0.0354729935027
+          },
+          "total_heating": {
+            "converged": true,
+            "relative_span": 0.00644896354838
+          }
+        }
+      },
       "same_nodes_between_methods": true,
       "same_spatial_energy_discretization": true
     },
     {
+      "angular_reference_sweep": {
+        "128": {
+          "n_mu": 8,
+          "n_phi": 16,
+          "responses": {
+            "REBCO_charged_heating": 8.2082767473e-08,
+            "REBCO_charged_q_normal": -8.53886585514e-09,
+            "REBCO_charged_scalar": 6.44537779594e-08,
+            "charged_escape": 0.000590256572368,
+            "substrate_total_PKA_source": 0.000423046256103,
+            "total_heating": 0.00397886392801
+          }
+        },
+        "50": {
+          "n_mu": 5,
+          "n_phi": 10,
+          "responses": {
+            "REBCO_charged_heating": 3.91687675616e-07,
+            "REBCO_charged_q_normal": -8.68184286396e-08,
+            "REBCO_charged_scalar": 3.18951770856e-07,
+            "charged_escape": 0.000855624153467,
+            "substrate_total_PKA_source": 0.000639994415985,
+            "total_heating": 0.00564740010191
+          }
+        },
+        "72": {
+          "n_mu": 6,
+          "n_phi": 12,
+          "responses": {
+            "REBCO_charged_heating": 6.58679517186e-08,
+            "REBCO_charged_q_normal": -5.25707103483e-09,
+            "REBCO_charged_scalar": 5.16371872773e-08,
+            "charged_escape": 0.000584426718783,
+            "substrate_total_PKA_source": 0.000418396032781,
+            "total_heating": 0.00393704796944
+          }
+        },
+        "98": {
+          "n_mu": 7,
+          "n_phi": 14,
+          "responses": {
+            "REBCO_charged_heating": 1.9653248099e-07,
+            "REBCO_charged_q_normal": -2.97370638781e-08,
+            "REBCO_charged_scalar": 1.5466783323e-07,
+            "charged_escape": 0.000867080327769,
+            "substrate_total_PKA_source": 0.000637039991661,
+            "total_heating": 0.00572148877358
+          }
+        }
+      },
       "azimuth_degrees": 23.0,
       "coarse_spatial_reference": {
         "charged": {
@@ -4614,843 +4780,128 @@
         "REBCO_charged_heating": {
           "H2_prediction": "optimized error should be smaller because its sampled H2 defect is smaller",
           "baseline_absolute_error": 2.07310250859e-08,
+          "baseline_response": 8.65989768046e-08,
           "difference_resolved_by_reference": false,
+          "method_absolute_difference": 0.0,
+          "method_relative_difference": 5.04337787285e-15,
           "observed_direction_matches_H2_prediction": true,
           "optimized_absolute_error": 2.07310250859e-08,
           "optimized_improves": true,
+          "optimized_response": 8.65989768046e-08,
           "reference_uncertainty": {
             "angular_component": 3.25819723897e-07,
             "conservative_sum": 3.26021976044e-07,
+            "nominal_reference_converged": false,
             "spatial_component": 2.02252147308e-10
           },
           "requires_higher_shell_or_transport_information": true,
+          "resolved_degradation": false,
           "resolved_improvement": false
         },
         "REBCO_charged_q_normal": {
           "H2_prediction": "optimized error should be smaller because its sampled H2 defect is smaller",
           "baseline_absolute_error": 5.30403147247e-09,
+          "baseline_response": -1.05611025073e-08,
           "difference_resolved_by_reference": false,
+          "method_absolute_difference": 0.0,
+          "method_relative_difference": 1.9424183391e-14,
           "observed_direction_matches_H2_prediction": true,
           "optimized_absolute_error": 5.30403147247e-09,
           "optimized_improves": true,
+          "optimized_response": -1.05611025073e-08,
           "reference_uncertainty": {
             "angular_component": 8.15613576048e-08,
             "conservative_sum": 8.15735749269e-08,
+            "nominal_reference_converged": false,
             "spatial_component": 1.22173221643e-11
           },
           "requires_higher_shell_or_transport_information": true,
+          "resolved_degradation": false,
           "resolved_improvement": false
         },
         "REBCO_charged_scalar": {
           "H2_prediction": "optimized error should be smaller because its sampled H2 defect is smaller",
           "baseline_absolute_error": 1.62038067216e-08,
+          "baseline_response": 6.78409939989e-08,
           "difference_resolved_by_reference": false,
+          "method_absolute_difference": 0.0,
+          "method_relative_difference": 4.87717271694e-15,
           "observed_direction_matches_H2_prediction": true,
           "optimized_absolute_error": 1.62038067216e-08,
           "optimized_improves": true,
+          "optimized_response": 6.78409939989e-08,
           "reference_uncertainty": {
             "angular_component": 2.67314583579e-07,
             "conservative_sum": 2.67509991985e-07,
+            "nominal_reference_converged": false,
             "spatial_component": 1.95408406163e-10
           },
           "requires_higher_shell_or_transport_information": true,
+          "resolved_degradation": false,
           "resolved_improvement": false
         },
         "charged_escape": {
           "H2_prediction": "optimized error should be smaller because its sampled H2 defect is smaller",
           "baseline_absolute_error": 5.40557157388e-06,
+          "baseline_response": 0.000579021147209,
           "difference_resolved_by_reference": false,
+          "method_absolute_difference": 0.0,
+          "method_relative_difference": 1.87247422259e-16,
           "observed_direction_matches_H2_prediction": true,
           "optimized_absolute_error": 5.40557157388e-06,
           "optimized_improves": true,
+          "optimized_response": 0.000579021147209,
           "reference_uncertainty": {
             "angular_component": 0.000271197434684,
             "conservative_sum": 0.000271324448747,
+            "nominal_reference_converged": false,
             "spatial_component": 1.2701406274e-07
           },
           "requires_higher_shell_or_transport_information": true,
+          "resolved_degradation": false,
           "resolved_improvement": false
         },
         "substrate_total_PKA_source": {
           "H2_prediction": "optimized error should be smaller because its sampled H2 defect is smaller",
           "baseline_absolute_error": 3.54993088048e-06,
+          "baseline_response": 0.0004148461019,
           "difference_resolved_by_reference": false,
+          "method_absolute_difference": 0.0,
+          "method_relative_difference": 0.0,
           "observed_direction_matches_H2_prediction": false,
           "optimized_absolute_error": 3.54993088048e-06,
           "optimized_improves": false,
+          "optimized_response": 0.0004148461019,
           "reference_uncertainty": {
             "angular_component": 0.000221598383204,
             "conservative_sum": 0.000221781074788,
+            "nominal_reference_converged": false,
             "spatial_component": 1.82691584147e-07
           },
           "requires_higher_shell_or_transport_information": true,
+          "resolved_degradation": false,
           "resolved_improvement": false
         },
         "total_heating": {
           "H2_prediction": "optimized error should be smaller because its sampled H2 defect is smaller",
           "baseline_absolute_error": 3.38002261918e-05,
+          "baseline_response": 0.00390324774325,
           "difference_resolved_by_reference": false,
+          "method_absolute_difference": 0.0,
+          "method_relative_difference": 0.0,
           "observed_direction_matches_H2_prediction": false,
           "optimized_absolute_error": 3.38002261918e-05,
           "optimized_improves": false,
+          "optimized_response": 0.00390324774325,
           "reference_uncertainty": {
             "angular_component": 0.00171035213247,
             "conservative_sum": 0.00171156411827,
+            "nominal_reference_converged": false,
             "spatial_component": 1.21198580318e-06
           },
           "requires_higher_shell_or_transport_information": true,
+          "resolved_degradation": false,
           "resolved_improvement": false
-        }
-      },
-      "fine_reference": {
-        "charged": {
-          "escape_by_group": [
-            0.000568158153799,
-            1.55116586898e-05,
-            7.56906294602e-07
-          ],
-          "matrix_nonzeros": 136584,
-          "maximum_balance_residual": 1.11045349335e-14,
-          "minimum_flux": 6.12851457182e-09,
-          "operator": "BFP angular diffusion using the declared generator only",
-          "total_escape": 0.000584426718783
-        },
-        "charged_interface_crossing": {
-          "Ag_cap->REBCO": 0.000215225493967,
-          "Cu_front->Ag_cap": 0.000207683730724,
-          "Hastelloy_C276->Cu_back": 0.00042249615596,
-          "REBCO->oxide_buffer": 0.000220616353877,
-          "oxide_buffer->Hastelloy_C276": 0.000221272124806
-        },
-        "layers": {
-          "Ag_cap": {
-            "charged_current_integral": [
-              3.34556113759e-08,
-              1.92194739868e-08,
-              3.19538811609e-09
-            ],
-            "charged_heating_proxy": 8.95572629452e-08,
-            "charged_q_normal": -1.03034232878e-08,
-            "charged_scalar_flux_integral": 1.01049564156e-07,
-            "charged_traceless_second_moment": [
-              [
-                1.19050627802e-08,
-                1.16006534347e-08,
-                8.69680743679e-09
-              ],
-              [
-                1.16006534347e-08,
-                -1.60163949236e-09,
-                4.98824973047e-09
-              ],
-              [
-                8.69680743679e-09,
-                4.98824973047e-09,
-                -1.03034232878e-08
-              ]
-            ],
-            "material": "Ag",
-            "neutral_current_integral": [
-              0.000134792513376,
-              7.73595674353e-05,
-              0.000122758780507
-            ],
-            "neutral_heating_proxy": 6.63945238441e-05,
-            "neutral_q_normal": 1.20946474809e-05,
-            "neutral_scalar_flux_integral": 0.000200987035899,
-            "neutral_traceless_second_moment": [
-              [
-                2.44024156222e-05,
-                5.22149670616e-05,
-                8.07340975705e-05
-              ],
-              [
-                5.22149670616e-05,
-                -3.6497063103e-05,
-                4.63141602642e-05
-              ],
-              [
-                8.07340975705e-05,
-                4.63141602642e-05,
-                1.20946474809e-05
-              ]
-            ],
-            "thickness_um": 2.0
-          },
-          "Cu_back": {
-            "charged_current_integral": [
-              8.84810258616e-07,
-              5.07945141138e-07,
-              8.3825737206e-07
-            ],
-            "charged_heating_proxy": 2.07726539196e-06,
-            "charged_q_normal": -8.46798843469e-08,
-            "charged_scalar_flux_integral": 1.91533171796e-06,
-            "charged_traceless_second_moment": [
-              [
-                2.01514211424e-07,
-                2.73098997221e-07,
-                3.96528634287e-07
-              ],
-              [
-                2.73098997221e-07,
-                -1.16834327077e-07,
-                2.27529084453e-07
-              ],
-              [
-                3.96528634287e-07,
-                2.27529084453e-07,
-                -8.46798843469e-08
-              ]
-            ],
-            "material": "Cu",
-            "neutral_current_integral": [
-              0.00134925890358,
-              0.000774332600301,
-              0.00122611317422
-            ],
-            "neutral_heating_proxy": 0.000811306019202,
-            "neutral_q_normal": 0.000115474664315,
-            "neutral_scalar_flux_integral": 0.00201535821615,
-            "neutral_traceless_second_moment": [
-              [
-                0.000245151177961,
-                0.000519348200936,
-                0.000803040334444
-              ],
-              [
-                0.000519348200936,
-                -0.000360625842276,
-                0.000460673436423
-              ],
-              [
-                0.000803040334444,
-                0.000460673436423,
-                0.000115474664315
-              ]
-            ],
-            "thickness_um": 20.0
-          },
-          "Cu_front": {
-            "charged_current_integral": [
-              2.29454185879e-07,
-              1.31839635514e-07,
-              -7.8049499394e-08
-            ],
-            "charged_heating_proxy": 8.9701315158e-07,
-            "charged_q_normal": -8.45982678541e-08,
-            "charged_scalar_flux_integral": 8.31479409789e-07,
-            "charged_traceless_second_moment": [
-              [
-                8.75570219831e-08,
-                7.77655754109e-08,
-                4.20624353171e-08
-              ],
-              [
-                7.77655754109e-08,
-                -2.95875412906e-09,
-                2.41121665055e-08
-              ],
-              [
-                4.20624353171e-08,
-                2.41121665055e-08,
-                -8.45982678541e-08
-              ]
-            ],
-            "material": "Cu",
-            "neutral_current_integral": [
-              0.00134786873452,
-              0.00077356758666,
-              0.00122767817536
-            ],
-            "neutral_heating_proxy": 0.000809547676406,
-            "neutral_q_normal": 0.000121606553863,
-            "neutral_scalar_flux_integral": 0.00200938492033,
-            "neutral_traceless_second_moment": [
-              [
-                0.000243929257712,
-                0.000522559201411,
-                0.000807835659613
-              ],
-              [
-                0.000522559201411,
-                -0.000365535811575,
-                0.000463425383874
-              ],
-              [
-                0.000807835659613,
-                0.000463425383874,
-                0.000121606553863
-              ]
-            ],
-            "thickness_um": 20.0
-          },
-          "Hastelloy_C276": {
-            "charged_current_integral": [
-              1.5921441843e-06,
-              9.1427333998e-07,
-              9.98844716627e-07
-            ],
-            "charged_heating_proxy": 4.50360065334e-06,
-            "charged_q_normal": -3.05274937712e-07,
-            "charged_scalar_flux_integral": 3.849493927e-06,
-            "charged_traceless_second_moment": [
-              [
-                4.59636740817e-07,
-                5.26988878368e-07,
-                5.90762143015e-07
-              ],
-              [
-                5.26988878368e-07,
-                -1.54361803105e-07,
-                3.38953758741e-07
-              ],
-              [
-                5.90762143015e-07,
-                3.38953758741e-07,
-                -3.05274937712e-07
-              ]
-            ],
-            "material": "Hastelloy_C276",
-            "neutral_current_integral": [
-              0.00337204530786,
-              0.00193523797028,
-              0.0030671337118
-            ],
-            "neutral_heating_proxy": 0.00218855563493,
-            "neutral_q_normal": 0.000295783637532,
-            "neutral_scalar_flux_integral": 0.0050319753716,
-            "neutral_traceless_second_moment": [
-              [
-                0.000611672909261,
-                0.00130244671167,
-                0.00201332180471
-              ],
-              [
-                0.00130244671167,
-                -0.000907456546794,
-                0.0011549666929
-              ],
-              [
-                0.00201332180471,
-                0.0011549666929,
-                0.000295783637532
-              ]
-            ],
-            "thickness_um": 50.0
-          },
-          "REBCO": {
-            "charged_current_integral": [
-              1.74014065643e-08,
-              9.99650346104e-09,
-              2.32568389126e-09
-            ],
-            "charged_heating_proxy": 6.58679517186e-08,
-            "charged_q_normal": -5.25707103483e-09,
-            "charged_scalar_flux_integral": 5.16371872773e-08,
-            "charged_traceless_second_moment": [
-              [
-                6.14474935067e-09,
-                6.03981444684e-09,
-                4.640273894e-09
-              ],
-              [
-                6.03981444684e-09,
-                -8.87678315836e-10,
-                2.66162462155e-09
-              ],
-              [
-                4.640273894e-09,
-                2.66162462155e-09,
-                -5.25707103483e-09
-              ]
-            ],
-            "material": "REBCO",
-            "neutral_current_integral": [
-              6.73965584266e-05,
-              3.86799289588e-05,
-              6.13787803299e-05
-            ],
-            "neutral_heating_proxy": 4.77727298486e-05,
-            "neutral_q_normal": 6.04301616882e-06,
-            "neutral_scalar_flux_integral": 0.00010049663569,
-            "neutral_traceless_second_moment": [
-              [
-                1.22017991304e-05,
-                2.61047630452e-05,
-                4.03637904863e-05
-              ],
-              [
-                2.61047630452e-05,
-                -1.82448152993e-05,
-                2.31552109392e-05
-              ],
-              [
-                4.03637904863e-05,
-                2.31552109392e-05,
-                6.04301616882e-06
-              ]
-            ],
-            "thickness_um": 1.0
-          },
-          "oxide_buffer": {
-            "charged_current_integral": [
-              3.54441653621e-09,
-              2.03612502952e-09,
-              5.3467433754e-10
-            ],
-            "charged_heating_proxy": 8.12150139188e-09,
-            "charged_q_normal": -1.0611518524e-09,
-            "charged_scalar_flux_integral": 1.043371528e-08,
-            "charged_traceless_second_moment": [
-              [
-                1.2470541076e-09,
-                1.23067785039e-09,
-                9.56051282192e-10
-              ],
-              [
-                1.23067785039e-09,
-                -1.85902255201e-10,
-                5.48391704425e-10
-              ],
-              [
-                9.56051282192e-10,
-                5.48391704425e-10,
-                -1.0611518524e-09
-              ]
-            ],
-            "material": "oxide_buffer",
-            "neutral_current_integral": [
-              1.34793529944e-05,
-              7.73600685307e-06,
-              1.22756916748e-05
-            ],
-            "neutral_heating_proxy": 5.82995929151e-06,
-            "neutral_q_normal": 1.20818523142e-06,
-            "neutral_scalar_flux_integral": 2.00996462265e-05,
-            "neutral_traceless_second_moment": [
-              [
-                2.44042204504e-06,
-                5.22069699969e-06,
-                8.07244218089e-06
-              ],
-              [
-                5.22069699969e-06,
-                -3.64860727647e-06,
-                4.63086094709e-06
-              ],
-              [
-                8.07244218089e-06,
-                4.63086094709e-06,
-                1.20818523142e-06
-              ]
-            ],
-            "thickness_um": 0.2
-          }
-        },
-        "neutral": {
-          "matrix_nonzeros": 136584,
-          "maximum_balance_residual": 7.03964768622e-15,
-          "minimum_flux": 4.53759992971e-13,
-          "operator": "full positive reversible Boltzmann kernels; never replaced by AFP",
-          "total_escape": 0.614091207538
-        },
-        "responses": {
-          "REBCO_charged_heating": 6.58679517186e-08,
-          "REBCO_charged_q_normal": -5.25707103483e-09,
-          "REBCO_charged_scalar": 5.16371872773e-08,
-          "charged_escape": 0.000584426718783,
-          "substrate_total_PKA_source": 0.000418396032781,
-          "total_heating": 0.00393704796944
-        },
-        "species_resolved_pka": {
-          "Ag_cap": {
-            "Ag": {
-              "directional_tensor": [
-                [
-                  5.76531751981e-06,
-                  3.28994913306e-06,
-                  5.08636481572e-06
-                ],
-                [
-                  3.28994913306e-06,
-                  1.9281800528e-06,
-                  2.91785946688e-06
-                ],
-                [
-                  5.08636481572e-06,
-                  2.91785946688e-06,
-                  4.9857724728e-06
-                ]
-              ],
-              "group_source": [
-                1.26429927331e-05,
-                3.60541118157e-08,
-                2.23200519947e-10
-              ],
-              "total_source": 1.26792700454e-05
-            }
-          },
-          "Cu_back": {
-            "Cu": {
-              "directional_tensor": [
-                [
-                  7.06489735327e-05,
-                  3.99682689325e-05,
-                  6.17804896441e-05
-                ],
-                [
-                  3.99682689325e-05,
-                  2.40294236231e-05,
-                  3.54411221242e-05
-                ],
-                [
-                  6.17804896441e-05,
-                  3.54411221242e-05,
-                  6.05985478649e-05
-                ]
-              ],
-              "group_source": [
-                0.000154453018708,
-                8.19660432295e-07,
-                4.26588056996e-09
-              ],
-              "total_source": 0.000155276945021
-            }
-          },
-          "Cu_front": {
-            "Cu": {
-              "directional_tensor": [
-                [
-                  7.02780964289e-05,
-                  4.01448586328e-05,
-                  6.20562845126e-05
-                ],
-                [
-                  4.01448586328e-05,
-                  2.34568469333e-05,
-                  3.55993936249e-05
-                ],
-                [
-                  6.20562845126e-05,
-                  3.55993936249e-05,
-                  6.08323368402e-05
-                ]
-              ],
-              "group_source": [
-                0.000154159306815,
-                4.04992058837e-07,
-                2.98132812907e-09
-              ],
-              "total_source": 0.000154567280202
-            }
-          },
-          "Hastelloy_C276": {
-            "Co": {
-              "directional_tensor": [
-                [
-                  1.90316580575e-06,
-                  1.08162151203e-06,
-                  1.671626339e-06
-                ],
-                [
-                  1.08162151203e-06,
-                  6.41601880133e-07,
-                  9.58949301399e-07
-                ],
-                [
-                  1.671626339e-06,
-                  9.58949301399e-07,
-                  1.63919264192e-06
-                ]
-              ],
-              "group_source": [
-                4.16700027627e-06,
-                1.6875215142e-08,
-                8.48363948795e-11
-              ],
-              "total_source": 4.18396032781e-06
-            },
-            "Cr": {
-              "directional_tensor": [
-                [
-                  3.0450652892e-05,
-                  1.73059441924e-05,
-                  2.6746021424e-05
-                ],
-                [
-                  1.73059441924e-05,
-                  1.02656300821e-05,
-                  1.53431888224e-05
-                ],
-                [
-                  2.6746021424e-05,
-                  1.53431888224e-05,
-                  2.62270822708e-05
-                ]
-              ],
-              "group_source": [
-                6.66720044204e-05,
-                2.70003442273e-07,
-                1.35738231807e-09
-              ],
-              "total_source": 6.6943365245e-05
-            },
-            "Fe": {
-              "directional_tensor": [
-                [
-                  1.14189948345e-05,
-                  6.48972907216e-06,
-                  1.0029758034e-05
-                ],
-                [
-                  6.48972907216e-06,
-                  3.8496112808e-06,
-                  5.75369580839e-06
-                ],
-                [
-                  1.0029758034e-05,
-                  5.75369580839e-06,
-                  9.83515585154e-06
-                ]
-              ],
-              "group_source": [
-                2.50020016576e-05,
-                1.01251290852e-07,
-                5.09018369277e-10
-              ],
-              "total_source": 2.51037619669e-05
-            },
-            "Mo": {
-              "directional_tensor": [
-                [
-                  3.0450652892e-05,
-                  1.73059441924e-05,
-                  2.6746021424e-05
-                ],
-                [
-                  1.73059441924e-05,
-                  1.02656300821e-05,
-                  1.53431888224e-05
-                ],
-                [
-                  2.6746021424e-05,
-                  1.53431888224e-05,
-                  2.62270822708e-05
-                ]
-              ],
-              "group_source": [
-                6.66720044204e-05,
-                2.70003442273e-07,
-                1.35738231807e-09
-              ],
-              "total_source": 6.6943365245e-05
-            },
-            "Ni": {
-              "directional_tensor": [
-                [
-                  0.000108480450928,
-                  6.16524261855e-05,
-                  9.5282701323e-05
-                ],
-                [
-                  6.16524261855e-05,
-                  3.65713071676e-05,
-                  5.46601101797e-05
-                ],
-                [
-                  9.5282701323e-05,
-                  5.46601101797e-05,
-                  9.34339805896e-05
-                ]
-              ],
-              "group_source": [
-                0.000237519015748,
-                9.61887263097e-07,
-                4.83567450813e-09
-              ],
-              "total_source": 0.000238485738685
-            },
-            "W": {
-              "directional_tensor": [
-                [
-                  7.61266322301e-06,
-                  4.32648604811e-06,
-                  6.686505356e-06
-                ],
-                [
-                  4.32648604811e-06,
-                  2.56640752053e-06,
-                  3.8357972056e-06
-                ],
-                [
-                  6.686505356e-06,
-                  3.8357972056e-06,
-                  6.55677056769e-06
-                ]
-              ],
-              "group_source": [
-                1.66680011051e-05,
-                6.75008605682e-08,
-                3.39345579518e-10
-              ],
-              "total_source": 1.67358413112e-05
-            }
-          },
-          "REBCO": {
-            "Ba": {
-              "directional_tensor": [
-                [
-                  6.38222995166e-07,
-                  3.6414976254e-07,
-                  5.62998149781e-07
-                ],
-                [
-                  3.6414976254e-07,
-                  2.13506749724e-07,
-                  3.22971228975e-07
-                ],
-                [
-                  5.62998149781e-07,
-                  3.22971228975e-07,
-                  5.51860101373e-07
-                ]
-              ],
-              "group_source": [
-                1.39953268709e-06,
-                4.03268998571e-09,
-                2.44691893608e-11
-              ],
-              "total_source": 1.40358984626e-06
-            },
-            "Cu": {
-              "directional_tensor": [
-                [
-                  9.57334492749e-07,
-                  5.46224643809e-07,
-                  8.44497224672e-07
-                ],
-                [
-                  5.46224643809e-07,
-                  3.20260124586e-07,
-                  4.84456843462e-07
-                ],
-                [
-                  8.44497224672e-07,
-                  4.84456843462e-07,
-                  8.2779015206e-07
-                ]
-              ],
-              "group_source": [
-                2.09929903063e-06,
-                6.04903497857e-09,
-                3.67037840412e-11
-              ],
-              "total_source": 2.1053847694e-06
-            },
-            "O": {
-              "directional_tensor": [
-                [
-                  2.23378048308e-06,
-                  1.27452416889e-06,
-                  1.97049352423e-06
-                ],
-                [
-                  1.27452416889e-06,
-                  7.47273624034e-07,
-                  1.13039930141e-06
-                ],
-                [
-                  1.97049352423e-06,
-                  1.13039930141e-06,
-                  1.93151035481e-06
-                ]
-              ],
-              "group_source": [
-                4.89836440481e-06,
-                1.411441495e-08,
-                8.56421627628e-11
-              ],
-              "total_source": 4.91256446192e-06
-            },
-            "Y": {
-              "directional_tensor": [
-                [
-                  3.19111497583e-07,
-                  1.8207488127e-07,
-                  2.81499074891e-07
-                ],
-                [
-                  1.8207488127e-07,
-                  1.06753374862e-07,
-                  1.61485614487e-07
-                ],
-                [
-                  2.81499074891e-07,
-                  1.61485614487e-07,
-                  2.75930050687e-07
-                ]
-              ],
-              "group_source": [
-                6.99766343544e-07,
-                2.01634499286e-09,
-                1.22345946804e-11
-              ],
-              "total_source": 7.01794923132e-07
-            }
-          },
-          "oxide_buffer": {
-            "Mg": {
-              "directional_tensor": [
-                [
-                  2.53132973321e-07,
-                  1.44420232299e-07,
-                  2.23284449214e-07
-                ],
-                [
-                  1.44420232299e-07,
-                  8.46922112101e-08,
-                  1.28090035766e-07
-                ],
-                [
-                  2.23284449214e-07,
-                  1.28090035766e-07,
-                  2.18866588025e-07
-                ]
-              ],
-              "group_source": [
-                5.55074440514e-07,
-                1.60766754345e-09,
-                9.66449880669e-12
-              ],
-              "total_source": 5.56691772556e-07
-            },
-            "O": {
-              "directional_tensor": [
-                [
-                  2.53132973321e-07,
-                  1.44420232299e-07,
-                  2.23284449214e-07
-                ],
-                [
-                  1.44420232299e-07,
-                  8.46922112101e-08,
-                  1.28090035766e-07
-                ],
-                [
-                  2.23284449214e-07,
-                  1.28090035766e-07,
-                  2.18866588025e-07
-                ]
-              ],
-              "group_source": [
-                5.55074440514e-07,
-                1.60766754345e-09,
-                9.66449880669e-12
-              ],
-              "total_source": 5.56691772556e-07
-            }
-          }
         }
       },
       "id": "oblique",
@@ -7710,11 +7161,842 @@
         }
       },
       "neutral_operator_identical_between_methods": true,
+      "nominal_reference": {
+        "charged": {
+          "escape_by_group": [
+            0.000568158153799,
+            1.55116586898e-05,
+            7.56906294602e-07
+          ],
+          "matrix_nonzeros": 136584,
+          "maximum_balance_residual": 1.11045349335e-14,
+          "minimum_flux": 6.12851457182e-09,
+          "operator": "BFP angular diffusion using the declared generator only",
+          "total_escape": 0.000584426718783
+        },
+        "charged_interface_crossing": {
+          "Ag_cap->REBCO": 0.000215225493967,
+          "Cu_front->Ag_cap": 0.000207683730724,
+          "Hastelloy_C276->Cu_back": 0.00042249615596,
+          "REBCO->oxide_buffer": 0.000220616353877,
+          "oxide_buffer->Hastelloy_C276": 0.000221272124806
+        },
+        "layers": {
+          "Ag_cap": {
+            "charged_current_integral": [
+              3.34556113759e-08,
+              1.92194739868e-08,
+              3.19538811609e-09
+            ],
+            "charged_heating_proxy": 8.95572629452e-08,
+            "charged_q_normal": -1.03034232878e-08,
+            "charged_scalar_flux_integral": 1.01049564156e-07,
+            "charged_traceless_second_moment": [
+              [
+                1.19050627802e-08,
+                1.16006534347e-08,
+                8.69680743679e-09
+              ],
+              [
+                1.16006534347e-08,
+                -1.60163949236e-09,
+                4.98824973047e-09
+              ],
+              [
+                8.69680743679e-09,
+                4.98824973047e-09,
+                -1.03034232878e-08
+              ]
+            ],
+            "material": "Ag",
+            "neutral_current_integral": [
+              0.000134792513376,
+              7.73595674353e-05,
+              0.000122758780507
+            ],
+            "neutral_heating_proxy": 6.63945238441e-05,
+            "neutral_q_normal": 1.20946474809e-05,
+            "neutral_scalar_flux_integral": 0.000200987035899,
+            "neutral_traceless_second_moment": [
+              [
+                2.44024156222e-05,
+                5.22149670616e-05,
+                8.07340975705e-05
+              ],
+              [
+                5.22149670616e-05,
+                -3.6497063103e-05,
+                4.63141602642e-05
+              ],
+              [
+                8.07340975705e-05,
+                4.63141602642e-05,
+                1.20946474809e-05
+              ]
+            ],
+            "thickness_um": 2.0
+          },
+          "Cu_back": {
+            "charged_current_integral": [
+              8.84810258616e-07,
+              5.07945141138e-07,
+              8.3825737206e-07
+            ],
+            "charged_heating_proxy": 2.07726539196e-06,
+            "charged_q_normal": -8.46798843469e-08,
+            "charged_scalar_flux_integral": 1.91533171796e-06,
+            "charged_traceless_second_moment": [
+              [
+                2.01514211424e-07,
+                2.73098997221e-07,
+                3.96528634287e-07
+              ],
+              [
+                2.73098997221e-07,
+                -1.16834327077e-07,
+                2.27529084453e-07
+              ],
+              [
+                3.96528634287e-07,
+                2.27529084453e-07,
+                -8.46798843469e-08
+              ]
+            ],
+            "material": "Cu",
+            "neutral_current_integral": [
+              0.00134925890358,
+              0.000774332600301,
+              0.00122611317422
+            ],
+            "neutral_heating_proxy": 0.000811306019202,
+            "neutral_q_normal": 0.000115474664315,
+            "neutral_scalar_flux_integral": 0.00201535821615,
+            "neutral_traceless_second_moment": [
+              [
+                0.000245151177961,
+                0.000519348200936,
+                0.000803040334444
+              ],
+              [
+                0.000519348200936,
+                -0.000360625842276,
+                0.000460673436423
+              ],
+              [
+                0.000803040334444,
+                0.000460673436423,
+                0.000115474664315
+              ]
+            ],
+            "thickness_um": 20.0
+          },
+          "Cu_front": {
+            "charged_current_integral": [
+              2.29454185879e-07,
+              1.31839635514e-07,
+              -7.8049499394e-08
+            ],
+            "charged_heating_proxy": 8.9701315158e-07,
+            "charged_q_normal": -8.45982678541e-08,
+            "charged_scalar_flux_integral": 8.31479409789e-07,
+            "charged_traceless_second_moment": [
+              [
+                8.75570219831e-08,
+                7.77655754109e-08,
+                4.20624353171e-08
+              ],
+              [
+                7.77655754109e-08,
+                -2.95875412906e-09,
+                2.41121665055e-08
+              ],
+              [
+                4.20624353171e-08,
+                2.41121665055e-08,
+                -8.45982678541e-08
+              ]
+            ],
+            "material": "Cu",
+            "neutral_current_integral": [
+              0.00134786873452,
+              0.00077356758666,
+              0.00122767817536
+            ],
+            "neutral_heating_proxy": 0.000809547676406,
+            "neutral_q_normal": 0.000121606553863,
+            "neutral_scalar_flux_integral": 0.00200938492033,
+            "neutral_traceless_second_moment": [
+              [
+                0.000243929257712,
+                0.000522559201411,
+                0.000807835659613
+              ],
+              [
+                0.000522559201411,
+                -0.000365535811575,
+                0.000463425383874
+              ],
+              [
+                0.000807835659613,
+                0.000463425383874,
+                0.000121606553863
+              ]
+            ],
+            "thickness_um": 20.0
+          },
+          "Hastelloy_C276": {
+            "charged_current_integral": [
+              1.5921441843e-06,
+              9.1427333998e-07,
+              9.98844716627e-07
+            ],
+            "charged_heating_proxy": 4.50360065334e-06,
+            "charged_q_normal": -3.05274937712e-07,
+            "charged_scalar_flux_integral": 3.849493927e-06,
+            "charged_traceless_second_moment": [
+              [
+                4.59636740817e-07,
+                5.26988878368e-07,
+                5.90762143015e-07
+              ],
+              [
+                5.26988878368e-07,
+                -1.54361803105e-07,
+                3.38953758741e-07
+              ],
+              [
+                5.90762143015e-07,
+                3.38953758741e-07,
+                -3.05274937712e-07
+              ]
+            ],
+            "material": "Hastelloy_C276",
+            "neutral_current_integral": [
+              0.00337204530786,
+              0.00193523797028,
+              0.0030671337118
+            ],
+            "neutral_heating_proxy": 0.00218855563493,
+            "neutral_q_normal": 0.000295783637532,
+            "neutral_scalar_flux_integral": 0.0050319753716,
+            "neutral_traceless_second_moment": [
+              [
+                0.000611672909261,
+                0.00130244671167,
+                0.00201332180471
+              ],
+              [
+                0.00130244671167,
+                -0.000907456546794,
+                0.0011549666929
+              ],
+              [
+                0.00201332180471,
+                0.0011549666929,
+                0.000295783637532
+              ]
+            ],
+            "thickness_um": 50.0
+          },
+          "REBCO": {
+            "charged_current_integral": [
+              1.74014065643e-08,
+              9.99650346104e-09,
+              2.32568389126e-09
+            ],
+            "charged_heating_proxy": 6.58679517186e-08,
+            "charged_q_normal": -5.25707103483e-09,
+            "charged_scalar_flux_integral": 5.16371872773e-08,
+            "charged_traceless_second_moment": [
+              [
+                6.14474935067e-09,
+                6.03981444684e-09,
+                4.640273894e-09
+              ],
+              [
+                6.03981444684e-09,
+                -8.87678315836e-10,
+                2.66162462155e-09
+              ],
+              [
+                4.640273894e-09,
+                2.66162462155e-09,
+                -5.25707103483e-09
+              ]
+            ],
+            "material": "REBCO",
+            "neutral_current_integral": [
+              6.73965584266e-05,
+              3.86799289588e-05,
+              6.13787803299e-05
+            ],
+            "neutral_heating_proxy": 4.77727298486e-05,
+            "neutral_q_normal": 6.04301616882e-06,
+            "neutral_scalar_flux_integral": 0.00010049663569,
+            "neutral_traceless_second_moment": [
+              [
+                1.22017991304e-05,
+                2.61047630452e-05,
+                4.03637904863e-05
+              ],
+              [
+                2.61047630452e-05,
+                -1.82448152993e-05,
+                2.31552109392e-05
+              ],
+              [
+                4.03637904863e-05,
+                2.31552109392e-05,
+                6.04301616882e-06
+              ]
+            ],
+            "thickness_um": 1.0
+          },
+          "oxide_buffer": {
+            "charged_current_integral": [
+              3.54441653621e-09,
+              2.03612502952e-09,
+              5.3467433754e-10
+            ],
+            "charged_heating_proxy": 8.12150139188e-09,
+            "charged_q_normal": -1.0611518524e-09,
+            "charged_scalar_flux_integral": 1.043371528e-08,
+            "charged_traceless_second_moment": [
+              [
+                1.2470541076e-09,
+                1.23067785039e-09,
+                9.56051282192e-10
+              ],
+              [
+                1.23067785039e-09,
+                -1.85902255201e-10,
+                5.48391704425e-10
+              ],
+              [
+                9.56051282192e-10,
+                5.48391704425e-10,
+                -1.0611518524e-09
+              ]
+            ],
+            "material": "oxide_buffer",
+            "neutral_current_integral": [
+              1.34793529944e-05,
+              7.73600685307e-06,
+              1.22756916748e-05
+            ],
+            "neutral_heating_proxy": 5.82995929151e-06,
+            "neutral_q_normal": 1.20818523142e-06,
+            "neutral_scalar_flux_integral": 2.00996462265e-05,
+            "neutral_traceless_second_moment": [
+              [
+                2.44042204504e-06,
+                5.22069699969e-06,
+                8.07244218089e-06
+              ],
+              [
+                5.22069699969e-06,
+                -3.64860727647e-06,
+                4.63086094709e-06
+              ],
+              [
+                8.07244218089e-06,
+                4.63086094709e-06,
+                1.20818523142e-06
+              ]
+            ],
+            "thickness_um": 0.2
+          }
+        },
+        "neutral": {
+          "matrix_nonzeros": 136584,
+          "maximum_balance_residual": 7.03964768622e-15,
+          "minimum_flux": 4.53759992971e-13,
+          "operator": "full positive reversible Boltzmann kernels; never replaced by AFP",
+          "total_escape": 0.614091207538
+        },
+        "responses": {
+          "REBCO_charged_heating": 6.58679517186e-08,
+          "REBCO_charged_q_normal": -5.25707103483e-09,
+          "REBCO_charged_scalar": 5.16371872773e-08,
+          "charged_escape": 0.000584426718783,
+          "substrate_total_PKA_source": 0.000418396032781,
+          "total_heating": 0.00393704796944
+        },
+        "species_resolved_pka": {
+          "Ag_cap": {
+            "Ag": {
+              "directional_tensor": [
+                [
+                  5.76531751981e-06,
+                  3.28994913306e-06,
+                  5.08636481572e-06
+                ],
+                [
+                  3.28994913306e-06,
+                  1.9281800528e-06,
+                  2.91785946688e-06
+                ],
+                [
+                  5.08636481572e-06,
+                  2.91785946688e-06,
+                  4.9857724728e-06
+                ]
+              ],
+              "group_source": [
+                1.26429927331e-05,
+                3.60541118157e-08,
+                2.23200519947e-10
+              ],
+              "total_source": 1.26792700454e-05
+            }
+          },
+          "Cu_back": {
+            "Cu": {
+              "directional_tensor": [
+                [
+                  7.06489735327e-05,
+                  3.99682689325e-05,
+                  6.17804896441e-05
+                ],
+                [
+                  3.99682689325e-05,
+                  2.40294236231e-05,
+                  3.54411221242e-05
+                ],
+                [
+                  6.17804896441e-05,
+                  3.54411221242e-05,
+                  6.05985478649e-05
+                ]
+              ],
+              "group_source": [
+                0.000154453018708,
+                8.19660432295e-07,
+                4.26588056996e-09
+              ],
+              "total_source": 0.000155276945021
+            }
+          },
+          "Cu_front": {
+            "Cu": {
+              "directional_tensor": [
+                [
+                  7.02780964289e-05,
+                  4.01448586328e-05,
+                  6.20562845126e-05
+                ],
+                [
+                  4.01448586328e-05,
+                  2.34568469333e-05,
+                  3.55993936249e-05
+                ],
+                [
+                  6.20562845126e-05,
+                  3.55993936249e-05,
+                  6.08323368402e-05
+                ]
+              ],
+              "group_source": [
+                0.000154159306815,
+                4.04992058837e-07,
+                2.98132812907e-09
+              ],
+              "total_source": 0.000154567280202
+            }
+          },
+          "Hastelloy_C276": {
+            "Co": {
+              "directional_tensor": [
+                [
+                  1.90316580575e-06,
+                  1.08162151203e-06,
+                  1.671626339e-06
+                ],
+                [
+                  1.08162151203e-06,
+                  6.41601880133e-07,
+                  9.58949301399e-07
+                ],
+                [
+                  1.671626339e-06,
+                  9.58949301399e-07,
+                  1.63919264192e-06
+                ]
+              ],
+              "group_source": [
+                4.16700027627e-06,
+                1.6875215142e-08,
+                8.48363948795e-11
+              ],
+              "total_source": 4.18396032781e-06
+            },
+            "Cr": {
+              "directional_tensor": [
+                [
+                  3.0450652892e-05,
+                  1.73059441924e-05,
+                  2.6746021424e-05
+                ],
+                [
+                  1.73059441924e-05,
+                  1.02656300821e-05,
+                  1.53431888224e-05
+                ],
+                [
+                  2.6746021424e-05,
+                  1.53431888224e-05,
+                  2.62270822708e-05
+                ]
+              ],
+              "group_source": [
+                6.66720044204e-05,
+                2.70003442273e-07,
+                1.35738231807e-09
+              ],
+              "total_source": 6.6943365245e-05
+            },
+            "Fe": {
+              "directional_tensor": [
+                [
+                  1.14189948345e-05,
+                  6.48972907216e-06,
+                  1.0029758034e-05
+                ],
+                [
+                  6.48972907216e-06,
+                  3.8496112808e-06,
+                  5.75369580839e-06
+                ],
+                [
+                  1.0029758034e-05,
+                  5.75369580839e-06,
+                  9.83515585154e-06
+                ]
+              ],
+              "group_source": [
+                2.50020016576e-05,
+                1.01251290852e-07,
+                5.09018369277e-10
+              ],
+              "total_source": 2.51037619669e-05
+            },
+            "Mo": {
+              "directional_tensor": [
+                [
+                  3.0450652892e-05,
+                  1.73059441924e-05,
+                  2.6746021424e-05
+                ],
+                [
+                  1.73059441924e-05,
+                  1.02656300821e-05,
+                  1.53431888224e-05
+                ],
+                [
+                  2.6746021424e-05,
+                  1.53431888224e-05,
+                  2.62270822708e-05
+                ]
+              ],
+              "group_source": [
+                6.66720044204e-05,
+                2.70003442273e-07,
+                1.35738231807e-09
+              ],
+              "total_source": 6.6943365245e-05
+            },
+            "Ni": {
+              "directional_tensor": [
+                [
+                  0.000108480450928,
+                  6.16524261855e-05,
+                  9.5282701323e-05
+                ],
+                [
+                  6.16524261855e-05,
+                  3.65713071676e-05,
+                  5.46601101797e-05
+                ],
+                [
+                  9.5282701323e-05,
+                  5.46601101797e-05,
+                  9.34339805896e-05
+                ]
+              ],
+              "group_source": [
+                0.000237519015748,
+                9.61887263097e-07,
+                4.83567450813e-09
+              ],
+              "total_source": 0.000238485738685
+            },
+            "W": {
+              "directional_tensor": [
+                [
+                  7.61266322301e-06,
+                  4.32648604811e-06,
+                  6.686505356e-06
+                ],
+                [
+                  4.32648604811e-06,
+                  2.56640752053e-06,
+                  3.8357972056e-06
+                ],
+                [
+                  6.686505356e-06,
+                  3.8357972056e-06,
+                  6.55677056769e-06
+                ]
+              ],
+              "group_source": [
+                1.66680011051e-05,
+                6.75008605682e-08,
+                3.39345579518e-10
+              ],
+              "total_source": 1.67358413112e-05
+            }
+          },
+          "REBCO": {
+            "Ba": {
+              "directional_tensor": [
+                [
+                  6.38222995166e-07,
+                  3.6414976254e-07,
+                  5.62998149781e-07
+                ],
+                [
+                  3.6414976254e-07,
+                  2.13506749724e-07,
+                  3.22971228975e-07
+                ],
+                [
+                  5.62998149781e-07,
+                  3.22971228975e-07,
+                  5.51860101373e-07
+                ]
+              ],
+              "group_source": [
+                1.39953268709e-06,
+                4.03268998571e-09,
+                2.44691893608e-11
+              ],
+              "total_source": 1.40358984626e-06
+            },
+            "Cu": {
+              "directional_tensor": [
+                [
+                  9.57334492749e-07,
+                  5.46224643809e-07,
+                  8.44497224672e-07
+                ],
+                [
+                  5.46224643809e-07,
+                  3.20260124586e-07,
+                  4.84456843462e-07
+                ],
+                [
+                  8.44497224672e-07,
+                  4.84456843462e-07,
+                  8.2779015206e-07
+                ]
+              ],
+              "group_source": [
+                2.09929903063e-06,
+                6.04903497857e-09,
+                3.67037840412e-11
+              ],
+              "total_source": 2.1053847694e-06
+            },
+            "O": {
+              "directional_tensor": [
+                [
+                  2.23378048308e-06,
+                  1.27452416889e-06,
+                  1.97049352423e-06
+                ],
+                [
+                  1.27452416889e-06,
+                  7.47273624034e-07,
+                  1.13039930141e-06
+                ],
+                [
+                  1.97049352423e-06,
+                  1.13039930141e-06,
+                  1.93151035481e-06
+                ]
+              ],
+              "group_source": [
+                4.89836440481e-06,
+                1.411441495e-08,
+                8.56421627628e-11
+              ],
+              "total_source": 4.91256446192e-06
+            },
+            "Y": {
+              "directional_tensor": [
+                [
+                  3.19111497583e-07,
+                  1.8207488127e-07,
+                  2.81499074891e-07
+                ],
+                [
+                  1.8207488127e-07,
+                  1.06753374862e-07,
+                  1.61485614487e-07
+                ],
+                [
+                  2.81499074891e-07,
+                  1.61485614487e-07,
+                  2.75930050687e-07
+                ]
+              ],
+              "group_source": [
+                6.99766343544e-07,
+                2.01634499286e-09,
+                1.22345946804e-11
+              ],
+              "total_source": 7.01794923132e-07
+            }
+          },
+          "oxide_buffer": {
+            "Mg": {
+              "directional_tensor": [
+                [
+                  2.53132973321e-07,
+                  1.44420232299e-07,
+                  2.23284449214e-07
+                ],
+                [
+                  1.44420232299e-07,
+                  8.46922112101e-08,
+                  1.28090035766e-07
+                ],
+                [
+                  2.23284449214e-07,
+                  1.28090035766e-07,
+                  2.18866588025e-07
+                ]
+              ],
+              "group_source": [
+                5.55074440514e-07,
+                1.60766754345e-09,
+                9.66449880669e-12
+              ],
+              "total_source": 5.56691772556e-07
+            },
+            "O": {
+              "directional_tensor": [
+                [
+                  2.53132973321e-07,
+                  1.44420232299e-07,
+                  2.23284449214e-07
+                ],
+                [
+                  1.44420232299e-07,
+                  8.46922112101e-08,
+                  1.28090035766e-07
+                ],
+                [
+                  2.23284449214e-07,
+                  1.28090035766e-07,
+                  2.18866588025e-07
+                ]
+              ],
+              "group_source": [
+                5.55074440514e-07,
+                1.60766754345e-09,
+                9.66449880669e-12
+              ],
+              "total_source": 5.56691772556e-07
+            }
+          }
+        }
+      },
       "polar_degrees": 60.0,
+      "reference_convergence": {
+        "all_responses_converged": false,
+        "relative_span_limit": 0.05,
+        "responses": {
+          "REBCO_charged_heating": {
+            "converged": false,
+            "relative_span": 0.831835526571
+          },
+          "REBCO_charged_q_normal": {
+            "converged": false,
+            "relative_span": 0.939447521486
+          },
+          "REBCO_charged_scalar": {
+            "converged": false,
+            "relative_span": 0.838103462669
+          },
+          "charged_escape": {
+            "converged": false,
+            "relative_span": 0.325983187409
+          },
+          "substrate_total_PKA_source": {
+            "converged": false,
+            "relative_span": 0.3462504948
+          },
+          "total_heating": {
+            "converged": false,
+            "relative_span": 0.31188399991
+          }
+        }
+      },
       "same_nodes_between_methods": true,
       "same_spatial_energy_discretization": true
     },
     {
+      "angular_reference_sweep": {
+        "128": {
+          "n_mu": 8,
+          "n_phi": 16,
+          "responses": {
+            "REBCO_charged_heating": 1.3263916826e-07,
+            "REBCO_charged_q_normal": -2.13677808546e-08,
+            "REBCO_charged_scalar": 1.04160417394e-07,
+            "charged_escape": 0.000546421582883,
+            "substrate_total_PKA_source": 0.000391069709374,
+            "total_heating": 0.00368516398294
+          }
+        },
+        "50": {
+          "n_mu": 5,
+          "n_phi": 10,
+          "responses": {
+            "REBCO_charged_heating": 5.28378404371e-12,
+            "REBCO_charged_q_normal": -1.10892722306e-12,
+            "REBCO_charged_scalar": 4.28451524423e-12,
+            "charged_escape": 1.52519207293e-08,
+            "substrate_total_PKA_source": 1.12051504144e-08,
+            "total_heating": 1.01969279267e-07
+          }
+        },
+        "72": {
+          "n_mu": 6,
+          "n_phi": 12,
+          "responses": {
+            "REBCO_charged_heating": 1.15929762139e-07,
+            "REBCO_charged_q_normal": -1.91254771693e-08,
+            "REBCO_charged_scalar": 9.10749879418e-08,
+            "charged_escape": 0.00056201786847,
+            "substrate_total_PKA_source": 0.000402585998843,
+            "total_heating": 0.00379169422954
+          }
+        },
+        "98": {
+          "n_mu": 7,
+          "n_phi": 14,
+          "responses": {
+            "REBCO_charged_heating": 1.29980154983e-09,
+            "REBCO_charged_q_normal": -1.92864845343e-10,
+            "REBCO_charged_scalar": 1.02249578619e-09,
+            "charged_escape": 6.07483527474e-06,
+            "substrate_total_PKA_source": 4.42734079564e-06,
+            "total_heating": 4.04685905713e-05
+          }
+        }
+      },
       "azimuth_degrees": 23.0,
       "coarse_spatial_reference": {
         "charged": {
@@ -8471,843 +8753,128 @@
         "REBCO_charged_heating": {
           "H2_prediction": "optimized error should be smaller because its sampled H2 defect is smaller",
           "baseline_absolute_error": 3.08771827796e-08,
+          "baseline_response": 8.50525793591e-08,
           "difference_resolved_by_reference": false,
+          "method_absolute_difference": 0.0,
+          "method_relative_difference": 4.04581656917e-15,
           "observed_direction_matches_H2_prediction": false,
           "optimized_absolute_error": 3.08771827796e-08,
           "optimized_improves": false,
+          "optimized_response": 8.50525793591e-08,
           "reference_uncertainty": {
             "angular_component": 1.15924478355e-07,
             "conservative_sum": 1.17561390542e-07,
+            "nominal_reference_converged": false,
             "spatial_component": 1.63691218764e-09
           },
           "requires_higher_shell_or_transport_information": true,
+          "resolved_degradation": false,
           "resolved_improvement": false
         },
         "REBCO_charged_q_normal": {
           "H2_prediction": "optimized error should be smaller because its sampled H2 defect is smaller",
           "baseline_absolute_error": 8.75125541558e-09,
+          "baseline_response": -1.03742217537e-08,
           "difference_resolved_by_reference": false,
+          "method_absolute_difference": 0.0,
+          "method_relative_difference": 1.92956843405e-14,
           "observed_direction_matches_H2_prediction": false,
           "optimized_absolute_error": 8.75125541558e-09,
           "optimized_improves": false,
+          "optimized_response": -1.03742217537e-08,
           "reference_uncertainty": {
             "angular_component": 1.91243682421e-08,
             "conservative_sum": 1.95711195572e-08,
+            "nominal_reference_converged": false,
             "spatial_component": 4.46751315072e-10
           },
           "requires_higher_shell_or_transport_information": true,
+          "resolved_degradation": false,
           "resolved_improvement": false
         },
         "REBCO_charged_scalar": {
           "H2_prediction": "optimized error should be smaller because its sampled H2 defect is smaller",
           "baseline_absolute_error": 2.4458914837e-08,
+          "baseline_response": 6.66160731048e-08,
           "difference_resolved_by_reference": false,
+          "method_absolute_difference": 0.0,
+          "method_relative_difference": 4.37083067266e-15,
           "observed_direction_matches_H2_prediction": false,
           "optimized_absolute_error": 2.4458914837e-08,
           "optimized_improves": false,
+          "optimized_response": 6.66160731048e-08,
           "reference_uncertainty": {
             "angular_component": 9.10707034266e-08,
             "conservative_sum": 9.23042130903e-08,
+            "nominal_reference_converged": false,
             "spatial_component": 1.2335096637e-09
           },
           "requires_higher_shell_or_transport_information": true,
+          "resolved_degradation": false,
           "resolved_improvement": false
         },
         "charged_escape": {
           "H2_prediction": "optimized error should be smaller because its sampled H2 defect is smaller",
           "baseline_absolute_error": 9.62200491448e-06,
+          "baseline_response": 0.000571639873385,
           "difference_resolved_by_reference": false,
+          "method_absolute_difference": 0.0,
+          "method_relative_difference": 5.68995738208e-16,
           "observed_direction_matches_H2_prediction": false,
           "optimized_absolute_error": 9.62200491448e-06,
           "optimized_improves": false,
+          "optimized_response": 0.000571639873385,
           "reference_uncertainty": {
             "angular_component": 0.000562002616549,
             "conservative_sum": 0.000562771477593,
+            "nominal_reference_converged": false,
             "spatial_component": 7.68861043174e-07
           },
           "requires_higher_shell_or_transport_information": true,
+          "resolved_degradation": false,
           "resolved_improvement": false
         },
         "substrate_total_PKA_source": {
           "H2_prediction": "optimized error should be smaller because its sampled H2 defect is smaller",
           "baseline_absolute_error": 6.78829511994e-06,
+          "baseline_response": 0.000409374293963,
           "difference_resolved_by_reference": false,
+          "method_absolute_difference": 0.0,
+          "method_relative_difference": 0.0,
           "observed_direction_matches_H2_prediction": false,
           "optimized_absolute_error": 6.78829511994e-06,
           "optimized_improves": false,
+          "optimized_response": 0.000409374293963,
           "reference_uncertainty": {
             "angular_component": 0.000402574793693,
             "conservative_sum": 0.000403049153516,
+            "nominal_reference_converged": false,
             "spatial_component": 4.74359822695e-07
           },
           "requires_higher_shell_or_transport_information": true,
+          "resolved_degradation": false,
           "resolved_improvement": false
         },
         "total_heating": {
           "H2_prediction": "optimized error should be smaller because its sampled H2 defect is smaller",
           "baseline_absolute_error": 6.16765905337e-05,
+          "baseline_response": 0.00385337082008,
           "difference_resolved_by_reference": false,
+          "method_absolute_difference": 0.0,
+          "method_relative_difference": 0.0,
           "observed_direction_matches_H2_prediction": false,
           "optimized_absolute_error": 6.16765905337e-05,
           "optimized_improves": false,
+          "optimized_response": 0.00385337082008,
           "reference_uncertainty": {
             "angular_component": 0.00379159226027,
             "conservative_sum": 0.00379666567867,
+            "nominal_reference_converged": false,
             "spatial_component": 5.07341840823e-06
           },
           "requires_higher_shell_or_transport_information": true,
+          "resolved_degradation": false,
           "resolved_improvement": false
-        }
-      },
-      "fine_reference": {
-        "charged": {
-          "escape_by_group": [
-            0.000537649908361,
-            2.29908807839e-05,
-            1.37707932494e-06
-          ],
-          "matrix_nonzeros": 136584,
-          "maximum_balance_residual": 1.59346972728e-14,
-          "minimum_flux": 1.13600379684e-08,
-          "operator": "BFP angular diffusion using the declared generator only",
-          "total_escape": 0.00056201786847
-        },
-        "charged_interface_crossing": {
-          "Ag_cap->REBCO": 0.000277049769589,
-          "Cu_front->Ag_cap": 0.00027045845429,
-          "Hastelloy_C276->Cu_back": 0.000385036434202,
-          "REBCO->oxide_buffer": 0.000281682687364,
-          "oxide_buffer->Hastelloy_C276": 0.000282241788108
-        },
-        "layers": {
-          "Ag_cap": {
-            "charged_current_integral": [
-              9.68541282398e-08,
-              5.58881424622e-08,
-              -9.94286783912e-09
-            ],
-            "charged_heating_proxy": 1.57932039148e-07,
-            "charged_q_normal": -3.72143101038e-08,
-            "charged_scalar_flux_integral": 1.78566591365e-07,
-            "charged_traceless_second_moment": [
-              [
-                4.04584496659e-08,
-                3.78116772469e-08,
-                2.0379105112e-09
-              ],
-              [
-                3.78116772469e-08,
-                -3.24413956216e-09,
-                1.17594402056e-09
-              ],
-              [
-                2.0379105112e-09,
-                1.17594402056e-09,
-                -3.72143101038e-08
-              ]
-            ],
-            "material": "Ag",
-            "neutral_current_integral": [
-              0.000167318581925,
-              9.65485407086e-05,
-              4.59356290183e-05
-            ],
-            "neutral_heating_proxy": 6.58835941872e-05,
-            "neutral_q_normal": -5.498021347e-05,
-            "neutral_scalar_flux_integral": 0.000199499598469,
-            "neutral_traceless_second_moment": [
-              [
-                7.41969734687e-05,
-                8.08219833806e-05,
-                3.86009182084e-05
-              ],
-              [
-                8.08219833806e-05,
-                -1.92167599988e-05,
-                2.22740491827e-05
-              ],
-              [
-                3.86009182084e-05,
-                2.22740491827e-05,
-                -5.498021347e-05
-              ]
-            ],
-            "thickness_um": 2.0
-          },
-          "Cu_back": {
-            "charged_current_integral": [
-              1.4801060363e-06,
-              8.54071772873e-07,
-              6.45346844804e-07
-            ],
-            "charged_heating_proxy": 2.67507815463e-06,
-            "charged_q_normal": -4.90785158539e-07,
-            "charged_scalar_flux_integral": 2.47623176741e-06,
-            "charged_traceless_second_moment": [
-              [
-                5.68414763095e-07,
-                5.58960499783e-07,
-                3.48433854901e-07
-              ],
-              [
-                5.58960499783e-07,
-                -7.76296045563e-08,
-                2.01058243723e-07
-              ],
-              [
-                3.48433854901e-07,
-                2.01058243723e-07,
-                -4.90785158539e-07
-              ]
-            ],
-            "material": "Cu",
-            "neutral_current_integral": [
-              0.00155370132307,
-              0.000896538768817,
-              0.000447067531235
-            ],
-            "neutral_heating_proxy": 0.000747990318666,
-            "neutral_q_normal": -0.000508622320336,
-            "neutral_scalar_flux_integral": 0.00186033659545,
-            "neutral_traceless_second_moment": [
-              [
-                0.0006843522364,
-                0.000744146956255,
-                0.000372091895873
-              ],
-              [
-                0.000744146956255,
-                -0.000175729916063,
-                0.000214709741991
-              ],
-              [
-                0.000372091895873,
-                0.000214709741991,
-                -0.000508622320336
-              ]
-            ],
-            "thickness_um": 20.0
-          },
-          "Cu_front": {
-            "charged_current_integral": [
-              7.330153162e-07,
-              4.22974891863e-07,
-              -2.07683865516e-07
-            ],
-            "charged_heating_proxy": 1.58407117673e-06,
-            "charged_q_normal": -2.80720364137e-07,
-            "charged_scalar_flux_integral": 1.47110833505e-06,
-            "charged_traceless_second_moment": [
-              [
-                3.00130237764e-07,
-                2.76467545123e-07,
-                -2.97183871945e-08
-              ],
-              [
-                2.76467545123e-07,
-                -1.94098736273e-08,
-                -1.71485251841e-08
-              ],
-              [
-                -2.97183871945e-08,
-                -1.71485251841e-08,
-                -2.80720364137e-07
-              ]
-            ],
-            "material": "Cu",
-            "neutral_current_integral": [
-              0.00169120442314,
-              0.000975882757402,
-              0.000460554328871
-            ],
-            "neutral_heating_proxy": 0.000811886422643,
-            "neutral_q_normal": -0.000555989496709,
-            "neutral_scalar_flux_integral": 0.00201554968794,
-            "neutral_traceless_second_moment": [
-              [
-                0.000750561387841,
-                0.000817733574392,
-                0.000387540329264
-              ],
-              [
-                0.000817733574392,
-                -0.000194571891132,
-                0.000223624016084
-              ],
-              [
-                0.000387540329264,
-                0.000223624016084,
-                -0.000555989496709
-              ]
-            ],
-            "thickness_um": 20.0
-          },
-          "Hastelloy_C276": {
-            "charged_current_integral": [
-              3.47478507165e-06,
-              2.00506975427e-06,
-              6.08453590714e-07
-            ],
-            "charged_heating_proxy": 6.96434731382e-06,
-            "charged_q_normal": -1.27472591251e-06,
-            "charged_scalar_flux_integral": 5.97290695255e-06,
-            "charged_traceless_second_moment": [
-              [
-                1.41664931833e-06,
-                1.34848414825e-06,
-                4.46472710814e-07
-              ],
-              [
-                1.34848414825e-06,
-                -1.41923405826e-07,
-                2.57630014545e-07
-              ],
-              [
-                4.46472710814e-07,
-                2.57630014545e-07,
-                -1.27472591251e-06
-              ]
-            ],
-            "material": "Hastelloy_C276",
-            "neutral_current_integral": [
-              0.00404700422997,
-              0.00233525976702,
-              0.00113336902215
-            ],
-            "neutral_heating_proxy": 0.00210130872252,
-            "neutral_q_normal": -0.0013276671353,
-            "neutral_scalar_flux_integral": 0.00483483049591,
-            "neutral_traceless_second_moment": [
-              [
-                0.00178912157837,
-                0.00194720852117,
-                0.000948245976076
-              ],
-              [
-                0.00194720852117,
-                -0.000461454443076,
-                0.000547170339171
-              ],
-              [
-                0.000948245976076,
-                0.000547170339171,
-                -0.0013276671353
-              ]
-            ],
-            "thickness_um": 50.0
-          },
-          "REBCO": {
-            "charged_current_integral": [
-              4.97814147077e-08,
-              2.87255778119e-08,
-              -4.24794708756e-09
-            ],
-            "charged_heating_proxy": 1.15929762139e-07,
-            "charged_q_normal": -1.91254771693e-08,
-            "charged_scalar_flux_integral": 9.10749879418e-08,
-            "charged_traceless_second_moment": [
-              [
-                2.08205903057e-08,
-                1.94806881372e-08,
-                1.34923872819e-09
-              ],
-              [
-                1.94806881372e-08,
-                -1.69511313639e-09,
-                7.78556863029e-10
-              ],
-              [
-                1.34923872819e-09,
-                7.78556863029e-10,
-                -1.91254771693e-08
-              ]
-            ],
-            "material": "REBCO",
-            "neutral_current_integral": [
-              8.3543387657e-05,
-              4.82073901854e-05,
-              2.29603094532e-05
-            ],
-            "neutral_heating_proxy": 4.73401147528e-05,
-            "neutral_q_normal": -2.74502669324e-05,
-            "neutral_scalar_flux_integral": 9.96177013264e-05,
-            "neutral_traceless_second_moment": [
-              [
-                3.7043156248e-05,
-                4.03497168946e-05,
-                1.92907424161e-05
-              ],
-              [
-                4.03497168946e-05,
-                -9.5928893156e-06,
-                1.11314177302e-05
-              ],
-              [
-                1.92907424161e-05,
-                1.11314177302e-05,
-                -2.74502669324e-05
-              ]
-            ],
-            "thickness_um": 1.0
-          },
-          "oxide_buffer": {
-            "charged_current_integral": [
-              1.00829494589e-08,
-              5.81820647235e-09,
-              -7.80344618657e-10
-            ],
-            "charged_heating_proxy": 1.42787195311e-08,
-            "charged_q_normal": -3.87329440309e-09,
-            "charged_scalar_flux_integral": 1.83830359677e-08,
-            "charged_traceless_second_moment": [
-              [
-                4.2191975832e-09,
-                3.94974576361e-09,
-                3.01654766017e-10
-              ],
-              [
-                3.94974576361e-09,
-                -3.45903180115e-10,
-                1.74065110526e-10
-              ],
-              [
-                3.01654766017e-10,
-                1.74065110526e-10,
-                -3.87329440309e-09
-              ]
-            ],
-            "material": "oxide_buffer",
-            "neutral_current_integral": [
-              1.66977382494e-05,
-              9.63516569743e-06,
-              4.59133801994e-06
-            ],
-            "neutral_heating_proxy": 5.77341961419e-06,
-            "neutral_q_normal": -5.48629147155e-06,
-            "neutral_scalar_flux_integral": 1.99110887191e-05,
-            "neutral_traceless_second_moment": [
-              [
-                7.40340159335e-06,
-                8.06414876035e-06,
-                3.85721551004e-06
-              ],
-              [
-                8.06414876035e-06,
-                -1.9171101218e-06,
-                2.22574518863e-06
-              ],
-              [
-                3.85721551004e-06,
-                2.22574518863e-06,
-                -5.48629147155e-06
-              ]
-            ],
-            "thickness_um": 0.2
-          }
-        },
-        "neutral": {
-          "matrix_nonzeros": 136584,
-          "maximum_balance_residual": 1.47122738948e-14,
-          "minimum_flux": 2.61103900505e-13,
-          "operator": "full positive reversible Boltzmann kernels; never replaced by AFP",
-          "total_escape": 0.236693059531
-        },
-        "responses": {
-          "REBCO_charged_heating": 1.15929762139e-07,
-          "REBCO_charged_q_normal": -1.91254771693e-08,
-          "REBCO_charged_scalar": 9.10749879418e-08,
-          "charged_escape": 0.00056201786847,
-          "substrate_total_PKA_source": 0.000402585998843,
-          "total_heating": 0.00379169422954
-        },
-        "species_resolved_pka": {
-          "Ag_cap": {
-            "Ag": {
-              "directional_tensor": [
-                [
-                  8.87651803729e-06,
-                  5.09538973705e-06,
-                  2.43325089212e-06
-                ],
-                [
-                  5.09538973705e-06,
-                  2.98728643346e-06,
-                  1.40406893309e-06
-                ],
-                [
-                  2.43325089212e-06,
-                  1.40406893309e-06,
-                  7.29211725642e-07
-                ]
-              ],
-              "group_source": [
-                1.25444617623e-05,
-                4.82392513007e-08,
-                3.15182809468e-10
-              ],
-              "total_source": 1.25930161964e-05
-            }
-          },
-          "Cu_back": {
-            "Cu": {
-              "directional_tensor": [
-                [
-                  0.000100694672111,
-                  5.7397488171e-05,
-                  2.86998899322e-05
-                ],
-                [
-                  5.7397488171e-05,
-                  3.43548789327e-05,
-                  1.65608174509e-05
-                ],
-                [
-                  2.86998899322e-05,
-                  1.65608174509e-05,
-                  8.63635522525e-06
-                ]
-              ],
-              "group_source": [
-                0.000142341628357,
-                1.33538729199e-06,
-                8.89061935944e-09
-              ],
-              "total_source": 0.000143685906269
-            }
-          },
-          "Cu_front": {
-            "Cu": {
-              "directional_tensor": [
-                [
-                  0.000109395802313,
-                  6.28446633417e-05,
-                  2.97782330593e-05
-                ],
-                [
-                  6.28446633417e-05,
-                  3.67601852979e-05,
-                  1.71830582929e-05
-                ],
-                [
-                  2.97782330593e-05,
-                  1.71830582929e-05,
-                  8.94180772458e-06
-                ]
-              ],
-              "group_source": [
-                0.00015459550566,
-                4.98328421282e-07,
-                3.96125430591e-09
-              ],
-              "total_source": 0.000155097795336
-            }
-          },
-          "Hastelloy_C276": {
-            "Co": {
-              "directional_tensor": [
-                [
-                  2.83011350175e-06,
-                  1.61923099905e-06,
-                  7.88485048154e-07
-                ],
-                [
-                  1.61923099905e-06,
-                  9.58612622397e-07,
-                  4.54982823144e-07
-                ],
-                [
-                  7.88485048154e-07,
-                  4.54982823144e-07,
-                  2.3713386429e-07
-                ]
-              ],
-              "group_source": [
-                3.99993071658e-06,
-                2.57795281384e-08,
-                1.49743718434e-10
-              ],
-              "total_source": 4.02585998843e-06
-            },
-            "Cr": {
-              "directional_tensor": [
-                [
-                  4.52818160279e-05,
-                  2.59076959848e-05,
-                  1.26157607705e-05
-                ],
-                [
-                  2.59076959848e-05,
-                  1.53378019583e-05,
-                  7.2797251703e-06
-                ],
-                [
-                  1.26157607705e-05,
-                  7.2797251703e-06,
-                  3.79414182865e-06
-                ]
-              ],
-              "group_source": [
-                6.39988914652e-05,
-                4.12472450214e-07,
-                2.39589949494e-09
-              ],
-              "total_source": 6.44137598149e-05
-            },
-            "Fe": {
-              "directional_tensor": [
-                [
-                  1.69806810105e-05,
-                  9.7153859943e-06,
-                  4.73091028892e-06
-                ],
-                [
-                  9.7153859943e-06,
-                  5.75167573438e-06,
-                  2.72989693886e-06
-                ],
-                [
-                  4.73091028892e-06,
-                  2.72989693886e-06,
-                  1.42280318574e-06
-                ]
-              ],
-              "group_source": [
-                2.39995842995e-05,
-                1.5467716883e-07,
-                8.98462310601e-10
-              ],
-              "total_source": 2.41551599306e-05
-            },
-            "Mo": {
-              "directional_tensor": [
-                [
-                  4.52818160279e-05,
-                  2.59076959848e-05,
-                  1.26157607705e-05
-                ],
-                [
-                  2.59076959848e-05,
-                  1.53378019583e-05,
-                  7.2797251703e-06
-                ],
-                [
-                  1.26157607705e-05,
-                  7.2797251703e-06,
-                  3.79414182865e-06
-                ]
-              ],
-              "group_source": [
-                6.39988914652e-05,
-                4.12472450214e-07,
-                2.39589949494e-09
-              ],
-              "total_source": 6.44137598149e-05
-            },
-            "Ni": {
-              "directional_tensor": [
-                [
-                  0.0001613164696,
-                  9.22961669459e-05,
-                  4.49436477448e-05
-                ],
-                [
-                  9.22961669459e-05,
-                  5.46409194766e-05,
-                  2.59340209192e-05
-                ],
-                [
-                  4.49436477448e-05,
-                  2.59340209192e-05,
-                  1.35166302646e-05
-                ]
-              ],
-              "group_source": [
-                0.000227996050845,
-                1.46943310389e-06,
-                8.53539195071e-09
-              ],
-              "total_source": 0.000229474019341
-            },
-            "W": {
-              "directional_tensor": [
-                [
-                  1.1320454007e-05,
-                  6.4769239962e-06,
-                  3.15394019262e-06
-                ],
-                [
-                  6.4769239962e-06,
-                  3.83445048959e-06,
-                  1.81993129257e-06
-                ],
-                [
-                  3.15394019262e-06,
-                  1.81993129257e-06,
-                  9.48535457162e-07
-                ]
-              ],
-              "group_source": [
-                1.59997228663e-05,
-                1.03118112553e-07,
-                5.98974873734e-10
-              ],
-              "total_source": 1.61034399537e-05
-            }
-          },
-          "REBCO": {
-            "Ba": {
-              "directional_tensor": [
-                [
-                  9.81241495059e-07,
-                  5.63205133586e-07,
-                  2.69226796296e-07
-                ],
-                [
-                  5.63205133586e-07,
-                  3.30291196196e-07,
-                  1.55353063614e-07
-                ],
-                [
-                  2.69226796296e-07,
-                  1.55353063614e-07,
-                  8.06635085581e-08
-                ]
-              ],
-              "group_source": [
-                1.38671480513e-06,
-                5.44653439654e-09,
-                3.48602864949e-11
-              ],
-              "total_source": 1.39219619981e-06
-            },
-            "Cu": {
-              "directional_tensor": [
-                [
-                  1.47186224259e-06,
-                  8.44807700379e-07,
-                  4.03840194444e-07
-                ],
-                [
-                  8.44807700379e-07,
-                  4.95436794293e-07,
-                  2.33029595421e-07
-                ],
-                [
-                  4.03840194444e-07,
-                  2.33029595421e-07,
-                  1.20995262837e-07
-                ]
-              ],
-              "group_source": [
-                2.08007220769e-06,
-                8.1698015948e-09,
-                5.22904297424e-11
-              ],
-              "total_source": 2.08829429972e-06
-            },
-            "O": {
-              "directional_tensor": [
-                [
-                  3.4343452327e-06,
-                  1.97121796755e-06,
-                  9.42293787035e-07
-                ],
-                [
-                  1.97121796755e-06,
-                  1.15601918668e-06,
-                  5.43735722649e-07
-                ],
-                [
-                  9.42293787035e-07,
-                  5.43735722649e-07,
-                  2.82322279954e-07
-                ]
-              ],
-              "group_source": [
-                4.85350181795e-06,
-                1.90628703879e-08,
-                1.22011002732e-10
-              ],
-              "total_source": 4.87268669934e-06
-            },
-            "Y": {
-              "directional_tensor": [
-                [
-                  4.90620747529e-07,
-                  2.81602566793e-07,
-                  1.34613398148e-07
-                ],
-                [
-                  2.81602566793e-07,
-                  1.65145598098e-07,
-                  7.7676531807e-08
-                ],
-                [
-                  1.34613398148e-07,
-                  7.7676531807e-08,
-                  4.03317542791e-08
-                ]
-              ],
-              "group_source": [
-                6.93357402565e-07,
-                2.72326719827e-09,
-                1.74301432475e-11
-              ],
-              "total_source": 6.96098099906e-07
-            }
-          },
-          "oxide_buffer": {
-            "Mg": {
-              "directional_tensor": [
-                [
-                  3.88920191481e-07,
-                  2.2321827106e-07,
-                  1.06755242846e-07
-                ],
-                [
-                  2.2321827106e-07,
-                  1.30925383562e-07,
-                  6.16014240085e-08
-                ],
-                [
-                  1.06755242846e-07,
-                  6.16014240085e-08,
-                  3.19817302976e-08
-                ]
-              ],
-              "group_source": [
-                5.49632755579e-07,
-                2.18072352152e-09,
-                1.3826239919e-11
-              ],
-              "total_source": 5.5182730534e-07
-            },
-            "O": {
-              "directional_tensor": [
-                [
-                  3.88920191481e-07,
-                  2.2321827106e-07,
-                  1.06755242846e-07
-                ],
-                [
-                  2.2321827106e-07,
-                  1.30925383562e-07,
-                  6.16014240085e-08
-                ],
-                [
-                  1.06755242846e-07,
-                  6.16014240085e-08,
-                  3.19817302976e-08
-                ]
-              ],
-              "group_source": [
-                5.49632755579e-07,
-                2.18072352152e-09,
-                1.3826239919e-11
-              ],
-              "total_source": 5.5182730534e-07
-            }
-          }
         }
       },
       "id": "grazing",
@@ -11567,18 +11134,820 @@
         }
       },
       "neutral_operator_identical_between_methods": true,
+      "nominal_reference": {
+        "charged": {
+          "escape_by_group": [
+            0.000537649908361,
+            2.29908807839e-05,
+            1.37707932494e-06
+          ],
+          "matrix_nonzeros": 136584,
+          "maximum_balance_residual": 1.59346972728e-14,
+          "minimum_flux": 1.13600379684e-08,
+          "operator": "BFP angular diffusion using the declared generator only",
+          "total_escape": 0.00056201786847
+        },
+        "charged_interface_crossing": {
+          "Ag_cap->REBCO": 0.000277049769589,
+          "Cu_front->Ag_cap": 0.00027045845429,
+          "Hastelloy_C276->Cu_back": 0.000385036434202,
+          "REBCO->oxide_buffer": 0.000281682687364,
+          "oxide_buffer->Hastelloy_C276": 0.000282241788108
+        },
+        "layers": {
+          "Ag_cap": {
+            "charged_current_integral": [
+              9.68541282398e-08,
+              5.58881424622e-08,
+              -9.94286783912e-09
+            ],
+            "charged_heating_proxy": 1.57932039148e-07,
+            "charged_q_normal": -3.72143101038e-08,
+            "charged_scalar_flux_integral": 1.78566591365e-07,
+            "charged_traceless_second_moment": [
+              [
+                4.04584496659e-08,
+                3.78116772469e-08,
+                2.0379105112e-09
+              ],
+              [
+                3.78116772469e-08,
+                -3.24413956216e-09,
+                1.17594402056e-09
+              ],
+              [
+                2.0379105112e-09,
+                1.17594402056e-09,
+                -3.72143101038e-08
+              ]
+            ],
+            "material": "Ag",
+            "neutral_current_integral": [
+              0.000167318581925,
+              9.65485407086e-05,
+              4.59356290183e-05
+            ],
+            "neutral_heating_proxy": 6.58835941872e-05,
+            "neutral_q_normal": -5.498021347e-05,
+            "neutral_scalar_flux_integral": 0.000199499598469,
+            "neutral_traceless_second_moment": [
+              [
+                7.41969734687e-05,
+                8.08219833806e-05,
+                3.86009182084e-05
+              ],
+              [
+                8.08219833806e-05,
+                -1.92167599988e-05,
+                2.22740491827e-05
+              ],
+              [
+                3.86009182084e-05,
+                2.22740491827e-05,
+                -5.498021347e-05
+              ]
+            ],
+            "thickness_um": 2.0
+          },
+          "Cu_back": {
+            "charged_current_integral": [
+              1.4801060363e-06,
+              8.54071772873e-07,
+              6.45346844804e-07
+            ],
+            "charged_heating_proxy": 2.67507815463e-06,
+            "charged_q_normal": -4.90785158539e-07,
+            "charged_scalar_flux_integral": 2.47623176741e-06,
+            "charged_traceless_second_moment": [
+              [
+                5.68414763095e-07,
+                5.58960499783e-07,
+                3.48433854901e-07
+              ],
+              [
+                5.58960499783e-07,
+                -7.76296045563e-08,
+                2.01058243723e-07
+              ],
+              [
+                3.48433854901e-07,
+                2.01058243723e-07,
+                -4.90785158539e-07
+              ]
+            ],
+            "material": "Cu",
+            "neutral_current_integral": [
+              0.00155370132307,
+              0.000896538768817,
+              0.000447067531235
+            ],
+            "neutral_heating_proxy": 0.000747990318666,
+            "neutral_q_normal": -0.000508622320336,
+            "neutral_scalar_flux_integral": 0.00186033659545,
+            "neutral_traceless_second_moment": [
+              [
+                0.0006843522364,
+                0.000744146956255,
+                0.000372091895873
+              ],
+              [
+                0.000744146956255,
+                -0.000175729916063,
+                0.000214709741991
+              ],
+              [
+                0.000372091895873,
+                0.000214709741991,
+                -0.000508622320336
+              ]
+            ],
+            "thickness_um": 20.0
+          },
+          "Cu_front": {
+            "charged_current_integral": [
+              7.330153162e-07,
+              4.22974891863e-07,
+              -2.07683865516e-07
+            ],
+            "charged_heating_proxy": 1.58407117673e-06,
+            "charged_q_normal": -2.80720364137e-07,
+            "charged_scalar_flux_integral": 1.47110833505e-06,
+            "charged_traceless_second_moment": [
+              [
+                3.00130237764e-07,
+                2.76467545123e-07,
+                -2.97183871945e-08
+              ],
+              [
+                2.76467545123e-07,
+                -1.94098736273e-08,
+                -1.71485251841e-08
+              ],
+              [
+                -2.97183871945e-08,
+                -1.71485251841e-08,
+                -2.80720364137e-07
+              ]
+            ],
+            "material": "Cu",
+            "neutral_current_integral": [
+              0.00169120442314,
+              0.000975882757402,
+              0.000460554328871
+            ],
+            "neutral_heating_proxy": 0.000811886422643,
+            "neutral_q_normal": -0.000555989496709,
+            "neutral_scalar_flux_integral": 0.00201554968794,
+            "neutral_traceless_second_moment": [
+              [
+                0.000750561387841,
+                0.000817733574392,
+                0.000387540329264
+              ],
+              [
+                0.000817733574392,
+                -0.000194571891132,
+                0.000223624016084
+              ],
+              [
+                0.000387540329264,
+                0.000223624016084,
+                -0.000555989496709
+              ]
+            ],
+            "thickness_um": 20.0
+          },
+          "Hastelloy_C276": {
+            "charged_current_integral": [
+              3.47478507165e-06,
+              2.00506975427e-06,
+              6.08453590714e-07
+            ],
+            "charged_heating_proxy": 6.96434731382e-06,
+            "charged_q_normal": -1.27472591251e-06,
+            "charged_scalar_flux_integral": 5.97290695255e-06,
+            "charged_traceless_second_moment": [
+              [
+                1.41664931833e-06,
+                1.34848414825e-06,
+                4.46472710814e-07
+              ],
+              [
+                1.34848414825e-06,
+                -1.41923405826e-07,
+                2.57630014545e-07
+              ],
+              [
+                4.46472710814e-07,
+                2.57630014545e-07,
+                -1.27472591251e-06
+              ]
+            ],
+            "material": "Hastelloy_C276",
+            "neutral_current_integral": [
+              0.00404700422997,
+              0.00233525976702,
+              0.00113336902215
+            ],
+            "neutral_heating_proxy": 0.00210130872252,
+            "neutral_q_normal": -0.0013276671353,
+            "neutral_scalar_flux_integral": 0.00483483049591,
+            "neutral_traceless_second_moment": [
+              [
+                0.00178912157837,
+                0.00194720852117,
+                0.000948245976076
+              ],
+              [
+                0.00194720852117,
+                -0.000461454443076,
+                0.000547170339171
+              ],
+              [
+                0.000948245976076,
+                0.000547170339171,
+                -0.0013276671353
+              ]
+            ],
+            "thickness_um": 50.0
+          },
+          "REBCO": {
+            "charged_current_integral": [
+              4.97814147077e-08,
+              2.87255778119e-08,
+              -4.24794708756e-09
+            ],
+            "charged_heating_proxy": 1.15929762139e-07,
+            "charged_q_normal": -1.91254771693e-08,
+            "charged_scalar_flux_integral": 9.10749879418e-08,
+            "charged_traceless_second_moment": [
+              [
+                2.08205903057e-08,
+                1.94806881372e-08,
+                1.34923872819e-09
+              ],
+              [
+                1.94806881372e-08,
+                -1.69511313639e-09,
+                7.78556863029e-10
+              ],
+              [
+                1.34923872819e-09,
+                7.78556863029e-10,
+                -1.91254771693e-08
+              ]
+            ],
+            "material": "REBCO",
+            "neutral_current_integral": [
+              8.3543387657e-05,
+              4.82073901854e-05,
+              2.29603094532e-05
+            ],
+            "neutral_heating_proxy": 4.73401147528e-05,
+            "neutral_q_normal": -2.74502669324e-05,
+            "neutral_scalar_flux_integral": 9.96177013264e-05,
+            "neutral_traceless_second_moment": [
+              [
+                3.7043156248e-05,
+                4.03497168946e-05,
+                1.92907424161e-05
+              ],
+              [
+                4.03497168946e-05,
+                -9.5928893156e-06,
+                1.11314177302e-05
+              ],
+              [
+                1.92907424161e-05,
+                1.11314177302e-05,
+                -2.74502669324e-05
+              ]
+            ],
+            "thickness_um": 1.0
+          },
+          "oxide_buffer": {
+            "charged_current_integral": [
+              1.00829494589e-08,
+              5.81820647235e-09,
+              -7.80344618657e-10
+            ],
+            "charged_heating_proxy": 1.42787195311e-08,
+            "charged_q_normal": -3.87329440309e-09,
+            "charged_scalar_flux_integral": 1.83830359677e-08,
+            "charged_traceless_second_moment": [
+              [
+                4.2191975832e-09,
+                3.94974576361e-09,
+                3.01654766017e-10
+              ],
+              [
+                3.94974576361e-09,
+                -3.45903180115e-10,
+                1.74065110526e-10
+              ],
+              [
+                3.01654766017e-10,
+                1.74065110526e-10,
+                -3.87329440309e-09
+              ]
+            ],
+            "material": "oxide_buffer",
+            "neutral_current_integral": [
+              1.66977382494e-05,
+              9.63516569743e-06,
+              4.59133801994e-06
+            ],
+            "neutral_heating_proxy": 5.77341961419e-06,
+            "neutral_q_normal": -5.48629147155e-06,
+            "neutral_scalar_flux_integral": 1.99110887191e-05,
+            "neutral_traceless_second_moment": [
+              [
+                7.40340159335e-06,
+                8.06414876035e-06,
+                3.85721551004e-06
+              ],
+              [
+                8.06414876035e-06,
+                -1.9171101218e-06,
+                2.22574518863e-06
+              ],
+              [
+                3.85721551004e-06,
+                2.22574518863e-06,
+                -5.48629147155e-06
+              ]
+            ],
+            "thickness_um": 0.2
+          }
+        },
+        "neutral": {
+          "matrix_nonzeros": 136584,
+          "maximum_balance_residual": 1.47122738948e-14,
+          "minimum_flux": 2.61103900505e-13,
+          "operator": "full positive reversible Boltzmann kernels; never replaced by AFP",
+          "total_escape": 0.236693059531
+        },
+        "responses": {
+          "REBCO_charged_heating": 1.15929762139e-07,
+          "REBCO_charged_q_normal": -1.91254771693e-08,
+          "REBCO_charged_scalar": 9.10749879418e-08,
+          "charged_escape": 0.00056201786847,
+          "substrate_total_PKA_source": 0.000402585998843,
+          "total_heating": 0.00379169422954
+        },
+        "species_resolved_pka": {
+          "Ag_cap": {
+            "Ag": {
+              "directional_tensor": [
+                [
+                  8.87651803729e-06,
+                  5.09538973705e-06,
+                  2.43325089212e-06
+                ],
+                [
+                  5.09538973705e-06,
+                  2.98728643346e-06,
+                  1.40406893309e-06
+                ],
+                [
+                  2.43325089212e-06,
+                  1.40406893309e-06,
+                  7.29211725642e-07
+                ]
+              ],
+              "group_source": [
+                1.25444617623e-05,
+                4.82392513007e-08,
+                3.15182809468e-10
+              ],
+              "total_source": 1.25930161964e-05
+            }
+          },
+          "Cu_back": {
+            "Cu": {
+              "directional_tensor": [
+                [
+                  0.000100694672111,
+                  5.7397488171e-05,
+                  2.86998899322e-05
+                ],
+                [
+                  5.7397488171e-05,
+                  3.43548789327e-05,
+                  1.65608174509e-05
+                ],
+                [
+                  2.86998899322e-05,
+                  1.65608174509e-05,
+                  8.63635522525e-06
+                ]
+              ],
+              "group_source": [
+                0.000142341628357,
+                1.33538729199e-06,
+                8.89061935944e-09
+              ],
+              "total_source": 0.000143685906269
+            }
+          },
+          "Cu_front": {
+            "Cu": {
+              "directional_tensor": [
+                [
+                  0.000109395802313,
+                  6.28446633417e-05,
+                  2.97782330593e-05
+                ],
+                [
+                  6.28446633417e-05,
+                  3.67601852979e-05,
+                  1.71830582929e-05
+                ],
+                [
+                  2.97782330593e-05,
+                  1.71830582929e-05,
+                  8.94180772458e-06
+                ]
+              ],
+              "group_source": [
+                0.00015459550566,
+                4.98328421282e-07,
+                3.96125430591e-09
+              ],
+              "total_source": 0.000155097795336
+            }
+          },
+          "Hastelloy_C276": {
+            "Co": {
+              "directional_tensor": [
+                [
+                  2.83011350175e-06,
+                  1.61923099905e-06,
+                  7.88485048154e-07
+                ],
+                [
+                  1.61923099905e-06,
+                  9.58612622397e-07,
+                  4.54982823144e-07
+                ],
+                [
+                  7.88485048154e-07,
+                  4.54982823144e-07,
+                  2.3713386429e-07
+                ]
+              ],
+              "group_source": [
+                3.99993071658e-06,
+                2.57795281384e-08,
+                1.49743718434e-10
+              ],
+              "total_source": 4.02585998843e-06
+            },
+            "Cr": {
+              "directional_tensor": [
+                [
+                  4.52818160279e-05,
+                  2.59076959848e-05,
+                  1.26157607705e-05
+                ],
+                [
+                  2.59076959848e-05,
+                  1.53378019583e-05,
+                  7.2797251703e-06
+                ],
+                [
+                  1.26157607705e-05,
+                  7.2797251703e-06,
+                  3.79414182865e-06
+                ]
+              ],
+              "group_source": [
+                6.39988914652e-05,
+                4.12472450214e-07,
+                2.39589949494e-09
+              ],
+              "total_source": 6.44137598149e-05
+            },
+            "Fe": {
+              "directional_tensor": [
+                [
+                  1.69806810105e-05,
+                  9.7153859943e-06,
+                  4.73091028892e-06
+                ],
+                [
+                  9.7153859943e-06,
+                  5.75167573438e-06,
+                  2.72989693886e-06
+                ],
+                [
+                  4.73091028892e-06,
+                  2.72989693886e-06,
+                  1.42280318574e-06
+                ]
+              ],
+              "group_source": [
+                2.39995842995e-05,
+                1.5467716883e-07,
+                8.98462310601e-10
+              ],
+              "total_source": 2.41551599306e-05
+            },
+            "Mo": {
+              "directional_tensor": [
+                [
+                  4.52818160279e-05,
+                  2.59076959848e-05,
+                  1.26157607705e-05
+                ],
+                [
+                  2.59076959848e-05,
+                  1.53378019583e-05,
+                  7.2797251703e-06
+                ],
+                [
+                  1.26157607705e-05,
+                  7.2797251703e-06,
+                  3.79414182865e-06
+                ]
+              ],
+              "group_source": [
+                6.39988914652e-05,
+                4.12472450214e-07,
+                2.39589949494e-09
+              ],
+              "total_source": 6.44137598149e-05
+            },
+            "Ni": {
+              "directional_tensor": [
+                [
+                  0.0001613164696,
+                  9.22961669459e-05,
+                  4.49436477448e-05
+                ],
+                [
+                  9.22961669459e-05,
+                  5.46409194766e-05,
+                  2.59340209192e-05
+                ],
+                [
+                  4.49436477448e-05,
+                  2.59340209192e-05,
+                  1.35166302646e-05
+                ]
+              ],
+              "group_source": [
+                0.000227996050845,
+                1.46943310389e-06,
+                8.53539195071e-09
+              ],
+              "total_source": 0.000229474019341
+            },
+            "W": {
+              "directional_tensor": [
+                [
+                  1.1320454007e-05,
+                  6.4769239962e-06,
+                  3.15394019262e-06
+                ],
+                [
+                  6.4769239962e-06,
+                  3.83445048959e-06,
+                  1.81993129257e-06
+                ],
+                [
+                  3.15394019262e-06,
+                  1.81993129257e-06,
+                  9.48535457162e-07
+                ]
+              ],
+              "group_source": [
+                1.59997228663e-05,
+                1.03118112553e-07,
+                5.98974873734e-10
+              ],
+              "total_source": 1.61034399537e-05
+            }
+          },
+          "REBCO": {
+            "Ba": {
+              "directional_tensor": [
+                [
+                  9.81241495059e-07,
+                  5.63205133586e-07,
+                  2.69226796296e-07
+                ],
+                [
+                  5.63205133586e-07,
+                  3.30291196196e-07,
+                  1.55353063614e-07
+                ],
+                [
+                  2.69226796296e-07,
+                  1.55353063614e-07,
+                  8.06635085581e-08
+                ]
+              ],
+              "group_source": [
+                1.38671480513e-06,
+                5.44653439654e-09,
+                3.48602864949e-11
+              ],
+              "total_source": 1.39219619981e-06
+            },
+            "Cu": {
+              "directional_tensor": [
+                [
+                  1.47186224259e-06,
+                  8.44807700379e-07,
+                  4.03840194444e-07
+                ],
+                [
+                  8.44807700379e-07,
+                  4.95436794293e-07,
+                  2.33029595421e-07
+                ],
+                [
+                  4.03840194444e-07,
+                  2.33029595421e-07,
+                  1.20995262837e-07
+                ]
+              ],
+              "group_source": [
+                2.08007220769e-06,
+                8.1698015948e-09,
+                5.22904297424e-11
+              ],
+              "total_source": 2.08829429972e-06
+            },
+            "O": {
+              "directional_tensor": [
+                [
+                  3.4343452327e-06,
+                  1.97121796755e-06,
+                  9.42293787035e-07
+                ],
+                [
+                  1.97121796755e-06,
+                  1.15601918668e-06,
+                  5.43735722649e-07
+                ],
+                [
+                  9.42293787035e-07,
+                  5.43735722649e-07,
+                  2.82322279954e-07
+                ]
+              ],
+              "group_source": [
+                4.85350181795e-06,
+                1.90628703879e-08,
+                1.22011002732e-10
+              ],
+              "total_source": 4.87268669934e-06
+            },
+            "Y": {
+              "directional_tensor": [
+                [
+                  4.90620747529e-07,
+                  2.81602566793e-07,
+                  1.34613398148e-07
+                ],
+                [
+                  2.81602566793e-07,
+                  1.65145598098e-07,
+                  7.7676531807e-08
+                ],
+                [
+                  1.34613398148e-07,
+                  7.7676531807e-08,
+                  4.03317542791e-08
+                ]
+              ],
+              "group_source": [
+                6.93357402565e-07,
+                2.72326719827e-09,
+                1.74301432475e-11
+              ],
+              "total_source": 6.96098099906e-07
+            }
+          },
+          "oxide_buffer": {
+            "Mg": {
+              "directional_tensor": [
+                [
+                  3.88920191481e-07,
+                  2.2321827106e-07,
+                  1.06755242846e-07
+                ],
+                [
+                  2.2321827106e-07,
+                  1.30925383562e-07,
+                  6.16014240085e-08
+                ],
+                [
+                  1.06755242846e-07,
+                  6.16014240085e-08,
+                  3.19817302976e-08
+                ]
+              ],
+              "group_source": [
+                5.49632755579e-07,
+                2.18072352152e-09,
+                1.3826239919e-11
+              ],
+              "total_source": 5.5182730534e-07
+            },
+            "O": {
+              "directional_tensor": [
+                [
+                  3.88920191481e-07,
+                  2.2321827106e-07,
+                  1.06755242846e-07
+                ],
+                [
+                  2.2321827106e-07,
+                  1.30925383562e-07,
+                  6.16014240085e-08
+                ],
+                [
+                  1.06755242846e-07,
+                  6.16014240085e-08,
+                  3.19817302976e-08
+                ]
+              ],
+              "group_source": [
+                5.49632755579e-07,
+                2.18072352152e-09,
+                1.3826239919e-11
+              ],
+              "total_source": 5.5182730534e-07
+            }
+          }
+        }
+      },
       "polar_degrees": 84.0,
+      "reference_convergence": {
+        "all_responses_converged": false,
+        "relative_span_limit": 0.05,
+        "responses": {
+          "REBCO_charged_heating": {
+            "converged": false,
+            "relative_span": 0.999960164225
+          },
+          "REBCO_charged_q_normal": {
+            "converged": false,
+            "relative_span": 0.999948102836
+          },
+          "REBCO_charged_scalar": {
+            "converged": false,
+            "relative_span": 0.999958866186
+          },
+          "charged_escape": {
+            "converged": false,
+            "relative_span": 0.999972862214
+          },
+          "substrate_total_PKA_source": {
+            "converged": false,
+            "relative_span": 0.999972167064
+          },
+          "total_heating": {
+            "converged": false,
+            "relative_span": 0.999973107199
+          }
+        }
+      },
       "same_nodes_between_methods": true,
       "same_spatial_energy_discretization": true
     }
   ],
   "manifest": {
+    "angular_reference_sweep": [
+      {
+        "n_mu": 5,
+        "n_phi": 10,
+        "nodes": 50
+      },
+      {
+        "n_mu": 6,
+        "n_phi": 12,
+        "nodes": 72
+      },
+      {
+        "n_mu": 7,
+        "n_phi": 14,
+        "nodes": 98
+      },
+      {
+        "n_mu": 8,
+        "n_phi": 16,
+        "nodes": 128
+      }
+    ],
     "charged_energy_MeV": [
       2.0,
       0.5,
       0.1
     ],
-    "fine_reference_nodes": 72,
     "incidence_cases": [
       {
         "azimuth_degrees": 0.0,
@@ -11634,6 +12003,8 @@
       2.0,
       0.025
     ],
+    "nominal_reference_nodes": 72,
+    "operator_response_relative_difference_tolerance": 1e-10,
     "physics_firewall": {
       "charged": "AFP/BFP only",
       "excluded": [
@@ -11653,7 +12024,8 @@
     "record_blas_core": "Haswell",
     "record_float_significant_digits": 12,
     "record_zero_threshold": 1e-18,
-    "schema": "afp-p2f-hts-manifest-v1",
+    "reference_convergence_relative_span_limit": 0.05,
+    "schema": "afp-p2f-hts-manifest-v2",
     "stack_provenance": "bounded coated-conductor verification stack chosen within the HTS irradiation roadmap ranges; dimensions are representative, not a manufacturer certificate"
   },
   "operator_registry_sha256": "0380a84199eae0818bc135c869a7dfa0a69a3c93bdfcd4ab95415f1922181fa8",
@@ -11689,12 +12061,17 @@
       }
     }
   },
-  "schema": "afp-p2f-hts-results-v1",
-  "scientific_sha256": "0c2f8adce446468f66b4df3747d74ae36dd2da9eddb86c2eb2a8c1306b5b009e",
+  "schema": "afp-p2f-hts-results-v2",
+  "scientific_sha256": "a8132120a9b3234f2c0302306d866160878302080251b17cdd8ff14bcf63dda2",
   "summary": {
-    "claim_rule": "Only resolved improvements may support an AFP response-benefit claim; all other differences are below reference resolution or unfavorable.",
+    "claim_rule": "No AFP response-performance claim is permitted unless the declared reference convergence gate passes and a baseline/optimized error difference is resolved. A structurally valid run may therefore have an inconclusive scientific outcome.",
+    "operator_response_insensitive": true,
+    "operator_response_max_relative_difference": 1.9424183391e-14,
+    "reference_convergence_gate": false,
+    "resolved_degradation_count": 0,
+    "resolved_difference_count": 0,
     "resolved_improvement_count": 0,
     "response_comparison_count": 18,
-    "scientific_outcome": "BOUNDED_NEGATIVE"
+    "scientific_outcome": "INCONCLUSIVE_REFERENCE_NOT_CONVERGED"
   }
 }

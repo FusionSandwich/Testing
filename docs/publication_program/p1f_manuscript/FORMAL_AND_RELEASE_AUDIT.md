@@ -116,7 +116,7 @@ module does not define or prove:
 - the shared-conductance recurrence and global margin;
 - fill distance, separation, degree, or angular windows;
 - the direct sampled quotient bound; or
-- structured perturbation robustness.
+- support-preserving perturbation robustness, which is open rather than part of the ordinary theorem package.
 
 Those remain in the ordinary proof and deterministic exact audits.  This
 boundary agrees with the module docstring and prevents a nearby finite lemma

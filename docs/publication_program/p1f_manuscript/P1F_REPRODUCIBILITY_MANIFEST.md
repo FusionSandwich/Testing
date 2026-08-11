@@ -2,8 +2,11 @@
 
 ## Immutable mathematical base
 
-The paper release is a one-commit publication layer over the accepted P1E
-construction archive.
+The original paper release was a one-commit publication layer over the
+accepted fixed-family P1E construction archive. This audit-driven revision
+supersedes the original robustness wording while retaining that archive as
+historical provenance. The archived P1E files do not certify a perturbation
+theorem.
 
 | Record | Exact value |
 |---|---|
@@ -29,12 +32,12 @@ are:
 
 | File | SHA-256 |
 |---|---|
-| `FLAGSHIP_MANUSCRIPT.md` | `45ece3825ff382f3558c1a43ed14f53621b3ed088f4e34584b224ed071c6fb6f` |
+| `FLAGSHIP_MANUSCRIPT.md` | `453f9e69acad66b201e7e70940d058aaa01a68af2b15a6d143b45a6bbb7315bc` |
 | `priority_sources.bib` | `8a896552a8a03154ba834466bdd80a6af65c39e5f440f53e2afbbc462746ae48` |
 | `proof_dependency_graph.png` | `745d14b2cc65c07c584ccd5d56667aaecb6d59fb9cff264ca6d90b31e0d6eee2` |
-| `output/pdf/FLAGSHIP_MANUSCRIPT.pdf` | `b85aedef5176f44004ca52bf9e0e3c3008be6ab83498de9d782386ca891aefe1` |
+| `output/pdf/FLAGSHIP_MANUSCRIPT.pdf` | `8d09af48519b3df81881be47f4a8e477b38ed6485ed74e82d8d9167c6e7824c4` |
 
-The PDF is 23 US-letter pages, has no encryption or JavaScript, and carries the
+The PDF is 24 US-letter pages, has no encryption or JavaScript, and carries the
 title `A sharp positivity--rate frontier for quadratic fidelity of reversible
 spherical generators` in its document metadata.
 
@@ -43,19 +46,20 @@ spherical generators` in its document metadata.
 The reference artifact was produced with:
 
 ```text
-Python 3.12.13
+Python 3.13.5
 matplotlib 3.10.8
-pandoc 3.1.3
-XeTeX 3.141592653-2.6-0.999995 (TeX Live 2023/Debian)
-pdftotext 24.02.0
+pandoc 3.1.11.1
+XeTeX 3.141592653-2.6-0.999996 (TeX Live 2025/dev/Debian)
+pdftotext 25.06.0
 SOURCE_DATE_EPOCH=1785900000
 ```
 
-Exact PDF bytes can depend on the TeX distribution and installed fonts.  The
-release workflow therefore checks both the committed hash and a fresh build,
-then compares the committed and rebuilt PDF text token streams, title,
-bibliography coverage, page-range guard, and absence of raw citation or
-diagram markup.
+Exact PDF bytes can depend on the TeX distribution and installed fonts. The
+present consolidated revision workflow verifies the committed content hash,
+metadata, page-range guard, extracted claim boundary, and absence of raw
+citation or diagram markup. A permanent tagged release should additionally
+run a clean rebuild in the recorded toolchain and compare the committed and
+rebuilt PDF text token streams.
 
 ## Build command
 
@@ -71,11 +75,15 @@ The build script writes only the publication figure, a transient prepared
 Markdown file under `tmp/pdfs/p1f-build`, and
 `output/pdf/FLAGSHIP_MANUSCRIPT.pdf`.
 
-## Exact release gate
+## Release-gate boundary
 
-The workflow
-`.github/workflows/afp-publication-p1f-flagship-paper.yml` enforces a 14-path
-diff from the immutable P1E tree.  It independently checks:
+The historical workflow
+`.github/workflows/afp-publication-p1f-flagship-paper.yml` enforced the original
+14-path publication layer from the P1E tree. It remains provenance for that
+historical release, but it does not certify the present major-revision delta.
+The consolidated audit-revision workflow must instead verify the revised
+claim surface, rebuilt PDF, exact P2F records, and unchanged Lean sources. The
+historical workflow checked:
 
 1. exact repository, head, ancestry, branch, and archive identities;
 2. the manuscript theorem hierarchy, complete citation set, source/test/claim
@@ -87,6 +95,7 @@ diff from the immutable P1E tree.  It independently checks:
    axiom surfaces; and
 6. final artifact digests on the unchanged exact head.
 
-The workflow uploads the PDF together with its validation logs.  Expected
-`BLOCKED` or `REJECTED` labels in separate route-obstruction documents are not
-active paper claims and are outside the 14-path publication layer.
+Expected `BLOCKED`, `REJECTED`, and `OPEN_UNCERTIFIED` labels in separate
+route-obstruction documents are not active paper claims. A new tagged release
+must preserve the revised source, PDF, environment record, and validation logs
+rather than relying on the mutable `archive/...` branch convention.
