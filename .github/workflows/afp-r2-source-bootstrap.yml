@@ -29,14 +29,14 @@ jobs:
             --exclude='tmp' \
             --exclude='__pycache__' \
             --exclude='.lake' \
-            -czf afp-r2-source.tar.gz .
-          sha256sum afp-r2-source.tar.gz > afp-r2-source.tar.gz.sha256
+            -czf "${RUNNER_TEMP}/afp-r2-source.tar.gz" .
+          sha256sum "${RUNNER_TEMP}/afp-r2-source.tar.gz" > "${RUNNER_TEMP}/afp-r2-source.tar.gz.sha256"
 
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: afp-r2-source-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
-            afp-r2-source.tar.gz
-            afp-r2-source.tar.gz.sha256
+            ${{ runner.temp }}/afp-r2-source.tar.gz
+            ${{ runner.temp }}/afp-r2-source.tar.gz.sha256
           if-no-files-found: error
           compression-level: 0
