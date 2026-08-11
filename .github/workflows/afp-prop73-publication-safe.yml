@@ -37,6 +37,10 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Prepare the stable validation driver
+        shell: bash
+        run: python tools/prepare_p1e_outcome_b.py --root .
+
       - name: Resolve authority, apply Outcome B, and run exact mathematics
         shell: bash
         run: bash tools/run_p1e_prop73_repair.sh pre
