@@ -1,0 +1,183 @@
+name: AFP R2 certified bootstrap
+
+on:
+  push:
+    branches:
+      - agent/afp-practical-threshold-r2-certified-20260811
+  workflow_dispatch:
+
+concurrency:
+  group: afp-r2-certified-bootstrap-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+env:
+  ACCEPTED_R1_HEAD: d05c98e5f1e211228940c7094df661c27d9e040b
+  ACCEPTED_R1_TREE: 3c23cec0ebd25ca49706402774c25c395789a0d4
+  REPAIR_BRANCH: agent/afp-practical-threshold-r2-certified-20260811
+  PAYLOAD_SIZE: '97700'
+  PAYLOAD_SHA256: 91553164a40dba5c6bfb7041333b06770d42242b7801c2a9a717006b47ab2094
+  PATCH_SIZE: '344455'
+  PATCH_SHA256: d5990099bc6ddcb78ce98958e4c7e9112c5f19fb430d7bf1264fb671b6ce2a58
+
+jobs:
+  reconstruct-apply-commit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Verify authoritative parent and immutable branch context
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "${GITHUB_REPOSITORY}" = 'FusionSandwich/Testing'
+          test "${GITHUB_REF_NAME}" = "${REPAIR_BRANCH}"
+          test "$(git rev-parse "${ACCEPTED_R1_HEAD}^{tree}")" = "${ACCEPTED_R1_TREE}"
+          git merge-base --is-ancestor "${ACCEPTED_R1_HEAD}" HEAD
+          test "$(git rev-list --count --merges "${ACCEPTED_R1_HEAD}..HEAD")" -eq 0
+          git config user.name 'afp-r2-bootstrap-bot'
+          git config user.email 'afp-r2-bootstrap-bot@users.noreply.github.com'
+          printf 'bootstrap_start=%s\naccepted_r1_head=%s\naccepted_r1_tree=%s\n' \
+            "$(git rev-parse HEAD)" "${ACCEPTED_R1_HEAD}" "${ACCEPTED_R1_TREE}" \
+            | tee "${RUNNER_TEMP}/afp-r2-bootstrap-start.txt"
+
+      - name: Reconstruct and independently verify encoded payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          files=(.bootstrap/payload/*.bin)
+          test "${#files[@]}" -eq 60
+          payload="${RUNNER_TEMP}/afp-r2-payload.b85"
+          : > "${payload}"
+          index=0
+          for file in $(printf '%s\n' "${files[@]}" | LC_ALL=C sort); do
+            base="$(basename "${file}")"
+            if [[ ! "${base}" =~ ^([0-9]{3})-([0-9]{4})-([0-9a-f]{40})\.bin$ ]]; then
+              echo "invalid payload filename: ${base}" >&2
+              exit 1
+            fi
+            ordinal="${BASH_REMATCH[1]}"
+            take_text="${BASH_REMATCH[2]}"
+            expected_git="${BASH_REMATCH[3]}"
+            printf -v expected_ordinal '%03d' "${index}"
+            test "${ordinal}" = "${expected_ordinal}"
+            take=$((10#${take_text}))
+            part="${RUNNER_TEMP}/afp-r2-part-${ordinal}.bin"
+            head -c "${take}" "${file}" > "${part}"
+            test "$(wc -c < "${part}")" -eq "${take}"
+            observed_git="$(git hash-object --stdin < "${part}")"
+            test "${observed_git}" = "${expected_git}"
+            cat "${part}" >> "${payload}"
+            index=$((index + 1))
+          done
+          test "${index}" -eq 60
+          test "$(wc -c < "${payload}")" -eq "${PAYLOAD_SIZE}"
+          printf '%s  %s\n' "${PAYLOAD_SHA256}" "${payload}" | sha256sum -c -
+          sha256sum "${payload}" | tee "${RUNNER_TEMP}/afp-r2-payload.sha256"
+
+      - name: Decode patch and verify exact bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import base64, hashlib, lzma, os
+          from pathlib import Path
+          tmp = Path(os.environ['RUNNER_TEMP'])
+          payload = (tmp / 'afp-r2-payload.b85').read_bytes()
+          patch = lzma.decompress(base64.b85decode(payload))
+          assert len(patch) == int(os.environ['PATCH_SIZE'])
+          assert hashlib.sha256(patch).hexdigest() == os.environ['PATCH_SHA256']
+          (tmp / 'afp-r2.patch').write_bytes(patch)
+          print('decoded_patch_size', len(patch))
+          print('decoded_patch_sha256', hashlib.sha256(patch).hexdigest())
+          PY
+          printf '%s  %s\n' "${PATCH_SHA256}" "${RUNNER_TEMP}/afp-r2.patch" | sha256sum -c -
+          git apply --check "${RUNNER_TEMP}/afp-r2.patch"
+          git apply "${RUNNER_TEMP}/afp-r2.patch"
+          git diff --check
+
+      - name: Compile changed Python and verify patch surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m compileall -q afp_barrier_gate1/pure_math scripts tools
+          test -f .github/workflows/afp-r2-certified-completion.yml
+          test -f scripts/finalize_afp_r2_validation.py
+          test -f docs/publication_program/p1f_manuscript/FLAGSHIP_MANUSCRIPT.md
+          git diff --name-only "${GITHUB_SHA}" | LC_ALL=C sort \
+            | tee "${RUNNER_TEMP}/afp-r2-applied-paths.txt"
+          test "$(wc -l < "${RUNNER_TEMP}/afp-r2-applied-paths.txt")" -ge 40
+
+      - name: Commit theorem and certificate layer
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t paths < <({ git diff --name-only; git ls-files --others --exclude-standard; } \
+            | LC_ALL=C sort -u \
+            | grep -E '^afp_barrier_gate1/(pure_math/|AFPBarrier(\.lean|/))' || true)
+          test "${#paths[@]}" -gt 0
+          git add -- "${paths[@]}"
+          test -n "$(git diff --cached --name-only)"
+          git commit -m 'math: certify practical d=3 adaptive-ring threshold'
+
+      - name: Commit manuscript, constants, and examples propagation
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t paths < <({ git diff --name-only; git ls-files --others --exclude-standard; } \
+            | LC_ALL=C sort -u \
+            | grep -E '^(docs/|README\.md$|afp_barrier_gate1/docs/)' || true)
+          test "${#paths[@]}" -gt 0
+          git add -- "${paths[@]}"
+          test -n "$(git diff --cached --name-only)"
+          git commit -m 'docs: propagate practical threshold and certified examples'
+
+      - name: Commit validation layer and remove temporary bootstrap material
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf .bootstrap
+          rm -f .github/workflows/afp-r2-certified-source-bootstrap.yml
+          rm -f .github/workflows/afp-r2-certified-bootstrap.yml
+          git add -A
+          test -n "$(git diff --cached --name-only)"
+          git commit -m 'ci: add full AFP R2 validation and remove bootstrap'
+          git diff --check "${ACCEPTED_R1_HEAD}" HEAD
+          git merge-base --is-ancestor "${ACCEPTED_R1_HEAD}" HEAD
+          test "$(git rev-list --count --merges "${ACCEPTED_R1_HEAD}..HEAD")" -eq 0
+          test ! -e .bootstrap
+          test ! -e .github/workflows/afp-r2-certified-bootstrap.yml
+          test ! -e .github/workflows/afp-r2-certified-source-bootstrap.yml
+          test -z "$(git status --short)"
+          git log --format='%H %T %s' "${GITHUB_SHA}..HEAD" \
+            | tee "${RUNNER_TEMP}/afp-r2-bootstrap-commits.txt"
+
+      - name: Fast-forward dedicated branch only
+        shell: bash
+        run: |
+          set -euo pipefail
+          remote_before="$(git ls-remote --exit-code --heads origin "refs/heads/${REPAIR_BRANCH}" | awk 'NR==1 {print $1}')"
+          test "${remote_before}" = "${GITHUB_SHA}"
+          git push origin "HEAD:refs/heads/${REPAIR_BRANCH}"
+          remote_after="$(git ls-remote --exit-code --heads origin "refs/heads/${REPAIR_BRANCH}" | awk 'NR==1 {print $1}')"
+          test "${remote_after}" = "$(git rev-parse HEAD)"
+          printf 'remote_before=%s\nremote_after=%s\nfinal_tree=%s\n' \
+            "${remote_before}" "${remote_after}" "$(git rev-parse HEAD^{tree})" \
+            | tee "${RUNNER_TEMP}/afp-r2-bootstrap-result.txt"
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: afp-r2-bootstrap-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/afp-r2-bootstrap-*.txt
+            ${{ runner.temp }}/afp-r2-payload.sha256
+            ${{ runner.temp }}/afp-r2-applied-paths.txt
+          if-no-files-found: warn
