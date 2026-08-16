@@ -1,4 +1,4 @@
-import Std.Tactic.Omega
+import Mathlib
 
 namespace ErdosGyarfas
 
