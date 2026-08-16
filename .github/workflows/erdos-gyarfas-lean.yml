@@ -10,20 +10,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install Lean toolchain
-        uses: leanprover/lean-action@v1
-        with:
-          lake-package-directory: eg_lean_test
-          auto-config: false
-          build: false
-          test: false
-          lint: false
-          use-github-cache: false
-      - name: Build formal package
+      - name: Install Lean 4.33.0 and build formal package
         shell: bash
         working-directory: eg_lean_test
         run: |
           set -euo pipefail
+          curl --proto '=https' --tlsv1.2 -sSf \
+            https://raw.githubusercontent.com/leanprover/elan/v4.2.3/elan-init.sh \
+            | sh -s -- -y --default-toolchain none
+          source "$HOME/.elan/env"
+          lean --version
+          lake --version
           lake update
           lake build
       - name: Reject proof placeholders
