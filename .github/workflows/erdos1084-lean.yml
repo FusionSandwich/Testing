@@ -1,0 +1,34 @@
+name: Erdős 1084 Lean certification
+
+on:
+  pull_request:
+    branches: [testing]
+    paths:
+      - 'erdos1084/**'
+      - '.github/workflows/erdos1084-lean.yml'
+  push:
+    branches:
+      - 'agent/erdos-1084-lean-ci-20260816'
+    paths:
+      - 'erdos1084/**'
+      - '.github/workflows/erdos1084-lean.yml'
+  workflow_dispatch:
+
+jobs:
+  lean:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reject Lean placeholders
+        run: |
+          if grep -R --include='*.lean' -nE '(^|[^[:alnum:]_])sorry([^[:alnum:]_]|$)' erdos1084/formal; then
+            echo 'Lean placeholder found' >&2
+            exit 1
+          fi
+      - uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: erdos1084/formal
+          build: true
+          use-mathlib-cache: true
+          nanoda: true
+          nanoda-allow-sorry: false
