@@ -37,15 +37,6 @@ jobs:
           lake update
           lake exe cache get
           lake build
-      - name: Check compiled environment with Lean's kernel checker
-        uses: leanprover/lean-action@v1
-        with:
-          lake-package-directory: erdos1084/formal
-          auto-config: false
-          build: false
-          test: false
-          lint: false
-          use-mathlib-cache: false
-          use-github-cache: false
-          leanchecker: true
-          nanoda: false
+      - name: Kernel-recheck project module
+        working-directory: erdos1084/formal
+        run: lake env leanchecker Erdos1084
