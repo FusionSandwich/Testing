@@ -1,0 +1,27 @@
+name: Erdős–Gyárfás Lean smoke test
+
+on:
+  push:
+    branches: ['ci/erdos-gyarfas-lean-20260816']
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: eg_lean_test
+          build: true
+          test: false
+          use-mathlib-cache: false
+      - name: Reject proof placeholders
+        shell: bash
+        working-directory: eg_lean_test
+        run: |
+          set -euo pipefail
+          if grep -R --line-number --include='*.lean' -E '\bsorry\b|admit|axiom' formal; then
+            echo 'Formal sources contain a prohibited placeholder or axiom.' >&2
+            exit 1
+          fi
