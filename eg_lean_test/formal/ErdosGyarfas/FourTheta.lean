@@ -1,4 +1,4 @@
-import Std.Tactic.NativeDecide
+import Mathlib
 
 namespace ErdosGyarfas
 
