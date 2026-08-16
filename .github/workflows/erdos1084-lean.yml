@@ -37,7 +37,7 @@ jobs:
           lake update
           lake exe cache get
           lake build
-      - name: Run independent nanoda checker
+      - name: Check compiled environment with Lean's kernel checker
         uses: leanprover/lean-action@v1
         with:
           lake-package-directory: erdos1084/formal
@@ -47,5 +47,5 @@ jobs:
           lint: false
           use-mathlib-cache: false
           use-github-cache: false
-          nanoda: true
-          nanoda-allow-sorry: false
+          leanchecker: true
+          nanoda: false
