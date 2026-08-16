@@ -1,0 +1,36 @@
+name: Erdős 1084 Lean certification
+
+on:
+  pull_request:
+    branches: [testing]
+    paths:
+      - 'erdos1084/**'
+      - '.github/workflows/erdos1084-lean.yml'
+  workflow_dispatch:
+
+jobs:
+  lean:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reject Lean placeholders
+        run: |
+          if grep -R --include='*.lean' -nE '(^|[^[:alnum:]_])sorry([^[:alnum:]_]|$)' erdos1084/formal; then
+            echo 'Lean placeholder found' >&2
+            exit 1
+          fi
+      - name: Install Elan
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf \
+            https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
+            | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Resolve mathlib and build
+        working-directory: erdos1084/formal
+        run: |
+          lake update
+          lake exe cache get
+          lake build
+      - name: Compile theorem smoke tests
+        working-directory: erdos1084/formal
+        run: lake env lean Erdos1084Tests.lean
