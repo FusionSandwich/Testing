@@ -17,7 +17,7 @@ theorem oddCount_mod_two (xs : List Nat) :
       by_cases hx : x % 2 = 1
       · simp [oddCount, Nat.add_mod, ih, hx]
       · have hx0 : x % 2 = 0 := by omega
-        simp [oddCount, Nat.add_mod, ih, hx, hx0]
+        simp [oddCount, Nat.add_mod, ih, hx0]
 
 theorem even_oddCount_of_even_sum (xs : List Nat) (h : xs.sum % 2 = 0) :
     oddCount xs % 2 = 0 := by
