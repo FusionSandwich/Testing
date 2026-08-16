@@ -1,0 +1,45 @@
+name: AFP Proposition 7.3 one-use materialization
+
+on:
+  push:
+    branches:
+      - agent/afp-prop73-materialize-73249d00
+
+concurrency:
+  group: afp-prop73-materialize-73249d00
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  materialize:
+    if: github.event.head_commit.message == 'Stage exact Proposition 7.3 repair payload'
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - name: Check out the exact staging commit
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Select Python 3.12
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+
+      - name: Materialize and publish the clean candidate commit
+        id: materialize
+        shell: bash
+        run: .github/prop73-materialize-script/run.sh
+
+      - name: Upload materialization evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: afp-proposition-7-3-materialized-${{ steps.materialize.outputs.final_sha }}
+          path: materialization-evidence
+          if-no-files-found: error
+          retention-days: 30
