@@ -10,12 +10,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: leanprover/lean-action@v1
+      - name: Install Lean toolchain
+        uses: leanprover/lean-action@v1
         with:
           lake-package-directory: eg_lean_test
-          build: true
+          auto-config: false
+          build: false
           test: false
-          use-mathlib-cache: false
+          lint: false
+          use-github-cache: false
+      - name: Build formal package
+        shell: bash
+        working-directory: eg_lean_test
+        run: |
+          set -euo pipefail
+          lake update
+          lake build
       - name: Reject proof placeholders
         shell: bash
         working-directory: eg_lean_test
