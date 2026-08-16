@@ -13,8 +13,11 @@ theorem oddCount_mod_two (xs : List Nat) :
   induction xs with
   | nil => simp [oddCount]
   | cons x xs ih =>
-      simp [oddCount, ih]
-      omega
+      have hlt : x % 2 < 2 := Nat.mod_lt x (by decide)
+      by_cases hx : x % 2 = 1
+      · simp [oddCount, Nat.add_mod, ih, hx]
+      · have hx0 : x % 2 = 0 := by omega
+        simp [oddCount, Nat.add_mod, ih, hx, hx0]
 
 theorem even_oddCount_of_even_sum (xs : List Nat) (h : xs.sum % 2 = 0) :
     oddCount xs % 2 = 0 := by
