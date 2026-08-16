@@ -73,7 +73,6 @@ theorem dodeca_ratio_upper_lt_deltaQ :
 
 theorem dodeca_ratio_transfer
     {π₀ V : ℝ}
-    (hπnonneg : 0 ≤ π₀)
     (hπ : π₀ < (piUpperQ : ℝ))
     (hV : (dodecaVolumeLowerQ : ℝ) < V) :
     (4 * π₀ / 3) / V < (deltaQ : ℝ) := by
