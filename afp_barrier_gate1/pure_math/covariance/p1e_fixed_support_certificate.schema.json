@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AFP fixed-level support-preserving robustness certificate",
+  "type": "object",
+  "required": [
+    "schema_version", "scientific_status", "level", "uniform_in_level",
+    "radius_kind", "support", "geometry", "blocks",
+    "claimed_rate_constant", "claimed_defect_constant"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "scientific_status": {"const": "CONFORMANCE_FIXTURE_ONLY"},
+    "level": {"type": "integer", "minimum": 1},
+    "uniform_in_level": {"const": false},
+    "radius_kind": {"const": "level-dependent-rational-lower-bound"},
+    "support": {"type": "object"},
+    "geometry": {"type": "object"},
+    "blocks": {"type": "array", "minItems": 1},
+    "claimed_rate_constant": {"type": "string"},
+    "claimed_defect_constant": {"type": "string"}
+  },
+  "additionalProperties": false
+}

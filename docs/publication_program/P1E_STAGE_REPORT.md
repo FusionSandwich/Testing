@@ -60,14 +60,16 @@ C_3 = 75/2,
 c_3 = 6/R_3 = 3/(32 pi^2).
 ```
 
-These constants are accepted for the stated fixed, unperturbed `d=3`
-family. They are not asserted for `d>3`. No perturbation theorem is accepted.
-The retained support-preserving latitude calculations keep the ring counts,
-phases, masks, horizontal jumps, equatorial reflection, and one common ambient
-rotation fixed, but they lack the literal compiler, operation-count,
-denominator-guard, derivative, and recurrence certificate needed for a
-theorem. Independent longitude motion and arbitrary node perturbations are
-outside even that candidate route.
+These sharp constants are accepted for the stated unperturbed `d=3` family
+and are not asserted for `d>3`. Proposition 7.3 additionally proves a
+fixed-level support-preserving theorem. For each `M_0=2^80` production level, the finite
+block Jacobian is nonsingular at the strictly positive base solution, so a
+computable level-dependent latitude radius preserves the fixed ring counts,
+phases, masks, horizontal jumps, pole/equator data, reflection, shared
+incidence, reversibility and exact coordinate fidelity. On a sufficiently
+small such neighborhood `r_max<=1024 h_J^-2` and
+`mathfrak D_2<=54 h_J^2`. Independent longitude motion, arbitrary node motion,
+support changes, and a radius uniform in refinement remain outside the theorem.
 
 The sampling claim uses the accepted P1A quotient
 
@@ -105,8 +107,10 @@ registries named by the release workflow.
 | Role | Authoritative file | Acceptance boundary |
 |---|---|---|
 | ordinary theorem | `docs/publication_program/P1E_SHORT_GAP_S2_CONSTRUCTION.md` | controlling all-orders `d=3` proof |
+| fixed-level robustness theorem | `docs/publication_program/P1E_FIXED_SUPPORT_ROBUSTNESS_THEOREM.md` | ordinary finite-dimensional proof for every fixed level; radius computable and level-dependent |
+| fixed-support adversarial audit | `p1e_fixed_support_robustness_audit.py`; two certificate verifiers; focused pytest | regression, mutation rejection and certificate-interface checks; finite runs are not the analytic proof |
 | final hostile all-orders audit | `docs/publication_program/P1E_SHORT_GAP_CAUCHY_HOSTILE_AUDIT.md` | accepts the transition and first-row guards; records one harmless expository overbound |
-| independent schedule/recurrence audit | `docs/publication_program/P1E_NO_GUARD_RING_INDEPENDENT_AUDIT.md` | exact reachable-domain and unperturbed recurrence checks; perturbation calculations are diagnostic only |
+| independent schedule/recurrence audit | `docs/publication_program/P1E_NO_GUARD_RING_INDEPENDENT_AUDIT.md` | exact reachable-domain and unperturbed recurrence checks; historical all-level perturbation majorant remains diagnostic only |
 | literal transition algebra | `p1e_short_gap_symbolic_matrix_audit.py` | exact removable limit, not by itself a uniform remainder proof |
 | transition remainder guard | `p1e_short_gap_cauchy_guard_audit.py` | rational majorant on the stated guarded domain |
 | polar-row guard | `p1e_short_gap_polar_guard_audit.py` | exact first-row enclosure only |
@@ -114,7 +118,7 @@ registries named by the release workflow.
 | exact constants and recurrence | `p1e_short_gap_proof_audit.py` | exact algebra paired with the analytic guard |
 | hostile rejected mutations | `p1e_short_gap_referee_audit.py` | prevents superseded mask/cap claims from re-entering |
 | final hostile guard fixtures | `p1e_short_gap_cauchy_hostile_audit.py` | independent exact check of every Cauchy and first-row estimate |
-| independent exact fixtures | `p1e_no_guard_ring_independent_audit.py` | reachable-floor, determinant, and recurrence checks; candidate perturbation arithmetic is not an all-orders certificate |
+| independent exact fixtures | `p1e_no_guard_ring_independent_audit.py` | reachable-floor, determinant, and recurrence checks; does not certify a level-uniform radius |
 
 All Python paths in the table are relative to
 `afp_barrier_gate1/pure_math/covariance/`.
@@ -150,11 +154,11 @@ division-safe identities used after a shared stress has been constructed:
 - regular-polygon `H_1` and scalar `H_2` identities.
 
 It does not formalize the integer mesh schedule, analytic Cauchy enclosures,
-or global conductance recurrence. Those remain obligations of the ordinary
-unperturbed proof and exact audits. The structured perturbation extension is
-open rather than an unformalized theorem. The aggregate
-import and focused axiom audit must compile without project axioms,
-placeholders, or project constants.
+global conductance recurrence, or the analytic fixed-level perturbation
+radius. Those remain obligations of the ordinary proofs and exact audits.
+Proposition 7.3 is therefore not labeled Lean-verified. The aggregate import
+and focused axiom audit must compile without project axioms, placeholders, or
+project constants.
 
 ## Exact-head acceptance contract
 
@@ -170,8 +174,8 @@ not evidence that the gate has run. On the literal release head it must:
    and reject placeholders, project axioms, and project constants;
 4. hash the source and evidence records and recheck the exact final state.
 
-The ordinary fixed-family mathematical theorem is accepted; no robustness
-theorem is included. Repository freezing remains a
-separate operational step: no CI status or immutable exact-head record exists
-until this workflow succeeds on the literal release commit and its create-only
-archive.
+The ordinary fixed-family theorem and the separate fixed-level robustness
+theorem are mathematically accepted at their stated scopes. Repository
+freezing remains a separate operational step: no CI status or immutable
+exact-head record exists until the repair workflow succeeds on the literal
+release commit.

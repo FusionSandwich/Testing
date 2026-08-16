@@ -319,7 +319,8 @@ Acceptance should require all of the following.
 8. The asymptotic upper theorem remains restricted to `d=2,3` and retains the
    exact \(H_1\), positivity, reversibility, locality, degree/rate, all-orders
    remainder, and sampling-quotient hypotheses proved for the unperturbed P1E
-   family.  The open perturbation route is not cited as a theorem.
+   family. Proposition 7.3 is cited only at its fixed-level, fixed-support
+   scope; no uniform radius or arbitrary-node robustness is attributed.
 9. Transport or application relevance is presented as motivation or future work
    unless a separate transfer theorem is proved.
 10. “First,” “unprecedented,” and “the only” claims are omitted unless supported by

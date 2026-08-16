@@ -2,15 +2,15 @@
 
 ## Final verdict
 
-**ACCEPTED FOR THE UNPERTURBED \(d=3\) CONSTRUCTION ONLY; THE ROBUSTNESS EXTENSION IS OPEN.**
+**ACCEPTED FOR THE UNPERTURBED `d=3` CONSTRUCTION; THE FIXED-LEVEL ROBUSTNESS REPAIR IS PROVED ELSEWHERE; THE FORMER UNIFORM ROUTE IS REJECTED.**
 
 The opening audit found five defects in an earlier submission.  Sections 4
 and 5 repair the reachable integer-stencil margin and global transition
-product estimate used by the unperturbed theorem.  Sections 11 and 12 record
-a candidate all-orders compiler and perturbation route, but they do not
-supply the literal emitted program, verified operation count, complete
-denominator inventory, or recurrence certificate required for theorem
-status.  Those sections are retained as diagnostics and future-work notes.
+product estimate used by the unperturbed theorem. Sections 11 and 12 below record the final disposition: the unsupported
+all-level compiler route is rejected, while the separate fixed-level theorem
+uses the actual finite row systems and strict base margins. No literal emitted
+program, verified operation count, complete denominator inventory, or uniform
+recurrence certificate is claimed.
 
 The integer schedule is well defined and closes exactly at the equator. The
 reachable transition phase is smaller than the candidate's declared box, the
@@ -534,48 +534,42 @@ Consequently
 
 once the conductance construction is complete.
 
-## 8. Robustness scope
+## 8. Robustness scope after repair
 
 The local systems use exact cyclic and reflection symmetry. Arbitrary
-independent node perturbations are outside their scope.
+independent node perturbations remain outside their scope. Independent ring
+rotations change aligned radial moments and can destroy the three-even-equation
+reduction; changes of masks, phases, jumps, poles, equator or support likewise
+require a different theorem.
 
-Even “structured ring perturbations” is presently too broad. Independent
-\(O(h^3)\) changes of ring latitudes make ordinary gaps unequal, so (5.1)
-no longer applies. Independent rotations of rings change aligned radial
-moments and can destroy the three-even-equation reduction. No matrices or
-global recurrence are given for either perturbation.
+The fixed-level repair permits unequal meridional gaps. For one fixed
+production level, keep every discrete support choice and incidence fixed and
+use all northern non-equatorial latitudes as a finite parameter vector. The
+first-row, ordinary, transition and equatorial systems assemble into one finite
+block-lower-triangular shared-conductance system. Its diagonal blocks are
+nonsingular at the strictly positive unperturbed point, so analytic continuity
+and the Neumann lemma provide a computable level-dependent radius. This avoids
+the false claim that one normalized $O(h^2)$ derivative estimate works
+uniformly over all latitudes and all refinement levels.
 
-The printed \(O(h^2)\) scaled-change claim is also false uniformly across
-latitudes. At a transition with \(\theta\) bounded away from zero, changing
-one ring latitude by \(O(h^3)\) changes a radial
-\(\ell\tau=O(h^3)\) column by \(O(h^5)\). The loss-force normalization is
-\(1/(h^4\cot\theta)=O(h^{-4})\), so the normalized change is \(O(h)\), not
-\(O(h^2)\). This still tends to zero and may preserve a fixed positivity
-margin, but it needs the correct bound.
+One common ambient rotation is exact. No lower bound on the latitude radius
+uniform in the level is proved.
 
-Currently justified are ambient rotations and small parameter changes which
-preserve every orbit, the literal support, equal ordinary gaps, and the
-transition block form, provided the missing interval certificates are
-uniform on that box. Any broader result needs unequal-gap row matrices and
-their shared recurrence or a global right inverse for the full six-moment
-edge system.
+## 9. Current promotion boundary
 
-## 9. Historical promotion boundary
+The unperturbed construction has the required schedule, transition and polar
+certificates, adaptive horizontal margins, shared recurrence, exact generator,
+and sampled quotient proof. The separate robustness source adds the accurately
+scoped fixed-level theorem. Promotion beyond that theorem would require new
+evidence for at least one of the following:
 
-At this stage of the audit the route still required:
+1. a level-uniform inverse and positivity margin;
+2. a literal all-level expression graph and independently checked derivative
+   certificate;
+3. a uniform shared-recurrence estimate under perturbation; or
+4. a global right inverse covering arbitrary support or longitude motion.
 
-1. a literal outward certificate for the finite transition system on (2.2);
-2. a literal outward certificate for the finite first-ring system;
-3. a corrected adaptive proof including \(19/10<R<2\);
-4. a floor/ceiling horizontal-conductance margin proof;
-5. inclusion of the transition recurrence estimate (5.5);
-6. a generator instantiating each undirected edge once and checking every
-   row class; and
-7. an accurately scoped perturbation theorem.
-
-The exact schedule, ordinary recurrence, equator row, quotient
-factorization, rate implication, and limiting transition cone can be
-retained. They do not alone complete the all-level family.
+No such stronger statement is active.
 
 ## 10. Reproduction
 
@@ -587,257 +581,42 @@ It verifies the level-\(1\) counterexample, sharper phase constant, limiting
 adaptive factor, recurrence identities, first-ring formula, and rate
 arithmetic. It is not a replacement for the missing interval proofs.
 
-## 11. An explicit analytic all-orders closure
+## 11. Rejected all-level straight-line majorant
 
-The remaining finite transition and first-row margins can be closed without
-fitted slopes or a finite list of levels. The price is replacing \(2^{80}\)
-by one much larger, but completely explicit, fixed dyadic.
+An earlier draft proposed bounding a cancellation-free straight-line program
+by a doubly exponential constant derived from a nominal operation count. That
+route is **rejected as uncertified**. The repository did not contain the
+literal emitted expression graph, an automatically verified operation count,
+a complete denominator-separation list, or independent interval checks for
+all normalized first-row, ordinary, transition, equatorial, and recurrence
+expressions. A recurrence for an abstract operation bound is not a certificate
+for an unspecified program.
 
-### Lemma 11.1 (straight-line \(C^1\) compiler)
+Accordingly, no enormous constant from that draft has theorem or value-registry
+status. The determinant formulas, limiting transition cone, first-row
+adjugate, and recurrence identities in the preceding sections remain useful
+for the unperturbed theorem and for fixed-level nonsingularity. They do not
+supply a uniform inverse or positivity margin across refinement levels.
 
-Suppose a cancellation-free straight-line program has at most \(L\)
-arithmetic nodes. Its leaves and analytic atoms have value and
-\(\varepsilon\)-derivative bounds at most \(2^{16}\), and every reciprocal
-denominator is at least \(2^{-6}\). Let \(W_k\) bound both values and
-derivatives after node \(k\). For addition, multiplication, and reciprocal,
-respectively,
+## 12. Fixed-level support-preserving theorem
 
-\[
- W_{k+1}\le2W_k,\qquad
- W_{k+1}\le2W_k^2,\qquad
- W_{k+1}\le2^{12}W_k.
-\]
+The strongest correct perturbation result is proved in
+`P1E_FIXED_SUPPORT_ROBUSTNESS_THEOREM.md`. For every fixed production level of the declared `M_0=2^80` family,
+keep the ring counts, longitude phases, radial masks, horizontal jumps, pole,
+equator, reflection, and literal edge incidences fixed. The northern
+non-equatorial latitudes are a finite parameter vector, and the exact shared
+moment equations form a finite block-lower-triangular system. The diagonal
+first-row, ordinary, transition, and equatorial blocks are nonsingular at the
+strictly positive unperturbed point. Analytic dependence and the Neumann lemma
+give a unique positive solution on a computable level-dependent neighborhood.
 
-Since \(W_k\ge1\), all three are bounded by
+This fixed-level result preserves reversibility, connectivity, exact
+`H_0 direct-sum H_1` fidelity, and the rowwise scalar quadratic residual. After
+shrinking the neighborhood to preserve the active chord window, it gives
+`r_max<=1024 h_J^-2` and `mathfrak D_2<=54 h_J^2`. One common ambient rotation
+is permitted. No lower bound on the radius uniform in `J` is asserted.
 
-\[
- W_{k+1}\le2^{12}W_k^2.
-\]
-
-Writing \(W_k\le2^{e_k}\), \(e_0=16\), gives
-
-\[
- e_{k+1}=12+2e_k,\qquad
- e_L=28\cdot2^L-12.                                  \tag{11.1}
-\]
-
-Thus every output has
-
-\[
- |\partial_\varepsilon F|\le
- K_L:=2^{28\cdot2^L}.                                \tag{11.2}
-\]
-
-The induction is valid for a specified straight-line program, but the literal program and its node count are not committed here.
-
-### Transition application
-
-Use
-
-\[
- \varepsilon=M^{-1},\qquad
- a=\frac14+\eta\varepsilon,\quad |\eta|\le2,\qquad
- r=\frac{\pi\varepsilon}{a},\qquad \kappa=cr.
-\]
-
-Rewrite every occurrence of sine and cosine using \(\operatorname{sinc}\)
-and \(\operatorname{cosc}\), factor the powers of \(s=\sqrt{1-c^2}\) and
-\(r\) cancelled by the row normalization, and use the cancellation-free
-mask moments. The only reciprocal guards are consequences of
-
-\[
- a>\frac15,\qquad c\ge\frac67,\qquad
- c_\alpha>\frac9{10},\qquad g>\frac9{10};
-\]
-
-they are all stronger than \(2^{-6}\). On arguments of absolute value at
-most \(1/2\), sinc, cosc, and their first derivatives satisfy the leaf bound
-\(2^{16}\).
-
-The right-hand sides contain differences whose separately normalized
-summands would have artificial \(r^{-1}\) or \(r^{-k}\) poles. They must be
-combined before division. Introduce the finite atom list
-
-\[
- \frac{f(\lambda r)-
- \sum_{j<k}f^{(j)}(0)(\lambda r)^j/j!}{r^k},
- \qquad 1\le k\le4,                                  \tag{11.2a}
-\]
-
-for \(f=\sin,\cos,\operatorname{sinc},\operatorname{cosc}\) and the finitely
-many constants \(\lambda\) in the two transition rows. Taylor's formula
-defines these atoms at \(r=0\), and on \(|\lambda r|\le1/2\) bounds their
-values and first \(r\)-derivatives by \(2^{16}\). Thus no reciprocal by
-\(r\), \(s\), or \(1-c\) occurs in the cancellation-free DAG. Checking that
-every numerator has the stated zero order is a finite polynomial identity
-obtained from the row formulas and is part of the DAG emitter, not a
-numerical limit.
-
-The six-by-six system is asserted to use fewer than
-
-\[
- L=10^6
-\]
-
-nodes when written without expansion.  No literal emitted program or
-machine-checked count is included, so this assertion is not a certificate.
-If that missing program and every reciprocal guard were verified, the
-fundamental theorem of calculus and (11.2) would give
-
-\[
- \|A-A_0\|_{\max},\ \|b-b_0\|_\infty
- \le\frac{K_L}{M}.                                   \tag{11.3}
-\]
-
-The limiting data satisfy
-
-\[
- \|A_0^{-1}\|_\infty<3,\qquad
- \|A_0^{-1}b_0\|_\infty<7,\qquad
- \min(A_0^{-1}b_0)>\frac1{500}.
-\]
-
-If \(M>2^{20}K_L\), the Neumann lemma gives
-
-\[
- \|A^{-1}b-A_0^{-1}b_0\|_\infty<\frac1{1000},
-\]
-
-so every finite transition coefficient is positive.
-
-### First-row application
-
-After dividing its three equations by \(h,h^3,h^2\), the limiting first-row
-matrix is
-
-\[
- A_P=
- \begin{pmatrix}
- 1&-2au&-2av\\
- 1/2&-2a^3u^2&-2a^3v^2\\
- 1&-4a^2u(1-u)&-4a^2v(1-v)
- \end{pmatrix},
-\]
-
-and
-
-\[
- \det A_P=4a^3uv(a-1)(2a+1)(u-v).                   \tag{11.4}
-\]
-
-For \(a=4/3\), \(1/20<u<1/10\), and \(1/2<v<2/3\),
-
-\[
- |\det A_P|>\frac{704}{6075}>\frac19.                \tag{11.5}
-\]
-
-Every adjugate entry is less than \(512\) in absolute value, so
-
-\[
- \|A_P^{-1}\|_\infty<2^{14}.                         \tag{11.6}
-\]
-
-The limiting solution has norm less than \(64\) and minimum greater than
-\(1/20\). A proposed cancellation-free normalized finite matrix would use
-the same atom and denominator guards as above. However, the literal expression
-DAG and its node count have not been committed, so the asserted bound by the
-same \(K_L\) is conditional. Consequently the implication that
-\(M_0>2^{40}K_L\) preserves a positive margin is a proof template, not an
-established estimate.
-
-### One explicit choice
-
-Take
-
-\[
- L=10^6,\qquad
- N=28\cdot2^{10^6}+100,\qquad
- \boxed{M_0=2^N.}                                    \tag{11.7}
-\]
-
-If the missing compiler certificate established the advertised \(K_L\)
-bound, then \(M_0>2^{100}K_L\) and the transition and first-row Neumann
-arguments would close. The schedule, degree, separation, rate, and defect
-arguments use only that \(M_0\) is a fixed dyadic above their stated lower
-thresholds.
-
-To turn this route into a proof, the generator must emit the
-cancellation-free expression DAG, count its nodes, and check every listed
-reciprocal guard.  Until that artifact exists, the induction (11.1) is a
-conditional template rather than a completed all-orders certificate.
-
-## 12. Candidate support-preserving perturbation statement — open
-
-The following calculation describes a possible robustness statement within
-the symmetry class used by the construction.  Because Section 11 lacks the
-literal compiler certificate, the statement is not proved.
-
-For one level, perturb each northern ring latitude by
-
-\[
- |\theta_k'-\theta_k|\le h^3,
-\]
-
-fix the pole and equator, and reflect the perturbation into the southern
-hemisphere. Keep every ring count, longitude phase, radial mask, and
-horizontal jump integer unchanged. Allow one common ambient rotation of the
-whole configuration. For the dyadic (11.7), all perturbed meridional gaps
-remain positive and in \([g h/2,2h]\).
-
-At an ordinary row, prescribe the incoming shared radial conductance and
-solve the full three even equations for the outgoing radial conductance and
-the two horizontal conductances. At the unperturbed row this matrix is
-invertible: its explicit solution has
-
-\[
- U_+>0,\qquad U_-/100<H_\pm<100U_-,
-\]
-
-and the determinant factors consist only of the positive radial factor,
-\(x_+-x_->0\), and the positive factor \(T\) in (4.8). A literal cancellation-free \(C^1\) compiler with verified denominator
-guards would be needed to bound the inverse uniformly; that artifact is not
-present.
-
-Indeed, before harmless row normalizations, with
-\(A_h=\sin h\), \(\ell=1-\cos h\), and horizontal losses \(u,v\), the
-determinant of the three columns \((U_+,H_u,H_v)\) is exactly
-
-\[
- 4A_hcs^3uv(u-v)
- \left\{2s^2-(1+c^2)\ell-A_hcs\right\}.              \tag{12.1}
-\]
-
-The last brace equals the positive bracket in (4.7) times \(s^2\), and
-\(u-v\ne0\) by (4.3)--(4.6).
-
-An \(O(h^3)\) latitude displacement changes an ordinary force column by
-\(O(h^3)\), a loss-force column by \(O(h^5)\), and a covariance column by
-\(O(h^4)\). After the natural ordinary-row normalizations
-\(h,h^3,h^2\), every normalized change is \(O(K_Lh^2)\). Thus all ordinary
-coefficients retain half their positive margins. Summed over \(O(h^{-1})\)
-ordinary rows, their logarithmic recurrence perturbation is
-\(O(K_Lh)\).
-
-At a transition the loss-force baseline has one additional cancellation, so
-the normalized perturbation is only bounded by \(O(K_Lh)\), as noted in
-Section 8. There are \(J\) transitions and
-
-\[
- Jh\le\frac{7J}{M_0 2^J}\le\frac7{M_0}.
-\]
-
-Hence their total logarithmic perturbation is \(O(K_L/M_0)\). The first row
-is handled by (11.4)--(11.6), and the equator remains exact by reflection
-with its positive horizontal coefficient re-solved explicitly.
-
-Subject to a future certificate proving the stated \(K_L\) bound, (11.7)
-would give \(K_L/M_0<2^{-100}\); the local coefficients would then stay
-positive and the global conductance product would change by less than a fixed
-factor two. Together with the missing recurrence certificate, these
-conditional estimates would imply positivity, reversibility, exactness on
-\(H_0,H_1\), and the same \(O(h^2)\) quotient order with enlarged
-edge-window constants. No such theorem is claimed here.
-
-This candidate statement would not cover independent longitude perturbations
-or arbitrary node motion. Those destroy the reflection reduction and still
-require a global six-moment right inverse.
+The finite solver and certificate verifiers are regression and interface
+checks. The committed certificate is explicitly a conformance fixture, not a
+production radius. Independent longitude perturbations, arbitrary node
+motion, support changes, and higher-dimensional claims remain excluded.

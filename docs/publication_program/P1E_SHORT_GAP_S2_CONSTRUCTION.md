@@ -633,37 +633,65 @@ gives positive shared conductances, (9.3) gives positive normalized weights,
 cap.  Thus no mesh regularity or sampling injectivity assumption is being
 silently imported into the P1B application.
 
-## 10. Certification manifest and open robustness problem
+## 10. Fixed-level support-preserving robustness
 
-Sections 1--9 prove the unperturbed adaptive-ring construction.  The
-certification suite for that theorem consists of the following checks:
+Sections 1--9 prove the unperturbed adaptive-ring construction. Their
+certification suite remains:
 
 1. `p1e_short_gap_symbolic_matrix_audit.py` constructs (4.5) and derives
    (5.1)--(5.2) exactly;
 2. `p1e_short_gap_cauchy_guard_audit.py` proves the continuous all-orders
-   entry bounds (6.2b) using rational majorants;
+   entry bounds using rational majorants;
 3. `p1e_short_gap_polar_guard_audit.py` constructs and encloses the literal
    finite-$h$ first-row matrix;
-4. `p1e_short_gap_family_audit.py` returns nodes, undirected conductances,
-   masses, and weights, and checks pole, first ring, ordinary cap/bands, both
-   transition endpoints, equator, mesh/rate/window/quotient constants, and
-   deterministic failed mutations; and
+4. `p1e_short_gap_family_audit.py` returns the finite graph, conductances,
+   masses and weights and retains deterministic failed mutations; and
 5. `p1e_short_gap_proof_audit.py` checks the exact phase cone, recurrence,
-   constants, and Neumann arithmetic.
+   constants and Neumann arithmetic.
 
-These checks support the fixed, unperturbed family only.  The proposed
-support-preserving latitude-perturbation extension is **open**.  In
-particular, the repository does not contain a literal emitted
-cancellation-free straight-line program for every normalized ordinary,
-transition, first-row, and equatorial solve; a verified operation count; a
-complete reciprocal-guard list; or a machine-checkable derivative and
-shared-recurrence stability certificate.  The very large candidate constant
-previously denoted by $K_*$ therefore has no theorem status.
+The strongest proved perturbation statement is now the fixed-level theorem in
+`P1E_FIXED_SUPPORT_ROBUSTNESS_THEOREM.md`. For every fixed production level
+$J$ of the declared $M_0=2^{80}$ family, keep the ring counts, longitude phases, radial masks, horizontal jump
+integers, pole, equator, reflection and literal edge incidences fixed. The
+northern non-equatorial latitudes are the finite parameter vector. With the
+north-pole conductance fixed as a scale gauge, the exact first-row, ordinary,
+transition and equatorial moment equations form a finite block-lower-triangular
+system
+\[
+       F_J(p,x)=A_J(p)x-b_J(p)=0.                     \tag{10.1}
+\]
+Its diagonal blocks are the literal $3\times3$, $6\times6$ and scalar row
+systems already proved nonsingular at the unperturbed point. The base
+conductance vector has a strict finite positivity margin. Therefore the
+Neumann lemma, equivalently the analytic implicit-function theorem, gives a
+unique positive shared-conductance solution on a level-dependent neighborhood
+of the base latitudes.
 
-`p1e_no_guard_ring_independent_audit.py` retains useful determinant
-factorizations, reachable-domain calculations, and perturbation arithmetic,
-but those calculations are diagnostic evidence rather than an all-orders
-proof.  A future robustness theorem must commit the literal program and
-certificate, verify all denominator separations, and propagate the resulting
-bounds through the global conductance recurrence.  No perturbation radius or
-robustness constants are claimed in the present theorem package.
+The radius is computable from the finite inverse norm, coefficient Lipschitz
+bounds, residual Lipschitz bounds, positivity margin and meridional-gap
+margin. It is not claimed to have a lower bound uniform in $J$. Shrinking the
+neighborhood so every active chord remains between $h_J/16$ and $6h_J$
+gives the publication-safe conclusions
+\[
+ L1=0,\qquad L\Omega=-2\Omega,\qquad
+ r_{\max}\le1024h_J^{-2},\qquad
+ \mathfrak D_2\le54h_J^2.                             \tag{10.2}
+\]
+The loss-force and tangent-isotropy equations preserve the rowwise multiplier
+$R_2A(i)=c_iS_2A(i)$, so no sampling-frame lower bound enters this result. One
+common ambient rotation is permitted because it preserves all dot products
+and conjugates the vector and tensor equations.
+
+`p1e_fixed_support_robustness.py` and its tests are finite regression surfaces,
+not the proof. The two independent exact certificate verifiers define a future
+interface for an emitted rational radius; the committed fixture is labeled
+`CONFORMANCE_FIXTURE_ONLY` and is not scientific evidence.
+
+The former all-level majorant and its enormous candidate constant are
+**rejected as uncertified**. The repository contains no literal expression DAG,
+automatically verified operation count, complete reciprocal-guard inventory,
+uniform inverse or determinant bound, uniform positivity margin, or global
+recurrence certificate sufficient for a radius independent of refinement.
+`p1e_no_guard_ring_independent_audit.py` retains its candidate arithmetic only
+as historical diagnostic material. No uniform all-level robustness theorem is
+part of this package.

@@ -8,12 +8,13 @@ ACCEPTED.**
 This report deliberately preserves the exact failures of the pre-repair
 submission.  Every item in Section 11 is discharged in the later complete
 source `P1E_SHORT_GAP_S2_CONSTRUCTION.md` and its symbolic, rational
-Cauchy, polar, independent, and hostile audits.  In particular, the corrected
+Cauchy, polar, independent, and hostile audits. In particular, the corrected
 mask moment, no-guard schedule, adaptive integer bracket, literal finite
 matrices, global conductance recurrence, and direct quotient identity are now
-proved for the fixed family. The narrow robustness extension remains open and
-is no longer part of the accepted theorem. The blocking regressions below remain in
-the repository so that those earlier errors cannot silently return.
+proved for the fixed family. A later source separately proves the narrow
+fixed-level, fixed-support robustness theorem; the all-level uniform route
+remains rejected. The blocking regressions below remain in the repository so
+that the earlier errors cannot silently return.
 
 The shortened transition is a credible local mechanism, and several exact
 identities in the candidate survive audit.  The submitted file does not,
@@ -312,32 +313,36 @@ delete the sampling-frame detour from the defect estimate.  A separate
 sampling bound may still be recorded as a mesh property, but it is not needed
 for \(\mathfrak D_2=O(h^2)\).
 
-## 9. The robustness claim is false at its stated scope
+## 9. Robustness disposition after repair
 
-The local systems have only three even equations because exact horizontal
-reflection kills the longitude-odd tangent force, loss-force, and covariance
-equations. A general \(O(h^3)\) perturbation of node positions destroys this
-reflection.  The full local problem then has six moment equations, while the
-displayed local unknown set and inverse still cover only three.  Shared-edge
-coupling also turns the perturbation problem into a global system; independent
-row inverses do not define a global shared correction.
+The hostile conclusion against arbitrary or uniform robustness remains valid.
+A general $O(h^3)$ perturbation of node positions destroys the reflection
+reduction, may alter shared-edge compatibility, and requires a global
+six-moment right inverse. Independent longitude motion, phase or mask changes,
+horizontal-jump changes, pole/equator motion, and support changes remain
+outside the theorem.
 
-Even for a symmetry-preserving perturbation, the scaling sentence is wrong
-as written. Perturbing an \(O(h)\) edge by \(O(h^3)\) changes
-\(\ell\tau\) by \(O(h^5)\), which becomes \(O(h)\), not \(O(h^2)\), after the
-declared \(h^{-4}\) loss-force scaling. This may still be small enough for a
-Neumann argument, but it requires a new bound and changes the conductance
-perturbation order.
+The publication repair does prove a narrower statement. At each fixed
+production level, with every incidence and discrete choice fixed, the exact
+row system is finite and block lower triangular. Its first-row, ordinary,
+transition, and equatorial diagonal blocks are nonsingular at the strictly
+positive base solution. Analytic dependence and a Neumann/implicit-function
+argument therefore give a computable level-dependent radius preserving the
+positive shared solution. The radius may deteriorate with level and is not
+obtained from the rejected enormous majorant.
 
-Robustness can be repaired only by either:
+The repaired theorem must therefore always be cited with all of the following
+qualifiers:
 
-- explicitly restricting perturbations to the iso-latitude, cyclic, and
-  reflection-symmetric parameter family and auditing the corresponding
-  finite systems; or
-- proving a global right inverse for the full shared-edge six-moment map with
-  a uniform positivity margin.
+- one fixed production level;
+- fixed ring counts, phases, masks, jumps, pole, equator and reflection;
+- fixed literal support incidence and one shared unknown per undirected edge;
+- a level-dependent radius controlled by finite inverse and positivity margins;
+- no sampling-frame lower bound for the row-multiplier conclusion; and
+- no uniform all-level radius.
 
-No such result is present.
+Finite regression scripts test the implementation and hostile mutations only.
+They are not the analytic proof.
 
 ## 10. What the exact scripts do and do not prove
 
@@ -353,15 +358,17 @@ Both submitted scripts pass, but their coverage is narrow.
 | mask mutation | checks only a leading invariant | printed \(m_2\) mismatch missed |
 | floating transition solve | regression only | polar regime and small \(M\), not all schedule rows |
 | mesh, cap, guards, recurrence | not constructed | all-level family missing |
-| robustness | not tested | symmetry and global sharing missing |
+| pre-repair broad robustness | not tested by this historical script | later fixed-level proof fixes symmetry and global sharing; uniform route rejected |
 
 The new hostile regression checks the printed mask formula, exact (Q)
 bookkeeping, the polar rounding obstruction, the coarse jump-eight Taylor
 domain, and the direct quotient factorization.
 
-## 11. Required corrections before reconsideration
+## 11. Historical corrections that were required
 
-An acceptable revision must do all of the following.
+The pre-repair submission required all of the following. The controlling
+construction and fixed-level robustness sources now discharge the applicable
+items at their stated scopes.
 
 1. Correct \(m_2\) to (2.1) everywhere and regenerate the matrices.
 2. Give the exact latitude and edge list, including cap closure, both guards,
@@ -379,9 +386,10 @@ An acceptable revision must do all of the following.
    stated sampling constant.
 9. Restrict and prove robustness, or supply the missing full global inverse.
 
-Until these corrections are supplied, the candidate is a local transition
-ansatz with promising exact limiting algebra, not a matching-order P1E
-construction theorem.
+These requirements explain the historical rejection. They are not the current
+status: the unperturbed matching-order theorem and the separate fixed-level
+support-preserving theorem are now proved, while a uniform all-level radius is
+explicitly rejected.
 
 ## 12. Reproduction
 

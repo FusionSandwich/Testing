@@ -4,9 +4,10 @@
 
 The original paper release was a one-commit publication layer over the
 accepted fixed-family P1E construction archive. This audit-driven revision
-supersedes the original robustness wording while retaining that archive as
-historical provenance. The archived P1E files do not certify a perturbation
-theorem.
+retains that archive as historical provenance and adds an ordinary fixed-level
+robustness proof. The historical P1E archive alone does not certify the new
+level-dependent theorem; the controlling sources and repair workflow are the
+files on the present repair branch.
 
 | Record | Exact value |
 |---|---|
@@ -32,10 +33,14 @@ are:
 
 | File | SHA-256 |
 |---|---|
-| `FLAGSHIP_MANUSCRIPT.md` | `453f9e69acad66b201e7e70940d058aaa01a68af2b15a6d143b45a6bbb7315bc` |
+| `FLAGSHIP_MANUSCRIPT.md` | `0a1083976c3e3d77adf742be62b5cbe72652261f8b01e8e2341f7a541eb351c6` |
 | `priority_sources.bib` | `8a896552a8a03154ba834466bdd80a6af65c39e5f440f53e2afbbc462746ae48` |
-| `proof_dependency_graph.png` | `745d14b2cc65c07c584ccd5d56667aaecb6d59fb9cff264ca6d90b31e0d6eee2` |
-| `output/pdf/FLAGSHIP_MANUSCRIPT.pdf` | `8d09af48519b3df81881be47f4a8e477b38ed6485ed74e82d8d9167c6e7824c4` |
+| `proof_dependency_graph.png` | `0b885c822230bd3e965863b4d9b618e5bcd84cc4e046ac9add46c4ee4a5f8a9e` |
+| `build_flagship_paper.py` | `95e205d4b1cf0e5da982ae2699fae4870c74ce8ac1f1864a5c93e9785e7bfc6c` |
+| `paper_header.tex` | `c3d151618c134114b35ce30eb672d9e127bf3c5dad244b83b970ea38d252cd20` |
+| `P1E_FIXED_SUPPORT_ROBUSTNESS_THEOREM.md` | `6c47cbc2e8da5bdfb8b05eee69c38af7e32ae1954ae223f2b040dbfc2a16155c` |
+| `p1e_fixed_support_certificate.schema.json` | `e462e2fe5f4199064fe92fdd01f284f22634c0b258aec0a225a3be0080a05f1c` |
+| `output/pdf/FLAGSHIP_MANUSCRIPT.pdf` | `14508546332c0f1f936a77010a0aa698cb7fb3b25d02551b8b2cc40cf350d3a7` |
 
 The PDF is 24 US-letter pages, has no encryption or JavaScript, and carries the
 title `A sharp positivity--rate frontier for quadratic fidelity of reversible
@@ -43,18 +48,21 @@ spherical generators` in its document metadata.
 
 ## Reference authoring environment
 
-The reference artifact was produced with:
+The canonical checked-in artifact was produced by the exact materialization workflow with:
 
 ```text
-Python 3.13.5
+Python 3.12.13
 matplotlib 3.10.8
-pandoc 3.1.11.1
-XeTeX 3.141592653-2.6-0.999996 (TeX Live 2025/dev/Debian)
-pdftotext 25.06.0
+pandoc 3.1.3
+XeTeX 3.141592653-2.6-0.999995 (TeX Live 2023/Debian)
+pdftotext version 24.02.0
 SOURCE_DATE_EPOCH=1785900000
+FORCE_SOURCE_DATE=1
 ```
 
-Exact PDF bytes can depend on the TeX distribution and installed fonts. The
+The build derives a fixed PDF trailer identifier from the checked-in source
+inputs, so repeated builds in the recorded toolchain are byte-identical. Exact
+PDF bytes can still differ under a different TeX distribution or font set. The
 present consolidated revision workflow verifies the committed content hash,
 metadata, page-range guard, extracted claim boundary, and absence of raw
 citation or diagram markup. A permanent tagged release should additionally
@@ -72,8 +80,8 @@ pdftotext output/pdf/FLAGSHIP_MANUSCRIPT.pdf -
 ```
 
 The build script writes only the publication figure, a transient prepared
-Markdown file under `tmp/pdfs/p1f-build`, and
-`output/pdf/FLAGSHIP_MANUSCRIPT.pdf`.
+Markdown file and generated deterministic LaTeX header under
+`tmp/pdfs/p1f-build`, and `output/pdf/FLAGSHIP_MANUSCRIPT.pdf`.
 
 ## Release-gate boundary
 
@@ -96,6 +104,8 @@ historical workflow checked:
 6. final artifact digests on the unchanged exact head.
 
 Expected `BLOCKED`, `REJECTED`, and `OPEN_UNCERTIFIED` labels in separate
-route-obstruction documents are not active paper claims. A new tagged release
-must preserve the revised source, PDF, environment record, and validation logs
-rather than relying on the mutable `archive/...` branch convention.
+route-obstruction documents are not active paper claims. The active robustness
+labels are `P1E-ROBUST-FIXED | PROVED` and
+`P1E-ROBUST-UNIFORM | REJECTED`. A new tagged release must preserve the revised
+source, PDF, certificate-interface files, environment record, and validation
+logs rather than relying on the mutable `archive/...` branch convention.

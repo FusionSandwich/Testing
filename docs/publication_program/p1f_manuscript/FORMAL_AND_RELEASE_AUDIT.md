@@ -116,11 +116,12 @@ module does not define or prove:
 - the shared-conductance recurrence and global margin;
 - fill distance, separation, degree, or angular windows;
 - the direct sampled quotient bound; or
-- support-preserving perturbation robustness, which is open rather than part of the ordinary theorem package.
+- the analytic level-dependent radius in Proposition 7.3.
 
-Those remain in the ordinary proof and deterministic exact audits.  This
-boundary agrees with the module docstring and prevents a nearby finite lemma
-from being cited as machine verification of the analytic construction.
+Those remain in the ordinary proof, the fixed-level robustness proof, and
+deterministic exact audits. This boundary agrees with the module docstring and
+prevents a nearby finite lemma from being cited as machine verification of the
+analytic construction or perturbation radius.
 
 ## 5. Deterministic audit results
 
@@ -133,6 +134,8 @@ The following checks passed:
 - independent hostile Cauchy/first-row audit;
 - polar Cauchy guard;
 - transition and full-family row-class regressions;
+- two independent exact fixed-support certificate verifiers;
+- focused fixed-support perturbation and hostile-mutation tests;
 - rejected-formula/referee mutations;
 - independent no-guard ring audit;
 - icosphere bulk-formula obstruction;

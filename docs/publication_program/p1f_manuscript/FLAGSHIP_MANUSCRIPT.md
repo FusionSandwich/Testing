@@ -51,9 +51,12 @@ $$
 \le\inf_{L\in\mathcal G_h(64\pi^2)}\mathfrak D_2(L)
 \le\frac{75}{2}h^2.
 $$
-A perturbative robustness theorem for the three-dimensional construction is
-not claimed here.  The fixed-support perturbation route is retained only as an
-open certification problem.
+For every fixed refinement level of the three-dimensional construction,
+small reflected latitude perturbations with the complete support pattern fixed
+admit a unique positive shared-conductance repair. The permitted radius is
+computable but level-dependent; no all-level uniform radius is claimed. In a
+sufficiently small fixed-level neighborhood one may retain the conservative
+bounds $r_{\max}\le1024h^{-2}$ and $\mathfrak D_2\le54h^2$.
 
 ## 1. Introduction
 
@@ -122,6 +125,11 @@ The paper makes the following mathematical contributions.
    row moment equation at all levels, and gives the explicit constants
    $\mathsf R_3=64\pi^2$ and $C_3=75/2$.
 
+8. At every fixed spherical refinement level, it proves support-preserving
+   robustness under reflected latitude perturbations by an explicit finite
+   block-Jacobian argument. The radius is computable and level-dependent;
+   no uniform all-level inverse or radius is asserted.
+
 ### 1.2 Priority boundary
 
 The contribution is not the introduction of positive coordinate-exact
@@ -175,7 +183,8 @@ scope, reproducibility record, and limitations.
 | 4 | Equality geometry and exact extremizers | Theorems 5.1--5.3, Proposition 5.4, Corollaries 5.5--5.6, Section 8 | accepted P1B--P1C |
 | 5 | Quantitative near-extremizer stability | Theorem 6.1 and Corollaries 6.2--6.3 | accepted P1D |
 | 6 | Matching-order local positive construction | Theorems 7.1--7.2 | accepted P1E for `d=2,3` |
-| 7 | Generator-lift or negativity consequences | Section 10 | deliberately not claimed |
+| 7 | Fixed-level support-preserving robustness | Proposition 7.3 | proved P1E at each fixed `d=3` level; radius level-dependent |
+| 8 | Generator-lift or negativity consequences | Section 10 | deliberately not claimed |
 
 ## 2. Positive reversible spherical generators and sampled harmonic quotients
 
@@ -1085,23 +1094,81 @@ which proves (7.17). The lower half of (7.18) is Theorem 4.1:
 $\mathfrak D_2\ge6/r_{\max}\ge6h^2/\mathsf R_3$.
 $\square$
 
-### Open problem 7.3 (support-preserving perturbations)
+### Proposition 7.3 (fixed-level support-preserving robustness)
 
-The fixed-support reflected-latitude perturbation route remains plausible, but
-it is **not** a theorem of this paper.  The repository does not contain the
-literal cancellation-free straight-line program, verified operation count,
-complete denominator-guard inventory, or machine-checkable derivative and
-global-recurrence certificate needed to justify the previously advertised
-universal constant.  The associated scripts are retained as diagnostics and
-falsification aids only.
+Fix one production level $J\ge1$ of the $M_0=2^{80}$ family in Theorem 7.2 and its exact support pattern.
+Keep every ring count, longitude phase, radial mask, horizontal jump integer,
+pole, equator, north--south reflection and undirected edge incidence fixed.
+Perturb only the northern non-equatorial latitudes and reflect the perturbation
+south. Then there is a radius $\rho_J>0$ such that every perturbation with
+maximum latitude displacement at most $\rho_J$ has a unique pole-normalized
+solution of the exact row moment equations. All literal shared conductances
+remain positive. With
+$$
+ \mu_i=\frac12\sum_j\gamma_{ij}\ell_{ij}
+$$
+and normalized stationary masses, the repaired generator is connected and
+reversible and satisfies
+$$
+     L1=0,\qquad L\Omega=-2\Omega.                    \tag{7.21}
+$$
+Moreover the exact row multiplier persists,
+$$
+     (R_2A)_i=c_i(S_2A)_i,
+     \qquad 0<c_i\le3\ell_{\max},                    \tag{7.22}
+$$
+so the radius may be reduced so that
+$$
+     r_{\max}\le1024h_J^{-2},
+     \qquad \mathfrak D_2\le54h_J^2.                 \tag{7.23}
+$$
+One common ambient rotation is permitted. The radius is computable from the
+finite inverse norm, coefficient and residual Lipschitz bounds, strict base
+positivity margin and meridional-gap margin. It is not bounded below uniformly
+in $J$ by this proposition.
 
-A complete robustness theorem would have to preserve the ring counts,
-longitude phases, radial masks, horizontal jump integers, pole and equator,
-and north--south reflection; enumerate the exact normalized row programs;
-certify every reciprocal guard and derivative bound; and propagate the local
-bounds through the shared-conductance recurrence.  Until such a certificate is
-committed and independently checked, no perturbation radius or constants
-$\mathsf R_{\rm rob}$ and $C_{\rm rob}$ are asserted.
+#### Proof
+
+At fixed $J$, order the pole-to-equator conductance unknowns by first row,
+ordinary rows, coupled transitions and equator, fixing the north-pole
+conductance as a scale gauge. The exact tangent-force, loss-force and tangent-
+isotropy equations form
+$$
+       F_J(p,x)=A_J(p)x-b_J(p)=0.                     \tag{7.24}
+$$
+The matrix is block lower triangular. Its diagonal blocks are the first-row
+and ordinary $3\times3$ systems, the transition $6\times6$ systems, and the
+final nonzero scalar equatorial equation. The polar adjugate guard proves the
+first block nonsingular. Equations (7.1)--(7.2), with $x_-<1<x_+$, prove every
+ordinary block nonsingular. The transition determinant and Cauchy guard prove
+every transition block nonsingular, and the chosen equatorial jump has nonzero
+sine coefficient. Hence $A_J(p_J^0)$ is invertible. The base solution is a
+finite strictly positive vector.
+
+All entries depend analytically on the latitude vector on the open ordering
+domain. Let $\beta_J=\|A_J(p_J^0)^{-1}\|_\infty$, let $m_J$ be the smallest
+base conductance, and bound the coefficient and residual derivatives on a
+closed box by $L_J$ and $C_J$. A positive $\rho_J$ can be chosen so that
+$\beta_JL_J\rho_J\le1/2$ and
+$2\beta_JC_J\rho_J<m_J/2$, while preserving latitude order. The Neumann
+lemma then gives a unique solution and
+$\|x_J(p)-x_J^0\|_\infty<m_J/2$, proving positivity.
+
+Fixed positive incidence preserves connectivity; one shared conductance per
+edge gives detailed balance. The exact row equations imply (7.21)--(7.22) by
+the same radial--tangent calculation as (7.19)--(7.20). No lower sampling-
+frame bound is used. Reducing $\rho_J$ to at most $h_J/32$ changes each edge
+chord by at most $2\rho_J$; the base window $[h_J/8,5h_J]$ becomes a subset of
+$[h_J/16,6h_J]$. Since $\ell=\operatorname{chord}^2/2$, the rate identity and
+(7.22) give (7.23). A common rotation preserves all dot products and conjugates
+the moment equations. $\square$
+
+The proposition does **not** prove a radius uniform in $J$, independent
+longitude motion, changes of masks, phases, jumps or support, pole/equator
+motion, arbitrary node perturbations, or a construction in $d>3$. The former
+all-level enormous majorant is rejected because no literal expression graph,
+verified operation count, complete denominator certificate, uniform inverse
+bound, uniform positivity margin or recurrence certificate was supplied.
 
 ## 8. Exact examples
 
@@ -1216,7 +1283,7 @@ regression evidence but is not a substitute for proof.
 | Theorem 7.1, regular-polygon matching family | Section 7.1, direct Fourier proof | `p1e_asymptotic_family_audit.py`; `QuadraticFidelityConstruction.lean` | P1E-POLYGON | accepted for `d=2` |
 | Theorem 7.2, adaptive-ring mesh, positivity and exact `H_0,H_1` | `docs/publication_program/P1E_SHORT_GAP_S2_CONSTRUCTION.md`, Sections 1--8 | symbolic, Cauchy, polar, family, proof, referee and independent audits listed below | P1E-RING | accepted for `d=3` |
 | Theorem 7.2, sampled quotient multiplier and matching constants | same P1E source, Section 9 | `p1e_short_gap_proof_audit.py`; `p1e_short_gap_cauchy_hostile_audit.py` | P1E-ROW; F-CONSTRUCT | accepted for `d=3` |
-| Open problem 7.3, support-preserving perturbations | P1E source, Section 10, and retained diagnostic calculations | `p1e_no_guard_ring_independent_audit.py` | P1E-ROBUST | open; no perturbation radius or robustness constants are claimed |
+| Proposition 7.3, fixed-level support-preserving robustness | `docs/publication_program/P1E_FIXED_SUPPORT_ROBUSTNESS_THEOREM.md`; P1E source, Section 10 | `p1e_fixed_support_robustness_audit.py`; two independent certificate verifiers; fixed-support tests | P1E-ROBUST-FIXED | proved for every fixed `M_0=2^80`, `d=3` production level; radius computable and level-dependent; uniform route rejected |
 
 The controlling registry is
 `docs/publication_program/THEOREM_REGISTRY.md`. Any change in theorem
@@ -1358,15 +1425,17 @@ lemmas.
    class. A future comparison should specify a common rate or cost constraint
    before drawing conclusions about the benefit of leaving the positive cone.
 
-8. The `d=3` perturbation proposition fixes ring counts, phases, masks, horizontal
-   jumps, pole/equator data, and reflection. It does not cover arbitrary node
-   motion or independent longitude perturbations.
+8. Proposition 7.3 fixes ring counts, phases, masks, horizontal jumps,
+   pole/equator data, reflection and support incidence. Its radius is computed
+   separately at each finite level. It does not cover arbitrary node motion,
+   independent longitude perturbations or a level-uniform neighborhood.
 
 The immediate construction question is now higher-dimensional: whether a
 different local compiler can produce the matching order for `d>3` with shared
-positive conductances and a quantitative global feasibility margin. A broader
-robustness result in `d=3` would likewise require a uniform right inverse for
-the full shared six-moment edge system.
+positive conductances and a quantitative global feasibility margin. A uniform
+all-level robustness result in `d=3` would likewise require a uniform right
+inverse, positivity margin and recurrence certificate for the full shared
+six-moment edge system.
 
 ## Appendix G. Related-theorem and hypothesis-transfer matrix
 

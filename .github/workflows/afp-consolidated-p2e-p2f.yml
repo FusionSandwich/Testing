@@ -70,12 +70,20 @@ jobs:
               'docs/publication_program/P1E_NO_GUARD_RING_INDEPENDENT_AUDIT.md',
               'docs/publication_program/P1E_APPROACH_REGISTRY.md',
               'docs/publication_program/P1E_STAGE_REPORT.md',
+              'docs/publication_program/P1E_FIXED_SUPPORT_ROBUSTNESS_THEOREM.md',
+              'docs/publication_program/P1E_ROBUSTNESS_',
+              'afp_barrier_gate1/pure_math/covariance/p1e_fixed_support_',
+              'afp_barrier_gate1/pure_math/tests/test_p1e_fixed_support_robustness.py',
+              '.github/workflows/afp-post-audit-prop73-repair.yml',
               'docs/publication_program/AFP_AUDIT_MAJOR_REVISION_RECORD.md',
               'docs/publication_program/APPROACH_REGISTRY.md',
               'docs/publication_program/PAPER_BOUNDARY_MATRIX.md',
               'docs/publication_program/THEOREM_REGISTRY.md',
               'docs/publication_program/VALUE_REGISTRY.md',
               'docs/publication_program/p1f_manuscript/FLAGSHIP_MANUSCRIPT.md',
+              'docs/publication_program/p1f_manuscript/build_flagship_paper.py',
+              'docs/publication_program/p1f_manuscript/paper_header.tex',
+              'docs/publication_program/p1f_manuscript/proof_dependency_graph.png',
               'docs/publication_program/p1f_manuscript/FORMAL_AND_RELEASE_AUDIT.md',
               'docs/publication_program/p1f_manuscript/P1F_REPRODUCIBILITY_MANIFEST.md',
               'docs/publication_program/p1f_manuscript/P1F_STAGE_REPORT.md',
@@ -157,10 +165,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          ! grep -Fq '### Proposition 7.3' docs/publication_program/p1f_manuscript/FLAGSHIP_MANUSCRIPT.md
-          grep -Fq '### Open problem 7.3' docs/publication_program/p1f_manuscript/FLAGSHIP_MANUSCRIPT.md
-          grep -Fq '| P1E-ROBUST | OPEN |' docs/publication_program/THEOREM_REGISTRY.md
-          grep -Fq '| structured perturbation route | OPEN_UNCERTIFIED |' docs/publication_program/P1E_APPROACH_REGISTRY.md
+          grep -Fq '### Proposition 7.3 (fixed-level support-preserving robustness)' docs/publication_program/p1f_manuscript/FLAGSHIP_MANUSCRIPT.md
+          ! grep -Fq '### Open problem 7.3' docs/publication_program/p1f_manuscript/FLAGSHIP_MANUSCRIPT.md
+          grep -Fq '| P1E-ROBUST-FIXED | PROVED |' docs/publication_program/THEOREM_REGISTRY.md
+          grep -Fq '| P1E-ROBUST-UNIFORM | REJECTED |' docs/publication_program/THEOREM_REGISTRY.md
+          grep -Fq '| structured perturbation route | PROVED_FIXED_LEVEL |' docs/publication_program/P1E_APPROACH_REGISTRY.md
+          ! grep -Fq '2^{28\cdot2^{10^6}}' docs/publication_program/p1f_manuscript/FLAGSHIP_MANUSCRIPT.md
           grep -Fq 'This is not a formal proof of the whole P1E theorem.' docs/publication_program/p1f_manuscript/FORMAL_AND_RELEASE_AUDIT.md
           python - <<'PY'
           import hashlib
@@ -187,8 +197,8 @@ jobs:
           test "$(awk '/^Pages:/ {print $2}' "${RUNNER_TEMP}/p1f-pdfinfo.txt")" -ge 20
           test "$(awk '/^Pages:/ {print $2}' "${RUNNER_TEMP}/p1f-pdfinfo.txt")" -le 30
           grep -Fq 'Title:           A sharp positivity--rate frontier for quadratic fidelity of reversible spherical generators' "${RUNNER_TEMP}/p1f-pdfinfo.txt"
-          grep -Fq 'Open problem 7.3' "${RUNNER_TEMP}/p1f-text.txt"
-          ! grep -Fq 'Proposition 7.3 (structured support-preserving robustness)' "${RUNNER_TEMP}/p1f-text.txt"
+          grep -Fq 'Proposition 7.3 (fixed-level support-preserving robustness)' "${RUNNER_TEMP}/p1f-text.txt"
+          ! grep -Fq 'Open problem 7.3' "${RUNNER_TEMP}/p1f-text.txt"
           ! grep -Eq '\[\@A[A-Za-z0-9:_-]+\]' "${RUNNER_TEMP}/p1f-text.txt"
           ! grep -Fq 'proof_dependency_graph.png' "${RUNNER_TEMP}/p1f-text.txt"
           echo 'P1F_REVISED_PDF_TEXT_AND_METADATA_PASS'

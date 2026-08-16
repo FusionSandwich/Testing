@@ -11,10 +11,12 @@ evidence.
 
 ## Corrections implemented
 
-1. **P1E robustness claim.** The former Proposition 7.3 is removed from the
-   flagship theorem chain and replaced by Open problem 7.3. The retained
-   fixed-support perturbation calculations are diagnostic only. No perturbation
-   radius or constants are publication claims.
+1. **P1E robustness claim.** Proposition 7.3 is repaired as a fixed-level,
+   fixed-support theorem. For every `M_0=2^80` production level the finite block system
+   has an invertible base Jacobian and a strict positive conductance margin,
+   giving a computable level-dependent radius. Reversibility, exact coordinate
+   fidelity, connectivity, and conservative constants `1024` and `54` persist.
+   The former uniform all-level majorant is rejected as uncertified.
 2. **Formalization boundary.** The paper and release audit now state that Lean
    verifies a finite algebraic core, not the adaptive mesh theorem, analytic
    Cauchy enclosures, global recurrence, physical benchmarks, or the whole

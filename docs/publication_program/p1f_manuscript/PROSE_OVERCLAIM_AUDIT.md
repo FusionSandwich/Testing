@@ -9,10 +9,12 @@ comparison in `PRIORITY_AND_HOSTILE_REFEREE_AUDIT.md`.
 ## Verdict
 
 **PASS WITH EXPLICIT DIMENSION AND ROBUSTNESS BOUNDARIES.** The manuscript now
-states the matching construction as an accepted theorem in `d=2,3`, while the
-frontier, equality, and stability hierarchy remains all-dimensional. It does
-not claim a construction for `d>3`, generic node perturbations, transport
-improvement, or a universal obstruction to signed high-order formulas.
+states the matching construction as an accepted theorem in `d=2,3` and proves
+a separate fixed-level support-preserving theorem in `d=3`, while the frontier,
+equality, and stability hierarchy remains all-dimensional. It does not claim a
+construction for `d>3`, generic node perturbations, a level-uniform robustness
+radius, transport improvement, or a universal obstruction to signed
+high-order formulas.
 
 This is a prose and theorem-boundary audit. It does not replace the underlying
 ordinary proofs, exact audits, or eventual release workflow.
@@ -26,7 +28,7 @@ ordinary proofs, exact audits, or eventual release workflow.
 | `d=2` mesh parameter normalized inconsistently | Theorem 7.1; abstract; registries | PASS | `h=pi/N` is fill/separation, active edge angle is `2h`, `R_2=pi^2/8`, `C_2=4`, `c_2=16/pi^2` |
 | `d=3` construction promoted from fitted slopes | Abstract; contribution list; Theorem 7.2; Appendices B--C | PASS | the proof uses literal symbolic row systems, rational Cauchy guards, exact recurrence and positivity margins; finite generator output is regression only |
 | Construction generalized beyond proved dimensions | Abstract; hierarchy; Theorems 7.1--7.2; limitations | PASS | matching families are stated only for `d=2,3`; the all-dimensional scope is reserved for the lower frontier, equality and stability |
-| Generic perturbation robustness inferred | Abstract; Open problem 7.3; limitations | PASS | no robustness theorem, perturbation radius, or constants are claimed; the fixed-support reflected-latitude calculation is explicitly `OPEN_UNCERTIFIED` |
+| Generic or uniform perturbation robustness inferred | Abstract; Proposition 7.3; limitations | PASS | only the fixed-support reflected-latitude theorem is proved, separately at each finite level; arbitrary node motion and a level-uniform radius are explicitly rejected |
 | Local row feasibility treated as global reversibility | Theorems 5.3 and 7.2; rejected-claim table | PASS | P1C keeps detailed balance/Gram/cycle compatibility; P1E assigns one conductance per undirected edge and proves the global recurrence |
 | Positivity assumed to survive correction | Section 7.2 | PASS | strict transition, ordinary, polar and global conductance margins precede normalization |
 | Equality conflated with exact sampled `H_2` | Theorem 5.1; examples; rejected claims | PASS | frontier equality is `R_2=c_*S_2` with `c_*>0`; the sampled exact shell is zero |
@@ -50,7 +52,7 @@ All mathematical activation conditions are now met in the controlling sources:
 - [x] rowwise `B_i=0` and sampling-safe scalar residual;
 - [x] `R_3=64pi^2`, `C_3=75/2`, and P1B transfer
       `c_3=3/(32pi^2)`;
-- [x] unsupported structured robustness removed and recorded as an open certification problem;
+- [x] unsupported uniform robustness removed; fixed-level robustness proved with a computable level-dependent radius;
 - [x] independent symbolic, Cauchy, first-row, recurrence, generator and
       hostile-mutation audits;
 - [x] abstract, contribution list, dependency graph, source map, limitations

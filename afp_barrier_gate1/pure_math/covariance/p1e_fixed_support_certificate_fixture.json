@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "scientific_status": "CONFORMANCE_FIXTURE_ONLY",
+  "level": 1,
+  "uniform_in_level": false,
+  "radius_kind": "level-dependent-rational-lower-bound",
+  "support": {
+    "ring_counts_fixed": true,
+    "longitude_phases_fixed": true,
+    "radial_masks_fixed": true,
+    "horizontal_jumps_fixed": true,
+    "pole_fixed": true,
+    "equator_fixed": true,
+    "north_south_reflection_fixed": true,
+    "shared_edge_unknowns_unique": true,
+    "common_rotation_allowed": true,
+    "support_sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+  },
+  "geometry": {
+    "radius_over_h": "1/64",
+    "base_separation_over_h_lower": "1/16",
+    "base_edge_chord_over_h_lower": "1/8",
+    "base_edge_chord_over_h_upper": "5"
+  },
+  "blocks": [
+    {
+      "name": "first-row",
+      "dimension": 3,
+      "determinant_abs_lower": "1/100",
+      "inverse_norm_upper": "4",
+      "jacobian_lipschitz_upper": "1",
+      "residual_lipschitz_upper": "1",
+      "base_positive_margin": "1/10"
+    },
+    {
+      "name": "ordinary-row",
+      "dimension": 3,
+      "determinant_abs_lower": "1/1000",
+      "inverse_norm_upper": "4",
+      "jacobian_lipschitz_upper": "1",
+      "residual_lipschitz_upper": "1",
+      "base_positive_margin": "1/10"
+    },
+    {
+      "name": "transition-row",
+      "dimension": 6,
+      "determinant_abs_lower": "1/10000",
+      "inverse_norm_upper": "4",
+      "jacobian_lipschitz_upper": "1",
+      "residual_lipschitz_upper": "1",
+      "base_positive_margin": "1/10"
+    },
+    {
+      "name": "equator-row",
+      "dimension": 1,
+      "determinant_abs_lower": "1/100",
+      "inverse_norm_upper": "4",
+      "jacobian_lipschitz_upper": "1",
+      "residual_lipschitz_upper": "1",
+      "base_positive_margin": "1/10"
+    }
+  ],
+  "claimed_rate_constant": "1024",
+  "claimed_defect_constant": "54"
+}

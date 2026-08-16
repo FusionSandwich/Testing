@@ -5,7 +5,8 @@
 ```text
 MANUSCRIPT_MAJOR_REVISION_IN_PROGRESS
 P1E_UNPERTURBED_CONSTRUCTION_RETAINED
-P1E_ROBUSTNESS_RECLASSIFIED_OPEN
+P1E_FIXED_LEVEL_ROBUSTNESS_PROVED
+P1E_UNIFORM_ROBUSTNESS_REJECTED
 ```
 
 The manuscript now assembles the accepted P1A--P1E mathematics.  The literal
@@ -24,7 +25,9 @@ The controlling paper is `FLAGSHIP_MANUSCRIPT.md`. Its hierarchy is:
    `mathfrak D_2 r_max >= d(d-1)`;
 4. equality geometry and exact extremizers;
 5. quantitative near-extremizer stability;
-6. matching positive local constructions in `d=2,3` only.
+6. matching positive local constructions in `d=2,3` only; and
+7. fixed-level support-preserving robustness for every `M_0=2^80`, `d=3` production level,
+   with a computable level-dependent radius.
 
 The regular-polygon family uses fill/separation `h=pi/N`, active edge angle
 `2h`, and constants
@@ -44,10 +47,12 @@ c_3 = 3/(32 pi^2).
 ```
 
 The frontier, equality, and stability theorems remain all-dimensional. The
-construction does not extend to `d>3`.  The former `d=3` robustness proposition
-has been removed: the fixed-support reflected-latitude route is an open
-certification problem and contributes no theorem, perturbation radius, or
-constants to this manuscript.
+construction does not extend to `d>3`. Proposition 7.3 is proved for every
+fixed `M_0=2^80`, `d=3` production level with the full support pattern fixed. Its radius is
+computable from finite inverse, derivative, positivity, and gap margins but is
+not uniform in refinement. On a sufficiently small neighborhood the
+conservative constants are `1024` and `54`. The former all-level majorant is
+rejected as uncertified.
 
 ## Manuscript evidence set
 
@@ -58,7 +63,8 @@ constants to this manuscript.
 | bibliography | `priority_sources.bib` | primary-source records only |
 | sampling/equality referee | `SAMPLING_ALIAS_EQUALITY_HOSTILE_REFEREE_REPORT.md` | quotient, leakage, trace, equality and stability conventions |
 | construction/formal release audit | `FORMAL_AND_RELEASE_AUDIT.md` | finite Lean surface and deterministic P1E audit boundary |
-| prose audit | `PROSE_OVERCLAIM_AUDIT.md` | dimension, open-robustness, priority, signed-operator and transport guards |
+| fixed-level perturbation theorem | `../P1E_FIXED_SUPPORT_ROBUSTNESS_THEOREM.md` | finite block system, level-dependent radius, positivity and exactness boundary |
+| prose audit | `PROSE_OVERCLAIM_AUDIT.md` | dimension, fixed-level/uniform robustness boundary, priority, signed-operator and transport guards |
 | reproducibility manifest | `P1F_REPRODUCIBILITY_MANIFEST.md` | historical P1E base, revised content hashes, build environment, and explicit boundary between the historical P1F gate and this major-revision gate |
 | publication artifact | `output/pdf/FLAGSHIP_MANUSCRIPT.pdf` | rendered 24-page paper built from the checked-in source and bibliography |
 
@@ -93,8 +99,8 @@ and the P2F experiment. The consolidated revision workflow must:
 
 - verify ancestry from the accepted P2E execution and preserve the historical
   P1E/P2E refs without moving them;
-- enforce the open status of the robustness extension and the finite-only Lean
-  boundary;
+- enforce the proved fixed-level and rejected uniform robustness statuses and
+  the finite-only Lean boundary;
 - reproduce and audit the revised P2F reference sweep twice;
 - rerun the retained exact numerical and Lean gates; and
 - bind the revised Markdown, PDF, result records, environment, and hashes in a

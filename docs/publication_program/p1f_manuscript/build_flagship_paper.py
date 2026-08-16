@@ -7,6 +7,7 @@ Run this file from any directory.  The output PDF is written to
 
 from __future__ import annotations
 
+import hashlib
 import os
 from pathlib import Path
 import subprocess
@@ -41,6 +42,7 @@ def draw_dependency_graph() -> None:
         "stability": "#EADCF8",
         "construction": "#FFF2CC",
         "matching": "#CFE2F3",
+        "robustness": "#F4CCCC",
     }
 
     nodes = {
@@ -55,6 +57,7 @@ def draw_dependency_graph() -> None:
         "meshes": (8.45, 4.55, "Explicit local meshes\nin d = 2, 3", "construction"),
         "upper": (8.45, 3.35, "Construction upper bounds", "construction"),
         "matching": (6.65, 1.15, "Matching-order theorem", "matching"),
+        "robustness": (9.0, 2.15, "Fixed-level support\nrobustness", "robustness"),
     }
 
     box_w, box_h = 2.55, 0.66
@@ -91,6 +94,7 @@ def draw_dependency_graph() -> None:
         ("master", "transfers"),
         ("meshes", "upper"),
         ("upper", "matching"),
+        ("upper", "robustness"),
         ("frontier", "matching"),
     ):
         arrow(source, target)
@@ -121,8 +125,20 @@ def build_pdf() -> None:
     prepared = TEMP / "FLAGSHIP_MANUSCRIPT.prepared.md"
     prepared.write_text(body, encoding="utf-8")
 
+    digest = hashlib.sha256()
+    for path in (SOURCE, BIBLIOGRAPHY, FIGURE, FILTER, HEADER):
+        digest.update(path.read_bytes())
+    pdf_id = digest.hexdigest()[:32]
+    generated_header = TEMP / "paper_header.generated.tex"
+    generated_header.write_text(
+        HEADER.read_text(encoding="utf-8")
+        + f"\n\\AtBeginDocument{{\\special{{pdf:trailerid [<{pdf_id}><{pdf_id}>]}}}}\n",
+        encoding="utf-8",
+    )
+
     env = dict(os.environ)
     env.setdefault("SOURCE_DATE_EPOCH", "1785900000")
+    env.setdefault("FORCE_SOURCE_DATE", "1")
     command = [
         "pandoc",
         str(prepared),
@@ -132,7 +148,7 @@ def build_pdf() -> None:
         "--citeproc",
         f"--bibliography={BIBLIOGRAPHY}",
         f"--lua-filter={FILTER}",
-        f"--include-in-header={HEADER}",
+        f"--include-in-header={generated_header}",
         "--pdf-engine=xelatex",
         f"--resource-path={HERE}",
         f"--metadata=title:{title}",

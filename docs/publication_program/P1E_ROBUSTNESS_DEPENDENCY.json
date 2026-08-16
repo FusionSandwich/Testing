@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "claim": "Proposition 7.3 fixed-level support-preserving robustness",
+  "status": "PROVED_FIXED_LEVEL",
+  "dependencies": [
+    {
+      "id": "base-construction",
+      "requires": [
+        "unperturbed-d3",
+        "strict-positive-conductances",
+        "fixed-support"
+      ]
+    },
+    {
+      "id": "fixed-level-existence",
+      "requires": [
+        "finite-parameter-space",
+        "block-jacobian-nonsingularity",
+        "base-positivity-margin",
+        "analytic-coefficients"
+      ]
+    },
+    {
+      "id": "reversibility",
+      "requires": [
+        "shared-edge-compatibility",
+        "positive-masses"
+      ]
+    },
+    {
+      "id": "coordinate-fidelity",
+      "requires": [
+        "tangent-force-equations",
+        "loss-mass-definition"
+      ]
+    },
+    {
+      "id": "quadratic-defect",
+      "requires": [
+        "loss-force-equations",
+        "tangent-isotropy",
+        "edge-upper-bound"
+      ],
+      "does_not_require": [
+        "sampling-frame-lower-bound"
+      ]
+    },
+    {
+      "id": "rate",
+      "requires": [
+        "edge-lower-bound",
+        "positive-conductances"
+      ]
+    },
+    {
+      "id": "connectivity",
+      "requires": [
+        "fixed-connected-support",
+        "strict-positive-conductances"
+      ]
+    },
+    {
+      "id": "common-rotation",
+      "requires": [
+        "one-ambient-rotation"
+      ]
+    }
+  ],
+  "excluded": [
+    "uniform-all-level-radius",
+    "uniform-inverse-bound",
+    "support-change",
+    "phase-change",
+    "mask-change",
+    "horizontal-jump-change",
+    "independent-longitude-motion",
+    "pole-or-equator-motion",
+    "arbitrary-node-motion",
+    "d-greater-than-3"
+  ],
+  "family": {
+    "ambient_dimension": 3,
+    "M_0": "2^80",
+    "levels": "J>=1",
+    "support": "fixed at each level"
+  }
+}

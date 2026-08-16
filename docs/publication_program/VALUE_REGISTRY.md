@@ -188,9 +188,15 @@ constants are regression values, not replacements for the all-orders proof.
 | P1E-D3-DEFECT | exact row multiplier on the sampled quotient | `C_3=75/2`; `mathfrak D_2<=C_3h^2` | I |
 | P1E-D3-LOWER | P1B product bound under the `R_3` cap | `c_3=6/R_3=3/(32pi^2)` | I |
 | P1E-D3-ORDER | admissible class `mathcal G_h(R_3)` containing the ring generator | `c_3h^2 <= inf mathfrak D_2 <= C_3h^2` | I |
+| P1E-D3-ROBUST-RATE | every fixed `M_0=2^80` production level, fixed support | `R_rob=1024`; `r_max<=R_rob h_J^-2` on a level-dependent neighborhood | I/III |
+| P1E-D3-ROBUST-DEFECT | same fixed-level neighborhood | `C_rob=54`; `mathfrak D_2<=C_rob h_J^2` | I/III |
+| P1E-D3-ROBUST-RADIUS | finite block Jacobian and strict base positivity | `rho_J>0` exists and is computable; no uniform lower bound in `J` | I/III |
 
-No `d=3` perturbation constants are publication values. The
-support-preserving reflected-latitude route is open pending a literal compiler,
-operation-count, denominator-guard, derivative, and global recurrence
-certificate. No exact-head workflow execution, artifact digest, or frozen P1E
-commit is recorded in this value table.
+For Proposition 7.3 the publication constants are the conservative fixed-level
+rate and defect values `R_rob=1024` and `C_rob=54`. The perturbation radius
+`rho_J` is level-dependent and computable from the finite inverse norm,
+derivative bounds, positivity margin, and gap margin; no numerical production
+radius and no lower bound uniform in `J` are registered. The former enormous
+all-level majorant is rejected and is not a publication value. No exact-head
+workflow execution or artifact digest is recorded in this value table until
+the repair workflow succeeds on the literal release commit.

@@ -1,0 +1,313 @@
+{
+  "affected_paths": [
+    ".github/workflows/afp-consolidated-p2e-p2f.yml",
+    ".github/workflows/afp-post-audit-prop73-repair.yml",
+    "afp_barrier_gate1/pure_math/covariance/p1e_fixed_support_certificate.py",
+    "afp_barrier_gate1/pure_math/covariance/p1e_fixed_support_certificate.schema.json",
+    "afp_barrier_gate1/pure_math/covariance/p1e_fixed_support_certificate_fixture.json",
+    "afp_barrier_gate1/pure_math/covariance/p1e_fixed_support_certificate_independent.py",
+    "afp_barrier_gate1/pure_math/covariance/p1e_fixed_support_robustness.py",
+    "afp_barrier_gate1/pure_math/covariance/p1e_fixed_support_robustness_audit.py",
+    "afp_barrier_gate1/pure_math/tests/test_p1e_fixed_support_robustness.py",
+    "docs/publication_program/AFP_AUDIT_MAJOR_REVISION_RECORD.md",
+    "docs/publication_program/APPROACH_REGISTRY.md",
+    "docs/publication_program/P1E_APPROACH_REGISTRY.md",
+    "docs/publication_program/P1E_FIXED_SUPPORT_ROBUSTNESS_THEOREM.md",
+    "docs/publication_program/P1E_NO_GUARD_RING_INDEPENDENT_AUDIT.md",
+    "docs/publication_program/P1E_ROBUSTNESS_DEPENDENCY.json",
+    "docs/publication_program/P1E_ROBUSTNESS_DEPENDENCY_AUDIT.md",
+    "docs/publication_program/P1E_ROBUSTNESS_PROOF_FAMILY_REGISTRY.md",
+    "docs/publication_program/P1E_ROBUSTNESS_REPAIR_REPORT.md",
+    "docs/publication_program/P1E_SHORT_GAP_S2_CONSTRUCTION.md",
+    "docs/publication_program/P1E_SHORT_GAP_S2_REFEREE_AUDIT.md",
+    "docs/publication_program/P1E_STAGE_REPORT.md",
+    "docs/publication_program/PAPER_BOUNDARY_MATRIX.md",
+    "docs/publication_program/THEOREM_REGISTRY.md",
+    "docs/publication_program/VALUE_REGISTRY.md",
+    "docs/publication_program/p1f_manuscript/FLAGSHIP_MANUSCRIPT.md",
+    "docs/publication_program/p1f_manuscript/FORMAL_AND_RELEASE_AUDIT.md",
+    "docs/publication_program/p1f_manuscript/P1F_REPRODUCIBILITY_MANIFEST.md",
+    "docs/publication_program/p1f_manuscript/P1F_STAGE_REPORT.md",
+    "docs/publication_program/p1f_manuscript/PRIORITY_AND_HOSTILE_REFEREE_AUDIT.md",
+    "docs/publication_program/p1f_manuscript/PROSE_OVERCLAIM_AUDIT.md",
+    "docs/publication_program/p1f_manuscript/build_flagship_paper.py",
+    "docs/publication_program/p1f_manuscript/paper_header.tex",
+    "docs/publication_program/p1f_manuscript/proof_dependency_graph.png",
+    "output/pdf/FLAGSHIP_MANUSCRIPT.pdf",
+    "docs/publication_program/P1E_ROBUSTNESS_REPAIR_MANIFEST.json"
+  ],
+  "authoritative_parent": {
+    "commit": "d05c98e5f1e211228940c7094df661c27d9e040b",
+    "tree": "3c23cec0ebd25ca49706402774c25c395789a0d4"
+  },
+  "branch": "agent/afp-post-audit-repair-d56db0b",
+  "exact_head_workflow": {
+    "evidence_location": "workflow artifact; final commit/tree/run identifiers are external to this non-self-referential manifest",
+    "path": ".github/workflows/afp-post-audit-prop73-repair.yml"
+  },
+  "excluded_claims": [
+    "uniform radius in J",
+    "arbitrary node motion",
+    "independent longitude motion",
+    "phase change",
+    "mask change",
+    "horizontal-jump change",
+    "support change",
+    "pole or equator motion",
+    "d>3 construction"
+  ],
+  "formalization_boundary": "Lean finite algebra only; no analytic perturbation radius claim",
+  "local_validation": [
+    "two independent exact certificate verifiers: PASS",
+    "fixed-support adversarial audit: PASS",
+    "focused pytest: 4 passed",
+    "retained short-gap symbolic/Cauchy/polar/proof/family/referee audits: PASS",
+    "independent P1E route and obstruction audits: expected PASS/BLOCKED/REJECTED outcomes",
+    "Lean placeholder and project-axiom scans: no matches",
+    "PDF deterministic double build, metadata/text checks, and visual render inspection: PASS",
+    "git diff --check: PASS",
+    "canonical GitHub materialization build and digest closure: PASS"
+  ],
+  "mathematical_status": {
+    "certificate_fixture": "CONFORMANCE_ONLY",
+    "fixed_level_support_preserving_robustness": "PROVED",
+    "uniform_all_level_robustness": "REJECTED_UNCERTIFIED",
+    "unperturbed_d3_family": "PROVED"
+  },
+  "reconstructed_source_snapshot": {
+    "commit": "d56db0ba8c24b63e56ec107e2f044449c726ce20",
+    "relationship_to_parent": "parent is two provenance-only commits ahead",
+    "tree": "4142cea31e3d5c48399d0af554226ab347e3d71a"
+  },
+  "records": [
+    {
+      "mode": "100644",
+      "path": ".github/workflows/afp-consolidated-p2e-p2f.yml",
+      "sha256": "8b494a6c9cdc494672eb03bd6d0074fbbc7f232900fdc63dbf985ea50d7348f4",
+      "size": 18984
+    },
+    {
+      "mode": "100644",
+      "path": ".github/workflows/afp-post-audit-prop73-repair.yml",
+      "sha256": "0b8ff0bf057c8f42d8767a8cee123605c8d1bad8ce66bfceb82a8a45d5dfe4ae",
+      "size": 10848
+    },
+    {
+      "mode": "100644",
+      "path": "afp_barrier_gate1/pure_math/covariance/p1e_fixed_support_certificate.py",
+      "sha256": "1ace28e33d1f8352d73e021e7906852637485df63ae2186ad14b808002ffc42a",
+      "size": 5237
+    },
+    {
+      "mode": "100644",
+      "path": "afp_barrier_gate1/pure_math/covariance/p1e_fixed_support_certificate.schema.json",
+      "sha256": "e462e2fe5f4199064fe92fdd01f284f22634c0b258aec0a225a3be0080a05f1c",
+      "size": 890
+    },
+    {
+      "mode": "100644",
+      "path": "afp_barrier_gate1/pure_math/covariance/p1e_fixed_support_certificate_fixture.json",
+      "sha256": "c2d3f84a6114f5488fd4eed1a66d194c840ec083e1463c1e27a7a472085a4f8f",
+      "size": 1870
+    },
+    {
+      "mode": "100644",
+      "path": "afp_barrier_gate1/pure_math/covariance/p1e_fixed_support_certificate_independent.py",
+      "sha256": "ffcd153da6c50880e25b2ccd59dd8ad3657da6e122c5853199cbc64be01aa7c2",
+      "size": 5289
+    },
+    {
+      "mode": "100644",
+      "path": "afp_barrier_gate1/pure_math/covariance/p1e_fixed_support_robustness.py",
+      "sha256": "92483410157deed05fb92520b14a03e58d0047b23dfba8c081c2fed8eb1966f8",
+      "size": 11455
+    },
+    {
+      "mode": "100644",
+      "path": "afp_barrier_gate1/pure_math/covariance/p1e_fixed_support_robustness_audit.py",
+      "sha256": "73b0f0950cb4cbbbcc2b2517091c3b118387d4291f81e29e2c4c291f6cac70af",
+      "size": 5113
+    },
+    {
+      "mode": "100644",
+      "path": "afp_barrier_gate1/pure_math/tests/test_p1e_fixed_support_robustness.py",
+      "sha256": "e8a778c70e88ab05fc1904f9ffbec8877fdc6dadb1bcf8527e5652232d604161",
+      "size": 2591
+    },
+    {
+      "mode": "100644",
+      "path": "docs/publication_program/AFP_AUDIT_MAJOR_REVISION_RECORD.md",
+      "sha256": "e2611a08cd30ca32095ac61213263d95feefa85bac89021af95321508e0299b9",
+      "size": 2827
+    },
+    {
+      "mode": "100644",
+      "path": "docs/publication_program/APPROACH_REGISTRY.md",
+      "sha256": "0f1761d0ae4e986c99b4d5a21020f271e076fdf4a77ade674894a0fc5e124ef9",
+      "size": 18490
+    },
+    {
+      "mode": "100644",
+      "path": "docs/publication_program/P1E_APPROACH_REGISTRY.md",
+      "sha256": "33b7bbbd5af6c5a93d1d3ef8813f75643dcb58267932b692e09c2ceffa729cb3",
+      "size": 5900
+    },
+    {
+      "mode": "100644",
+      "path": "docs/publication_program/P1E_FIXED_SUPPORT_ROBUSTNESS_THEOREM.md",
+      "sha256": "6c47cbc2e8da5bdfb8b05eee69c38af7e32ae1954ae223f2b040dbfc2a16155c",
+      "size": 11242
+    },
+    {
+      "mode": "100644",
+      "path": "docs/publication_program/P1E_NO_GUARD_RING_INDEPENDENT_AUDIT.md",
+      "sha256": "4a4b3b1c10c2232e9409726c50597eed03141e49f8cf33a59e2414c044922eda",
+      "size": 17761
+    },
+    {
+      "mode": "100644",
+      "path": "docs/publication_program/P1E_ROBUSTNESS_DEPENDENCY.json",
+      "sha256": "0d5403724786fae30ca3a8d8ac20d7d5ddfbf11eed05efda6783d9df1cc33b3f",
+      "size": 1831
+    },
+    {
+      "mode": "100644",
+      "path": "docs/publication_program/P1E_ROBUSTNESS_DEPENDENCY_AUDIT.md",
+      "sha256": "cdd07c2011b25c3a450d4a5a69dc4f813f37104f13a5dfb71dcc4653497f21be",
+      "size": 3034
+    },
+    {
+      "mode": "100644",
+      "path": "docs/publication_program/P1E_ROBUSTNESS_PROOF_FAMILY_REGISTRY.md",
+      "sha256": "b694fb158c66a27a5e4126385955c3ce4faf11067205d757284bd2f35b4a4433",
+      "size": 2850
+    },
+    {
+      "mode": "100644",
+      "path": "docs/publication_program/P1E_ROBUSTNESS_REPAIR_REPORT.md",
+      "sha256": "d88734dab8a6f6e866ceeec38287f78c5ac41d77f9bff4d3cd9398d5eb8f2d0e",
+      "size": 2158
+    },
+    {
+      "mode": "100644",
+      "path": "docs/publication_program/P1E_SHORT_GAP_S2_CONSTRUCTION.md",
+      "sha256": "6236f389df39da9fed96d45dc54cd570fc9fd60d3d064aebe786c7f593a1e766",
+      "size": 26892
+    },
+    {
+      "mode": "100644",
+      "path": "docs/publication_program/P1E_SHORT_GAP_S2_REFEREE_AUDIT.md",
+      "sha256": "7060cae1fac97d04c0b51bcc58a5a7c92e1e3bcbf45c6c157abee397dc5c2740",
+      "size": 16938
+    },
+    {
+      "mode": "100644",
+      "path": "docs/publication_program/P1E_STAGE_REPORT.md",
+      "sha256": "84d6dd7a86958d09b7682e04506941d69e9aabc885a6f18a7eafce9cb338d6ce",
+      "size": 9385
+    },
+    {
+      "mode": "100644",
+      "path": "docs/publication_program/PAPER_BOUNDARY_MATRIX.md",
+      "sha256": "223800f9cdea3660aaac5cd40c3cec442138606f962da2b981cb7954e8dd7616",
+      "size": 11897
+    },
+    {
+      "mode": "100644",
+      "path": "docs/publication_program/THEOREM_REGISTRY.md",
+      "sha256": "0851fc906080cfe03921f182e11483f1301f43bb6dc1a529a59a04a6d510ccfb",
+      "size": 36715
+    },
+    {
+      "mode": "100644",
+      "path": "docs/publication_program/VALUE_REGISTRY.md",
+      "sha256": "cc4e6f1ce92ac96b9156132f4da195b84059ed64a00168d70522c99c71866355",
+      "size": 15995
+    },
+    {
+      "mode": "100644",
+      "path": "docs/publication_program/p1f_manuscript/FLAGSHIP_MANUSCRIPT.md",
+      "sha256": "0a1083976c3e3d77adf742be62b5cbe72652261f8b01e8e2341f7a541eb351c6",
+      "size": 62157
+    },
+    {
+      "mode": "100644",
+      "path": "docs/publication_program/p1f_manuscript/FORMAL_AND_RELEASE_AUDIT.md",
+      "sha256": "130bc01d8c342e7efb9a5f5202e38883803d958e438e81cdb14b0ab4bc4289d1",
+      "size": 10767
+    },
+    {
+      "mode": "100644",
+      "path": "docs/publication_program/p1f_manuscript/P1F_REPRODUCIBILITY_MANIFEST.md",
+      "sha256": "aa467735335e7bd1c49326b8b22c24bc1bb804cbbe28ec14dd00b7a189f7f93d",
+      "size": 5236
+    },
+    {
+      "mode": "100644",
+      "path": "docs/publication_program/p1f_manuscript/P1F_STAGE_REPORT.md",
+      "sha256": "78a53ac8656b1c38611f19373adb8b371127c9b54c380929e89e06fdf82160bf",
+      "size": 5602
+    },
+    {
+      "mode": "100644",
+      "path": "docs/publication_program/p1f_manuscript/PRIORITY_AND_HOSTILE_REFEREE_AUDIT.md",
+      "sha256": "3ab44a08afdb02c204e2db7c21057f7d90f26b36d2a77dff8423a4f89a704faf",
+      "size": 40972
+    },
+    {
+      "mode": "100644",
+      "path": "docs/publication_program/p1f_manuscript/PROSE_OVERCLAIM_AUDIT.md",
+      "sha256": "4833cfd54dc213906c51cf4b93feb4fe9cc62a30474285b9109d989eeb6ac9fb",
+      "size": 6348
+    },
+    {
+      "mode": "100644",
+      "path": "docs/publication_program/p1f_manuscript/build_flagship_paper.py",
+      "sha256": "95e205d4b1cf0e5da982ae2699fae4870c74ce8ac1f1864a5c93e9785e7bfc6c",
+      "size": 5654
+    },
+    {
+      "mode": "100644",
+      "path": "docs/publication_program/p1f_manuscript/paper_header.tex",
+      "sha256": "c3d151618c134114b35ce30eb672d9e127bf3c5dad244b83b970ea38d252cd20",
+      "size": 192
+    },
+    {
+      "mode": "100644",
+      "path": "docs/publication_program/p1f_manuscript/proof_dependency_graph.png",
+      "sha256": "0b885c822230bd3e965863b4d9b618e5bcd84cc4e046ac9add46c4ee4a5f8a9e",
+      "size": 224705
+    },
+    {
+      "mode": "100644",
+      "path": "output/pdf/FLAGSHIP_MANUSCRIPT.pdf",
+      "sha256": "14508546332c0f1f936a77010a0aa698cb7fb3b25d02551b8b2cc40cf350d3a7",
+      "size": 377537
+    }
+  ],
+  "repository": "FusionSandwich/Testing",
+  "resolution_family": "B_FIXED_LEVEL_REPLACEMENT",
+  "schema_version": 1,
+  "self_hash_policy": "records omit this manifest to avoid a self-referential digest",
+  "theorem_scope": {
+    "M_0": "2^80",
+    "allowed": "one common ambient SO(3) rotation",
+    "ambient_dimension": 3,
+    "fixed": [
+      "ring counts",
+      "longitude phases",
+      "radial masks",
+      "horizontal jump integers",
+      "poles",
+      "equator",
+      "north-south reflection",
+      "support incidences",
+      "one shared unknown per undirected edge"
+    ],
+    "levels": "every fixed J>=1",
+    "parameters": "northern non-equatorial ring latitudes",
+    "quadratic_defect_bound": "mathfrak D_2 <= 54 h_J^2",
+    "radius": "rho_J>0, computable from finite inverse, Lipschitz, positivity, and gap margins; not uniform in J",
+    "rate_bound": "r_max <= 1024 h_J^-2"
+  }
+}

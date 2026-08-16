@@ -48,7 +48,7 @@ that these future publication thresholds have already been met.
 |---|---|---|---|---|---|---|
 | regular-polygon family on `S^1` | exact low-dimensional matching family | regression family | none | direct all-`N` trigonometric proof with sampled quotient | not an irregular-mesh or higher-dimensional construction | I |
 | adaptive-ring family on `S^2` | matching upper theorem with `R_3=64pi^2`, `C_3=75/2` | deterministic baseline | possible lift example | shared positive conductances, every row class, all-orders Cauchy guards, exact quotient multiplier, rate and mesh constants | no generic Delaunay, arbitrary-perturbation, or `d>3` claim | I |
-| support-preserving perturbation route | open problem; excluded from the theorem package | diagnostic only | possible future lift problem | requires a literal normalized-row program, verified denominator/derivative certificate, and recurrence stability proof | no perturbation radius or robustness constants may be cited as proved | I/III |
+| support-preserving reflected-latitude perturbations | proved separately at every fixed `d=3` level | deterministic fixed-support regression | possible lift example | finite block Jacobian nonsingularity, strict positivity, fixed incidence and a computable level-dependent radius | no all-level uniform radius, arbitrary node motion, phase/mask/jump/support change, or `d>3` claim | I/III |
 | six failed construction routes | falsification appendix | method boundary | lift boundary | exact obstruction or missing uniform inverse stated route by route | negative route evidence is not a universal nonexistence theorem | I/II/III |
 
 The local tight-frame theorem classifies algebraic equality. A global
