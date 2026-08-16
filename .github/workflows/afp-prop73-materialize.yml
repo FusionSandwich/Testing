@@ -31,9 +31,11 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Materialize and publish the clean candidate commit
+      - name: Materialize the clean remote commit object
         id: materialize
         shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: .github/prop73-materialize-script/run.sh
 
       - name: Upload materialization evidence
