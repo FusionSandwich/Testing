@@ -25,10 +25,27 @@ jobs:
             echo 'Lean placeholder found' >&2
             exit 1
           fi
-      - uses: leanprover/lean-action@v1
+      - name: Install Elan
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf \
+            https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
+            | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Resolve mathlib and build
+        working-directory: erdos1084/formal
+        run: |
+          lake update
+          lake exe cache get
+          lake build
+      - name: Run independent nanoda checker
+        uses: leanprover/lean-action@v1
         with:
           lake-package-directory: erdos1084/formal
-          build: true
-          use-mathlib-cache: true
+          auto-config: false
+          build: false
+          test: false
+          lint: false
+          use-mathlib-cache: false
+          use-github-cache: false
           nanoda: true
           nanoda-allow-sorry: false
