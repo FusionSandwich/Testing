@@ -2,6 +2,7 @@ import ErdosGyarfas.AmbientKernel
 import ErdosGyarfas.CutvertexArithmetic
 import ErdosGyarfas.CutvertexStructure
 import ErdosGyarfas.FourTheta
+import ErdosGyarfas.InternalMatchingCompletion
 import ErdosGyarfas.MinimalZeroSum8
 import ErdosGyarfas.NearDyadicTheta
 import ErdosGyarfas.SymmetricDifference
