@@ -6,12 +6,6 @@ on:
     paths:
       - 'erdos1084/**'
       - '.github/workflows/erdos1084-lean.yml'
-  push:
-    branches:
-      - 'agent/erdos-1084-lean-ci-20260816'
-    paths:
-      - 'erdos1084/**'
-      - '.github/workflows/erdos1084-lean.yml'
   workflow_dispatch:
 
 jobs:
@@ -37,6 +31,6 @@ jobs:
           lake update
           lake exe cache get
           lake build
-      - name: Kernel-recheck project module
+      - name: Compile theorem smoke tests
         working-directory: erdos1084/formal
-        run: lake env leanchecker Erdos1084
+        run: lake env lean Erdos1084Tests.lean
