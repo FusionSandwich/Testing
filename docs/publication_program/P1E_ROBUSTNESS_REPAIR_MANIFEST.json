@@ -66,7 +66,8 @@
     "Lean placeholder and project-axiom scans: no matches",
     "PDF deterministic double build, metadata/text checks, and visual render inspection: PASS",
     "git diff --check: PASS",
-    "canonical GitHub materialization build and digest closure: PASS"
+    "canonical GitHub materialization build and digest closure: PASS",
+    "exact-head retained-audit dependency closure (SymPy 1.14.0): PASS"
   ],
   "mathematical_status": {
     "certificate_fixture": "CONFORMANCE_ONLY",
@@ -89,8 +90,8 @@
     {
       "mode": "100644",
       "path": ".github/workflows/afp-post-audit-prop73-repair.yml",
-      "sha256": "0b8ff0bf057c8f42d8767a8cee123605c8d1bad8ce66bfceb82a8a45d5dfe4ae",
-      "size": 10848
+      "sha256": "502a8f32bcca2333fb707b7bf9f1c381be1972fd1290365ade1bcbda5034227e",
+      "size": 10864
     },
     {
       "mode": "100644",
@@ -301,7 +302,7 @@
       "poles",
       "equator",
       "north-south reflection",
-      "support incidences",
+      "support incidencies",
       "one shared unknown per undirected edge"
     ],
     "levels": "every fixed J>=1",
