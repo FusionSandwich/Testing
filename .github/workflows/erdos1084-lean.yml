@@ -37,9 +37,10 @@ jobs:
           lake update
           lake exe cache get
           lake build
-      - name: Compile theorem smoke tests
+      - name: Compile theorem smoke tests and axiom audit
         working-directory: erdos1084/formal
         run: |
           lake env lean Erdos1084Tests.lean
           lake env lean Erdos1084AssemblyTests.lean
           lake env lean Erdos1084OptimizedTests.lean
+          lake env lean Erdos1084AxiomAudit.lean
