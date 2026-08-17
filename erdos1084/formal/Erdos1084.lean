@@ -7,6 +7,7 @@ import Erdos1084.RadiusTwoCore
 import Erdos1084.RadiusTwoAssembly
 import Erdos1084.RadiusTwoGeometricBridges
 import Erdos1084.RadiusTwoOptimized
+import Erdos1084.RadiusTwoOptimizedAssembly
 
 /-!
 # Erdős Problem 1084: formalized certification spine
@@ -18,7 +19,7 @@ The library contains two geometric routes and two radius-two coefficients:
 * the clean strengthened radius-two coefficient `1673/1000`.
 
 The radius-two files formalize the algebraic envelopes, finite degree-sum assembly, explicit
-adapters from the three named external geometric inputs, and both final cancellations.  The
-kissing-number theorem, Euclidean isoperimetry, and measurable-set spherical-neighborhood
-isoperimetry remain cited external theorems rather than hidden axioms.
+adapters from the three named external geometric inputs, and both complete local-to-global
+cancellations.  The kissing-number theorem, Euclidean isoperimetry, and measurable-set
+spherical-neighborhood isoperimetry remain cited external theorems rather than hidden axioms.
 -/
