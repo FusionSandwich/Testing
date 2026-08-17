@@ -64,7 +64,7 @@ theorem kissing_twelve_closed_cap_cover
   have hwnot : w ∉ s := by
     intro hws
     have hbad := hfar w hws
-    simpa using hbad
+    norm_num at hbad
   let t : Finset RadiusTwoE3 := insert w s
   have htunit : ∀ u ∈ t, ‖u‖ = 1 := by
     intro u hu
@@ -119,6 +119,8 @@ theorem euclidean_isoperimetric_to_radiusTwo_lower
   have hb : 0 ≤ b := by
     dsimp [b]
     positivity
+  have htargetNonneg : 0 ≤ 4 * Real.pi * x := by
+    positivity
   have hV2 : b ^ 2 ≤ V ^ 2 := by
     have hprod : 0 ≤ (V - b) * (V + b) :=
       mul_nonneg (sub_nonneg.mpr hV) (add_nonneg hVnonneg hb)
@@ -143,7 +145,7 @@ theorem euclidean_isoperimetric_to_radiusTwo_lower
       0 < (4 * Real.pi * x) ^ 2 + (4 * Real.pi * x) * A + A ^ 2 := by
     have hsquare : 0 < (4 * Real.pi * x) ^ 2 := sq_pos_of_pos htpos
     have hmiddle : 0 ≤ (4 * Real.pi * x) * A :=
-      mul_nonneg (le_of_lt htpos) hAnonneg
+      mul_nonneg htargetNonneg hAnonneg
     have hA2 : 0 ≤ A ^ 2 := sq_nonneg A
     nlinarith
   have hprod :
