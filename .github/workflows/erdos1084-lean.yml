@@ -1,4 +1,4 @@
-name: Erdős 1084 Lean certification
+name: Erdős 1084 radius-two certification
 
 on:
   pull_request:
@@ -9,10 +9,14 @@ on:
   workflow_dispatch:
 
 jobs:
-  lean:
+  certification:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Reproduce exact radius-two certificate
+        run: |
+          python3 erdos1084/radius_two/verify_radius_two.py > erdos1084/radius_two/verification_output_regenerated.txt
+          diff -u erdos1084/radius_two/verification_output.txt erdos1084/radius_two/verification_output_regenerated.txt
       - name: Reject Lean placeholders
         run: |
           if grep -R --include='*.lean' -nE '(^|[^[:alnum:]_])sorry([^[:alnum:]_]|$)' erdos1084/formal; then
