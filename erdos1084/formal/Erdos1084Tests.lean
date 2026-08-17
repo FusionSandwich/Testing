@@ -115,3 +115,28 @@ example
     exposure < (6 * Real.pi / 5) * (12 - d) :=
   spherical_neighborhood_to_local_charge
     hCovered hExposure hH hEnvelope
+
+/-! Clean `1673/1000` strengthening. -/
+
+example : (574502107 : ℝ) < 331688980 * rtS :=
+  rt1673_endpoint_root_margin
+
+example : rtP1673 rtUpper = 573352 := rtP1673_upper
+
+example :
+    rtP1673 rtLower = 4 * (331688980 * rtS - 574502107) :=
+  rtP1673_lower
+
+example {x : ℝ} (hxL : rtLower ≤ x) (hxU : x ≤ rtUpper) :
+    0 < rtP1673 x :=
+  rtP1673_pos_on_interval hxL hxU
+
+example {d : ℝ} (hd1 : 1 ≤ d) (hd11 : d ≤ 11) :
+    rtH (rtX d) < (250 / 1673 : ℝ) * (12 - d) :=
+  radiusTwo_degree_envelope_1673 hd1 hd11
+
+example {x A D : ℝ}
+    (hLower : 4 * Real.pi * x ≤ A)
+    (hUpper : A < (4000 * Real.pi / 1673) * D) :
+    (1673 / 1000 : ℝ) * x < D :=
+  radiusTwo_surface_to_deficit_1673 hLower hUpper
