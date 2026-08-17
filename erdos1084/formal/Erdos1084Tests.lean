@@ -50,7 +50,7 @@ example :
     (((150797 : ℚ) / 125000) ^ 3 * ((7547 : ℚ) / 10000) ^ 2) < 1 :=
   fallback_degree_weighted_certificate
 
-/-! Radius-two route. -/
+/-! Radius-two algebra and assembly. -/
 
 example : (82099 : ℝ) < 47400 * rtS :=
   rt_endpoint_root_margin
@@ -72,3 +72,46 @@ example {x A D : ℝ}
     (hUpper : A < (12 * Real.pi / 5) * D) :
     (5 / 3 : ℝ) * x < D :=
   radiusTwo_surface_to_deficit hLower hUpper
+
+/-! Explicit bridges from the external geometric inputs. -/
+
+example (u v : RadiusTwoE3) : ‖u - v‖ = ‖v - u‖ :=
+  radiusTwo_norm_sub_comm u v
+
+example (u v : RadiusTwoE3) :
+    ‖(2 : ℝ) • v - (2 : ℝ) • u‖ ≤ 2 ↔ ‖v - u‖ ≤ 1 :=
+  radiusTwo_covering_ball_iff u v
+
+example
+    (hk : KissingNumberAtMostTwelve)
+    (s : Finset RadiusTwoE3)
+    (hcard : s.card = 12)
+    (hunit : ∀ u ∈ s, ‖u‖ = 1)
+    (hsep : ∀ u ∈ s, ∀ v ∈ s, u ≠ v → 1 ≤ ‖u - v‖)
+    {w : RadiusTwoE3}
+    (hw : ‖w‖ = 1) :
+    ∃ u ∈ s, ‖w - u‖ ≤ 1 :=
+  kissing_twelve_closed_cap_cover hk s hcard hunit hsep hw
+
+example
+    {n x V A : ℝ}
+    (hn : 0 ≤ n)
+    (hx : 0 ≤ x)
+    (hroot : x ^ 3 = n ^ 2)
+    (hV : (4 * Real.pi / 3) * n ≤ V)
+    (hVnonneg : 0 ≤ V)
+    (hAnonneg : 0 ≤ A)
+    (hIso : 36 * Real.pi * V ^ 2 ≤ A ^ 3) :
+    4 * Real.pi * x ≤ A :=
+  euclidean_isoperimetric_to_radiusTwo_lower
+    hn hx hroot hV hVnonneg hAnonneg hIso
+
+example
+    {d q H covered exposure : ℝ}
+    (hCovered : 2 * Real.pi * (1 - q) ≤ covered)
+    (hExposure : exposure ≤ 4 * (4 * Real.pi - covered))
+    (hH : H = 1 + q)
+    (hEnvelope : H < (3 / 20 : ℝ) * (12 - d)) :
+    exposure < (6 * Real.pi / 5) * (12 - d) :=
+  spherical_neighborhood_to_local_charge
+    hCovered hExposure hH hEnvelope
