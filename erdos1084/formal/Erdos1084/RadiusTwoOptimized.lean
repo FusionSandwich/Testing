@@ -56,14 +56,26 @@ theorem rtQ1673_upper : rtQ1673 rtUpper = 711 / 2 := by
 
 /-- The strengthened quadratic certificate at the upper endpoint. -/
 theorem rtP1673_upper : rtP1673 rtUpper = 573352 := by
-  dsimp [rtP1673, rtUpper]
-  nlinarith [rtS_sq]
+  have hfactor :
+      rtP1673 rtUpper - 573352 =
+        (673000 * rtS + 400713) * (rtS ^ 2 - 3) := by
+    dsimp [rtP1673, rtUpper]
+    ring
+  rw [rtS_sq] at hfactor
+  norm_num at hfactor ⊢
+  exact hfactor
 
 /-- The strengthened quadratic certificate at the lower endpoint. -/
 theorem rtP1673_lower :
     rtP1673 rtLower = 4 * (331688980 * rtS - 574502107) := by
-  dsimp [rtP1673, rtLower]
-  nlinarith [rtS_sq]
+  have hfactor :
+      rtP1673 rtLower - 4 * (331688980 * rtS - 574502107) =
+        11 * (7403000 * rtS - 46913577) * (rtS ^ 2 - 3) := by
+    dsimp [rtP1673, rtLower]
+    ring
+  rw [rtS_sq] at hfactor
+  norm_num at hfactor ⊢
+  exact hfactor
 
 /-- Linear-interpolation identity for the strengthened concave quadratic. -/
 theorem rtP1673_interpolation_identity (x : ℝ) :
@@ -147,8 +159,15 @@ theorem rtQ1673_pos_on_interval {x : ℝ} (hxU : x ≤ rtUpper) :
 /-- The strengthened quadratic is exactly the difference of the relevant squares. -/
 theorem rtP1673_identity (x : ℝ) :
     rtP1673 x = 1673 ^ 2 * (1 - x ^ 2) - (rtQ1673 x) ^ 2 := by
-  dsimp [rtP1673, rtQ1673]
-  nlinarith [rtS_sq]
+  have hfactor :
+      rtP1673 x -
+          (1673 ^ 2 * (1 - x ^ 2) - (rtQ1673 x) ^ 2) =
+        (rtS ^ 2 - 3) * (673 * x + 1000) ^ 2 := by
+    dsimp [rtP1673, rtQ1673]
+    ring
+  rw [rtS_sq] at hfactor
+  norm_num at hfactor
+  linarith
 
 /-- Continuous strengthened envelope on the entire real degree interval. -/
 theorem rt_continuous_envelope_1673 {x : ℝ}
@@ -182,8 +201,15 @@ theorem rt_continuous_envelope_1673 {x : ℝ}
     rcases (mul_pos_iff.mp hprod) with h | h
     · exact h.1
     · linarith [h.2, hsum]
-  dsimp [rtH, rtEnvelope1673, rtQ1673]
-  nlinarith
+  have hrelation :
+      rtEnvelope1673 x - rtH x =
+        (1673 * Real.sqrt (1 - x ^ 2) - rtQ1673 x) / 3346 := by
+    dsimp [rtH, rtEnvelope1673, rtQ1673]
+    ring
+  have hgap : 0 < rtEnvelope1673 x - rtH x := by
+    rw [hrelation]
+    exact div_pos hdiff (by norm_num)
+  linarith
 
 /-- Strengthened exact envelope for every real degree in `[1,11]`. -/
 theorem radiusTwo_degree_envelope_1673 {d : ℝ}
@@ -207,11 +233,11 @@ theorem spherical_neighborhood_to_local_charge_1673
   have hToH : exposure ≤ 8 * Real.pi * H := by
     rw [hH]
     nlinarith [Real.pi_pos]
-  have hStrict :
-      8 * Real.pi * H < (2000 * Real.pi / 1673) * (12 - d) := by
-    have hmul := mul_lt_mul_of_pos_left hEnvelope (show 0 < 8 * Real.pi by positivity)
-    nlinarith
-  exact lt_of_le_of_lt hToH hStrict
+  calc
+    exposure ≤ 8 * Real.pi * H := hToH
+    _ < 8 * Real.pi * ((250 / 1673 : ℝ) * (12 - d)) :=
+      mul_lt_mul_of_pos_left hEnvelope (by positivity)
+    _ = (2000 * Real.pi / 1673) * (12 - d) := by ring
 
 /-- Final cancellation for the clean strengthened coefficient `1673/1000`. -/
 theorem radiusTwo_surface_to_deficit_1673
