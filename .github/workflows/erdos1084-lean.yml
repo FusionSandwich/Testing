@@ -37,4 +37,6 @@ jobs:
           lake build
       - name: Compile theorem smoke tests
         working-directory: erdos1084/formal
-        run: lake env lean Erdos1084Tests.lean
+        run: |
+          lake env lean Erdos1084Tests.lean
+          lake env lean Erdos1084AssemblyTests.lean
