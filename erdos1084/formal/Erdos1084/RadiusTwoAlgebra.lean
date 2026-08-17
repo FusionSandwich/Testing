@@ -74,8 +74,8 @@ theorem rtP_upper : rtP rtUpper = 21 / 4 := by
     dsimp [rtP, rtUpper]
     ring
   rw [rtS_sq] at hfactor
-  norm_num at hfactor ⊢
-  exact hfactor
+  norm_num at hfactor
+  linarith
 
 /-- Exact value of the quadratic certificate at the lower endpoint. -/
 theorem rtP_lower :
@@ -86,8 +86,8 @@ theorem rtP_lower :
     dsimp [rtP, rtLower]
     ring
   rw [rtS_sq] at hfactor
-  norm_num at hfactor ⊢
-  exact hfactor
+  norm_num at hfactor
+  linarith
 
 /-- Linear-interpolation identity for the concave quadratic `rtP`. -/
 theorem rtP_interpolation_identity (x : ℝ) :
@@ -177,8 +177,8 @@ theorem rtR_upper : rtR rtUpper = 1 := by
     dsimp [rtR, rtUpper]
     ring
   rw [rtS_sq] at hfactor
-  norm_num at hfactor ⊢
-  exact hfactor
+  norm_num at hfactor
+  linarith
 
 /-- The affine term is positive throughout the interval. -/
 theorem rtR_ge_one {x : ℝ} (hxU : x ≤ rtUpper) :
@@ -236,7 +236,9 @@ theorem rt_continuous_envelope {x : ℝ}
     rcases (mul_pos_iff.mp hprod) with h | h
     · exact h.1
     · linarith [h.2, hsum]
-  dsimp [rtH, rtEnvelope, rtR]
+  have hdiff' := hdiff
+  dsimp [rtR] at hdiff'
+  dsimp [rtH, rtEnvelope]
   nlinarith
 
 /-- Degrees from one through eleven map into the continuous interval. -/
@@ -272,8 +274,7 @@ theorem radiusTwo_degree_envelope {d : ℝ}
     rtH (rtX d) < (3 / 20 : ℝ) * (12 - d) := by
   rcases rtX_bounds hd1 hd11 with ⟨hxL, hxU⟩
   have h := rt_continuous_envelope hxL hxU
-  rw [rt_degree_rhs_identity d] at h
-  exact h
+  simpa [rtEnvelope, rt_degree_rhs_identity d] using h
 
 end
 
