@@ -19,8 +19,13 @@ theorem radiusTwo_surface_to_deficit
       Real.pi * (4 * x) = 4 * Real.pi * x := by ring
       _ < (12 * Real.pi / 5) * D := hchain
       _ = Real.pi * ((12 / 5 : ℝ) * D) := by ring
-  have hcancel : 4 * x < (12 / 5 : ℝ) * D :=
-    (mul_lt_mul_left Real.pi_pos).mp hpiineq
+  have hcancel : 4 * x < (12 / 5 : ℝ) * D := by
+    by_contra hnot
+    have hle : (12 / 5 : ℝ) * D ≤ 4 * x := le_of_not_gt hnot
+    have hmul :
+        Real.pi * ((12 / 5 : ℝ) * D) ≤ Real.pi * (4 * x) :=
+      mul_le_mul_of_nonneg_left hle (le_of_lt Real.pi_pos)
+    linarith
   nlinarith
 
 /-- Contact-number form of the final deficit inequality. -/
