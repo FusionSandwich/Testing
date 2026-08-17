@@ -62,8 +62,8 @@ theorem rtP1673_upper : rtP1673 rtUpper = 573352 := by
     dsimp [rtP1673, rtUpper]
     ring
   rw [rtS_sq] at hfactor
-  norm_num at hfactor ⊢
-  exact hfactor
+  norm_num at hfactor
+  linarith
 
 /-- The strengthened quadratic certificate at the lower endpoint. -/
 theorem rtP1673_lower :
@@ -74,8 +74,8 @@ theorem rtP1673_lower :
     dsimp [rtP1673, rtLower]
     ring
   rw [rtS_sq] at hfactor
-  norm_num at hfactor ⊢
-  exact hfactor
+  norm_num at hfactor
+  linarith
 
 /-- Linear-interpolation identity for the strengthened concave quadratic. -/
 theorem rtP1673_interpolation_identity (x : ℝ) :
@@ -254,8 +254,13 @@ theorem radiusTwo_surface_to_deficit_1673
       Real.pi * (4 * x) = 4 * Real.pi * x := by ring
       _ < (4000 * Real.pi / 1673) * D := hchain
       _ = Real.pi * ((4000 / 1673 : ℝ) * D) := by ring
-  have hcancel : 4 * x < (4000 / 1673 : ℝ) * D :=
-    (mul_lt_mul_left Real.pi_pos).mp hpiineq
+  have hcancel : 4 * x < (4000 / 1673 : ℝ) * D := by
+    by_contra hnot
+    have hle : (4000 / 1673 : ℝ) * D ≤ 4 * x := le_of_not_gt hnot
+    have hmul :
+        Real.pi * ((4000 / 1673 : ℝ) * D) ≤ Real.pi * (4 * x) :=
+      mul_le_mul_of_nonneg_left hle (le_of_lt Real.pi_pos)
+    linarith
   nlinarith
 
 end
