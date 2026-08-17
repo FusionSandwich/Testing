@@ -49,3 +49,26 @@ example : ((cleanQ * rQ ^ 2 * H11Upper) ^ 3 * deltaQ ^ 2) < 1 :=
 example :
     (((150797 : ℚ) / 125000) ^ 3 * ((7547 : ℚ) / 10000) ^ 2) < 1 :=
   fallback_degree_weighted_certificate
+
+/-! Radius-two route. -/
+
+example : (82099 : ℝ) < 47400 * rtS :=
+  rt_endpoint_root_margin
+
+example : rtP rtUpper = 21 / 4 := rtP_upper
+
+example : rtP rtLower = (47400 * rtS - 82099) / 4 := rtP_lower
+
+example {x : ℝ} (hxL : rtLower ≤ x) (hxU : x ≤ rtUpper) :
+    0 < rtP x :=
+  rtP_pos_on_interval hxL hxU
+
+example {d : ℝ} (hd1 : 1 ≤ d) (hd11 : d ≤ 11) :
+    rtH (rtX d) < (3 / 20 : ℝ) * (12 - d) :=
+  radiusTwo_degree_envelope hd1 hd11
+
+example {x A D : ℝ}
+    (hLower : 4 * Real.pi * x ≤ A)
+    (hUpper : A < (12 * Real.pi / 5) * D) :
+    (5 / 3 : ℝ) * x < D :=
+  radiusTwo_surface_to_deficit hLower hUpper
