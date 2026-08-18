@@ -8,18 +8,24 @@ import Erdos1084.RadiusTwoAssembly
 import Erdos1084.RadiusTwoGeometricBridges
 import Erdos1084.RadiusTwoOptimized
 import Erdos1084.RadiusTwoOptimizedAssembly
+import Erdos1084.KeplerOuterParallel
 
 /-!
 # Erdős Problem 1084: formalized certification spine
 
-The library contains two geometric routes and two radius-two coefficients:
+The library contains the following certified algebraic and abstract-assembly routes:
 
-* the stronger radius-`1.58731` Lévy arithmetic certificate;
-* the Hales-independent radius-two proof with the conceptual coefficient `5/3`;
-* the clean strengthened radius-two coefficient `1673/1000`.
+* the radius-`1.58731` Lévy arithmetic certificate;
+* the radius-two conceptual coefficient `5/3`;
+* the clean strengthened radius-two coefficient `1673/1000`;
+* the Kepler/outer-parallel scalar bridge for the clean coefficient `2.0465`.
 
-The radius-two files formalize the algebraic envelopes, finite degree-sum assembly, explicit
-adapters from the three named external geometric inputs, and both complete local-to-global
-cancellations.  The kissing-number theorem, Euclidean isoperimetry, and measurable-set
-spherical-neighborhood isoperimetry remain cited external theorems rather than hidden axioms.
+The Kepler module introduces no project-specific axiom.  Its two geometric surface inequalities
+are explicit structure fields, and its positive scale is constrained by the exact equation
+`K^3 * π^2 = 18`.  The clean linear coefficient comparison is derived from the cubed numerical
+certificate rather than assumed.
+
+The kissing-number theorem, Euclidean isoperimetry, spherical-neighborhood isoperimetry, the
+Kepler density theorem, and the outer-parallel truncated-density identity remain cited external
+geometric results rather than hidden axioms.
 -/
