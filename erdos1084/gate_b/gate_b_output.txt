@@ -1,0 +1,31 @@
+GATE B INVARIANT-MEASURE EXACT CERTIFICATE
+status: PASS
+rational marginals checked: 1387
+strict non-FCC marginals checked: 1259
+
+stationary theorem:
+  physical volume = 32 + 2*p*(1-p)
+  coefficient cube = 432 + 27*p*(1-p)
+  equality iff p=0 or p=1
+
+aperiodic frequency approximants:
+  p=2/5: coefficient cube=10962/25
+  p=5/12: coefficient cube=63123/144
+  p=12/29: coefficient cube=369288/841
+  p=29/70: coefficient cube=2151387/4900
+  p=70/169: coefficient cube=12541878/28561
+
+raw-infimum subadditivity counterexample:
+  phi(v)=9/2
+  phi(w)=9/2
+  phi(v+w)=10
+
+convex-envelope certificate:
+  scaled Wulff volume=57/4
+  physical Wulff volume=57/2
+  coefficient cube=1539/4
+
+Certified conclusion:
+  every invariant stacking measure has coefficient at least FCC,
+  but the directionwise infimum is nonconvex and its convex envelope
+  is the phase-independent over-relaxation with cube 1539/4.
