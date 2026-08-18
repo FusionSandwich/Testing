@@ -47,6 +47,28 @@ example {d : ℝ} (hd1 : 1 ≤ d) (hd11 : d ≤ 11) :
     kpOptimizedH (rtX d) ≤ kpQ * (12 - d) :=
   kp_optimized_degree_charge hd1 hd11
 
+/-! One-radius endpoint minimax core. -/
+
+example :
+    StrictMonoOn kpEndpointOneProfile (Set.Ici (0 : ℝ)) :=
+  kpEndpointOneProfile_strictMonoOn
+
+example :
+    kpEndpointOneProfile kpRadius = kpRadius ^ 2 * kpQ :=
+  kpEndpointOneProfile_at_optimizer
+
+example
+    (degreeElevenProfile : ℝ → ℝ)
+    (hdecrease :
+      StrictAntiOn degreeElevenProfile (Set.Icc (2 : ℝ) kpRadius))
+    (hcross :
+      degreeElevenProfile kpRadius = kpEndpointOneProfile kpRadius)
+    {r : ℝ} (hr : 2 ≤ r) (hne : r ≠ kpRadius) :
+    max (kpEndpointOneProfile r) (degreeElevenProfile r) >
+      kpEndpointOneProfile kpRadius :=
+  kpRadius_unique_oneRadius_optimum
+    degreeElevenProfile hdecrease hcross hr hne
+
 /-! Finite-sum and final scalar assembly. -/
 
 example
