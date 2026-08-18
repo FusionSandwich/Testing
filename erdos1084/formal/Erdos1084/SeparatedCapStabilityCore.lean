@@ -7,13 +7,15 @@ namespace Erdos1084
 # Abstract separated-cap stability assembly
 
 The geometric compactness theorem supplies a number `eta` with `0 < eta < kpQ` such that every
-nonzero local degree deficit is charged by `kpQ - eta` rather than `kpQ`.  This file proves the
+nonzero local degree deficit is charged by `kpQ - eta` rather than `kpQ`. This file proves the
 exact algebraic consequence: any such uniform remainder gives a coefficient strictly larger than
 the endpoint Kepler coefficient.
 
-The existence or numerical value of `eta` is not postulated as a project axiom.  It is an ordinary
+The existence or numerical value of `eta` is not postulated as a project axiom. It is an ordinary
 theorem parameter whose geometric proof is recorded in `SEPARATED_CAP_STABILITY.md`.
 -/
+
+noncomputable section
 
 /-- Reciprocal local factor after a uniform separated-cap improvement `eta`. -/
 def kpStableLocalCoeff (eta : ℝ) : ℝ :=
@@ -33,13 +35,12 @@ theorem kpStableLocalCoeff_gt {eta : ℝ}
     (heta0 : 0 < eta) (hetaQ : eta < kpQ) :
     kpLocalCoeff < kpStableLocalCoeff eta := by
   have hden : 0 < kpQ - eta := kp_stable_denominator_pos hetaQ
-  have hq : 0 < kpQ := kpQ_pos
   have hratio : 1 < kpQ / (kpQ - eta) := by
     apply (lt_div_iff₀ hden).2
     linarith
-  dsimp [kpStableLocalCoeff]
   have hmul := mul_lt_mul_of_pos_left hratio kpLocalCoeff_pos
-  simpa using hmul
+  dsimp [kpStableLocalCoeff]
+  simpa [div_eq_mul_inv, mul_assoc] using hmul
 
 /-- Exact reciprocal identity for the stability-improved local charge. -/
 theorem kp_stable_local_identity {eta : ℝ}
@@ -100,7 +101,6 @@ theorem kp_stable_local_surface_input_of_charges
 /-- The improved global coefficient is bounded above by the contact deficit. -/
 theorem kp_stability_improved_assembly
     {x A D K eta : ℝ}
-    (hx : 0 < x)
     (hg : KeplerGlobalSurfaceInput x A K)
     (hl : KeplerStableLocalSurfaceInput eta A D) :
     K * kpStableLocalCoeff eta * x ≤ D := by
@@ -142,8 +142,6 @@ theorem kp_stability_midpoint_strict
     (hl : KeplerStableLocalSurfaceInput eta A D) :
     kpStabilityMidCoeff K eta * x < D := by
   have hK : 0 < K := hg.scale.1
-  have hmidEndpoint :=
-    kpStabilityMidCoeff_gt_endpoint hK hl.eta_pos hl.eta_lt_q
   have hmidStable :
       kpStabilityMidCoeff K eta < K * kpStableLocalCoeff eta := by
     have himprove := kpStableLocalCoeff_gt hl.eta_pos hl.eta_lt_q
@@ -153,6 +151,8 @@ theorem kp_stability_midpoint_strict
       kpStabilityMidCoeff K eta * x <
         K * kpStableLocalCoeff eta * x :=
     mul_lt_mul_of_pos_right hmidStable hx
-  exact lt_of_lt_of_le hstrict (kp_stability_improved_assembly hx hg hl)
+  exact lt_of_lt_of_le hstrict (kp_stability_improved_assembly hg hl)
+
+end
 
 end Erdos1084
