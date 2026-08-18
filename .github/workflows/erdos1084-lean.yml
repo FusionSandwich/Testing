@@ -1,4 +1,4 @@
-name: Erdős 1084 radius-two and Kepler certification
+name: Erdős 1084 Kepler and periodic Barlow certification
 
 on:
   pull_request:
@@ -13,12 +13,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Reproduce exact radius-two certificates
+      - name: Reproduce exact radius-two and periodic Barlow certificates
         run: |
           python3 erdos1084/radius_two/verify_radius_two.py > erdos1084/radius_two/verification_output_regenerated.txt
           diff -u erdos1084/radius_two/verification_output.txt erdos1084/radius_two/verification_output_regenerated.txt
           python3 erdos1084/radius_two/verify_1673_envelope.py > erdos1084/radius_two/verification_1673_output_regenerated.txt
           diff -u erdos1084/radius_two/verification_1673_output.txt erdos1084/radius_two/verification_1673_output_regenerated.txt
+          rm -rf /tmp/barlow-gate-a
+          mkdir -p /tmp/barlow-gate-a
+          python3 erdos1084/gate_a/solve_periodic_barlow_gate_a.py \
+            --max-period 12 \
+            --output-dir /tmp/barlow-gate-a \
+            > /tmp/barlow-gate-a-output.txt
+          diff -u erdos1084/gate_a/gate_a_output.txt /tmp/barlow-gate-a-output.txt
       - name: Reject Lean placeholders and explicit project axioms
         run: |
           if grep -R --include='*.lean' -nE '(^|[^[:alnum:]_])(sorry|admit|sorryAx)([^[:alnum:]_]|$)' erdos1084/formal; then
@@ -41,11 +48,13 @@ jobs:
           lake update
           lake exe cache get
           lake build
-      - name: Compile theorem smoke tests and axiom audit
+      - name: Compile theorem smoke tests and axiom audits
         working-directory: erdos1084/formal
         run: |
           lake env lean Erdos1084Tests.lean
           lake env lean Erdos1084AssemblyTests.lean
           lake env lean Erdos1084OptimizedTests.lean
           lake env lean Erdos1084KeplerTests.lean
+          lake env lean Erdos1084BarlowTests.lean
           lake env lean Erdos1084AxiomAudit.lean
+          lake env lean Erdos1084BarlowAxiomAudit.lean
