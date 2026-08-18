@@ -32,30 +32,36 @@ theorem barlowCoefficientCube_ge_fcc
   nlinarith
 
 theorem barlowWulffVolume_eq_fcc_iff
-    {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
+    {p : ℝ} (_hp0 : 0 ≤ p) (_hp1 : p ≤ 1) :
     barlowWulffVolume p = 32 ↔ p = 0 ∨ p = 1 := by
   constructor
   · intro h
     have hprod : p * (1 - p) = 0 := by
       simp [barlowWulffVolume] at h
       nlinarith
-    rcases mul_eq_zero.mp hprod with hp | hp
-    · exact Or.inl hp
-    · exact Or.inr (by linarith)
+    by_cases hpzero : p = 0
+    · exact Or.inl hpzero
+    · have hone : 1 - p = 0 :=
+        (mul_eq_zero.mp hprod).resolve_left hpzero
+      have h_one_eq_p : (1 : ℝ) = p := sub_eq_zero.mp hone
+      exact Or.inr h_one_eq_p.symm
   · intro h
     rcases h with rfl | rfl <;> norm_num [barlowWulffVolume]
 
 theorem barlowCoefficientCube_eq_fcc_iff
-    {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
+    {p : ℝ} (_hp0 : 0 ≤ p) (_hp1 : p ≤ 1) :
     barlowCoefficientCube p = 432 ↔ p = 0 ∨ p = 1 := by
   constructor
   · intro h
     have hprod : p * (1 - p) = 0 := by
       simp [barlowCoefficientCube] at h
       nlinarith
-    rcases mul_eq_zero.mp hprod with hp | hp
-    · exact Or.inl hp
-    · exact Or.inr (by linarith)
+    by_cases hpzero : p = 0
+    · exact Or.inl hpzero
+    · have hone : 1 - p = 0 :=
+        (mul_eq_zero.mp hprod).resolve_left hpzero
+      have h_one_eq_p : (1 : ℝ) = p := sub_eq_zero.mp hone
+      exact Or.inr h_one_eq_p.symm
   · intro h
     rcases h with rfl | rfl <;> norm_num [barlowCoefficientCube]
 
