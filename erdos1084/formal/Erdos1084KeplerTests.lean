@@ -22,18 +22,36 @@ example : (418756933 : ℝ) / 250000000 < kpLocalCoeff :=
 example : kpClean ^ 3 * Real.pi ^ 2 < 18 * kpLocalCoeff ^ 3 :=
   kp_clean_cubed_certificate
 
+example {n x : ℝ} (h : KeplerPowerScale n x) : 0 < x :=
+  h.x_pos
+
 example {K : ℝ} (hK : KeplerScaleSpec K) :
     kpClean < K * kpLocalCoeff :=
   kp_clean_lt_scale_mul_local hK
 
+example
+    {ι : Type*} [Fintype ι]
+    (d exposure : ι → ℝ)
+    (n E A : ℝ)
+    (hn : (Fintype.card ι : ℝ) = n)
+    (hdeg : (∑ i, d i) = 2 * E)
+    (hBoundary : A ≤ ∑ i, exposure i)
+    (hLocal : ∀ i,
+      exposure i ≤ 2 * Real.pi * kpRadius ^ 2 * kpQ * (12 - d i)) :
+    KeplerLocalSurfaceInput A (6 * n - E) :=
+  kp_local_surface_input_of_charges
+    d exposure n E A hn hdeg hBoundary hLocal
+
 example {x A D K : ℝ}
+    (hx : 0 < x)
     (hg : KeplerGlobalSurfaceInput x A K)
     (hl : KeplerLocalSurfaceInput A D) :
     kpClean * x < D :=
-  kp_surface_assembly_strict hg hl
+  kp_surface_assembly_strict hx hg hl
 
 example {n E x A K : ℝ}
+    (hpower : KeplerPowerScale n x)
     (hg : KeplerGlobalSurfaceInput x A K)
     (hl : KeplerLocalSurfaceInput A (6 * n - E)) :
     E < 6 * n - kpClean * x :=
-  kp_contact_upper_from_surface hg hl
+  kp_contact_upper_from_surface hpower hg hl
