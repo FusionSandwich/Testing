@@ -2,79 +2,38 @@ import Mathlib
 
 namespace Erdos1084
 
-/-- Physical Wulff volume for Barlow chirality frequency `p`. -/
-def barlowWulffVolume (p : ℝ) : ℝ :=
-  32 + 12 * p * (1 - p)
+/-!
+# Audit of a falsified Barlow frequency interpolation
 
-/-- Cube of the Barlow surface-order coefficient. -/
-def barlowCoefficientCube (p : ℝ) : ℝ :=
-  432 + 162 * p * (1 - p)
+A simple weighted-zonotope interpolation reproduces the FCC endpoint but
+fails at HCP. The correct FCC and HCP values below are obtained from
+Cicalese--Kreutz--Leonardi, Proposition 2.4 and Proposition 2.5, after
+converting their doubled valence energy to the contact deficit `D = 6n-E`.
+-/
 
-theorem barlowCoefficientCube_from_volume (p : ℝ) :
-    barlowCoefficientCube p = (27 / 2 : ℝ) * barlowWulffVolume p := by
-  simp [barlowCoefficientCube, barlowWulffVolume]
-  ring
+/-- Cube of the published FCC contact-deficit coefficient. -/
+def publishedFccDeficitCube : ℚ := 432
 
-theorem barlowWulffVolume_ge_fcc
-    {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
-    32 ≤ barlowWulffVolume p := by
-  have hprod : 0 ≤ p * (1 - p) :=
-    mul_nonneg hp0 (sub_nonneg.mpr hp1)
-  unfold barlowWulffVolume
-  nlinarith
+/-- Cube of the published HCP contact-deficit coefficient. -/
+def publishedHcpDeficitCube : ℚ := 1755 / 4
 
-theorem barlowCoefficientCube_ge_fcc
-    {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
-    432 ≤ barlowCoefficientCube p := by
-  have hprod : 0 ≤ p * (1 - p) :=
-    mul_nonneg hp0 (sub_nonneg.mpr hp1)
-  unfold barlowCoefficientCube
-  nlinarith
+/-- Incorrect HCP cube predicted by the rejected frequency-only model. -/
+def naiveFrequencyHcpCube : ℚ := 945 / 2
 
-theorem barlowWulffVolume_eq_fcc_iff
-    {p : ℝ} (_hp0 : 0 ≤ p) (_hp1 : p ≤ 1) :
-    barlowWulffVolume p = 32 ↔ p = 0 ∨ p = 1 := by
-  constructor
-  · intro h
-    have hprod : p * (1 - p) = 0 := by
-      unfold barlowWulffVolume at h
-      nlinarith
-    rcases mul_eq_zero.mp hprod with hpzero | hone
-    · exact Or.inl hpzero
-    · have h_one_eq_p : (1 : ℝ) = p := sub_eq_zero.mp hone
-      exact Or.inr h_one_eq_p.symm
-  · intro h
-    rcases h with rfl | rfl <;> norm_num [barlowWulffVolume]
+theorem published_hcp_strictly_above_fcc :
+    publishedFccDeficitCube < publishedHcpDeficitCube := by
+  norm_num [publishedFccDeficitCube, publishedHcpDeficitCube]
 
-theorem barlowCoefficientCube_eq_fcc_iff
-    {p : ℝ} (_hp0 : 0 ≤ p) (_hp1 : p ≤ 1) :
-    barlowCoefficientCube p = 432 ↔ p = 0 ∨ p = 1 := by
-  constructor
-  · intro h
-    have hprod : p * (1 - p) = 0 := by
-      unfold barlowCoefficientCube at h
-      nlinarith
-    rcases mul_eq_zero.mp hprod with hpzero | hone
-    · exact Or.inl hpzero
-    · have h_one_eq_p : (1 : ℝ) = p := sub_eq_zero.mp hone
-      exact Or.inr h_one_eq_p.symm
-  · intro h
-    rcases h with rfl | rfl <;> norm_num [barlowCoefficientCube]
+theorem published_hcp_fcc_cube_gap :
+    publishedHcpDeficitCube - publishedFccDeficitCube = 27 / 4 := by
+  norm_num [publishedFccDeficitCube, publishedHcpDeficitCube]
 
-theorem barlow_fcc_values :
-    barlowWulffVolume 0 = 32 ∧
-    barlowWulffVolume 1 = 32 ∧
-    barlowCoefficientCube 0 = 432 ∧
-    barlowCoefficientCube 1 = 432 := by
-  norm_num [barlowWulffVolume, barlowCoefficientCube]
+theorem naive_frequency_model_fails_at_hcp :
+    publishedHcpDeficitCube < naiveFrequencyHcpCube := by
+  norm_num [publishedHcpDeficitCube, naiveFrequencyHcpCube]
 
-theorem barlow_hcp_values :
-    barlowWulffVolume (1 / 2 : ℝ) = 35 ∧
-    barlowCoefficientCube (1 / 2 : ℝ) = 945 / 2 := by
-  norm_num [barlowWulffVolume, barlowCoefficientCube]
-
-theorem barlow_hcp_strictly_worse_than_fcc :
-    (432 : ℝ) < barlowCoefficientCube (1 / 2 : ℝ) := by
-  norm_num [barlowCoefficientCube]
+theorem naive_hcp_cube_excess :
+    naiveFrequencyHcpCube - publishedHcpDeficitCube = 135 / 4 := by
+  norm_num [publishedHcpDeficitCube, naiveFrequencyHcpCube]
 
 end Erdos1084
