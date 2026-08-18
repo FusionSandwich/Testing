@@ -7,7 +7,7 @@ namespace Erdos1084
 /-!
 # Optimized convex-chord envelope at the Kepler radius
 
-This file proves the genuinely new local algebra used at
+This file proves the new local algebra used at
 
 `kpRadius = (40 + 22 * sqrt 3) / 37`.
 
@@ -15,10 +15,10 @@ For the equal-area comparison-cap cosine `x`, define
 
 `H(x) = 1 + x cos(s) - sqrt(1-x^2) sin(s)`.
 
-The two endpoint degree charges (`d = 11` and `d = 1`) agree exactly at the optimized radius.
-The upper semicircle is concave, hence `H` lies below the chord through those endpoints.  The
-proof below is algebraic: concavity of the semicircle is derived from the exact unit-disk
-interpolation identity, with no calculus or trigonometric axiom.
+The degree-eleven and degree-one endpoint charges agree exactly at the optimized radius. The
+upper semicircle is concave, so `H` lies below the affine chord through those endpoint values.
+Concavity is proved algebraically from an exact unit-circle interpolation identity; no calculus,
+trigonometric axiom, or project-specific axiom is introduced.
 -/
 
 noncomputable section
@@ -57,7 +57,7 @@ def kpWeightUpper (x : ℝ) : ℝ :=
 def kpInterpolatedY (x : ℝ) : ℝ :=
   kpWeightLower x * kpLowerY + kpWeightUpper x * kpUpperY
 
-/-- `kpQ` is the same exact quantity as `1 - rtUpper`. -/
+/-- `kpQ` is exactly `1 - rtUpper`. -/
 theorem kpQ_eq_one_sub_rtUpper : kpQ = 1 - rtUpper := by
   rfl
 
@@ -65,13 +65,35 @@ theorem kpQ_eq_one_sub_rtUpper : kpQ = 1 - rtUpper := by
 theorem kpRadius_reciprocal_eq_neg_lower :
     1 / kpRadius = -rtLower := by
   rw [kpRadius_reciprocal]
-  rfl
+  dsimp [kpS, rtLower, rtS]
+  ring
+
+/-- Formula for the cosine shift after substituting the optimized reciprocal radius. -/
+theorem kpCosShift_formula :
+    kpCosShift = rtUpper * (-rtLower) + kpLowerY / 2 := by
+  rw [kpCosShift, div_eq_mul_inv, kpRadius_reciprocal_eq_neg_lower]
+
+/-- Formula for the sine shift after substituting the optimized reciprocal radius. -/
+theorem kpSinShift_formula :
+    kpSinShift = rtUpper * kpLowerY + rtLower / 2 := by
+  rw [kpSinShift, kpRadius_reciprocal_eq_neg_lower]
+  ring
 
 /-- The degree interval has positive width. -/
 theorem kp_degree_interval_width_pos :
     0 < rtUpper - rtLower := by
   dsimp [rtUpper, rtLower]
   linarith [rtS_lt_two]
+
+/-- The upper endpoint has square `3/4`. -/
+theorem kp_rtUpper_sq : rtUpper ^ 2 = (3 / 4 : ℝ) := by
+  dsimp [rtUpper]
+  nlinarith [rtS_sq]
+
+/-- The upper endpoint is positive. -/
+theorem kp_rtUpper_pos : 0 < rtUpper := by
+  dsimp [rtUpper]
+  positivity
 
 /-- The lower endpoint lies below zero. -/
 theorem kp_rtLower_lt_zero : rtLower < 0 := by
@@ -82,18 +104,19 @@ theorem kp_rtLower_lt_zero : rtLower < 0 := by
   dsimp [rtLower]
   linarith
 
+/-- The lower endpoint lies strictly above `-1/2`. -/
+theorem kp_neg_half_lt_rtLower : (-1 / 2 : ℝ) < rtLower := by
+  have h19 := nineteen_lt_eleven_sqrt_three
+  dsimp [rtLower, rtS] at h19 ⊢
+  linarith
+
 /-- The lower endpoint has square strictly below one quarter. -/
 theorem kp_rtLower_sq_lt_quarter :
     rtLower ^ 2 < (1 / 2 : ℝ) ^ 2 := by
-  have hL : (-1 / 2 : ℝ) < rtLower := by
-    have h := rtLower_gt_neg_one
-    have h19 := nineteen_lt_eleven_sqrt_three
-    dsimp [rtLower, rtS] at h19 ⊢
-    linarith
   have hU : rtLower < (1 / 2 : ℝ) := by
     linarith [kp_rtLower_lt_zero]
   have hp : 0 < ((1 / 2 : ℝ) - rtLower) * ((1 / 2 : ℝ) + rtLower) :=
-    mul_pos (sub_pos.mpr hU) (by linarith)
+    mul_pos (sub_pos.mpr hU) (by linarith [kp_neg_half_lt_rtLower])
   nlinarith
 
 @[simp] theorem kpLowerY_nonneg : 0 ≤ kpLowerY := by
@@ -111,12 +134,16 @@ theorem kpLowerY_sq :
     rtRad_nonneg le_rfl hLU
   exact Real.sq_sqrt hrad
 
+/-- The lower square root is definitionally `kpLowerY`. -/
+theorem kp_sqrt_lower :
+    Real.sqrt (1 - rtLower ^ 2) = kpLowerY := by
+  rfl
+
 /-- The upper endpoint lies on the unit semicircle. -/
 theorem kpUpperY_sq :
     kpUpperY ^ 2 = 1 - rtUpper ^ 2 := by
-  dsimp [kpUpperY, rtUpper]
-  rw [rtS_sq]
-  norm_num
+  rw [kp_rtUpper_sq]
+  norm_num [kpUpperY]
 
 /-- The actual square root at the upper endpoint equals `1/2`. -/
 theorem kp_sqrt_upper :
@@ -131,77 +158,69 @@ theorem kp_sqrt_upper :
   have hy2 := kpUpperY_sq
   nlinarith
 
-/-- The lower semicircle height is strictly larger than the upper endpoint height. -/
-theorem kpLowerY_gt_upperY : kpUpperY < kpLowerY := by
-  have hsq : kpUpperY ^ 2 < kpLowerY ^ 2 := by
-    rw [kpLowerY_sq, kpUpperY_sq]
+/-- The lower semicircle height is strictly larger than `rtUpper`. -/
+theorem kpLowerY_gt_rtUpper : rtUpper < kpLowerY := by
+  have hsq : rtUpper ^ 2 < kpLowerY ^ 2 := by
+    rw [kpLowerY_sq, kp_rtUpper_sq]
     nlinarith [kp_rtLower_sq_lt_quarter]
   by_contra hnot
-  have hle : kpLowerY ≤ kpUpperY := le_of_not_gt hnot
-  have hmul := mul_le_mul hle hle kpLowerY_nonneg kpUpperY_nonneg
-  have hsqle : kpLowerY ^ 2 ≤ kpUpperY ^ 2 := by
-    simpa [pow_two] using hmul
+  have hle : kpLowerY ≤ rtUpper := le_of_not_gt hnot
+  have hprod : 0 ≤ (rtUpper - kpLowerY) * (rtUpper + kpLowerY) :=
+    mul_nonneg (sub_nonneg.mpr hle)
+      (add_nonneg (le_of_lt kp_rtUpper_pos) kpLowerY_nonneg)
+  have hsqle : kpLowerY ^ 2 ≤ rtUpper ^ 2 := by
+    nlinarith
   exact (not_lt_of_ge hsqle) hsq
 
-/-- The angular dilation sine is strictly positive. -/
-theorem kpSinShift_pos : 0 < kpSinShift := by
-  have hUpperPos : 0 < rtUpper := by
-    dsimp [rtUpper]
-    positivity
-  have hY : rtUpper < kpLowerY := by
-    have hUpperEq : rtUpper = kpUpperY + (rtS - 1) / 2 := by
-      dsimp [rtUpper, kpUpperY]
-      ring
+/-- The lower semicircle height is larger than the upper endpoint height `1/2`. -/
+theorem kpLowerY_gt_upperY : kpUpperY < kpLowerY := by
+  have hUpperYlt : kpUpperY < rtUpper := by
     have hsOne : 1 < rtS := by
       have hs0 := rtS_nonneg
       have hs2 := rtS_sq
       nlinarith
-    have hUpperYlt : kpUpperY < rtUpper := by
-      rw [hUpperEq]
-      linarith
-    exact lt_trans hUpperYlt kpLowerY_gt_upperY
-  have hprod : rtUpper ^ 2 < rtUpper * kpLowerY := by
-    have h := mul_lt_mul_of_pos_left hY hUpperPos
-    simpa [pow_two] using h
-  have hUpperSq : rtUpper ^ 2 = (3 / 4 : ℝ) := by
-    dsimp [rtUpper]
-    rw [rtS_sq]
-    ring
-  have hLower : (-1 / 2 : ℝ) < rtLower := by
-    have h19 := nineteen_lt_eleven_sqrt_three
-    dsimp [rtLower, rtS] at h19 ⊢
+    dsimp [kpUpperY, rtUpper]
     linarith
-  rw [kpSinShift, kpRadius_reciprocal_eq_neg_lower]
-  nlinarith
+  exact lt_trans hUpperYlt kpLowerY_gt_rtUpper
+
+/-- The angular dilation sine is strictly positive. -/
+theorem kpSinShift_pos : 0 < kpSinShift := by
+  have hprod : rtUpper ^ 2 < rtUpper * kpLowerY := by
+    have h := mul_lt_mul_of_pos_left kpLowerY_gt_rtUpper kp_rtUpper_pos
+    simpa [pow_two] using h
+  rw [kpSinShift_formula]
+  nlinarith [kp_rtUpper_sq, kp_neg_half_lt_rtLower]
 
 /-- The lower endpoint value is exactly the common charge `q`. -/
 theorem kpOptimizedH_lower :
     kpOptimizedH rtLower = kpQ := by
-  have hrec := kpRadius_reciprocal_eq_neg_lower
-  have hY2 := kpLowerY_sq
-  have hQ := kpQ_eq_one_sub_rtUpper
-  rw [kpOptimizedH, kpCosShift, kpSinShift, hrec]
-  change
-    1 + rtLower * (rtUpper * (-rtLower) + kpLowerY / 2) -
-      kpLowerY * (rtUpper * kpLowerY + rtLower / 2) = kpQ
-  rw [hQ]
-  nlinarith
+  rw [kpOptimizedH, kp_sqrt_lower, kpCosShift_formula, kpSinShift_formula]
+  rw [kpQ_eq_one_sub_rtUpper]
+  nlinarith [kpLowerY_sq]
+
+/-- The lower endpoint is affine in the upper endpoint. -/
+theorem kp_rtLower_linear : rtLower = 11 * rtUpper - 10 := by
+  dsimp [rtLower, rtUpper]
+  ring
 
 /-- The upper endpoint value is exactly eleven times the common charge. -/
 theorem kpOptimizedH_upper :
     kpOptimizedH rtUpper = 11 * kpQ := by
-  have hrec := kpRadius_reciprocal_eq_neg_lower
-  have hsqrt := kp_sqrt_upper
-  have hUpperSq : rtUpper ^ 2 = (3 / 4 : ℝ) := by
-    dsimp [rtUpper]
-    rw [rtS_sq]
-    ring
-  have hLowerLinear : rtLower = 11 * rtUpper - 10 := by
-    rfl
-  have hQ := kpQ_eq_one_sub_rtUpper
-  rw [kpOptimizedH, kpCosShift, kpSinShift, hrec, hsqrt]
-  rw [hQ]
-  nlinarith
+  rw [kpOptimizedH, kp_sqrt_upper, kpCosShift_formula, kpSinShift_formula]
+  rw [kpQ_eq_one_sub_rtUpper]
+  nlinarith [kp_rtUpper_sq, kp_rtLower_linear]
+
+/-- The affine chord has the same lower endpoint value. -/
+theorem kpOptimizedChord_lower :
+    kpOptimizedChord rtLower = kpQ := by
+  dsimp [kpOptimizedChord, kpQ, kpS, rtLower, rtUpper, rtS]
+  ring
+
+/-- The affine chord has the same upper endpoint value. -/
+theorem kpOptimizedChord_upper :
+    kpOptimizedChord rtUpper = 11 * kpQ := by
+  dsimp [kpOptimizedChord, kpQ, kpS, rtUpper, rtS]
+  ring
 
 /-- The barycentric weights add to one. -/
 theorem kp_weights_sum (x : ℝ) :
@@ -220,6 +239,22 @@ theorem kp_barycentric_x (x : ℝ) :
   dsimp [kpWeightLower, kpWeightUpper]
   field_simp [hwne]
   ring
+
+/-- The affine chord is its own endpoint interpolation. -/
+theorem kp_chord_barycentric (x : ℝ) :
+    kpWeightLower x * kpOptimizedChord rtLower +
+        kpWeightUpper x * kpOptimizedChord rtUpper =
+      kpOptimizedChord x := by
+  have hs := kp_weights_sum x
+  have hx := kp_barycentric_x x
+  dsimp [kpOptimizedChord]
+  calc
+    kpWeightLower x * (rtLower + 11 - 6 * rtS) +
+        kpWeightUpper x * (rtUpper + 11 - 6 * rtS) =
+      (kpWeightLower x * rtLower + kpWeightUpper x * rtUpper) +
+        (kpWeightLower x + kpWeightUpper x) * (11 - 6 * rtS) := by ring
+    _ = x + 1 * (11 - 6 * rtS) := by rw [hx, hs]
+    _ = x + 11 - 6 * rtS := by ring
 
 /-- The barycentric weights are nonnegative on the degree interval. -/
 theorem kp_weights_nonneg {x : ℝ}
@@ -271,8 +306,9 @@ theorem kp_interpolatedY_le_sqrt {x : ℝ}
         (kpWeightLower x * kpLowerY + kpWeightUpper x * kpUpperY) ^ 2 := by
     rw [hid]
     exact mul_nonneg huv hdist
+  have hdeficit' : 0 ≤ 1 - x ^ 2 - kpInterpolatedY x ^ 2 := by
+    simpa only [hxb, kpInterpolatedY] using hdeficit
   have hsq : kpInterpolatedY x ^ 2 ≤ 1 - x ^ 2 := by
-    rw [kpInterpolatedY, hxb] at hdeficit
     nlinarith
   have hyNonneg : 0 ≤ kpInterpolatedY x := by
     dsimp [kpInterpolatedY]
@@ -300,49 +336,53 @@ theorem kp_interpolatedY_le_sqrt {x : ℝ}
   rw [hsqrtSq] at hstrictSq
   exact (not_lt_of_ge hsq) hstrictSq
 
+/-- Endpoint interpolation of `H` equals the corresponding linearized expression. -/
+theorem kp_optimizedH_endpoint_interpolation (x : ℝ) :
+    kpWeightLower x * kpOptimizedH rtLower +
+        kpWeightUpper x * kpOptimizedH rtUpper =
+      1 + x * kpCosShift - kpInterpolatedY x * kpSinShift := by
+  rw [kpOptimizedH, kpOptimizedH, kp_sqrt_lower, kp_sqrt_upper]
+  have hs := kp_weights_sum x
+  have hx := kp_barycentric_x x
+  calc
+    kpWeightLower x *
+          (1 + rtLower * kpCosShift - kpLowerY * kpSinShift) +
+        kpWeightUpper x *
+          (1 + rtUpper * kpCosShift - kpUpperY * kpSinShift) =
+      (kpWeightLower x + kpWeightUpper x) +
+        (kpWeightLower x * rtLower + kpWeightUpper x * rtUpper) * kpCosShift -
+        (kpWeightLower x * kpLowerY + kpWeightUpper x * kpUpperY) * kpSinShift := by
+          ring
+    _ = 1 + x * kpCosShift - kpInterpolatedY x * kpSinShift := by
+      rw [hs, hx]
+      rfl
+
 /-- The optimized exposed-area function lies below its endpoint chord. -/
 theorem kpOptimizedH_le_chord {x : ℝ}
     (hxL : rtLower ≤ x) (hxU : x ≤ rtUpper) :
     kpOptimizedH x ≤ kpOptimizedChord x := by
   have hY := kp_interpolatedY_le_sqrt hxL hxU
   have hSin := kpSinShift_pos
-  have hlinear :
-      kpWeightLower x * kpOptimizedH rtLower +
-          kpWeightUpper x * kpOptimizedH rtUpper =
-        1 + x * kpCosShift - kpInterpolatedY x * kpSinShift := by
-    rw [kpOptimizedH, kpOptimizedH]
-    rw [kp_sqrt_upper]
-    change
-      kpWeightLower x *
-          (1 + rtLower * kpCosShift - kpLowerY * kpSinShift) +
-        kpWeightUpper x *
-          (1 + rtUpper * kpCosShift - kpUpperY * kpSinShift) =
-        1 + x * kpCosShift - kpInterpolatedY x * kpSinShift
-    rw [kpInterpolatedY]
-    have hs := kp_weights_sum x
-    have hx := kp_barycentric_x x
-    linear_combination
-      kpCosShift * hx +
-      (-kpSinShift) * rfl +
-      hs
+  have hmul := mul_le_mul_of_nonneg_right hY (le_of_lt hSin)
   have hHweighted :
       kpOptimizedH x ≤
         kpWeightLower x * kpOptimizedH rtLower +
           kpWeightUpper x * kpOptimizedH rtUpper := by
-    rw [hlinear]
+    rw [kp_optimizedH_endpoint_interpolation]
     dsimp [kpOptimizedH]
     nlinarith
   have hChordWeights :
       kpWeightLower x * kpOptimizedH rtLower +
           kpWeightUpper x * kpOptimizedH rtUpper =
         kpOptimizedChord x := by
-    rw [kpOptimizedH_lower, kpOptimizedH_upper]
-    have hwne : rtUpper - rtLower ≠ 0 :=
-      ne_of_gt kp_degree_interval_width_pos
-    dsimp [kpWeightLower, kpWeightUpper, kpOptimizedChord, kpQ, kpS,
-      rtUpper, rtLower, rtS]
-    field_simp [hwne]
-    ring
+    calc
+      kpWeightLower x * kpOptimizedH rtLower +
+          kpWeightUpper x * kpOptimizedH rtUpper =
+        kpWeightLower x * kpOptimizedChord rtLower +
+          kpWeightUpper x * kpOptimizedChord rtUpper := by
+            rw [kpOptimizedH_lower, kpOptimizedH_upper,
+              kpOptimizedChord_lower, kpOptimizedChord_upper]
+      _ = kpOptimizedChord x := kp_chord_barycentric x
   rw [hChordWeights] at hHweighted
   exact hHweighted
 
@@ -358,7 +398,8 @@ theorem kp_optimized_degree_charge {d : ℝ}
     kpOptimizedH (rtX d) ≤ kpQ * (12 - d) := by
   rcases rtX_bounds hd1 hd11 with ⟨hxL, hxU⟩
   have h := kpOptimizedH_le_chord hxL hxU
-  simpa [kpOptimizedChord_degree d] using h
+  rw [kpOptimizedChord_degree d] at h
+  exact h
 
 end
 
