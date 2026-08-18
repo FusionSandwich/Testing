@@ -2,7 +2,7 @@ import Erdos1084
 
 open Erdos1084
 
-/-! Smoke tests for the FCC Wulff and Barlow optimization arithmetic. -/
+/-! Smoke tests for the FCC Wulff, Barlow, and bulk-core arithmetic. -/
 
 example (t : ℕ) :
     fccWulffD t = 6 * fccWulffB t :=
@@ -34,3 +34,18 @@ example :
     barlowWulffVolume (1 / 2 : ℝ) = 35 ∧
     barlowCoefficientCube (1 / 2 : ℝ) = 945 / 2 :=
   barlow_hcp_values
+
+example
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (degree : ι → ℕ) (D : ℕ)
+    (hdeficit : ∑ i, (12 - degree i) = 2 * D) :
+    (defectiveVertices degree).card ≤ 2 * D :=
+  defective_card_le_twice_contact_deficit degree D hdeficit
+
+example
+    {ι : Type*} [DecidableEq ι]
+    (bad halo : Finset ι) (D : ℕ)
+    (hbad : bad.card ≤ 2 * D)
+    (hhalo : halo.card ≤ 12 * bad.card) :
+    halo.card ≤ 24 * D :=
+  defective_halo_card_le_twentyfour_deficit bad halo D hbad hhalo
