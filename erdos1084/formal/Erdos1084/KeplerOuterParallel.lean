@@ -146,10 +146,11 @@ theorem kp_clean_cubed_certificate :
   have hrat :
       kpClean ^ 3 * (3.141593 : ℝ) ^ 2 < 18 * a ^ 3 := by
     norm_num [kpClean, a]
+  have hcleanCube : 0 < kpClean ^ 3 := pow_pos kpClean_pos 3
   calc
     kpClean ^ 3 * Real.pi ^ 2
         < kpClean ^ 3 * (3.141593 : ℝ) ^ 2 := by
-          exact mul_lt_mul_of_pos_left hpSq (by positivity)
+          exact mul_lt_mul_of_pos_left hpSq hcleanCube
     _ < 18 * a ^ 3 := hrat
     _ < 18 * kpLocalCoeff ^ 3 :=
       mul_lt_mul_of_pos_left haCube (by norm_num)
