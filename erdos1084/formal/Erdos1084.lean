@@ -16,31 +16,23 @@ import Erdos1084.GlobalDegreeConstraints
 import Erdos1084.NormalizedDeficitLimitCore
 import Erdos1084.BarlowSequence
 import Erdos1084.BarlowCellArithmetic
+import Erdos1084.BarlowInvariantMeasureArithmetic
 
 /-!
 # Erdős Problem 1084: formalized certification spine
 
-The library contains the following certified algebraic and abstract-assembly routes:
+The library contains certified algebraic and abstract-assembly routes for the radius-two,
+Kepler, periodic Barlow, and invariant-measure Barlow programs.
 
-* the radius-`1.58731` Lévy arithmetic certificate;
-* the radius-two conceptual coefficient `5/3`;
-* the clean strengthened radius-two coefficient `1673/1000`;
-* the Kepler/outer-parallel scalar bridge for the clean coefficient `2.0465`;
-* the optimized convex-chord local charge at the exact Kepler radius;
-* the one-radius endpoint minimax core and exact degree-one monotonicity;
-* the algebraic gain from a positive separated-cap stability remainder;
-* degree-eleven counting and minimum-degree consequences;
-* the abstract matching-bounds theorem that closes a normalized Wulff limit;
-* the exact periodic Barlow Gate-A coefficient formula and FCC/HCP calibration.
+The Gate-B module formalizes:
 
-The periodic Barlow modules formalize chirality counts, exact contact-vector lengths, the rational
-Wulff-volume formula, the coefficient cube
+* the real one-symbol-marginal volume and coefficient formulas;
+* FCC lower bounds and equality cases on `p ∈ [0,1]`;
+* continuity of the coefficient polynomial;
+* an exact non-subadditivity certificate for the raw directionwise infimum;
+* exact arithmetic for the common convex-envelope body of volume `57/2` and cube `1539/4`.
 
-`432 + 27*nPlus*nMinus/period^2`,
-
-and its strict FCC minimization for mixed chirality counts.  The full quotient-graph LP and exact
-polytope reconstruction are certified independently by the canonical Python verifier.
-
-No project-specific axiom is introduced. Published geometric and homogenization inputs remain
-visible theorem parameters or source-level dependencies rather than hidden axioms.
+The density of periodic orbit measures, weak-* continuity of the full support bodies, the
+periodized-prefix seam theorem, and the geometric intersection-body proof are maintained in the
+canonical mathematical dossier. They are not hidden as project axioms.
 -/
