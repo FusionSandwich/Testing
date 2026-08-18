@@ -18,7 +18,7 @@ through explicit theorem parameters:
 * local degree charges are converted to `KeplerLocalSurfaceInput` by a proved finite-sum lemma.
 
 The positive scale `K` is not arbitrary: `KeplerScaleSpec K` states exactly
-`K^3 * π^2 = 18`.  The power variable `x` is tied to the packing size by
+`K^3 * π^2 = 18`. The power variable `x` is tied to the packing size by
 `KeplerPowerScale n x`, namely `n > 0`, `x ≥ 0`, and `x^3 = n^2`.
 -/
 
@@ -122,10 +122,7 @@ theorem kp_local_compact_lower :
 @[simp] theorem kpClean_pos : 0 < kpClean := by
   norm_num [kpClean]
 
-/--
-Exact cubed certificate for the clean coefficient:
-`kpClean^3 * π^2 < 18 * kpLocalCoeff^3`.
--/
+/-- Exact cubed certificate: `kpClean^3 * π^2 < 18 * kpLocalCoeff^3`. -/
 theorem kp_clean_cubed_certificate :
     kpClean ^ 3 * Real.pi ^ 2 < 18 * kpLocalCoeff ^ 3 := by
   have hp : Real.pi < (3.141593 : ℝ) := Real.pi_lt_d6
@@ -174,8 +171,9 @@ theorem KeplerPowerScale.x_pos {n x : ℝ} (h : KeplerPowerScale n x) :
   have hxle : x ≤ 0 := le_of_not_gt hnot
   have hx0 : x = 0 := le_antisymm hxle h.x_nonneg
   have hn2 : 0 < n ^ 2 := sq_pos_of_pos h.n_pos
-  rw [hx0] at h.cube
-  norm_num at h.cube
+  have hcube := h.cube
+  rw [hx0] at hcube
+  norm_num at hcube
   nlinarith
 
 /-- The cubed certificate implies the actual linear coefficient comparison. -/
@@ -218,7 +216,7 @@ theorem kp_clean_lt_scale_mul_local {K : ℝ}
     nlinarith
   exact (not_lt_of_ge hcubeLe) hcube
 
-/-- Global surface lower-bound interface supplied by the published density and isoperimetric inputs. -/
+/-- Global surface lower-bound interface supplied by published density and isoperimetric inputs. -/
 structure KeplerGlobalSurfaceInput (x A K : ℝ) : Prop where
   scale : KeplerScaleSpec K
   surface_lower : 4 * Real.pi * K * x ≤ A
