@@ -71,7 +71,9 @@ theorem kpRadius_reciprocal_eq_neg_lower :
 /-- Formula for the cosine shift after substituting the optimized reciprocal radius. -/
 theorem kpCosShift_formula :
     kpCosShift = rtUpper * (-rtLower) + kpLowerY / 2 := by
-  rw [kpCosShift, div_eq_mul_inv, kpRadius_reciprocal_eq_neg_lower]
+  have hinv : kpRadius⁻¹ = -rtLower := by
+    simpa [one_div] using kpRadius_reciprocal_eq_neg_lower
+  rw [kpCosShift, div_eq_mul_inv, hinv]
 
 /-- Formula for the sine shift after substituting the optimized reciprocal radius. -/
 theorem kpSinShift_formula :
@@ -93,7 +95,7 @@ theorem kp_rtUpper_sq : rtUpper ^ 2 = (3 / 4 : ℝ) := by
 /-- The upper endpoint is positive. -/
 theorem kp_rtUpper_pos : 0 < rtUpper := by
   dsimp [rtUpper]
-  positivity
+  exact div_pos rtS_pos (by norm_num)
 
 /-- The lower endpoint lies below zero. -/
 theorem kp_rtLower_lt_zero : rtLower < 0 := by
@@ -196,7 +198,14 @@ theorem kpOptimizedH_lower :
     kpOptimizedH rtLower = kpQ := by
   rw [kpOptimizedH, kp_sqrt_lower, kpCosShift_formula, kpSinShift_formula]
   rw [kpQ_eq_one_sub_rtUpper]
-  nlinarith [kpLowerY_sq]
+  have hcircle : rtLower ^ 2 + kpLowerY ^ 2 = 1 := by
+    rw [kpLowerY_sq]
+    ring
+  calc
+    1 + rtLower * (rtUpper * -rtLower + kpLowerY / 2) -
+        kpLowerY * (rtUpper * kpLowerY + rtLower / 2) =
+      1 - rtUpper * (rtLower ^ 2 + kpLowerY ^ 2) := by ring
+    _ = 1 - rtUpper := by rw [hcircle]; ring
 
 /-- The lower endpoint is affine in the upper endpoint. -/
 theorem kp_rtLower_linear : rtLower = 11 * rtUpper - 10 := by
@@ -208,7 +217,13 @@ theorem kpOptimizedH_upper :
     kpOptimizedH rtUpper = 11 * kpQ := by
   rw [kpOptimizedH, kp_sqrt_upper, kpCosShift_formula, kpSinShift_formula]
   rw [kpQ_eq_one_sub_rtUpper]
-  nlinarith [kp_rtUpper_sq, kp_rtLower_linear]
+  dsimp [kpUpperY]
+  calc
+    1 + rtUpper * (rtUpper * -rtLower + kpLowerY / 2) -
+        (1 / 2 : ℝ) * (rtUpper * kpLowerY + rtLower / 2) =
+      1 - rtLower * (rtUpper ^ 2 + 1 / 4) := by ring
+    _ = 1 - rtLower := by rw [kp_rtUpper_sq]; ring
+    _ = 11 * (1 - rtUpper) := by rw [kp_rtLower_linear]; ring
 
 /-- The affine chord has the same lower endpoint value. -/
 theorem kpOptimizedChord_lower :
