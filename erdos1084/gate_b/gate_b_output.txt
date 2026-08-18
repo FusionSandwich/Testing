@@ -10,10 +10,10 @@ stationary theorem:
 
 aperiodic frequency approximants:
   p=2/5: coefficient cube=10962/25
-  p=5/12: coefficient cube=63123/144
-  p=12/29: coefficient cube=369288/841
-  p=29/70: coefficient cube=2151387/4900
-  p=70/169: coefficient cube=12541878/28561
+  p=5/12: coefficient cube=7017/16
+  p=12/29: coefficient cube=368820/841
+  p=29/70: coefficient cube=2148903/4900
+  p=70/169: coefficient cube=12525462/28561
 
 raw-infimum subadditivity counterexample:
   phi(v)=9/2
