@@ -1,17 +1,9 @@
-BARLOW WULFF CERTIFICATE
-coordinate zonotope volume = 128 + 48 p - 48 p^2
-physical D-Wulff volume = 32 + 12 p - 12 p^2
-coefficient cube = 432 + 162 p - 162 p^2
-coefficient cube = 432 + 162 p(1-p)
+BARLOW FREQUENCY MODEL NEGATIVE AUDIT
+published FCC contact-deficit coefficient cube = 432
+published HCP contact-deficit coefficient cube = 1755/4
+naive weighted-zonotope HCP cube = 945/2
+published HCP minus FCC = 27/4
+naive HCP excess over published HCP = 135/4
 
-FCC: p=0 or 1
-  W = 32
-  c^3 = 432
-  c = 6 * cubert(2)
-HCP: p=1/2
-  W = 35
-  c^3 = 945/2
-  c = 3 * cubert(35/2)
-
-Verified: FCC uniquely minimizes the coefficient among p in [0,1].
-PASS
+PASS: the naive frequency interpolation is rejected at HCP.
+Reason: the HCP multilattice surface cell problem has relaxation not captured by simple direction-frequency averaging.
