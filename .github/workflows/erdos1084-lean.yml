@@ -1,4 +1,4 @@
-name: Erdős 1084 radius-two certification
+name: Erdős 1084 full-scope certification
 
 on:
   pull_request:
@@ -13,12 +13,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Reproduce exact radius-two certificates
+      - name: Reproduce exact certificates
         run: |
           python3 erdos1084/radius_two/verify_radius_two.py > erdos1084/radius_two/verification_output_regenerated.txt
           diff -u erdos1084/radius_two/verification_output.txt erdos1084/radius_two/verification_output_regenerated.txt
           python3 erdos1084/radius_two/verify_1673_envelope.py > erdos1084/radius_two/verification_1673_output_regenerated.txt
           diff -u erdos1084/radius_two/verification_1673_output.txt erdos1084/radius_two/verification_1673_output_regenerated.txt
+          python3 erdos1084/full_scope/verify_fcc_wulff.py > erdos1084/full_scope/fcc_wulff_output_regenerated.txt
+          diff -u erdos1084/full_scope/fcc_wulff_output.txt erdos1084/full_scope/fcc_wulff_output_regenerated.txt
+          python3 erdos1084/full_scope/verify_barlow_wulff.py > erdos1084/full_scope/barlow_wulff_output_regenerated.txt
+          diff -u erdos1084/full_scope/barlow_wulff_output.txt erdos1084/full_scope/barlow_wulff_output_regenerated.txt
       - name: Reject Lean placeholders
         run: |
           if grep -R --include='*.lean' -nE '(^|[^[:alnum:]_])sorry([^[:alnum:]_]|$)' erdos1084/formal; then
@@ -43,4 +47,5 @@ jobs:
           lake env lean Erdos1084Tests.lean
           lake env lean Erdos1084AssemblyTests.lean
           lake env lean Erdos1084OptimizedTests.lean
+          lake env lean Erdos1084FullScopeTests.lean
           lake env lean Erdos1084AxiomAudit.lean

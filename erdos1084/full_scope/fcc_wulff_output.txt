@@ -1,0 +1,22 @@
+FCC TRUNCATED-OCTAHEDRAL CERTIFICATE
+determinant sum = 32
+integer-coordinate zonotope volume = 256
+limiting coefficient cube = 432
+limiting coefficient = 6 * cubert(2)
+
+t  n_t       b_t      D_t      E_t
+0         1        1        6         0
+1       201       43      258       948
+2      1289      149      894      6840
+3      4033      319     1914     22284
+4      9201      553     3318     51888
+5     17561      851     5106    100260
+6     29881     1213     7278    172008
+7     46929     1639     9834    271740
+
+Exact formulas:
+n_t = 128 t^3 + 60 t^2 + 12 t + 1
+b_t = 32 t^2 + 10 t + 1
+D_t = 192 t^2 + 60 t + 6
+E_t = 768 t^3 + 168 t^2 + 12 t
+PASS
