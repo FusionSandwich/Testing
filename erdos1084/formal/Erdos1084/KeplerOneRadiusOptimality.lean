@@ -27,8 +27,8 @@ def kpEndpointOneProfile (r : ℝ) : ℝ :=
 theorem kpEndpointOneProfile_strictMonoOn :
     StrictMonoOn kpEndpointOneProfile (Set.Ici (0 : ℝ)) := by
   intro a ha b hb hab
-  have ha0 : 0 ≤ a := ha
-  have hb0 : 0 ≤ b := hb
+  change (0 : ℝ) ≤ a at ha
+  change (0 : ℝ) ≤ b at hb
   have hsum : 0 < a + b + 1 := by linarith
   have hprod : 0 < (b - a) * (a + b + 1) :=
     mul_pos (sub_pos.mpr hab) hsum
@@ -51,7 +51,6 @@ theorem kpEndpointOneProfile_at_optimizer :
   unfold kpEndpointOneProfile
   rw [hQ]
   field_simp [hrne]
-  ring
 
 /--
 Abstract unique minimax lemma.
@@ -85,6 +84,8 @@ theorem unique_minimax_of_increasing_decreasing_crossing
 theorem kpEndpointOneProfile_strictMonoOn_two :
     StrictMonoOn kpEndpointOneProfile (Set.Ici (2 : ℝ)) := by
   intro a ha b hb hab
+  change (2 : ℝ) ≤ a at ha
+  change (2 : ℝ) ≤ b at hb
   apply kpEndpointOneProfile_strictMonoOn
   · show (0 : ℝ) ≤ a
     linarith
