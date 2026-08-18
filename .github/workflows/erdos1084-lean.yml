@@ -1,0 +1,51 @@
+name: Erdős 1084 full-scope certification
+
+on:
+  pull_request:
+    branches: [testing]
+    paths:
+      - 'erdos1084/**'
+      - '.github/workflows/erdos1084-lean.yml'
+  workflow_dispatch:
+
+jobs:
+  certification:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reproduce exact certificates
+        run: |
+          python3 erdos1084/radius_two/verify_radius_two.py > erdos1084/radius_two/verification_output_regenerated.txt
+          diff -u erdos1084/radius_two/verification_output.txt erdos1084/radius_two/verification_output_regenerated.txt
+          python3 erdos1084/radius_two/verify_1673_envelope.py > erdos1084/radius_two/verification_1673_output_regenerated.txt
+          diff -u erdos1084/radius_two/verification_1673_output.txt erdos1084/radius_two/verification_1673_output_regenerated.txt
+          python3 erdos1084/full_scope/verify_fcc_wulff.py > erdos1084/full_scope/fcc_wulff_output_regenerated.txt
+          diff -u erdos1084/full_scope/fcc_wulff_output.txt erdos1084/full_scope/fcc_wulff_output_regenerated.txt
+          python3 erdos1084/full_scope/verify_barlow_wulff.py > erdos1084/full_scope/barlow_wulff_output_regenerated.txt
+          diff -u erdos1084/full_scope/barlow_wulff_output.txt erdos1084/full_scope/barlow_wulff_output_regenerated.txt
+      - name: Reject Lean placeholders
+        run: |
+          if grep -R --include='*.lean' -nE '(^|[^[:alnum:]_])sorry([^[:alnum:]_]|$)' erdos1084/formal; then
+            echo 'Lean placeholder found' >&2
+            exit 1
+          fi
+      - name: Install Elan
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf \
+            https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
+            | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Resolve mathlib and build
+        working-directory: erdos1084/formal
+        run: |
+          lake update
+          lake exe cache get
+          lake build
+      - name: Compile theorem smoke tests and axiom audit
+        working-directory: erdos1084/formal
+        run: |
+          lake env lean Erdos1084Tests.lean
+          lake env lean Erdos1084AssemblyTests.lean
+          lake env lean Erdos1084OptimizedTests.lean
+          lake env lean Erdos1084FullScopeTests.lean
+          lake env lean Erdos1084AxiomAudit.lean

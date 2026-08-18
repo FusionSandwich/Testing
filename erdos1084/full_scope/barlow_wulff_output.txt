@@ -1,0 +1,9 @@
+BARLOW FREQUENCY MODEL NEGATIVE AUDIT
+published FCC contact-deficit coefficient cube = 432
+published HCP contact-deficit coefficient cube = 1755/4
+naive weighted-zonotope HCP cube = 945/2
+published HCP minus FCC = 27/4
+naive HCP excess over published HCP = 135/4
+
+PASS: the naive frequency interpolation is rejected at HCP.
+Reason: the HCP multilattice surface cell problem has relaxation not captured by simple direction-frequency averaging.
