@@ -2,7 +2,7 @@ import Erdos1084
 
 open Erdos1084
 
-/-! Smoke tests for the audited Kepler / outer-parallel bridge and optimized local chord. -/
+/-! Smoke tests for the audited Kepler, stability, degree, and limit modules. -/
 
 example : kpS ^ 2 = 3 := kpS_sq
 
@@ -69,6 +69,56 @@ example
   kpRadius_unique_oneRadius_optimum
     degreeElevenProfile hdecrease hcross hr hne
 
+/-! Separated-cap stability core. -/
+
+example {eta : ℝ} (heta0 : 0 < eta) (hetaQ : eta < kpQ) :
+    kpLocalCoeff < kpStableLocalCoeff eta :=
+  kpStableLocalCoeff_gt heta0 hetaQ
+
+example {eta : ℝ} (hetaQ : eta < kpQ) :
+    kpRadius ^ 2 * (kpQ - eta) * kpStableLocalCoeff eta = 1 :=
+  kp_stable_local_identity hetaQ
+
+example {K eta : ℝ}
+    (hK : 0 < K) (heta0 : 0 < eta) (hetaQ : eta < kpQ) :
+    K * kpLocalCoeff < kpStabilityMidCoeff K eta :=
+  kpStabilityMidCoeff_gt_endpoint hK heta0 hetaQ
+
+example
+    {ι : Type*} [Fintype ι]
+    (d exposure : ι → ℝ)
+    (n E A eta : ℝ)
+    (heta0 : 0 < eta) (hetaQ : eta < kpQ)
+    (hn : (Fintype.card ι : ℝ) = n)
+    (hdeg : (∑ i, d i) = 2 * E)
+    (hBoundary : A ≤ ∑ i, exposure i)
+    (hLocal : ∀ i,
+      exposure i ≤
+        2 * Real.pi * kpRadius ^ 2 * (kpQ - eta) * (12 - d i)) :
+    KeplerStableLocalSurfaceInput eta A (6 * n - E) :=
+  kp_stable_local_surface_input_of_charges
+    d exposure n E A eta heta0 hetaQ hn hdeg hBoundary hLocal
+
+example {x A D K eta : ℝ}
+    (hx : 0 < x)
+    (hg : KeplerGlobalSurfaceInput x A K)
+    (hl : KeplerStableLocalSurfaceInput eta A D) :
+    kpStabilityMidCoeff K eta * x < D :=
+  kp_stability_midpoint_strict hx hg hl
+
+/-! Degree-eleven and minimum-degree constraints. -/
+
+example
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (degree : ι → ℕ) (D : ℕ)
+    (hdeficit : ∑ i, (12 - degree i) = 2 * D) :
+    (degreeElevenVertices degree).card ≤ 2 * D :=
+  degreeEleven_card_le_twice_contact_deficit degree D hdeficit
+
+example {d : ℕ} (hmin : 2 ≤ d) (hEndpoint : d = 1 ∨ d = 11) :
+    d = 11 :=
+  endpoint_degree_reduction_of_minimum_two hmin hEndpoint
+
 /-! Finite-sum and final scalar assembly. -/
 
 example
@@ -97,3 +147,21 @@ example {n E x A K : ℝ}
     (hl : KeplerLocalSurfaceInput A (6 * n - E)) :
     E < 6 * n - kpClean * x :=
   kp_contact_upper_from_surface hpower hg hl
+
+/-! Conditional normalized-deficit limit closure. -/
+
+example {a : ℕ → ℝ} {c : ℝ}
+    (h : MatchingSurfaceBounds a c) :
+    HasRealSequenceLimit a c :=
+  hasRealSequenceLimit_of_matchingSurfaceBounds h
+
+example {a : ℕ → ℝ} {c : ℝ}
+    (h : UnrestrictedWulffInput a c) :
+    HasRealSequenceLimit a c :=
+  unrestricted_normalized_deficit_limit h
+
+example {c₁ c₂ : ℝ}
+    (h₁ : 0 ≤ c₁) (h₂ : 0 ≤ c₂)
+    (hCube : c₁ ^ 3 < c₂ ^ 3) :
+    c₁ < c₂ :=
+  positive_cube_gap_implies_positive_coefficient_gap h₁ h₂ hCube
