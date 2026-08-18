@@ -13,25 +13,29 @@ The exact human proof shows that the degreewise affine method reduces to two end
 * the two profiles agree at `r_*`.
 
 This file machine-checks the minimax logic, the degree-one monotonicity, and the exact endpoint
-value.  The trigonometric proof that the concrete degree-eleven profile is strictly decreasing is
+value. The trigonometric proof that the concrete degree-eleven profile is strictly decreasing is
 kept as an explicit hypothesis; it is proved in `ONE_RADIUS_OPTIMALITY.md`.
 -/
+
+noncomputable section
 
 /-- Scaled degree-one endpoint charge. -/
 def kpEndpointOneProfile (r : ℝ) : ℝ :=
   (r ^ 2 + r) / 11
 
-/-- The degree-one endpoint charge is strictly increasing on positive radii. -/
+/-- The degree-one endpoint charge is strictly increasing on nonnegative radii. -/
 theorem kpEndpointOneProfile_strictMonoOn :
     StrictMonoOn kpEndpointOneProfile (Set.Ici (0 : ℝ)) := by
   intro a ha b hb hab
+  have ha0 : 0 ≤ a := ha
+  have hb0 : 0 ≤ b := hb
   have hsum : 0 < a + b + 1 := by linarith
   have hprod : 0 < (b - a) * (a + b + 1) :=
     mul_pos (sub_pos.mpr hab) hsum
-  dsimp [kpEndpointOneProfile]
   have hdiff :
       (b ^ 2 + b) - (a ^ 2 + a) =
         (b - a) * (a + b + 1) := by ring
+  dsimp [kpEndpointOneProfile]
   nlinarith
 
 /-- Exact degree-one endpoint value at the optimized radius. -/
@@ -43,9 +47,10 @@ theorem kpEndpointOneProfile_at_optimizer :
     rw [hrec]
     dsimp [kpQ]
     ring
-  rw [hQ]
   have hrne : kpRadius ≠ 0 := ne_of_gt kpRadius_pos
-  field_simp [kpEndpointOneProfile, hrne]
+  unfold kpEndpointOneProfile
+  rw [hQ]
+  field_simp [hrne]
   ring
 
 /--
@@ -76,6 +81,17 @@ theorem unique_minimax_of_increasing_decreasing_crossing
     have hflt : f rStar < f r := hf hsmem hrmem hgt
     exact lt_of_lt_of_le hflt (le_max_left _ _)
 
+/-- The degree-one profile is strictly increasing on radii at least two. -/
+theorem kpEndpointOneProfile_strictMonoOn_two :
+    StrictMonoOn kpEndpointOneProfile (Set.Ici (2 : ℝ)) := by
+  intro a ha b hb hab
+  apply kpEndpointOneProfile_strictMonoOn
+  · show (0 : ℝ) ≤ a
+    linarith
+  · show (0 : ℝ) ≤ b
+    linarith
+  · exact hab
+
 /--
 Unique optimality of `kpRadius` once the concrete degree-eleven monotonicity theorem is supplied.
 -/
@@ -90,8 +106,10 @@ theorem kpRadius_unique_oneRadius_optimum
         kpEndpointOneProfile kpRadius := by
   apply unique_minimax_of_increasing_decreasing_crossing
   · exact le_of_lt two_lt_kpRadius
-  · exact kpEndpointOneProfile_strictMonoOn.mono (Set.Ici_subset_Ici (by norm_num))
+  · exact kpEndpointOneProfile_strictMonoOn_two
   · exact hdecrease
   · exact hcross.symm
+
+end
 
 end Erdos1084
