@@ -2,7 +2,7 @@ import Erdos1084
 
 open Erdos1084
 
-/-! Smoke tests for the audited Kepler / outer-parallel scalar bridge. -/
+/-! Smoke tests for the audited Kepler / outer-parallel bridge and optimized local chord. -/
 
 example : kpS ^ 2 = 3 := kpS_sq
 
@@ -28,6 +28,26 @@ example {n x : ℝ} (h : KeplerPowerScale n x) : 0 < x :=
 example {K : ℝ} (hK : KeplerScaleSpec K) :
     kpClean < K * kpLocalCoeff :=
   kp_clean_lt_scale_mul_local hK
+
+/-! Optimized convex-chord envelope. -/
+
+example : 0 < kpSinShift := kpSinShift_pos
+
+example : kpOptimizedH rtLower = kpQ :=
+  kpOptimizedH_lower
+
+example : kpOptimizedH rtUpper = 11 * kpQ :=
+  kpOptimizedH_upper
+
+example {x : ℝ} (hxL : rtLower ≤ x) (hxU : x ≤ rtUpper) :
+    kpOptimizedH x ≤ kpOptimizedChord x :=
+  kpOptimizedH_le_chord hxL hxU
+
+example {d : ℝ} (hd1 : 1 ≤ d) (hd11 : d ≤ 11) :
+    kpOptimizedH (rtX d) ≤ kpQ * (12 - d) :=
+  kp_optimized_degree_charge hd1 hd11
+
+/-! Finite-sum and final scalar assembly. -/
 
 example
     {ι : Type*} [Fintype ι]
