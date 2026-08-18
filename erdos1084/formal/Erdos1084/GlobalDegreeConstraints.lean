@@ -1,5 +1,4 @@
 import Mathlib
-import Erdos1084.BulkTwelveCore
 
 namespace Erdos1084
 
