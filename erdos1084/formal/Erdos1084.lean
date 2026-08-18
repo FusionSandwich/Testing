@@ -9,6 +9,7 @@ import Erdos1084.RadiusTwoGeometricBridges
 import Erdos1084.RadiusTwoOptimized
 import Erdos1084.RadiusTwoOptimizedAssembly
 import Erdos1084.KeplerOuterParallel
+import Erdos1084.KeplerOptimizedChord
 
 /-!
 # Erdős Problem 1084: formalized certification spine
@@ -18,12 +19,12 @@ The library contains the following certified algebraic and abstract-assembly rou
 * the radius-`1.58731` Lévy arithmetic certificate;
 * the radius-two conceptual coefficient `5/3`;
 * the clean strengthened radius-two coefficient `1673/1000`;
-* the Kepler/outer-parallel scalar bridge for the clean coefficient `2.0465`.
+* the Kepler/outer-parallel scalar bridge for the clean coefficient `2.0465`;
+* the optimized convex-chord local charge at the exact Kepler radius.
 
-The Kepler module introduces no project-specific axiom.  Its two geometric surface inequalities
-are explicit structure fields, and its positive scale is constrained by the exact equation
-`K^3 * π^2 = 18`.  The clean linear coefficient comparison is derived from the cubed numerical
-certificate rather than assumed.
+The Kepler modules introduce no project-specific axiom. Their geometric surface inequalities are
+explicit theorem parameters, the positive scale is constrained by `K^3 * π^2 = 18`, and the
+optimized local envelope is proved algebraically from the concavity of the upper semicircle.
 
 The kissing-number theorem, Euclidean isoperimetry, spherical-neighborhood isoperimetry, the
 Kepler density theorem, and the outer-parallel truncated-density identity remain cited external
