@@ -1,0 +1,64 @@
+name: Erdős 1084 Kepler, periodic Barlow, and invariant-measure certification
+
+on:
+  pull_request:
+    branches: [testing]
+    paths:
+      - 'erdos1084/**'
+      - '.github/workflows/erdos1084-lean.yml'
+  workflow_dispatch:
+
+jobs:
+  certification:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reproduce exact radius-two, Gate-A, and Gate-B certificates
+        run: |
+          python3 erdos1084/radius_two/verify_radius_two.py > erdos1084/radius_two/verification_output_regenerated.txt
+          diff -u erdos1084/radius_two/verification_output.txt erdos1084/radius_two/verification_output_regenerated.txt
+          python3 erdos1084/radius_two/verify_1673_envelope.py > erdos1084/radius_two/verification_1673_output_regenerated.txt
+          diff -u erdos1084/radius_two/verification_1673_output.txt erdos1084/radius_two/verification_1673_output_regenerated.txt
+          rm -rf /tmp/barlow-gate-a
+          mkdir -p /tmp/barlow-gate-a
+          python3 erdos1084/gate_a/solve_periodic_barlow_gate_a.py \
+            --max-period 12 \
+            --output-dir /tmp/barlow-gate-a \
+            > /tmp/barlow-gate-a-output.txt
+          diff -u erdos1084/gate_a/gate_a_output.txt /tmp/barlow-gate-a-output.txt
+          python3 erdos1084/gate_b/verify_gate_b.py > /tmp/barlow-gate-b-output.txt
+          diff -u erdos1084/gate_b/gate_b_output.txt /tmp/barlow-gate-b-output.txt
+      - name: Reject Lean placeholders and explicit project axioms
+        run: |
+          if grep -R --include='*.lean' -nE '(^|[^[:alnum:]_])(sorry|admit|sorryAx)([^[:alnum:]_]|$)' erdos1084/formal; then
+            echo 'Lean placeholder found' >&2
+            exit 1
+          fi
+          if grep -R --include='*.lean' -nE '^[[:space:]]*(axiom|constant)[[:space:]]+' erdos1084/formal/Erdos1084; then
+            echo 'Project-specific axiom/constant declaration found' >&2
+            exit 1
+          fi
+      - name: Install Elan
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf \
+            https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
+            | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Resolve mathlib and build
+        working-directory: erdos1084/formal
+        run: |
+          lake update
+          lake exe cache get
+          lake build
+      - name: Compile theorem smoke tests and axiom audits
+        working-directory: erdos1084/formal
+        run: |
+          lake env lean Erdos1084Tests.lean
+          lake env lean Erdos1084AssemblyTests.lean
+          lake env lean Erdos1084OptimizedTests.lean
+          lake env lean Erdos1084KeplerTests.lean
+          lake env lean Erdos1084BarlowTests.lean
+          lake env lean Erdos1084GateBTests.lean
+          lake env lean Erdos1084AxiomAudit.lean
+          lake env lean Erdos1084BarlowAxiomAudit.lean
+          lake env lean Erdos1084GateBAxiomAudit.lean
