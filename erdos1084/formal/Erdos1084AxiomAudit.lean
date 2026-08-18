@@ -21,6 +21,10 @@ Kepler theorems must therefore also be inspected. Their external content appears
 #print axioms Erdos1084.kp_clean_cubed_certificate
 #print axioms Erdos1084.KeplerPowerScale.x_pos
 #print axioms Erdos1084.kp_clean_lt_scale_mul_local
+#print axioms Erdos1084.kp_unit_circle_interpolation_identity
+#print axioms Erdos1084.kp_interpolatedY_le_sqrt
+#print axioms Erdos1084.kpOptimizedH_le_chord
+#print axioms Erdos1084.kp_optimized_degree_charge
 #print axioms Erdos1084.kp_local_surface_input_of_charges
 #print axioms Erdos1084.kp_surface_assembly_strict
 #print axioms Erdos1084.kp_contact_upper_from_surface
@@ -29,5 +33,6 @@ Kepler theorems must therefore also be inspected. Their external content appears
 #check Erdos1084.KeplerPowerScale
 #check Erdos1084.KeplerGlobalSurfaceInput
 #check Erdos1084.KeplerLocalSurfaceInput
+#check Erdos1084.kp_optimized_degree_charge
 #check Erdos1084.kp_local_surface_input_of_charges
 #check Erdos1084.kp_contact_upper_from_surface
