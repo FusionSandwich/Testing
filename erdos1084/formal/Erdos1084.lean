@@ -10,6 +10,7 @@ import Erdos1084.RadiusTwoOptimized
 import Erdos1084.RadiusTwoOptimizedAssembly
 import Erdos1084.FccWulffArithmetic
 import Erdos1084.BarlowWulffArithmetic
+import Erdos1084.BulkTwelveCore
 
 /-!
 # Erdős Problem 1084: formalized certification spine
@@ -20,12 +21,14 @@ The library contains:
 * the Hales-independent radius-two proof with coefficient `5/3`;
 * the strengthened radius-two coefficient `1673/1000`;
 * exact FCC truncated-octahedral construction arithmetic;
-* exact Barlow stacking-frequency Wulff optimization.
+* exact Barlow stacking-frequency Wulff optimization;
+* the quantitative reduction from surface-order contact deficit to an
+  all-but-surface-order degree-twelve graph core.
 
 The radius-two files formalize the local envelopes, finite degree-sum assembly, explicit
 adapters from the three named external geometric inputs, and complete local-to-global
-cancellations. The full-scope files certify the new FCC and Barlow polynomial identities.
-The kissing-number theorem, Euclidean isoperimetry, spherical-neighborhood isoperimetry,
-and the general lattice Gamma-convergence theorem remain cited external results rather
-than hidden axioms.
+cancellations. The full-scope files certify the FCC and Barlow polynomial identities and
+the first combinatorial crystallization reduction. The kissing-number theorem, Euclidean
+isoperimetry, spherical-neighborhood isoperimetry, and the general lattice Gamma-convergence
+theorem remain cited external results rather than hidden axioms.
 -/
