@@ -32,54 +32,37 @@ def barlowMinusCount : List BarlowChirality → ℕ
 @[simp] theorem barlow_counts_sum_length (word : List BarlowChirality) :
     barlowPlusCount word + barlowMinusCount word = word.length := by
   induction word with
-  | nil => simp [barlowPlusCount, barlowMinusCount]
+  | nil => rfl
   | cons head tail ih =>
-      cases head <;> simp [barlowPlusCount, barlowMinusCount, ih, Nat.add_assoc,
-        Nat.add_comm, Nat.add_left_comm]
+      cases head <;>
+        simp only [barlowPlusCount, barlowMinusCount, List.length_cons]
+      all_goals omega
 
-@[simp] theorem barlowPlusCount_all_plus (n : ℕ) :
-    barlowPlusCount (List.replicate n plus) = n := by
-  induction n with
-  | zero => simp [barlowPlusCount]
-  | succ n ih => simp [barlowPlusCount, ih]
-
-@[simp] theorem barlowMinusCount_all_plus (n : ℕ) :
-    barlowMinusCount (List.replicate n plus) = 0 := by
-  induction n with
-  | zero => simp [barlowMinusCount]
-  | succ n ih => simp [barlowMinusCount, ih]
-
-@[simp] theorem barlowPlusCount_all_minus (n : ℕ) :
-    barlowPlusCount (List.replicate n minus) = 0 := by
-  induction n with
-  | zero => simp [barlowPlusCount]
-  | succ n ih => simp [barlowPlusCount, ih]
-
-@[simp] theorem barlowMinusCount_all_minus (n : ℕ) :
-    barlowMinusCount (List.replicate n minus) = n := by
-  induction n with
-  | zero => simp [barlowMinusCount]
-  | succ n ih => simp [barlowMinusCount, ih]
-
-/-- Global chirality reversal swaps the two counts. -/
+/-- Global chirality reversal swaps the two symbols. -/
 def reverseBarlowChirality : BarlowChirality → BarlowChirality
   | plus => minus
   | minus => plus
 
+@[simp] theorem reverseBarlowChirality_involutive (chirality : BarlowChirality) :
+    reverseBarlowChirality (reverseBarlowChirality chirality) = chirality := by
+  cases chirality <;> rfl
+
 @[simp] theorem barlowPlusCount_map_reverse (word : List BarlowChirality) :
     barlowPlusCount (word.map reverseBarlowChirality) = barlowMinusCount word := by
   induction word with
-  | nil => simp [barlowPlusCount]
+  | nil => rfl
   | cons head tail ih =>
-      cases head <;> simp [barlowPlusCount, barlowMinusCount,
-        reverseBarlowChirality, ih]
+      cases head <;>
+        simp only [List.map_cons, reverseBarlowChirality,
+          barlowPlusCount, barlowMinusCount, ih]
 
 @[simp] theorem barlowMinusCount_map_reverse (word : List BarlowChirality) :
     barlowMinusCount (word.map reverseBarlowChirality) = barlowPlusCount word := by
   induction word with
-  | nil => simp [barlowMinusCount]
+  | nil => rfl
   | cons head tail ih =>
-      cases head <;> simp [barlowPlusCount, barlowMinusCount,
-        reverseBarlowChirality, ih]
+      cases head <;>
+        simp only [List.map_cons, reverseBarlowChirality,
+          barlowPlusCount, barlowMinusCount, ih]
 
 end Erdos1084
