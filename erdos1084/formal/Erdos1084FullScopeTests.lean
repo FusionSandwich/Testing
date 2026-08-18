@@ -2,7 +2,7 @@ import Erdos1084
 
 open Erdos1084
 
-/-! Smoke tests for the FCC Wulff, Barlow, and bulk-core arithmetic. -/
+/-! Smoke tests for the FCC Wulff, Barlow, and crystallization-core arithmetic. -/
 
 example (t : ℕ) :
     fccWulffD t = 6 * fccWulffB t :=
@@ -49,3 +49,12 @@ example
     (hhalo : halo.card ≤ 12 * bad.card) :
     halo.card ≤ 24 * D :=
   defective_halo_card_le_twentyfour_deficit bad halo D hbad hhalo
+
+example
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (localBarlow : ι → Prop) [DecidablePred localBarlow]
+    (halo : Finset ι) (D : ℕ)
+    (hlocal : ∀ i, i ∉ halo → localBarlow i)
+    (hhalo : halo.card ≤ 24 * D) :
+    (nonBarlowVertices localBarlow).card ≤ 24 * D :=
+  nonBarlow_card_le_twentyfour_deficit localBarlow halo D hlocal hhalo
