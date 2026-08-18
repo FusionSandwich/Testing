@@ -6,7 +6,7 @@ namespace Erdos1084
 /-!
 # Exact arithmetic of the periodic Barlow surface cell
 
-The complete geometric and LP derivation is certified by the exact Python implementation.  This
+The complete geometric and LP derivation is certified by the exact Python implementation. This
 module checks the rational coordinate normalization, contact-vector lengths, Wulff-volume formula,
 and periodic optimization theorem.
 -/
@@ -50,7 +50,7 @@ def barlowUpMinus₃ : BarlowVec := ⟨-1 / 3, 2 / 3, 1⟩
     barlowUpPlus₁, barlowUpPlus₂, barlowUpPlus₃,
     barlowUpMinus₁, barlowUpMinus₂, barlowUpMinus₃]
 
-/-- Rationally scaled Wulff volume.  Physical Wulff volume is twice this value. -/
+/-- Rationally scaled Wulff volume. Physical Wulff volume is twice this value. -/
 def periodicBarlowScaledWulffVolume (plus minus : ℕ) : ℚ :=
   16 + ((plus : ℚ) * (minus : ℚ)) /
     ((((plus + minus : ℕ) : ℚ)) ^ 2)
@@ -73,6 +73,7 @@ def periodicBarlowMixedArea (period a b : ℚ) : ℚ :=
 theorem periodicBarlowMixedArea_swap (period a b : ℚ) :
     periodicBarlowMixedArea period a b =
       periodicBarlowMixedArea period b a := by
+  unfold periodicBarlowMixedArea
   ring
 
 /-- Exact integrated raw section area. -/
@@ -90,7 +91,6 @@ theorem periodicBarlow_scaled_volume_from_sections
     exact_mod_cast hneNat
   unfold periodicBarlowScaledWulffVolume periodicBarlowIntegratedSectionArea
   field_simp [hne]
-  ring
 
 /-- Conversion from physical Wulff volume to the coefficient cube. -/
 theorem periodicBarlow_cube_from_wulff_volume
@@ -105,7 +105,6 @@ theorem periodicBarlow_cube_from_wulff_volume
 theorem periodicBarlow_cube_ge_fcc (plus minus : ℕ) :
     (432 : ℚ) ≤ periodicBarlowCoefficientCube plus minus := by
   unfold periodicBarlowCoefficientCube
-  have hnum : 0 ≤ (27 : ℚ) * (plus : ℚ) * (minus : ℚ) := by positivity
   have hden : 0 ≤ ((((plus + minus : ℕ) : ℚ)) ^ 2) := sq_nonneg _
   have hfrac :
       0 ≤ (27 : ℚ) * ((plus : ℚ) * (minus : ℚ)) /
@@ -151,7 +150,8 @@ theorem periodicBarlow_cube_swap (plus minus : ℕ) :
     periodicBarlowCoefficientCube plus minus =
       periodicBarlowCoefficientCube minus plus := by
   unfold periodicBarlowCoefficientCube
-  ring
+  rw [Nat.add_comm plus minus]
+  ring_nf
 
 /-- Surface energy depends only on the two symbol counts. -/
 def periodicBarlowWordCoefficientCube (word : List BarlowChirality) : ℚ :=
@@ -161,7 +161,9 @@ def periodicBarlowWordCoefficientCube (word : List BarlowChirality) : ℚ :=
     (word : List BarlowChirality) :
     periodicBarlowWordCoefficientCube (word.map reverseBarlowChirality) =
       periodicBarlowWordCoefficientCube word := by
-  simp [periodicBarlowWordCoefficientCube, periodicBarlow_cube_swap]
+  unfold periodicBarlowWordCoefficientCube
+  rw [barlowPlusCount_map_reverse, barlowMinusCount_map_reverse]
+  exact periodicBarlow_cube_swap _ _
 
 /-- Every finite periodic word satisfies the FCC lower bound. -/
 theorem periodicBarlowWord_cube_ge_fcc (word : List BarlowChirality) :
