@@ -33,14 +33,18 @@ jobs:
         run: make -C erdos1084/publication_mirror verify
       - name: Check finite-density, lower-bound, and spherical-review records
         run: |
-          grep -F 'head: f805b022bf947a28d7dfedc40e638d1849534eb3' \
+          grep -F 'head: 9ae62f9b8cc4eb24b8e546b3d3235bc499098e2d' \
             erdos1084/publication_mirror/MATH_SOURCE_HEAD.txt
           test -f erdos1084/publication_mirror/FINITE_KEPLER_TORUS_COMPLETION_PROOF.md
-          grep -F 'source head: f805b022bf947a28d7dfedc40e638d1849534eb3' \
+          grep -F 'source head: 9ae62f9b8cc4eb24b8e546b3d3235bc499098e2d' \
             erdos1084/publication_mirror/FINITE_KEPLER_TORUS_COMPLETION_PROOF.md
           test -f erdos1084/publication_mirror/FCC_PARALLELEPIPED_LOWER_BOUND.md
-          grep -F 'source head: f805b022bf947a28d7dfedc40e638d1849534eb3' \
+          grep -F 'source head: 9ae62f9b8cc4eb24b8e546b3d3235bc499098e2d' \
             erdos1084/publication_mirror/FCC_PARALLELEPIPED_LOWER_BOUND.md
+          grep -F 'Math source head:' \
+            erdos1084/publication_mirror/SOURCE_REVIEW_STATUS.txt
+          grep -F '9ae62f9b8cc4eb24b8e546b3d3235bc499098e2d' \
+            erdos1084/publication_mirror/SOURCE_REVIEW_STATUS.txt
           grep -F 'Finite FCC torus-completion theorem:' \
             erdos1084/publication_mirror/SOURCE_REVIEW_STATUS.txt
           grep -F 'FCC matching-order lower construction:' \
