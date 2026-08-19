@@ -1,6 +1,6 @@
 ERDOS 1084 UNIVERSAL TARGET-A COEFFICIENT CERTIFICATE
 status: PASS
-finite-density input: external Bezdek--Langi theorem for lambda>=1
+finite-density input: FCC torus completion plus the Kepler theorem
 optimized radius identity: r_*^2 q L = 1
 reciprocal identity: 1/r_* = 10 - 11 sqrt(3)/2
 sqrt(3) upper: 216506351/125000000
