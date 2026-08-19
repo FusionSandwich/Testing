@@ -13,6 +13,7 @@ import Erdos1084.KeplerOptimizedChord
 import Erdos1084.KeplerOneRadiusOptimality
 import Erdos1084.KeplerOneRadiusConcrete
 import Erdos1084.KeplerOneRadiusCalculus
+import Erdos1084.FccIsotropicBaseline
 import Erdos1084.SeparatedCapStabilityCore
 import Erdos1084.GlobalDegreeConstraints
 import Erdos1084.DefectHalo
@@ -44,15 +45,19 @@ import Erdos1084.FiniteSpherePacking
 The library contains certified algebraic and abstract-assembly routes for the radius-two,
 Kepler, periodic Barlow, invariant-measure Barlow, Gate-C occupied compactness, coherent-twin
 closure, exact normal approximation, finite-word approximation, holonomy, fan, network, platelet,
-diagonal-recovery, two-crack interface, abrupt-translation nullity, and finite periodic contact
-arrangements, Gate-D interface algebra, Gate-E exact-mass recovery, and exact Sigma-5 two-lattice
-transition programs.
+diagonal-recovery, two-crack interface, abrupt-translation nullity, finite periodic contact
+arrangements, and the FCC isotropic baseline, Gate-D interface algebra, Gate-E exact-mass recovery,
+and exact Sigma-5 two-lattice transition programs.
 
 `KeplerOneRadiusConcrete.lean` certifies the concrete degree-eleven endpoint constants, the exact
 factorization controlling its derivative, a uniform negative-derivative expression on
 `[2,kpRadius]`, and the exact endpoint crossing. `KeplerOneRadiusCalculus.lean` proves the actual
 derivative formula, strict decrease on `[2,kpRadius]`, and the fully concrete unique minimax
 theorem with no endpoint-profile hypothesis.
+
+`FccIsotropicBaseline.lean` proves the ordered-magnitude polynomial identity behind the sharp
+pointwise bound `phi_FCC >= sqrt(3)|xi|`, the exact continuum baseline cube
+`54*pi*sqrt(3)`, and its strict separation from the FCC cube `432`.
 
 `DefectHalo.lean` proves the exact finite combinatorial bound that the closed one-step halo of
 vertices with contact degree below twelve has cardinality at most `26 D` when the total degree
