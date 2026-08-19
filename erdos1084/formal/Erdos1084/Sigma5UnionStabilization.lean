@@ -6,11 +6,11 @@ namespace Erdos1084
 # Sigma-5 [001] two-lattice transition stabilization
 
 This module checks the finite Bellman certificate for the coincidence-periodic transition model
-whose candidate sites are the union of the two ideal FCC lattices. The geometric reconstruction
+whose candidate sites are the union of the two ideal FCC lattices.  The geometric reconstruction
 of the quotient graph is checked independently by the exact Python certificate in the canonical
 Math repository.
 
-The theorem is deliberately scoped to the two-lattice candidate class. Off-lattice transition
+The theorem is deliberately scoped to the two-lattice candidate class.  Off-lattice transition
 sites are not represented.
 -/
 
@@ -110,7 +110,7 @@ def sigma5Potential : Array Nat := #[
   14, 15, 16, 16, 16, 16, 17, 16, 16, 16, 17, 16, 17, 16, 17, 15, 16, 16, 17, 16, 17, 16, 17, 15, 17, 16, 17, 15, 17, 15, 16, 13,
   15, 16, 17, 17, 17, 17, 18, 17, 17, 17, 18, 17, 18, 17, 18, 16, 17, 17, 18, 17, 18, 17, 18, 16, 18, 17, 18, 16, 18, 16, 17, 14,
   16, 17, 18, 18, 18, 18, 19, 18, 18, 18, 19, 18, 19, 18, 19, 17, 18, 18, 19, 18, 19, 18, 19, 17, 19, 18, 19, 17, 19, 17, 18, 15,
-  15, 16, 17, 17, 17, 17, 18, 17, 17, 17, 18, 17, 18, 17, 18, 16, 17, 17, 18, 17, 18, 17, 18, 16, 18, 17, 18, 16, 18, 16, 17, 14,
+  15, 16, 17, 17, 17, 17, 18, 17, 17, 17, 18, 17, 18, 17, 18, 16, 17, 18, 16, 18, 16, 17, 14,
   16, 17, 18, 18, 18, 18, 19, 18, 18, 18, 19, 18, 19, 18, 19, 17, 18, 18, 19, 18, 19, 18, 19, 17, 19, 18, 19, 17, 19, 17, 18, 15,
   17, 18, 19, 19, 19, 19, 20, 19, 19, 19, 20, 19, 20, 19, 20, 18, 19, 19, 20, 19, 20, 19, 20, 18, 20, 19, 20, 18, 20, 18, 19, 16,
   16, 17, 18, 18, 18, 18, 19, 18, 18, 18, 19, 18, 19, 18, 19, 17, 18, 18, 19, 18, 19, 18, 19, 17, 19, 18, 19, 17, 19, 17, 18, 15,
