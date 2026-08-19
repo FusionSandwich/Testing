@@ -1,6 +1,6 @@
-name: Erdős 1084 Kepler, Barlow, and Gate-D certification
+name: Erdős 1084 Kepler, Barlow, Gate-D, and Gate-E certification
 
-# Public certification receipt for the Gate-D separator and calibration core.
+# Public certification receipt for the finite arithmetic, separator, recovery, and limit cores.
 on:
   pull_request:
     branches: [testing]
@@ -9,7 +9,7 @@ on:
       - '.github/workflows/erdos1084-lean.yml'
   push:
     branches:
-      - 'agent/erdos-1084-gate-d-orientation-lean-20260818'
+      - 'agent/erdos-1084-gate-e-limit-lean-20260819'
     paths:
       - 'erdos1084/**'
       - '.github/workflows/erdos1084-lean.yml'
@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Reproduce exact radius-two, Gate-A, Gate-B, and Gate-D certificates
+      - name: Reproduce exact radius-two and Gate-A through Gate-E certificates
         run: |
           python3 erdos1084/radius_two/verify_radius_two.py > erdos1084/radius_two/verification_output_regenerated.txt
           diff -u erdos1084/radius_two/verification_output.txt erdos1084/radius_two/verification_output_regenerated.txt
@@ -37,6 +37,10 @@ jobs:
           diff -u erdos1084/gate_b/gate_b_output.txt /tmp/barlow-gate-b-output.txt
           python3 erdos1084/gate_d/verify_orientation_cutset.py > /tmp/orientation-cutset-output.txt
           diff -u erdos1084/gate_d/orientation_cutset_output.txt /tmp/orientation-cutset-output.txt
+          python3 erdos1084/gate_e/verify_gate_e_recovery.py > /tmp/gate-e-recovery-output.txt
+          diff -u erdos1084/gate_e/gate_e_recovery_output.txt /tmp/gate-e-recovery-output.txt
+          python3 erdos1084/gate_e/verify_tetrahedral_polycrystal_tests.py > /tmp/gate-e-polycrystal-output.txt
+          diff -u erdos1084/gate_e/tetrahedral_polycrystal_output.txt /tmp/gate-e-polycrystal-output.txt
       - name: Reject Lean placeholders and explicit project axioms
         run: |
           if grep -R --include='*.lean' -nE '(^|[^[:alnum:]_])(sorry|admit|sorryAx)([^[:alnum:]_]|$)' erdos1084/formal; then
@@ -69,7 +73,9 @@ jobs:
           lake env lean Erdos1084BarlowTests.lean
           lake env lean Erdos1084GateBTests.lean
           lake env lean Erdos1084GateDTests.lean
+          lake env lean Erdos1084GateETests.lean
           lake env lean Erdos1084AxiomAudit.lean
           lake env lean Erdos1084BarlowAxiomAudit.lean
           lake env lean Erdos1084GateBAxiomAudit.lean
           lake env lean Erdos1084GateDAxiomAudit.lean
+          lake env lean Erdos1084GateEAxiomAudit.lean
