@@ -33,9 +33,10 @@ namespace TwoThirdPowerScale
 theorem x_pos {n x : ℝ} (h : TwoThirdPowerScale n x) : 0 < x := by
   by_contra hnot
   have hx0 : x = 0 := le_antisymm (le_of_not_gt hnot) h.x_nonneg
-  rw [hx0] at h.cube_eq
+  have hcube := h.cube_eq
+  rw [hx0] at hcube
+  norm_num at hcube
   have hn2 : 0 < n ^ 2 := sq_pos_of_pos h.n_pos
-  norm_num at h.cube_eq
   nlinarith
 
 end TwoThirdPowerScale
