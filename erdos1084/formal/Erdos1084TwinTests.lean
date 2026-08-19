@@ -1,8 +1,8 @@
 import Erdos1084
 
 /-!
-# Coherent-twin arithmetic, closure, word, holonomy, fan, network, platelet,
-# and diagonal-recovery smoke tests
+# Coherent-twin arithmetic, normal approximation, closure, word, holonomy, fan,
+# network, platelet, and diagonal-recovery smoke tests
 -/
 
 #check Erdos1084.fccTwinOne_orthogonal
@@ -17,6 +17,12 @@ import Erdos1084
 #check Erdos1084.fccTwinTwo_pow_six
 #check Erdos1084.fccTwinProduct_trace
 #check Erdos1084.fccTwinProduct_trace_not_integer
+
+#check Erdos1084.fccNormal001Word_length
+#check Erdos1084.fccNormal001Image_value
+#check Erdos1084.fccNormal001Image_normSq
+#check Erdos1084.fccNormal001Image_transverseSq
+#check Erdos1084.fccNormal001Image_transverseSq_lt
 
 #check Erdos1084.relIdentitySubgroup
 #check Erdos1084.relation_universal_of_closed_dense_identityClass
