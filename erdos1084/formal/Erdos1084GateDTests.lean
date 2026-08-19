@@ -33,6 +33,18 @@ example
   calibration_inball_scalar hdot hq hnorm hqnonneg hgamma
 
 example
+    {transport₁ transport₂ phase₁ phase₂ phaseInterface
+      exteriorEnergy₁ exteriorEnergy₂ interfaceEnergy : ℝ}
+    (hPhaseBalance : phase₁ + phase₂ + phaseInterface = 0)
+    (hExterior₁ : transport₁ + phase₁ ≤ exteriorEnergy₁)
+    (hExterior₂ : transport₂ + phase₂ ≤ exteriorEnergy₂)
+    (hInterface : phaseInterface ≤ interfaceEnergy) :
+    transport₁ + transport₂ ≤
+      exteriorEnergy₁ + exteriorEnergy₂ + interfaceEnergy :=
+  two_phase_translation_calibration
+    hPhaseBalance hExterior₁ hExterior₂ hInterface
+
+example
     {bulk₁ bulk₂ exterior₁ exterior₂ interface energy : ℝ}
     (hGauss : bulk₁ + bulk₂ = exterior₁ + exterior₂ + interface)
     (hExterior₁ : exterior₁ ≤ energy)
