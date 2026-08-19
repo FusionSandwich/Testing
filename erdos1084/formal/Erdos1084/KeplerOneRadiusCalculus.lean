@@ -38,11 +38,12 @@ theorem kpEndpointElevenProfile_hasDerivAt
     hinner.sqrt hradne
 
   have hprodRaw0 := (hasDerivAt_id r).mul hsqrt
-  change HasDerivAt
-      (fun x : ℝ => x * Real.sqrt (x ^ 2 - 1))
-      (Real.sqrt (r ^ 2 - 1) +
-        r * ((2 * r) / (2 * Real.sqrt (r ^ 2 - 1)))) r at hprodRaw0
-  have hprodRaw := hprodRaw0
+  have hprodRaw :
+      HasDerivAt
+        (fun x : ℝ => x * Real.sqrt (x ^ 2 - 1))
+        (Real.sqrt (r ^ 2 - 1) +
+          r * ((2 * r) / (2 * Real.sqrt (r ^ 2 - 1)))) r := by
+    simpa only [Pi.mul_apply, id_eq, one_mul] using hprodRaw0
 
   have hprodDeriv :
       Real.sqrt (r ^ 2 - 1) +
