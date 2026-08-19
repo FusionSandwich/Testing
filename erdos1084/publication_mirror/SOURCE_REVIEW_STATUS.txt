@@ -1,7 +1,7 @@
 ERDOS 1084 TARGET-A INDEPENDENT REVIEW STATUS
 
 Math source head:
-f805b022bf947a28d7dfedc40e638d1849534eb3
+9ae62f9b8cc4eb24b8e546b3d3235bc499098e2d
 
 Finite FCC torus-completion theorem:
 INTERNAL ADVERSARIAL REVIEW PASS
@@ -21,6 +21,12 @@ EXACT FINITE COUNT PASS
 - an appended FCC contact chain gives f_3(n)>6n-24n^(2/3)-12n^(1/3)-5 for every positive integer n;
 - the secondary order n^(2/3) is therefore rigorous from both sides;
 - no exact normalized-deficit constant or limit is claimed.
+
+Higher-dimensional periodic-completion corollaries:
+PROVED IN SEPARATE MATH NOTE
+- dimensions 8 and 24 inherit finite outer-parallel bounds from E8 and the Leech lattice;
+- the resulting explicit contact bounds subtract positive n^(7/8) and n^(23/24) terms;
+- these corollaries are not part of the three-dimensional Target-A manuscript mirror.
 
 Spherical-neighborhood application:
 PASS
