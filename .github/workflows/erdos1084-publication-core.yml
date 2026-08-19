@@ -1,0 +1,57 @@
+name: Erdős 1084 finite-paper public certification
+
+on:
+  pull_request:
+    branches:
+      - 'agent/erdos-1084-rogers-core-repair-lean-20260819'
+    paths:
+      - 'erdos1084/publication_core/**'
+      - 'erdos1084/formal/Erdos1084/DodecahedralPublicationBound.lean'
+      - 'erdos1084/formal/Erdos1084DodecahedralTests.lean'
+      - 'erdos1084/formal/Erdos1084.lean'
+      - 'erdos1084/formal/Erdos1084AxiomAudit.lean'
+      - '.github/workflows/erdos1084-publication-core.yml'
+  push:
+    branches:
+      - 'agent/erdos-1084-publication-core-ci-20260819'
+  workflow_dispatch:
+
+jobs:
+  certification:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reproduce the finite-paper exact certificate
+        run: |
+          python3 erdos1084/publication_core/verify_dodecahedral_levy_coefficient.py \
+            > /tmp/dodecahedral_levy_output.txt
+          diff -u \
+            erdos1084/publication_core/dodecahedral_levy_output.txt \
+            /tmp/dodecahedral_levy_output.txt
+      - name: Reject Lean placeholders and explicit project axioms
+        run: |
+          if grep -R --include='*.lean' -nE '(^|[^[:alnum:]_])(sorry|admit|sorryAx)([^[:alnum:]_]|$)' erdos1084/formal; then
+            echo 'Lean placeholder found' >&2
+            exit 1
+          fi
+          if grep -R --include='*.lean' -nE '^[[:space:]]*(axiom|constant)[[:space:]]+' erdos1084/formal/Erdos1084; then
+            echo 'Project-specific axiom/constant declaration found' >&2
+            exit 1
+          fi
+      - name: Install Elan
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf \
+            https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
+            | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Resolve pinned mathlib and build
+        working-directory: erdos1084/formal
+        run: |
+          lake update
+          lake exe cache get
+          lake build
+      - name: Compile finite-paper tests and signature audit
+        working-directory: erdos1084/formal
+        run: |
+          lake env lean Erdos1084DodecahedralTests.lean
+          lake env lean Erdos1084AxiomAudit.lean
