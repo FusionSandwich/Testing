@@ -1,0 +1,7 @@
+import Erdos1084.Phase1GlobalAlgebra
+
+#print axioms Erdos1084.phase1_kepler_surface_cube
+#print axioms Erdos1084.phase1_global_surface_input_of_cubic
+
+#check Erdos1084.Phase1GlobalCubicInput
+#check Erdos1084.phase1_global_surface_input_of_cubic
