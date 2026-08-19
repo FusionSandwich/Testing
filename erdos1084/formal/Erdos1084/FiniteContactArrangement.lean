@@ -35,10 +35,13 @@ theorem weightedContactCount_eq_zero_of_not_mem_support
     (ht : t ∉ contactArrangementSupport candidates active) :
     weightedContactCount candidates weight active t = 0 := by
   classical
-  have hnone : ∀ i, i ∈ candidates → ¬ active i t := by
-    intro i hi hactive
+  unfold weightedContactCount
+  apply Finset.sum_eq_zero
+  intro i hi
+  have hnot : ¬ active i t := by
+    intro hactive
     exact ht ⟨i, hi, hactive⟩
-  simp [weightedContactCount, hnone]
+  simp [hnot]
 
 /-- The active contact count is bounded by the total candidate weight. -/
 theorem weightedContactCount_le_totalWeight
