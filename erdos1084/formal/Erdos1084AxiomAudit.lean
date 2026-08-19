@@ -1,15 +1,17 @@
 import Erdos1084
 
 /-!
-# Axiom audit for the contact-number proof spine
+# Axiom and signature audit for the contact-number proof spine
 
-The external geometric theorems are passed as explicit hypotheses to bridge lemmas. This file
-checks that the project theorems introduce no project-specific axioms or hidden placeholders.
+The external geometric theorems are passed as explicit hypotheses to bridge lemmas.
+This file checks that the project theorems introduce no project-specific axioms or
+hidden placeholders.
 
-Important: `#print axioms` does not list ordinary theorem parameters. The signatures of the
-Kepler theorems must therefore also be inspected. Their external content appears as explicit
-surface inputs, local-charge hypotheses, power-scale data, a visible degree-eleven monotonicity
-parameter, a positive stability parameter, and matching asymptotic bounds.
+Important: `#print axioms` does not list ordinary theorem parameters. The Rogers and
+Kepler theorem signatures must therefore also be inspected. Their external content
+appears as explicit global-surface inputs, local-charge hypotheses, power-scale data,
+a visible degree-eleven monotonicity parameter, a positive stability parameter, and
+matching asymptotic bounds.
 -/
 
 #print axioms Erdos1084.kissing_twelve_closed_cap_cover
@@ -29,6 +31,12 @@ parameter, a positive stability parameter, and matching asymptotic bounds.
 #print axioms Erdos1084.kpEndpointOneProfile_strictMonoOn
 #print axioms Erdos1084.unique_minimax_of_increasing_decreasing_crossing
 #print axioms Erdos1084.kpRadius_unique_oneRadius_optimum
+
+#print axioms Erdos1084.rogers_surface_scale_cubed_certificate
+#print axioms Erdos1084.rogers_clean_lt_scale_mul_local_lower
+#print axioms Erdos1084.rogers_clean_lt_scale_mul_local
+#print axioms Erdos1084.rogers_surface_assembly_strict
+#print axioms Erdos1084.rogers_contact_upper_from_surface
 
 #print axioms Erdos1084.kpStableLocalCoeff_gt
 #print axioms Erdos1084.kp_stable_local_identity
@@ -52,6 +60,11 @@ parameter, a positive stability parameter, and matching asymptotic bounds.
 #check Erdos1084.KeplerGlobalSurfaceInput
 #check Erdos1084.KeplerLocalSurfaceInput
 #check Erdos1084.KeplerStableLocalSurfaceInput
+#check Erdos1084.RogersGlobalSurfaceInput
+#check Erdos1084.rogersSigmaUpper
+#check Erdos1084.rogersSurfaceScale
+#check Erdos1084.rogersClean
+#check Erdos1084.rogers_contact_upper_from_surface
 #check Erdos1084.kp_optimized_degree_charge
 #check Erdos1084.kpRadius_unique_oneRadius_optimum
 #check Erdos1084.kp_stability_midpoint_strict
