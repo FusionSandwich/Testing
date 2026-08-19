@@ -25,6 +25,7 @@ import Erdos1084.ClosedDenseEquivalence
 import Erdos1084.TwinHolonomyArithmetic
 import Erdos1084.TwinFanRecurrence
 import Erdos1084.TwinNetworkArithmetic
+import Erdos1084.TwinPlateletArithmetic
 import Erdos1084.OrientationInterfaceCoercivityCore
 import Erdos1084.GateERecoveryArithmetic
 import Erdos1084.Sigma5UnionStabilization
@@ -35,8 +36,8 @@ import Erdos1084.FiniteSpherePacking
 
 The library contains certified algebraic and abstract-assembly routes for the radius-two,
 Kepler, periodic Barlow, invariant-measure Barlow, Gate-C occupied compactness, coherent-twin
-closure and holonomy, Gate-D interface algebra, Gate-E exact-mass recovery, and exact Sigma-5
-two-lattice transition programs.
+closure, holonomy, fan, network, and platelet scaling, Gate-D interface algebra, Gate-E exact-mass
+recovery, and exact Sigma-5 two-lattice transition programs.
 
 `KeplerOneRadiusConcrete.lean` certifies the concrete degree-eleven endpoint constants, the exact
 factorization controlling its derivative, a uniform negative-derivative expression on
@@ -55,6 +56,8 @@ the noninteger `115/81` return trace of the naive four-sector twin cross.
 `TwinFanRecurrence.lean` formalizes the constant-angle recurrence and the implication from finite
 fan closure to an integer relation with `π`. `TwinNetworkArithmetic.lean` certifies the bad-site,
 deletion, line-order, and surface-scaling estimates for a compatible finite twin complex.
+`TwinPlateletArithmetic.lean` certifies the inverse-mesoscopic-scale rim estimate and the fixed-
+normal coverage obstruction for platelet arrays.
 
 `FiniteSpherePacking.lean` represents finite minimum-separation configurations, their Euclidean
 contact graphs, contact counts, degrees, and the exact degree-deficit identity directly in Lean.
