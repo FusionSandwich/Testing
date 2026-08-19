@@ -1,5 +1,6 @@
 name: Erdős 1084 Kepler, Barlow, and Gate-D certification
 
+# Public certification receipt for the Gate-D separator and calibration core.
 on:
   pull_request:
     branches: [testing]
