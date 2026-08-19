@@ -12,8 +12,6 @@ weight bound, and deficit-minimization bookkeeping. Construction of the circle
 and conflict-disk arrangement remains geometric.
 -/
 
-open scoped BigOperators
-
 section Arrangement
 
 variable {ι α : Type*} [DecidableEq ι]
@@ -23,7 +21,7 @@ noncomputable def weightedContactCount
     (candidates : Finset ι) (weight : ι → ℕ)
     (active : ι → α → Prop) (t : α) : ℕ := by
   classical
-  exact ∑ i in candidates, if active i t then weight i else 0
+  exact candidates.sum fun i => if active i t then weight i else 0
 
 /-- The finite support of all candidate contact loci. -/
 def contactArrangementSupport
@@ -46,8 +44,7 @@ theorem weightedContactCount_eq_zero_of_not_mem_support
 theorem weightedContactCount_le_totalWeight
     (candidates : Finset ι) (weight : ι → ℕ)
     (active : ι → α → Prop) (t : α) :
-    weightedContactCount candidates weight active t ≤
-      ∑ i in candidates, weight i := by
+    weightedContactCount candidates weight active t ≤ candidates.sum weight := by
   classical
   unfold weightedContactCount
   apply Finset.sum_le_sum
@@ -95,7 +92,7 @@ theorem abruptDeficitZ_minimized_of_count_maximized
 theorem abruptDeficitZ_ge_twoCrack_sub_totalWeight
     (candidates : Finset ι) (weight : ι → ℕ)
     (active : ι → α → Prop) (twoCrack : ℕ) (t : α) :
-    abruptDeficitZ twoCrack (∑ i in candidates, weight i) ≤
+    abruptDeficitZ twoCrack (candidates.sum weight) ≤
       abruptDeficitZ twoCrack
         (weightedContactCount candidates weight active t) := by
   exact abruptDeficitZ_antitone
