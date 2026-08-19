@@ -2,7 +2,7 @@ import Erdos1084
 
 /-!
 # Coherent-twin arithmetic, normal approximation, closure, word, holonomy, fan,
-# network, platelet, diagonal-recovery, and interface-upper-bound smoke tests
+# network, platelet, diagonal-recovery, interface-upper-bound, and null-union tests
 -/
 
 #check Erdos1084.fccTwinOne_orthogonal
@@ -75,3 +75,9 @@ import Erdos1084
 #check Erdos1084.relaxedInterface_le_selectedCracks
 #check Erdos1084.relaxedInterface_le_twoCracks
 #check Erdos1084.relaxedInterface_le_twoCracks_add_epsilon
+
+#check Erdos1084.pairParameterUnion
+#check Erdos1084.measure_pairParameterUnion_zero
+#check Erdos1084.subset_pairParameterUnion
+#check Erdos1084.measure_zero_of_subset_pairParameterUnion
+#check Erdos1084.measure_zero_of_pair_witness
