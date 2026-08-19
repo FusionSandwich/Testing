@@ -81,8 +81,13 @@ theorem rogers_surface_assembly_strict
         (4 * Real.pi) * (kpRadius ^ 2 * kpQ * D) := by
     simpa [mul_assoc] using hchain
   have hscaleX :
-      rogersSurfaceScale * x ≤ kpRadius ^ 2 * kpQ * D :=
-    (mul_le_mul_left hfourpi).mp hchain'
+      rogersSurfaceScale * x ≤ kpRadius ^ 2 * kpQ * D := by
+    by_contra hnot
+    have hrev :
+        kpRadius ^ 2 * kpQ * D < rogersSurfaceScale * x :=
+      lt_of_not_ge hnot
+    have hmul := mul_lt_mul_of_pos_left hrev hfourpi
+    exact (not_lt_of_ge hchain') hmul
   have hmul := mul_le_mul_of_nonneg_right hscaleX
     (le_of_lt kpLocalCoeff_pos)
   have htarget : rogersSurfaceScale * kpLocalCoeff * x ≤ D := by
