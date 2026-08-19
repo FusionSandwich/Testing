@@ -1,5 +1,5 @@
 FusionSandwich/Math
 branch: agent/erdos-1084-target-a-publication-20260819
-head: c99ac73bc3ddc8c7dc2118ddd88a76a07938d455
+head: f805b022bf947a28d7dfedc40e638d1849534eb3
 
-This public mirror reproduces the manuscript and exact verifier from the stated Math source head. The source replaces the Bezdek--Lángi equation-(1.2) dependency by a self-contained finite FCC torus-completion proof and explicitly checks wrap-around and periodic-copy separation.
+This public mirror reproduces the manuscript and exact verifier from the stated Math source head. The source replaces the Bezdek--Lángi equation-(1.2) dependency by a self-contained finite FCC torus-completion proof, explicitly checks wrap-around and periodic-copy separation, and includes an exact FCC construction proving the matching n^(2/3) order from below.
