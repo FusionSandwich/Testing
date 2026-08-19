@@ -1,0 +1,14 @@
+ERDOS 1084 UNIVERSAL TARGET-A COEFFICIENT CERTIFICATE
+status: PASS
+finite-density input: FCC torus completion plus the Kepler theorem
+optimized radius identity: r_*^2 q L = 1
+reciprocal identity: 1/r_* = 10 - 11 sqrt(3)/2
+sqrt(3) upper: 216506351/125000000
+pi upper from Machin certificate: 5277328977275528/1679825970703125
+declared pi upper: 3141593/1000000
+local factor lower: 418756933/250000000
+clean coefficient: 4093/2000
+positive exact cube margin: 83319151211028177098003/125000000000000000000000000
+diagnostic optimized radius: 2.11094912882473785020550863548997816412815447523860469776291
+diagnostic exact coefficient: 2.04650555638511242115583534121313140040591592236316282362742
+conclusion: c_K > 2.0465

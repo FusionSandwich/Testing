@@ -16,7 +16,7 @@ example {E ι : Type*} [PseudoMetricSpace E] [Fintype ι]
       ⋃ i, exposedSpherePatch center r i :=
   frontier_finiteClosedBallUnion_subset_exposed center r
 
-example {E ι : Type*} [PseudoMetricSpace E] [Fintype ι]
+example {E ι : Type*} [PseudoMetricSpace E] [MeasurableSpace E] [Fintype ι]
     (μ : Measure E) (center : ι → E) (r : ℝ) :
     μ (frontier (finiteClosedBallUnion center r)) ≤
       ∑' i, μ (exposedSpherePatch center r i) :=

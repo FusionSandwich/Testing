@@ -21,7 +21,8 @@ theorem linePoint_dist_sq {n : ℕ} (i j : Fin n) :
     dist (linePoint i) (linePoint j) ^ 2 =
       (2 * (i.val : ℝ) - 2 * (j.val : ℝ)) ^ 2 := by
   rw [EuclideanSpace.dist_sq_eq]
-  norm_num [linePoint, Real.dist_eq]
+  simp [linePoint, Fin.sum_univ_succ]
+  rw [Real.dist_eq, sq_abs]
 
 /-- The explicit line configuration is unit-separated. -/
 def lineConfiguration (n : ℕ) : UnitSeparatedConfiguration (Fin n) where

@@ -1,0 +1,256 @@
+\section{A finite Kepler bound by torus completion}
+\label{sec:global}
+
+For $r\ge1$, define
+\begin{equation}\label{eq:Ur}
+ U_r=\bigcup_{i=1}^n(c_i+rB),
+\end{equation}
+where $B$ is the closed unit ball.  Put
+\[
+ \kappa=\vol(B)=\frac{4\pi}{3},
+ \qquad
+ \delta_3=\frac{\pi}{\sqrt{18}}.
+\]
+The value of $\delta_3$ is the Kepler packing density
+\cite{Hales2005}.
+
+\begin{proposition}[finite Kepler outer-parallel bound]
+\label{prop:finitekepler}
+For every finite unit-ball packing $\{c_i+B:1\le i\le n\}$ and every $r\ge2$,
+\begin{equation}\label{eq:finitekepler}
+ n\kappa\le\delta_3\vol(U_r).
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:volumelowergeneral}
+ \boxed{\vol(U_r)\ge4\sqrt2\,n.}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Let
+\[
+ D_3=\{z\in\mathbb Z^3:z_1+z_2+z_3\text{ is even}\},
+ \qquad
+ \Lambda=\sqrt2D_3.
+\]
+This is the FCC center lattice scaled so that its shortest nonzero vector has
+length two.  Indeed, every nonzero vector of $D_3$ has squared length at least
+two.  The lattice $D_3$ has index two in $\mathbb Z^3$, and therefore
+\begin{equation}\label{eq:fccdet}
+ \det\Lambda=2(\sqrt2)^3=4\sqrt2,
+ \qquad
+ \frac{\kappa}{\det\Lambda}=\delta_3.
+\end{equation}
+
+Set
+\[
+ D=\max_{i,j}|c_i-c_j|.
+\]
+Choose a positive integer $N$ such that
+\begin{equation}\label{eq:Nchoice}
+ 2N>D+2r,
+\end{equation}
+and put
+\[
+ L=N\Lambda,
+ \qquad
+ T=\mathbb R^3/L,
+ \qquad
+ V=\vol(T)=N^3\det\Lambda.
+\]
+We use the quotient metric and translation-invariant volume measure on the flat
+torus $T$.  The shortest nonzero vector of $L$ has length $2N$, so the
+injectivity radius of $T$ is $N$.  In particular, \cref{eq:Nchoice} implies
+$N>r$.
+
+Let $\pi:\mathbb R^3\to T$ be the quotient map.  It is injective on $U_r$.
+For if $x,y\in U_r$ and $x-y=\ell\in L\setminus\{0\}$, choose $i,j$ with
+$|x-c_i|\le r$ and $|y-c_j|\le r$.  Then
+\[
+ 2N\le|\ell|
+ \le |x-c_i|+|c_i-c_j|+|c_j-y|
+ \le2r+D,
+\]
+contrary to \cref{eq:Nchoice}.  Since $r<N$, each Euclidean ball
+$c_i+rB$ maps isometrically onto the closed torus ball of radius $r$ centered at
+$\pi(c_i)$.  Hence, writing
+\[
+ \overline C=\pi(\{c_1,\ldots,c_n\}),
+ \qquad
+ \overline U=\pi(U_r),
+\]
+we have
+\begin{equation}\label{eq:torusvolume}
+ \overline U=\bigcup_{i=1}^n\overline B_T(\pi(c_i),r),
+ \qquad
+ \vol_T(\overline U)=\vol(U_r).
+\end{equation}
+
+The set $\overline C$ is a unit-ball packing on $T$.  Indeed, if distinct
+centers had torus distance less than two, then for some $\ell\in L$,
+\[
+ |c_i-c_j-\ell|<2.
+\]
+For $\ell=0$ this contradicts the original packing condition.  For
+$\ell\ne0$ it gives
+\[
+ 2N\le|\ell|<|c_i-c_j|+2\le D+2\le D+2r,
+\]
+again contradicting \cref{eq:Nchoice}.  Thus periodic copies of the original
+cluster introduce no new overlap.
+
+The finite quotient $\Lambda/L$ has $N^3$ elements.  For $t\in T$, let
+\[
+ Q_t=t+(\Lambda/L)
+\]
+be the translated FCC center set on $T$, and define
+\[
+ m(t)=\#(Q_t\setminus\overline U).
+\]
+For every fixed $q\in\Lambda/L$, the point $t+q$ is uniformly distributed on
+$T$ as $t$ varies.  Summing the corresponding indicator functions and using
+translation invariance gives
+\begin{equation}\label{eq:averagefiller}
+ \frac1V\int_T m(t)\,dt
+ =N^3\left(1-\frac{\vol_T(\overline U)}V\right).
+\end{equation}
+Thus some $t_0\in T$ satisfies
+\[
+ m(t_0)\ge
+ N^3\left(1-\frac{\vol_T(\overline U)}V\right).
+\]
+Using \cref{eq:fccdet},
+\begin{equation}\label{eq:fillerlower}
+ m(t_0)\kappa
+ \ge
+ \delta_3\bigl(V-\vol_T(\overline U)\bigr).
+\end{equation}
+
+Now consider
+\[
+ \overline C\cup(Q_{t_0}\setminus\overline U).
+\]
+This is a unit-ball packing on $T$.  The points in each of the two parts are
+mutually separated by at least two.  If $q\in Q_{t_0}\setminus\overline U$, then
+$q$ has torus distance strictly larger than $r\ge2$ from every point of
+$\overline C$, by the first identity in \cref{eq:torusvolume}.
+
+Lifting this torus packing to $\mathbb R^3$ gives an $L$-periodic unit-ball
+packing with $n+m(t_0)$ balls per fundamental cell.  Its periodic density is
+$\bigl(n+m(t_0)\bigr)\kappa/V$.  By the Kepler theorem,
+\begin{equation}\label{eq:keplerperiodic}
+ \bigl(n+m(t_0)\bigr)\kappa\le\delta_3V.
+\end{equation}
+Combining \cref{eq:fillerlower,eq:keplerperiodic} yields
+\[
+ n\kappa+\delta_3\bigl(V-\vol_T(\overline U)\bigr)
+ \le\delta_3V.
+\]
+Using \cref{eq:torusvolume} proves \cref{eq:finitekepler}.  Finally,
+\[
+ \frac{\kappa}{\delta_3}
+ =\frac{4\pi/3}{\pi/\sqrt{18}}
+ =4\sqrt2,
+\]
+which gives \cref{eq:volumelowergeneral}.
+\end{proof}
+
+\begin{remark}\label{rem:truncateddensity}
+Bezdek and L\'angi define a truncated density relative to outer-parallel domains
+\cite{BezdekLangi2025}.  For finite packings their quotient stabilizes to the
+left side of \cref{eq:finitekepler} divided by $\vol(U_r)$.  The proposition
+above proves the needed finite inequality directly and does not use their
+identity between separately defined upper densities.  Thus no synchronization
+of limsup subsequences is required in the present argument.
+\end{remark}
+
+At the optimized radius, \cref{eq:rstar} and the calculation in
+\cref{sec:optimizer} give $r_*>2$.  Proposition~\ref{prop:finitekepler} therefore
+gives
+\begin{equation}\label{eq:volumelower}
+ \boxed{\vol(U_{r_*})\ge4\sqrt2\,n.}
+\end{equation}
+
+The union $U_{r_*}$ is bounded and has finite perimeter.  Euclidean
+isoperimetry gives
+\[
+ \Per(U_{r_*})^3\ge36\pi\vol(U_{r_*})^2,
+\]
+and $\Per(U_{r_*})\le\cH^2(\partial U_{r_*})$.  Using
+\cref{eq:volumelower},
+\begin{equation}\label{eq:surfacelower}
+ \boxed{
+ \cH^2(\partial U_{r_*})
+ \ge4\pi\left(\frac{18}{\pi^2}\right)^{1/3}n^{2/3}.}
+\end{equation}
+
+\section{Local spherical-neighborhood estimate}
+\label{sec:local}
+
+Fix a center $c_i$.  For each contact neighbor $c_j$, put
+\[
+ v_{ij}=\frac{c_j-c_i}{2}\in\Sph^2.
+\]
+If $j\ne k$ are contact neighbors, then $|c_j-c_k|\ge2$, hence
+$|v_{ij}-v_{ik}|\ge1$, so their angular separation is at least $\pi/3$.
+Consequently the interiors of the caps $C(v_{ij},\pi/6)$ are pairwise disjoint.
+
+Set
+\begin{equation}\label{eq:q}
+ \beta=\frac\pi6,
+ \qquad
+ q=1-\cos\beta=1-\frac{\sqrt3}{2},
+\end{equation}
+and define the base set
+\[
+ A_i=\bigcup_{j\sim i} C(v_{ij},\beta).
+\]
+This is a finite union of closed caps and hence is compact and measurable.  Cap
+boundaries are circles and have zero spherical area.  Therefore, if $d_i=d$,
+\begin{equation}\label{eq:basearea}
+ \area(A_i)=2\pi dq.
+\end{equation}
+Let $\rho_d$ be the radius of an equal-area cap.  Then
+\begin{equation}\label{eq:xd}
+ x_d:=\cos\rho_d=1-dq.
+\end{equation}
+
+A point $c_i+ru$ on the sphere of radius $r$ lies in the enlarged ball around a
+contact neighbor in direction $v_{ij}$ exactly when
+\[
+ |ru-2v_{ij}|\le r,
+\]
+which is equivalent to $u\cdot v_{ij}\ge1/r$.  Thus the closed hidden cap has
+angular radius
+\begin{equation}\label{eq:alpha}
+ \alpha=\arccos(1/r).
+\end{equation}
+For $r\ge2$, put $s=\alpha-\beta\ge\pi/6>0$.  Distance to a cap satisfies
+\[
+ \operatorname{dist}_{\Sph^2}(u,C(v,\beta))
+ =\max\{0,\angle(u,v)-\beta\},
+\]
+so the union of the closed hidden caps is exactly the closed $s$-neighborhood of
+$A_i$.
+
+Spherical-neighborhood isoperimetry says that among measurable spherical sets of
+given area, a cap minimizes every closed geodesic-neighborhood area
+\cite{BaernsteinTaylor1976,BarnesOzgurWu2018}.  At the optimized radius and for
+$d\le11$, non-saturation holds exactly.  The endpoint identity below gives
+$\rho_{11}=\pi-\alpha_*$, and hence
+\begin{equation}\label{eq:nonsaturation}
+ \rho_d+s_*
+ \le\rho_{11}+\alpha_*-\beta
+ =\pi-\beta
+ =\frac{5\pi}{6}<\pi.
+\end{equation}
+Therefore the exposed area $e_i$ on the sphere of radius $r_*$ satisfies
+\begin{equation}\label{eq:exposure}
+ e_i\le2\pi r_*^2H_d,
+ \qquad
+ H_d=1+\cos(\rho_d+s_*).
+\end{equation}
+The comparison above uses closed hidden caps, whereas the actually exposed patch
+removes interiors of enlarged balls.  Their difference is contained in a finite
+union of sphere-intersection circles and therefore has $\cH^2$-measure zero.
+Non-tangent enlarged balls can only reduce actual exposure.

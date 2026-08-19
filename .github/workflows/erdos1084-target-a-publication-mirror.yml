@@ -1,0 +1,106 @@
+name: Erdős 1084 Target-A public publication mirror
+
+on:
+  pull_request:
+    branches:
+      - 'agent/erdos-1084-phase1-contact-model-lean-20260819'
+    paths:
+      - 'erdos1084/publication_mirror/**'
+      - '.github/workflows/erdos1084-target-a-publication-mirror.yml'
+  push:
+    branches:
+      - 'agent/erdos-1084-phase1-publication-verification-20260819'
+    paths:
+      - 'erdos1084/publication_mirror/**'
+      - '.github/workflows/erdos1084-target-a-publication-mirror.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: erdos1084-target-a-publication-mirror
+  cancel-in-progress: true
+
+jobs:
+  publication-mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the public literal mirror
+        uses: actions/checkout@v4
+      - name: Record source provenance
+        run: |
+          cat erdos1084/publication_mirror/MATH_SOURCE_HEAD.txt
+          git rev-parse HEAD | tee /tmp/erdos1084-testing-mirror-head.txt
+      - name: Reproduce the exact coefficient certificate
+        run: make -C erdos1084/publication_mirror verify
+      - name: Check finite-density, lower-bound, and spherical-review records
+        run: |
+          grep -F 'head: 9ae62f9b8cc4eb24b8e546b3d3235bc499098e2d' \
+            erdos1084/publication_mirror/MATH_SOURCE_HEAD.txt
+          test -f erdos1084/publication_mirror/FINITE_KEPLER_TORUS_COMPLETION_PROOF.md
+          grep -F 'source head: 9ae62f9b8cc4eb24b8e546b3d3235bc499098e2d' \
+            erdos1084/publication_mirror/FINITE_KEPLER_TORUS_COMPLETION_PROOF.md
+          test -f erdos1084/publication_mirror/FCC_PARALLELEPIPED_LOWER_BOUND.md
+          grep -F 'source head: 9ae62f9b8cc4eb24b8e546b3d3235bc499098e2d' \
+            erdos1084/publication_mirror/FCC_PARALLELEPIPED_LOWER_BOUND.md
+          grep -F 'Math source head:' \
+            erdos1084/publication_mirror/SOURCE_REVIEW_STATUS.txt
+          grep -F '9ae62f9b8cc4eb24b8e546b3d3235bc499098e2d' \
+            erdos1084/publication_mirror/SOURCE_REVIEW_STATUS.txt
+          grep -F 'Finite FCC torus-completion theorem:' \
+            erdos1084/publication_mirror/SOURCE_REVIEW_STATUS.txt
+          grep -F 'FCC matching-order lower construction:' \
+            erdos1084/publication_mirror/SOURCE_REVIEW_STATUS.txt
+          grep -F 'INTERNAL ADVERSARIAL REVIEW PASS' \
+            erdos1084/publication_mirror/SOURCE_REVIEW_STATUS.txt
+          grep -F 'EXACT FINITE COUNT PASS' \
+            erdos1084/publication_mirror/SOURCE_REVIEW_STATUS.txt
+          grep -F 'Spherical-neighborhood application:' \
+            erdos1084/publication_mirror/SOURCE_REVIEW_STATUS.txt
+          grep -F 'equation (1.2) is no longer a dependency' \
+            erdos1084/publication_mirror/SOURCE_REVIEW_STATUS.txt
+      - name: Install TeX
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y latexmk texlive-latex-extra lmodern poppler-utils
+      - name: Rebuild the manuscript
+        run: |
+          make -C erdos1084/publication_mirror clean
+          make -C erdos1084/publication_mirror paper
+      - name: Reject unresolved LaTeX diagnostics
+        run: |
+          log=erdos1084/publication_mirror/paper/erdos_1084_target_a.log
+          if grep -nE 'Overfull|Underfull|LaTeX Warning|Undefined' "$log"; then
+            echo 'LaTeX diagnostic gate failed' >&2
+            exit 1
+          fi
+          pdfinfo erdos1084/publication_mirror/paper/erdos_1084_target_a.pdf \
+            | grep -E '^(Pages|Page size|File size):'
+      - name: Generate literal-mirror source and PDF receipts
+        run: |
+          cd erdos1084/publication_mirror
+          find . -type f \
+            ! -path './paper/*.pdf' \
+            ! -path './paper/*.aux' \
+            ! -path './paper/*.log' \
+            ! -path './paper/*.out' \
+            ! -path './paper/*.fls' \
+            ! -path './paper/*.fdb_latexmk' \
+            -print0 | sort -z | xargs -0 sha256sum \
+            > /tmp/erdos1084-target-a-mirror-source-manifest.sha256
+          sha256sum paper/erdos_1084_target_a.pdf \
+            > /tmp/erdos1084-target-a-mirror-pdf.sha256
+          cat /tmp/erdos1084-target-a-mirror-source-manifest.sha256
+          cat /tmp/erdos1084-target-a-mirror-pdf.sha256
+      - name: Upload the public publication receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: erdos-1084-target-a-publication-mirror
+          path: |
+            /tmp/erdos1084-testing-mirror-head.txt
+            /tmp/erdos1084-target-a-mirror-source-manifest.sha256
+            /tmp/erdos1084-target-a-mirror-pdf.sha256
+            erdos1084/publication_mirror/MATH_SOURCE_HEAD.txt
+            erdos1084/publication_mirror/SOURCE_REVIEW_STATUS.txt
+            erdos1084/publication_mirror/FINITE_KEPLER_TORUS_COMPLETION_PROOF.md
+            erdos1084/publication_mirror/FCC_PARALLELEPIPED_LOWER_BOUND.md
+            erdos1084/publication_mirror/paper/erdos_1084_target_a.pdf
+            erdos1084/publication_mirror/computation/target_a_coefficient_output.txt

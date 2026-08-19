@@ -1,0 +1,194 @@
+\section{Global assembly and coefficient}
+
+At $r=r_*$, \cref{eq:endpointreduction,eq:crossing} give
+$M(r_*)=q$.  Therefore \cref{eq:surfaceuppergeneral} becomes
+\begin{equation}\label{eq:surfaceupper}
+ \cH^2(\partial U_{r_*})
+ \le4\pi r_*^2qD.
+\end{equation}
+Combining \cref{eq:surfacelower,eq:surfaceupper} yields
+\[
+ D\ge
+ \frac{(18/\pi^2)^{1/3}}{r_*^2q}n^{2/3}.
+\]
+Using \cref{eq:localidentity},
+\begin{equation}\label{eq:Dexact}
+ \boxed{
+ D\ge
+ \left(\frac{18}{\pi^2}\right)^{1/3}
+ \left(103-\frac{117\sqrt3}{2}\right)n^{2/3}.}
+\end{equation}
+For a contact maximizer, $|E|=f_3(n)$, proving \cref{eq:mainexact}.
+
+To prove the clean decimal, use the rigorous bounds
+\[
+ \sqrt3<\frac{1732050808}{10^9},
+ \qquad
+ \pi<\frac{3141593}{10^6}.
+\]
+The first gives
+\[
+ 103-\frac{117\sqrt3}{2}
+ >\frac{418756933}{250000000}.
+\]
+For $c_0=4093/2000=2.0465$, exact rational arithmetic gives
+\begin{align*}
+&18\left(\frac{418756933}{250000000}\right)^3
+-c_0^3\left(\frac{3141593}{10^6}\right)^2\\
+&\qquad=
+\frac{83319151211028177098003}
+{125000000000000000000000000}>0.
+\end{align*}
+All factors are positive, hence $c_0<c_K$.  This proves \cref{eq:clean} and the
+strict theorem.
+
+\section{A matching-order FCC construction}
+\label{sec:lower}
+
+The surface exponent in \cref{thm:main} is optimal in order.  In the original
+minimum-distance-one normalization, let
+\[
+ u_1=\frac{(0,1,1)}{\sqrt2},
+ \qquad
+ u_2=\frac{(1,0,1)}{\sqrt2},
+ \qquad
+ u_3=\frac{(1,1,0)}{\sqrt2}.
+\]
+These generate the FCC lattice scaled to minimum distance one.  For positive
+integers $a,b,c$, put
+\[
+ X_{a,b,c}
+ =\{iu_1+ju_2+ku_3:
+ 0\le i<a,\ 0\le j<b,\ 0\le k<c\}.
+\]
+Its $abc$ points have exactly
+\begin{equation}\label{eq:lowerbox}
+ E(a,b,c)
+ =6abc-3ab-3ac-3bc+a+b+c
+\end{equation}
+unit-distance pairs.  Indeed, orient the contacts in the six directions
+\[
+ u_1,u_2,u_3,u_1-u_2,u_1-u_3,u_2-u_3.
+\]
+The corresponding edge counts are
+\[
+ (a-1)bc,\quad a(b-1)c,\quad ab(c-1)
+\]
+and
+\[
+ (a-1)(b-1)c,\quad(a-1)b(c-1),\quad a(b-1)(c-1),
+\]
+whose sum is \cref{eq:lowerbox}.
+
+For $a=b=c=m$, this gives the exact subsequence
+\begin{equation}\label{eq:lowercube}
+ \boxed{
+ f_3(m^3)\ge6m^3-9m^2+3m.}
+\end{equation}
+Thus the deficit is at most $9m^2-3m$ along cubic cardinalities.
+
+There is also an elementary all-cardinality estimate.  Let
+$m=\lfloor n^{1/3}\rfloor$ and $t=n-m^3$.  Append to $X_{m,m,m}$ the $t$
+consecutive FCC points
+\[
+ mu_1,(m+1)u_1,\ldots,(m+t-1)u_1.
+\]
+They continue a contact chain from $(m-1)u_1$, so they create at least $t$ new
+contacts.  Since $t<3m^2+3m+1$,
+\[
+ 6n-f_3(n)
+ \le9m^2-3m+5t
+ <24m^2+12m+5.
+\]
+Consequently, for every positive integer $n$,
+\begin{equation}\label{eq:loweralln}
+ \boxed{
+ f_3(n)>6n-24n^{2/3}-12n^{1/3}-5.}
+\end{equation}
+The constants in \cref{eq:loweralln} are not optimized.  The construction proves
+that $n^{2/3}$ is the correct order of the secondary term, but it does not identify
+the exact asymptotic coefficient.
+
+\section{Verification and scope}
+
+The finite upper theorem uses the following named published inputs:
+\begin{enumerate}[label=(\roman*),leftmargin=2.2em]
+\item the three-dimensional kissing number;
+\item the Kepler density $\delta_3=\pi/\sqrt{18}$;
+\item Euclidean isoperimetry for bounded finite-perimeter sets;
+\item spherical-neighborhood isoperimetry for measurable subsets of $\Sph^2$.
+\end{enumerate}
+The finite outer-parallel inequality itself is proved in
+\cref{prop:finitekepler} from the explicit FCC lattice, translation averaging on
+a compact flat torus, and input (ii).  In particular, the theorem does not depend
+on Bezdek--L\'angi equation (1.2) or on any product rule for separate limsups.
+The lower construction in \cref{sec:lower} is elementary and independent of the
+four upper-bound inputs.
+
+The accompanying exact verifier checks the optimized-radius identities in
+$\mathbb Q(\sqrt3)$, rigorous rational bounds for $\sqrt3$ and $\pi$, and the
+positive cubed margin proving $c_K>2.0465$.  The public Lean development checks the
+finite contact-model relations, the optimized local algebra, the degree-sum and
+surface-assembly implications, and the relational conclusion for $f_3(n)$ from
+explicit geometric-input structures.  It does not yet reconstruct the flat-torus
+completion proof, the FCC lower-count construction, or foundational versions of
+(i)--(iv); ordinary theorem parameters remain visible in the load-bearing
+signatures.
+
+No Barlow, crystallization, $\Gamma$-convergence, interface, or Wulff-selection
+result enters the proof.  The existence and exact value of
+\[
+ \lim_{n\to\infty}\frac{6n-f_3(n)}{n^{2/3}}
+\]
+remain open.
+
+\begin{thebibliography}{99}
+
+\bibitem{BaernsteinTaylor1976}
+A.~Baernstein II and B.~A.~Taylor,
+\emph{Spherical rearrangements, subharmonic functions, and $*$-functions in
+$n$-space}, Duke Math. J. \textbf{43} (1976), 245--268.
+
+\bibitem{BarnesOzgurWu2018}
+L.~P.~Barnes, A.~\"Ozg\"ur, and X.~Wu,
+\emph{An isoperimetric result on high-dimensional spheres},
+arXiv:1811.10533 (2018), Proposition~1.
+
+\bibitem{BezdekKhan2018}
+K.~Bezdek and M.~A.~Khan,
+\emph{Contact numbers for sphere packings},
+in New Trends in Intuitive Geometry,
+Bolyai Soc. Math. Stud. \textbf{27}, Springer, 2018, 25--47.
+
+\bibitem{BezdekLangi2025}
+K.~Bezdek and Z.~L\'angi,
+\emph{Density bounds for unit ball packings relative to their outer parallel
+domains}, Pure Appl. Funct. Anal. \textbf{10} (2025), 1193--1205;
+arXiv:2401.00645.
+
+\bibitem{BezdekReid2013}
+K.~Bezdek and S.~Reid,
+\emph{Contact graphs of unit sphere packings revisited},
+J. Geom. \textbf{104} (2013), 57--83.
+
+\bibitem{Erdos1975}
+P.~Erd\H{o}s,
+\emph{On some problems of elementary and combinatorial geometry},
+Ann. Mat. Pura Appl. (4) \textbf{103} (1975), 99--108.
+
+\bibitem{Hales2005}
+T.~C.~Hales,
+\emph{A proof of the Kepler conjecture},
+Ann. of Math. (2) \textbf{162} (2005), 1065--1185.
+
+\bibitem{Maggi2012}
+F.~Maggi,
+\emph{Sets of Finite Perimeter and Geometric Variational Problems},
+Cambridge Studies in Advanced Mathematics 135, Cambridge University Press, 2012.
+
+\bibitem{SchuetteWaerden1953}
+K.~Sch\"utte and B.~L.~van der Waerden,
+\emph{Das Problem der dreizehn Kugeln},
+Math. Ann. \textbf{125} (1952/53), 325--334.
+
+\end{thebibliography}

@@ -1,0 +1,5 @@
+FusionSandwich/Math
+branch: agent/erdos-1084-target-a-publication-20260819
+head: 9ae62f9b8cc4eb24b8e546b3d3235bc499098e2d
+
+This public mirror reproduces the Target-A manuscript and exact verifier from the stated Math source head. The source replaces the Bezdek--Lángi equation-(1.2) dependency by a self-contained finite FCC torus-completion proof, explicitly checks wrap-around and periodic-copy separation, includes an exact FCC construction proving the matching n^(2/3) order from below, and records the dimension-8 and dimension-24 periodic-completion corollaries separately.

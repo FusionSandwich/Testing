@@ -1,6 +1,7 @@
 import Erdos1084.TangentCapGeometry
 
 open Erdos1084
+open scoped InnerProductSpace
 
 /-! Smoke tests for tangent-neighbor cap geometry. -/
 
