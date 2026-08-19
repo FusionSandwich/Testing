@@ -1,0 +1,13 @@
+import Erdos1084.FiniteBallUnionBoundary
+
+/-! Axiom and signature audit for finite-union boundary ownership. -/
+
+#print axioms Erdos1084.finiteClosedBallUnion_isClosed
+#print axioms Erdos1084.not_mem_openBall_of_mem_frontier_finiteClosedBallUnion
+#print axioms Erdos1084.frontier_finiteClosedBallUnion_subset_exposed
+#print axioms Erdos1084.measure_frontier_finiteClosedBallUnion_le_tsum_exposed
+
+#check Erdos1084.finiteClosedBallUnion
+#check Erdos1084.exposedSpherePatch
+#check Erdos1084.frontier_finiteClosedBallUnion_subset_exposed
+#check Erdos1084.measure_frontier_finiteClosedBallUnion_le_tsum_exposed
