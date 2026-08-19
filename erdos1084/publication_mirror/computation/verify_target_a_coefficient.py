@@ -2,7 +2,8 @@
 """Exact arithmetic certificate for the universal Erdős 1084 coefficient 2.0465.
 
 All pass/fail decisions are rational or quadratic-field identities. Decimal output
-is diagnostic only. Published geometric inputs are not re-proved here.
+is diagnostic only. The finite FCC torus-completion geometry and published
+geometric inputs are audited separately.
 """
 from __future__ import annotations
 
@@ -88,7 +89,7 @@ r_diag = (D(40)+D(22)*sqrt3)/D(37)
 
 print("ERDOS 1084 UNIVERSAL TARGET-A COEFFICIENT CERTIFICATE")
 print("status: PASS")
-print("finite-density input: external Bezdek--Langi theorem for lambda>=1")
+print("finite-density input: FCC torus completion plus the Kepler theorem")
 print("optimized radius identity: r_*^2 q L = 1")
 print("reciprocal identity: 1/r_* = 10 - 11 sqrt(3)/2")
 print(f"sqrt(3) upper: {sqrt3_upper}")
