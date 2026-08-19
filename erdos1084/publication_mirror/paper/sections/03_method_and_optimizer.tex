@@ -1,0 +1,143 @@
+\section{The degreewise affine method}
+\label{sec:method}
+
+For a general $r\ge2$, define
+\begin{equation}\label{eq:Fr}
+ F_r(x)=1+x\cos s-\sqrt{1-x^2}\sin s.
+\end{equation}
+Then $H_d(r)=F_r(x_d)$.  On the interval $x_{11}\le x\le x_1$,
+\begin{equation}\label{eq:convexity}
+ F_r''(x)=\frac{\sin s}{(1-x^2)^{3/2}}>0
+\end{equation}
+for every $r\ge2$.  Thus $F_r$ lies below its endpoint chord.  Since $x_d$ is affine in $d$, the
+barycentric weights are $(d-1)/10$ at $x_{11}$ and $(11-d)/10$ at $x_1$.
+Define
+\[
+ M_1(r)=\frac{H_1(r)}{11},
+ \qquad
+ M_{11}(r)=H_{11}(r),
+ \qquad
+ M(r)=\max_{1\le d\le11}\frac{H_d(r)}{12-d}.
+\]
+The chord estimate gives
+\begin{equation}\label{eq:endpointreduction}
+ \boxed{M(r)=\max\{M_1(r),M_{11}(r)\}.}
+\end{equation}
+Indeed, the endpoint degrees attain the two ratios, while every intermediate
+ratio is bounded by their maximum.
+
+Define the exposed constituent-sphere set and its area by
+\[
+ X_i(r)=\partial(c_i+rB)\setminus
+        \bigcup_{j\ne i}\operatorname{int}(c_j+rB),
+ \qquad
+ e_i(r)=\cH^2(X_i(r)).
+\]
+For $d_i\le11$,
+\[
+ e_i(r)\le2\pi r^2M(r)(12-d_i).
+\]
+For $d_i=12$, the twelve closed radius-$\pi/3$ caps cover $\Sph^2$ by the kissing
+number theorem.  At $r=2$, the possible residue consists only of finitely many
+sphere-intersection circles and has zero area; for $r>2$ the actual hidden caps are
+strictly larger.  Thus $e_i(r)=0$ throughout $r\ge2$.  Every point of
+$\partial U_r$ belongs to at least one $X_i(r)$.  Using \cref{eq:handshake},
+\begin{equation}\label{eq:surfaceuppergeneral}
+ \cH^2(\partial U_r)
+ \le4\pi r^2M(r)D.
+\end{equation}
+Thus, whenever the finite global surface lower bound is available at $r$,
+maximizing the contact coefficient is equivalent to minimizing $r^2M(r)$.
+
+\section{Exact optimization of the radius}
+\label{sec:optimizer}
+
+Because $\rho_1=\beta$,
+\[
+ H_1(r)=1+\cos\alpha=1+\frac1r,
+\]
+so
+\begin{equation}\label{eq:B1}
+ B_1(r):=r^2M_1(r)=\frac{r^2+r}{11}
+\end{equation}
+is strictly increasing for $r\ge2$.
+
+Let $\rho=\rho_{11}$ and $\gamma=\rho-\beta$.  Then
+\begin{equation}\label{eq:B11}
+ B_{11}(r):=r^2M_{11}(r)
+ =r^2\bigl(1+\cos(\alpha+\gamma)\bigr).
+\end{equation}
+Using $r=\sec\alpha$,
+\[
+ B_{11}(\alpha)
+ =2\left(\frac{\cos((\alpha+\gamma)/2)}{\cos\alpha}\right)^2.
+\]
+Its logarithmic derivative has the sign of
+\[
+ 2\tan\alpha-\tan\frac{\alpha+\gamma}{2}.
+\]
+Set
+\[
+ \Phi(\alpha)=\tan\frac{\alpha+\gamma}{2}-2\tan\alpha.
+\]
+On $\pi/3\le\alpha\le\alpha_*:=\pi-\rho$,
+\[
+ \frac{\alpha+\gamma}{2}\le\frac{5\pi}{12},
+\]
+and therefore
+\[
+ \Phi'(\alpha)
+ =\frac12\sec^2\frac{\alpha+\gamma}{2}-2\sec^2\alpha
+ \le(4+2\sqrt3)-8<0.
+\]
+At the right endpoint,
+\[
+ \frac{\alpha_*+\gamma}{2}=\frac{5\pi}{12}.
+\]
+Writing
+\[
+ c_*:=\cos\alpha_*=-x_{11}=\frac{20-11\sqrt3}{2}>0,
+\]
+the inequality $\Phi(\alpha_*)>0$ reduces, after squaring positive quantities,
+to
+\[
+ (11+4\sqrt3)c_*^2-4
+ =\frac{3097-1788\sqrt3}{4}>0.
+\]
+The last sign is exact because
+\[
+ 3097^2-3\cdot1788^2=577>0.
+\]
+Hence $\Phi>0$ throughout the interval.  Since $\alpha=\arccos(1/r)$
+is strictly increasing in $r$, $B_{11}$ is strictly decreasing on $[2,r_*]$.
+
+Now define
+\begin{equation}\label{eq:rstaragain}
+ r_*:=\frac{40+22\sqrt3}{37}.
+\end{equation}
+Direct algebra gives
+\begin{equation}\label{eq:reciprocal}
+ \frac1{r_*}=10-\frac{11\sqrt3}{2}=-x_{11},
+\end{equation}
+so $\alpha_*+\rho=\pi$.  At this radius,
+\[
+ H_{11}(r_*)=1+\cos(\pi-\beta)=q,
+\]
+and
+\[
+ \frac{H_1(r_*)}{11}=\frac{1+1/r_*}{11}=q.
+\]
+Thus
+\begin{equation}\label{eq:crossing}
+ B_1(r_*)=B_{11}(r_*)=r_*^2q.
+\end{equation}
+For $2\le r<r_*$, the decreasing degree-eleven profile is strictly above its
+value at $r_*$.  For $r>r_*$, the increasing degree-one profile is strictly above
+its value at $r_*$.  This proves \cref{thm:optimality}.
+
+The same exact algebra gives
+\begin{equation}\label{eq:localidentity}
+ r_*^2q\left(103-\frac{117\sqrt3}{2}\right)=1.
+\end{equation}
+Also $r_*>2$, since this is equivalent to $11\sqrt3>17$, whose square is
+$363>289$.
