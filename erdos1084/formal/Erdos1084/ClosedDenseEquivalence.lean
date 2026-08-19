@@ -111,12 +111,9 @@ theorem equivalence_universal_of_closed_dense_identitySubgroup
     (hdense : Dense
       ((relIdentitySubgroup r hrefl hsymm htrans hleft : Subgroup G) : Set G)) :
     ∀ a b : G, r a b := by
-  apply relation_universal_of_closed_dense_subgroup r hleft
-  · simpa [relIdentityClass] using hclosed
-  · exact relIdentitySubgroup r hrefl hsymm htrans hleft
-  · exact hdense
-  · intro g hg
-    exact hg
+  change IsClosed (relIdentityClass r) at hclosed
+  change Dense (relIdentityClass r) at hdense
+  exact relation_universal_of_closed_dense_identityClass r hleft hclosed hdense
 
 end ClosedDense
 
