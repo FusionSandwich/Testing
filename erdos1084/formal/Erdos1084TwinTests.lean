@@ -1,7 +1,8 @@
 import Erdos1084
 
 /-!
-# Coherent-twin arithmetic, closure, holonomy, fan, network, and platelet smoke tests
+# Coherent-twin arithmetic, closure, word, holonomy, fan, network, platelet,
+# and diagonal-recovery smoke tests
 -/
 
 #check Erdos1084.fccTwinOne_orthogonal
@@ -21,6 +22,15 @@ import Erdos1084
 #check Erdos1084.relation_universal_of_closed_dense_identityClass
 #check Erdos1084.relation_universal_of_closed_dense_subgroup
 #check Erdos1084.equivalence_universal_of_closed_dense_identitySubgroup
+
+#check Erdos1084.SignedGenerator
+#check Erdos1084.evalGeneratorWord
+#check Erdos1084.generatorWordStates
+#check Erdos1084.generatorWordStates_getLast?_eq
+#check Erdos1084.finiteWordValues
+#check Erdos1084.exists_word_mem_open
+#check Erdos1084.exists_word_in_neighborhood
+#check Erdos1084.exists_finite_word_length
 
 #check Erdos1084.fccReflectionProduct_trace
 #check Erdos1084.fccFourSectorHolonomy_trace
@@ -45,3 +55,10 @@ import Erdos1084
 #check Erdos1084.transverseCoverage_forces_lateralArea
 #check Erdos1084.macroscopicCoverage_forces_areaOrder_lateral
 #check Erdos1084.coverageDensity_le_lateralDensity
+
+#check Erdos1084.recoveryCost_surfaceDensity_bound
+#check Erdos1084.recoveryCost_surfaceDensity_le_epsilon
+#check Erdos1084.recoveryCost_surfaceDensity_lt_epsilon
+#check Erdos1084.lineTerm_small_of_scale
+#check Erdos1084.pointTerm_small_of_scale
+#check Erdos1084.diagonalRecovery_lt_epsilon
