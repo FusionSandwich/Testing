@@ -1,7 +1,17 @@
-ERDOS 1084 TARGET-A INDEPENDENT SOURCE REVIEW
+ERDOS 1084 TARGET-A INDEPENDENT REVIEW STATUS
 
 Math source head:
-e415f5864d52e8d61c97d90bc8cfae2fc46ed3ef
+21c25ce3a6f13f46ab5af4289043ed6edb2215aa
+
+Finite FCC torus-completion theorem:
+INTERNAL ADVERSARIAL REVIEW PASS
+- FCC lattice sqrt(2) D_3 has shortest vector two and determinant 4sqrt(2);
+- a quotient by N Lambda with 2N>D+2r embeds the entire radius-r union without wrap-around;
+- translation averaging gives the exact expected filler count outside the union;
+- retained fillers are at distance greater than r>=2 from the original cluster;
+- the combined torus packing lifts periodically;
+- the Kepler upper bound cancels the torus volume and gives vol(U_r)>=4sqrt(2)n;
+- no limsup product and no Bezdek--Langi equation (1.2) is used.
 
 Spherical-neighborhood application:
 PASS
@@ -11,12 +21,12 @@ PASS
 - open/closed cap conventions differ by an H^2-null set;
 - degree twelve is handled separately.
 
-Bezdek--Langi finite specialization:
-PARTIAL PASS / SOURCE-PROOF BLOCKER
+Bezdek--Langi source provenance:
+NON-LOAD-BEARING OPEN SOURCE ISSUE
 - finite packings are in Definition 1.1;
 - the quotient stabilizes to n*vol(B)/vol(P_lambda);
-- equation (1.2) exactly matches the required finite claim;
-- independent proof of equation (1.2) is OPEN because the displayed product-of-limsups derivation is not valid from the definitions alone.
+- the independent proof of equation (1.2) remains open because the displayed product-of-limsups derivation is not valid from the definitions alone;
+- equation (1.2) is no longer a dependency of the Target-A theorem.
 
 Submission classification:
-HOLD UNIVERSAL 2.0465 UNTIL EQUATION (1.2) IS INDEPENDENTLY PROVED, CLARIFIED BY THE AUTHORS, OR REPLACED BY A VERIFIED FINITE INPUT.
+CORE FINITE-DENSITY BLOCKER RESOLVED. EXTERNAL SPECIALIST AND PRIORITY REVIEW OF THE TORUS-COMPLETION PROOF REMAIN REQUIRED BEFORE SUBMISSION AUTHORIZATION.
