@@ -31,12 +31,12 @@ variable {ι : Type*} (X : UnitSeparatedConfiguration ι)
 /-- The contact graph: two distinct labels are adjacent exactly at distance one. -/
 def contactGraph : SimpleGraph ι where
   Adj i j := i ≠ j ∧ dist (X.point i) (X.point j) = 1
-  symm := by
+  symm := ⟨by
     intro i j hij
-    exact ⟨hij.1.symm, by simpa [dist_comm] using hij.2⟩
-  loopless := by
+    exact ⟨hij.1.symm, by simpa [dist_comm] using hij.2⟩⟩
+  loopless := ⟨by
     intro i hii
-    exact hii.1 rfl
+    exact hii.1 rfl⟩
 
 @[simp] theorem contactGraph_adj (i j : ι) :
     X.contactGraph.Adj i j ↔
