@@ -76,6 +76,7 @@ jobs:
           lake env lean Erdos1084AssemblyTests.lean
           lake env lean Erdos1084OptimizedTests.lean
           lake env lean Erdos1084KeplerTests.lean
+          lake env lean Erdos1084KeplerCalculusTests.lean
           lake env lean Erdos1084BarlowTests.lean
           lake env lean Erdos1084GateBTests.lean
           lake env lean Erdos1084GateCTests.lean
@@ -84,6 +85,7 @@ jobs:
           lake env lean Erdos1084GateETests.lean
           lake env lean Erdos1084Sigma5Tests.lean
           lake env lean Erdos1084AxiomAudit.lean
+          lake env lean Erdos1084KeplerCalculusAxiomAudit.lean
           lake env lean Erdos1084BarlowAxiomAudit.lean
           lake env lean Erdos1084GateBAxiomAudit.lean
           lake env lean Erdos1084GateCAxiomAudit.lean
