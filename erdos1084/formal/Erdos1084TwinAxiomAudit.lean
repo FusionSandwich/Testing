@@ -3,11 +3,11 @@ import Erdos1084
 /-!
 # Coherent-twin axiom and signature audit
 
-The exact rational computations and abstract topological-group, finite-word, and scaling
-implications are formalized without project-specific axioms. Density of the concrete subgroup in
-`SO(3)`, the algebraic-integer irrationality argument for the twin angle, the geometric lamella and
-cross-section theorems, and the flat-boundary-compatible branching problem remain in the ordinary
-dossier.
+The exact rational computations and abstract topological-group, finite-word, scaling, and
+interface-bookkeeping implications are formalized without project-specific axioms. Density of the
+concrete subgroup in `SO(3)`, the algebraic-integer irrationality argument for the twin angle, the
+geometric lamella and cross-section theorems, the vacuum-slab cell competitor, and the flat-
+boundary-compatible branching problem remain in the ordinary dossier.
 -/
 
 #print axioms Erdos1084.fccTwinOne_orthogonal
@@ -56,6 +56,12 @@ dossier.
 #print axioms Erdos1084.recoveryCost_surfaceDensity_lt_epsilon
 #print axioms Erdos1084.diagonalRecovery_lt_epsilon
 
+#print axioms Erdos1084.twoCrack_normalized_additivity
+#print axioms Erdos1084.twoCrack_eta_upper
+#print axioms Erdos1084.twoCrack_eta_upper_strict
+#print axioms Erdos1084.relaxedInterface_le_twoCracks
+#print axioms Erdos1084.relaxedInterface_le_twoCracks_add_epsilon
+
 #check Erdos1084.RatMat3
 #check Erdos1084.RatVec3
 #check Erdos1084.fccTwinOne
@@ -75,3 +81,4 @@ dossier.
 #check Erdos1084.plateletArray_surfaceDensity_le_invScale
 #check Erdos1084.macroscopicCoverage_forces_areaOrder_lateral
 #check Erdos1084.diagonalRecovery_lt_epsilon
+#check Erdos1084.relaxedInterface_le_twoCracks
