@@ -8,8 +8,13 @@ checks that the project theorems introduce no project-specific axioms or hidden 
 
 Important: `#print axioms` does not list ordinary theorem parameters. The signatures of the
 Kepler theorems must therefore also be inspected. Their external content appears as explicit
-surface inputs, local-charge hypotheses, power-scale data, a visible degree-eleven monotonicity
-parameter, a positive stability parameter, and matching asymptotic bounds.
+surface inputs, local-charge hypotheses, power-scale data, a positive stability parameter, and
+matching asymptotic bounds.
+
+The concrete degree-eleven module now certifies its exact constants, the uniform derivative-sign
+factor, the negative derivative expression, and the exact endpoint crossing without an ordinary
+geometric parameter.  The remaining calculus wrapper is ordinary proof text rather than a project
+axiom.
 -/
 
 #print axioms Erdos1084.kissing_twelve_closed_cap_cover
@@ -29,6 +34,12 @@ parameter, a positive stability parameter, and matching asymptotic bounds.
 #print axioms Erdos1084.kpEndpointOneProfile_strictMonoOn
 #print axioms Erdos1084.unique_minimax_of_increasing_decreasing_crossing
 #print axioms Erdos1084.kpRadius_unique_oneRadius_optimum
+
+#print axioms Erdos1084.kpEndpointElevenCosSin_sq
+#print axioms Erdos1084.kpEndpointEleven_product_lt_one
+#print axioms Erdos1084.endpointElevenDerivative_neg_of_product
+#print axioms Erdos1084.kpEndpointElevenDerivative_neg
+#print axioms Erdos1084.kpEndpointElevenProfile_at_optimizer
 
 #print axioms Erdos1084.kpStableLocalCoeff_gt
 #print axioms Erdos1084.kp_stable_local_identity
@@ -54,6 +65,9 @@ parameter, a positive stability parameter, and matching asymptotic bounds.
 #check Erdos1084.KeplerStableLocalSurfaceInput
 #check Erdos1084.kp_optimized_degree_charge
 #check Erdos1084.kpRadius_unique_oneRadius_optimum
+#check Erdos1084.kpEndpointElevenProfile
+#check Erdos1084.kpEndpointElevenDerivative_neg
+#check Erdos1084.kpEndpointElevenProfile_at_optimizer
 #check Erdos1084.kp_stability_midpoint_strict
 #check Erdos1084.degreeEleven_card_le_twice_contact_deficit
 #check Erdos1084.kp_local_surface_input_of_charges
