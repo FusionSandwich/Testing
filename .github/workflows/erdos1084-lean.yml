@@ -1,6 +1,5 @@
-name: Erdős 1084 Kepler, Barlow, Gate-D, and Gate-E certification
+name: Erdős 1084 Kepler, Barlow, Gate-E, and Sigma-5 certification
 
-# Public certification receipt for the finite arithmetic, separator, recovery, and limit cores.
 on:
   pull_request:
     branches: [testing]
@@ -9,7 +8,7 @@ on:
       - '.github/workflows/erdos1084-lean.yml'
   push:
     branches:
-      - 'agent/erdos-1084-gate-e-limit-lean-20260819'
+      - 'agent/erdos-1084-sigma5-stabilization-lean-20260819'
     paths:
       - 'erdos1084/**'
       - '.github/workflows/erdos1084-lean.yml'
@@ -74,8 +73,10 @@ jobs:
           lake env lean Erdos1084GateBTests.lean
           lake env lean Erdos1084GateDTests.lean
           lake env lean Erdos1084GateETests.lean
+          lake env lean Erdos1084Sigma5Tests.lean
           lake env lean Erdos1084AxiomAudit.lean
           lake env lean Erdos1084BarlowAxiomAudit.lean
           lake env lean Erdos1084GateBAxiomAudit.lean
           lake env lean Erdos1084GateDAxiomAudit.lean
           lake env lean Erdos1084GateEAxiomAudit.lean
+          lake env lean Erdos1084Sigma5AxiomAudit.lean
