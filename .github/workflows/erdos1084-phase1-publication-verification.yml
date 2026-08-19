@@ -17,7 +17,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: erdos1084-phase1-publication-${{ github.ref }}
+  group: erdos1084-phase1-publication-verification
   cancel-in-progress: true
 
 jobs:
