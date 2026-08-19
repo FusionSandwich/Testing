@@ -8,13 +8,15 @@ namespace Erdos1084
 /-!
 # Phase-I geometric input interfaces
 
-This module states the five named geometric inputs used by the ordinary `2.0465` proof at the
-precise scalar normalization required by the final Lean assembly.  It also records the finite
-outer-parallel and finite-union boundary bridges separately, so the theorem signature exposes
-exactly what still has to be ported from geometric measure theory.
+This module connects the direct finite-packing/contact-graph model to the already certified
+Kepler algebraic assembly.  The geometric content remains visible as ordinary theorem data:
 
-Nothing in this file is declared as an axiom.  The inputs are ordinary structure fields passed to
-the final theorem.
+* the exact positive Kepler scale;
+* the global surface lower bound for the enlarged union;
+* ownership of the boundary by exposed sphere patches;
+* the local degreewise exposed-area bounds.
+
+No geometric statement is declared as a project axiom.
 -/
 
 noncomputable section
@@ -32,8 +34,9 @@ theorem x_pos {n x : ℝ} (h : TwoThirdPowerScale n x) : 0 < x := by
   by_contra hnot
   have hx0 : x = 0 := le_antisymm (le_of_not_gt hnot) h.x_nonneg
   rw [hx0] at h.cube_eq
-  have : n ^ 2 = 0 := by simpa using h.cube_eq.symm
-  nlinarith [h.n_pos]
+  have hn2 : 0 < n ^ 2 := sq_pos_of_pos h.n_pos
+  norm_num at h.cube_eq
+  nlinarith
 
 end TwoThirdPowerScale
 
@@ -42,13 +45,6 @@ structure Phase1OuterParallelInput (n V : ℝ) : Prop where
   n_nonneg : 0 ≤ n
   volume_nonneg : 0 ≤ V
   volume_lower : 4 * Real.sqrt 2 * n ≤ V
-
-/-- Exact finite-union boundary and Euclidean-isoperimetric conclusion. -/
-structure Phase1GlobalSurfaceInput (n x A : ℝ) : Prop where
-  power : TwoThirdPowerScale n x
-  area_nonneg : 0 ≤ A
-  surface_lower :
-    4 * Real.pi * (18 / Real.pi ^ 2) ^ (1 / 3 : ℝ) * x ≤ A
 
 /-- Exact local exposed-area conclusion for one contact degree. -/
 structure Phase1LocalChargeInput (d exposure : ℝ) : Prop where
@@ -62,18 +58,19 @@ structure Phase1LocalChargeInput (d exposure : ℝ) : Prop where
 The published/geometric content needed for one actual finite contact configuration.
 
 `A` is the boundary area of the enlarged union and `exposure i` is the actual exposed area owned
-by sphere `i`.  The fields are deliberately stated in the direction used by the proof.
+by sphere `i`.  The positive scale `K` is constrained by `K^3*pi^2=18` through
+`KeplerScaleSpec K`.
 -/
 structure Phase1GeometricCertificate
     {ι : Type*} [Fintype ι]
     (X : UnitSeparatedConfiguration ι)
-    (n E x A : ℝ)
+    (n E x A K : ℝ)
     (exposure : ι → ℝ) : Prop where
   card_eq : (Fintype.card ι : ℝ) = n
   contact_eq : (X.contactCount : ℝ) = E
   power : TwoThirdPowerScale n x
-  global_surface :
-    4 * Real.pi * (18 / Real.pi ^ 2) ^ (1 / 3 : ℝ) * x ≤ A
+  scale : KeplerScaleSpec K
+  global_surface : 4 * Real.pi * K * x ≤ A
   boundary_owned : A ≤ ∑ i, exposure i
   local_charge : ∀ i,
     exposure i ≤
@@ -83,9 +80,9 @@ structure Phase1GeometricCertificate
 theorem phase1_local_surface_of_certificate
     {ι : Type*} [Fintype ι]
     (X : UnitSeparatedConfiguration ι)
-    {n E x A : ℝ}
+    {n E x A K : ℝ}
     {exposure : ι → ℝ}
-    (h : Phase1GeometricCertificate X n E x A exposure) :
+    (h : Phase1GeometricCertificate X n E x A K exposure) :
     KeplerLocalSurfaceInput A (6 * n - E) := by
   have hdegreeNat := X.sum_contactDegrees_eq_twice_contactCount
   have hdegreeReal :
@@ -102,32 +99,25 @@ theorem phase1_global_surface_of_certificate
     (X : UnitSeparatedConfiguration ι)
     {n E x A K : ℝ}
     {exposure : ι → ℝ}
-    (hscale : KeplerScaleSpec K)
-    (hK : K = (18 / Real.pi ^ 2) ^ (1 / 3 : ℝ))
-    (h : Phase1GeometricCertificate X n E x A exposure) :
-    KeplerGlobalSurfaceInput x A K := by
-  refine ⟨hscale, ?_⟩
-  rw [hK]
-  exact h.global_surface
+    (h : Phase1GeometricCertificate X n E x A K exposure) :
+    KeplerGlobalSurfaceInput x A K :=
+  ⟨h.scale, h.global_surface⟩
 
 /--
 End-to-end Phase-I scalar conclusion from a direct finite packing and an explicit geometric
-certificate.  All geometry is visible in `Phase1GeometricCertificate`; no scalar contact deficit is
-assumed.
+certificate.  No scalar contact deficit is assumed: it is derived from the actual contact graph.
 -/
 theorem phase1_contact_upper_from_certificate
     {ι : Type*} [Fintype ι]
     (X : UnitSeparatedConfiguration ι)
     {n E x A K : ℝ}
     {exposure : ι → ℝ}
-    (hscale : KeplerScaleSpec K)
-    (hK : K = (18 / Real.pi ^ 2) ^ (1 / 3 : ℝ))
-    (h : Phase1GeometricCertificate X n E x A exposure) :
+    (h : Phase1GeometricCertificate X n E x A K exposure) :
     E < 6 * n - kpClean * x := by
-  have hpower : KeplerPowerScale n x := by
-    refine ⟨h.power.n_pos, h.power.x_nonneg, h.power.cube_eq⟩
+  have hpower : KeplerPowerScale n x :=
+    ⟨h.power.n_pos, h.power.x_nonneg, h.power.cube_eq⟩
   exact kp_contact_upper_from_surface hpower
-    (phase1_global_surface_of_certificate X hscale hK h)
+    (phase1_global_surface_of_certificate X h)
     (phase1_local_surface_of_certificate X h)
 
 end
