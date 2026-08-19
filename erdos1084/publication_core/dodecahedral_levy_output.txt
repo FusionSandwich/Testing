@@ -1,0 +1,17 @@
+DODECAHEDRAL-LEVY CONTACT COEFFICIENT CERTIFICATE
+status: PASS
+optimized radius identity: r_*^2 q L = 1
+reciprocal identity: 1/r_* = 10 - 11 sqrt(3)/2
+dodecahedral identity: delta_Q^2/pi^2 = (65+29 sqrt(5))/2250
+sqrt(3) upper: 216506351/125000000
+sqrt(5) upper: 559017/250000
+pi upper from Machin certificate: 5277328977275528/1679825970703125
+declared pi upper: 3141593/1000000
+local factor lower: 418756933/250000000
+surface scale: 120637/100000
+clean coefficient: 20207/10000
+positive exact cube margin: 89330358943299520481455108949/250000000000000000000000000000
+published-0.7547 cube margin: 1991888421002662624487/15625000000000000000000000
+diagnostic delta_Q: 0.754697399337405830391652105990229331342432192145943428476582
+diagnostic exact coefficient: 2.02072294385706605233141959223325639995907462432309572135624
+conclusion: c_Q > 2.0207
