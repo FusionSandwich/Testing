@@ -1,12 +1,14 @@
 ERDOS 1084 TARGET-A INDEPENDENT REVIEW STATUS
 
 Math source head:
-21c25ce3a6f13f46ab5af4289043ed6edb2215aa
+c99ac73bc3ddc8c7dc2118ddd88a76a07938d455
 
 Finite FCC torus-completion theorem:
 INTERNAL ADVERSARIAL REVIEW PASS
 - FCC lattice sqrt(2) D_3 has shortest vector two and determinant 4sqrt(2);
 - a quotient by N Lambda with 2N>D+2r embeds the entire radius-r union without wrap-around;
+- N>r identifies each Euclidean radius-r ball with the corresponding closed torus metric ball;
+- periodic copies of the original cluster cannot create distances below two;
 - translation averaging gives the exact expected filler count outside the union;
 - retained fillers are at distance greater than r>=2 from the original cluster;
 - the combined torus packing lifts periodically;
