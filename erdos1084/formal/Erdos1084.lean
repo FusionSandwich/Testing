@@ -12,6 +12,7 @@ import Erdos1084.KeplerOuterParallel
 import Erdos1084.KeplerOptimizedChord
 import Erdos1084.KeplerOneRadiusOptimality
 import Erdos1084.KeplerOneRadiusConcrete
+import Erdos1084.KeplerOneRadiusCalculus
 import Erdos1084.SeparatedCapStabilityCore
 import Erdos1084.GlobalDegreeConstraints
 import Erdos1084.DefectHalo
@@ -39,8 +40,9 @@ two-lattice transition programs.
 
 `KeplerOneRadiusConcrete.lean` certifies the concrete degree-eleven endpoint constants, the exact
 factorization controlling its derivative, a uniform negative-derivative expression on
-`[2,kpRadius]`, and the exact endpoint crossing. The ordinary mathematical dossier supplies the
-completed calculus wrapper and unique minimax proof.
+`[2,kpRadius]`, and the exact endpoint crossing. `KeplerOneRadiusCalculus.lean` proves the actual
+derivative formula, strict decrease on `[2,kpRadius]`, and the fully concrete unique minimax
+theorem with no endpoint-profile hypothesis.
 
 `DefectHalo.lean` proves the exact finite combinatorial bound that the closed one-step halo of
 vertices with contact degree below twelve has cardinality at most `26 D` when the total degree
