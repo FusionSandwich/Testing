@@ -70,6 +70,7 @@ jobs:
           lake env lean Erdos1084GateETests.lean
           lake env lean Erdos1084Phase1ContactTests.lean
           lake env lean Erdos1084ContactExtremizerTests.lean
+          lake env lean Erdos1084Phase1BoundaryTests.lean
           lake env lean Erdos1084Phase1CertificateTests.lean
           lake env lean Erdos1084AxiomAudit.lean
           lake env lean Erdos1084BarlowAxiomAudit.lean
@@ -78,4 +79,5 @@ jobs:
           lake env lean Erdos1084GateEAxiomAudit.lean
           lake env lean Erdos1084Phase1ContactAxiomAudit.lean
           lake env lean Erdos1084ContactExtremizerAxiomAudit.lean
+          lake env lean Erdos1084Phase1BoundaryAxiomAudit.lean
           lake env lean Erdos1084Phase1CertificateAxiomAudit.lean
