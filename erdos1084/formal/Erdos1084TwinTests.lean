@@ -1,7 +1,7 @@
 import Erdos1084
 
 /-!
-# Coherent-twin arithmetic, closure, holonomy, fan, and network smoke tests
+# Coherent-twin arithmetic, closure, holonomy, fan, network, and platelet smoke tests
 -/
 
 #check Erdos1084.fccTwinOne_orthogonal
@@ -38,3 +38,10 @@ import Erdos1084
 #check Erdos1084.deletion_deficit_increase_le_six
 #check Erdos1084.lineOrder_surfaceScale_bound
 #check Erdos1084.pureLineOrder_surfaceScale_bound
+
+#check Erdos1084.plateletArray_cost_le_area_div_scale
+#check Erdos1084.plateletArray_surfaceDensity_le_invScale
+#check Erdos1084.squarePlateletArray_surfaceDensity
+#check Erdos1084.transverseCoverage_forces_lateralArea
+#check Erdos1084.macroscopicCoverage_forces_areaOrder_lateral
+#check Erdos1084.coverageDensity_le_lateralDensity
