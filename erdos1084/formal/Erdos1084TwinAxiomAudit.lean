@@ -3,11 +3,12 @@ import Erdos1084
 /-!
 # Coherent-twin axiom and signature audit
 
-The exact rational computations and abstract topological-group, finite-word, scaling, and
-interface-bookkeeping implications are formalized without project-specific axioms. Density of the
-concrete subgroup in `SO(3)`, the algebraic-integer irrationality argument for the twin angle, the
-geometric lamella and cross-section theorems, the vacuum-slab cell competitor, and the flat-
-boundary-compatible branching problem remain in the ordinary dossier.
+The exact rational computations and abstract topological-group, finite-word, scaling, interface-
+bookkeeping, and countable-null implications are formalized without project-specific axioms.
+Density of the concrete subgroup in `SO(3)`, the algebraic-integer irrationality argument for the
+twin angle, the geometric lamella and cross-section theorems, nullity of Euclidean spheres and
+planar circle sections, the vacuum-slab cell competitor, and the flat-boundary-compatible branching
+problem remain in the ordinary dossier.
 -/
 
 #print axioms Erdos1084.fccTwinOne_orthogonal
@@ -62,6 +63,11 @@ boundary-compatible branching problem remain in the ordinary dossier.
 #print axioms Erdos1084.relaxedInterface_le_twoCracks
 #print axioms Erdos1084.relaxedInterface_le_twoCracks_add_epsilon
 
+#print axioms Erdos1084.measure_pairParameterUnion_zero
+#print axioms Erdos1084.subset_pairParameterUnion
+#print axioms Erdos1084.measure_zero_of_subset_pairParameterUnion
+#print axioms Erdos1084.measure_zero_of_pair_witness
+
 #check Erdos1084.RatMat3
 #check Erdos1084.RatVec3
 #check Erdos1084.fccTwinOne
@@ -82,3 +88,5 @@ boundary-compatible branching problem remain in the ordinary dossier.
 #check Erdos1084.macroscopicCoverage_forces_areaOrder_lateral
 #check Erdos1084.diagonalRecovery_lt_epsilon
 #check Erdos1084.relaxedInterface_le_twoCracks
+#check Erdos1084.measure_pairParameterUnion_zero
+#check Erdos1084.measure_zero_of_pair_witness
