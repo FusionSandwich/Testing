@@ -15,13 +15,12 @@ then so is the junction deficit.
 open scoped BigOperators
 
 /--
-If all vertices outside `bad` have degree twelve and all degrees are at most
-twelve, then the total degree deficit is at most twelve times `bad.card`.
+If all vertices outside `bad` have degree twelve, then the total natural degree
+deficit is at most twelve times `bad.card`.
 -/
 theorem degreeDeficitSum_le_twelve_badCard
     {ι : Type*} [Fintype ι] [DecidableEq ι]
     (degree : ι → ℕ) (bad : Finset ι)
-    (hdegree : ∀ i, degree i ≤ 12)
     (hgood : ∀ i, i ∉ bad → degree i = 12) :
     (∑ i : ι, (12 - degree i)) ≤ 12 * bad.card := by
   calc
@@ -37,19 +36,18 @@ theorem degreeDeficitSum_le_twelve_badCard
       omega
 
 /--
-If the degree-deficit sum equals `2 D`, only `bad` vertices can be defective,
-and every degree is at most twelve, then `D ≤ 6 * bad.card`.
+If the degree-deficit sum equals `2 D` and only `bad` vertices can be defective,
+then `D ≤ 6 * bad.card`.
 -/
 theorem contactDeficit_le_six_badCard
     {ι : Type*} [Fintype ι] [DecidableEq ι]
     (degree : ι → ℕ) (bad : Finset ι) (D : ℕ)
-    (hdegree : ∀ i, degree i ≤ 12)
     (hgood : ∀ i, i ∉ bad → degree i = 12)
     (hdeficit : ∑ i : ι, (12 - degree i) = 2 * D) :
     D ≤ 6 * bad.card := by
   have hsum : 2 * D ≤ 12 * bad.card := by
     rw [← hdeficit]
-    exact degreeDeficitSum_le_twelve_badCard degree bad hdegree hgood
+    exact degreeDeficitSum_le_twelve_badCard degree bad hgood
   omega
 
 /-- A line-order bad-site bound gives a line-order contact-deficit bound. -/
@@ -93,7 +91,10 @@ theorem pureLineOrder_surfaceScale_bound
     (hT : 0 < T)
     (hcost : cost ≤ A * T) :
     cost / T ^ 2 ≤ A / T := by
-  apply lineOrder_surfaceScale_bound hT (B := 0)
-  simpa using hcost
+  have hbound :
+      cost / T ^ 2 ≤ A / T + (0 : ℝ) / T ^ 2 :=
+    lineOrder_surfaceScale_bound
+      (T := T) (A := A) (B := 0) (cost := cost) hT (by simpa using hcost)
+  simpa using hbound
 
 end Erdos1084
