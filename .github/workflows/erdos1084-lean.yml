@@ -47,6 +47,8 @@ jobs:
           diff -u erdos1084/gate_c/fcc_hcp_voronoi_output.txt /tmp/gate-c-voronoi-output.txt
           python3 erdos1084/gate_c/verify_fcc_twin_group.py > /tmp/gate-c-twin-output.txt
           diff -u erdos1084/gate_c/fcc_twin_group_output.txt /tmp/gate-c-twin-output.txt
+          python3 erdos1084/gate_c/verify_twin_normal_001_word.py > /tmp/twin-normal-001-output.txt
+          diff -u erdos1084/gate_c/twin_normal_001_word_output.txt /tmp/twin-normal-001-output.txt
       - name: Reject Lean placeholders and explicit project axioms
         run: |
           if grep -R --include='*.lean' -nE '(^|[^[:alnum:]_])(sorry|admit|sorryAx)([^[:alnum:]_]|$)' erdos1084/formal; then
