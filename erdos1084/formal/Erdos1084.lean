@@ -19,30 +19,21 @@ import Erdos1084.BarlowCellArithmetic
 import Erdos1084.BarlowInvariantMeasureArithmetic
 import Erdos1084.OrientationInterfaceCoercivityCore
 import Erdos1084.GateERecoveryArithmetic
+import Erdos1084.Sigma5UnionStabilization
 
 /-!
 # Erdős Problem 1084: formalized certification spine
 
 The library contains certified algebraic and abstract-assembly routes for the radius-two,
-Kepler, periodic Barlow, invariant-measure Barlow, Gate-D interface, and Gate-E exact-mass
-recovery programs.
+Kepler, periodic Barlow, invariant-measure Barlow, Gate-D interface, Gate-E exact-mass recovery,
+and the exact Sigma-5 two-lattice transition-stabilization programs.
 
-The Gate-D module formally verifies:
+The Sigma-5 module verifies a 1024-state Bellman certificate proving that arbitrary-width,
+coincidence-periodic transitions whose sites belong to the union of the two ideal FCC lattices
+have deficit at least 16 per coincidence cell. It does not represent off-lattice transition sites.
 
-* the `N²` lower bound for a bad-cell separator of opposite faces in an `N³` grid;
-* conversion of that separator count and a local energy gap into a surface-order lower bound;
-* the scalar inball implication for interface calibration bodies;
-* exact cancellation algebra for two-phase common calibrations.
-
-The Gate-E module formally verifies:
-
-* the FCC leading coefficient cube `432`;
-* exact FCC shell increments;
-* triangular-layer reservoir point, edge, and deficit formulas;
-* the lower-order scaling of exact-mass corrections;
-* exact leading-order falsification values for simple tetrahedral polycrystals.
-
-The geometric lattice-count asymptotics, Gate-C Gamma convergence, exact-mass terrace placement,
-orientation selection, and sharp interface cell problems are maintained in the canonical
-mathematical dossier. They are not hidden as project axioms.
+The geometric lattice-count asymptotics, Gate-C Gamma convergence, orientation selection, sharp
+fully relaxed interface cells, and foundational proofs of the imported geometric theorems remain
+in the canonical mathematical dossier or as explicit theorem inputs. They are not hidden as
+project axioms.
 -/
