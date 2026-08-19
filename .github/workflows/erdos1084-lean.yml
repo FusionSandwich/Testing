@@ -1,4 +1,4 @@
-name: Erdős 1084 Kepler, Barlow, Gate-E, and Sigma-5 certification
+name: Erdős 1084 Kepler, Barlow, Gate-E, Sigma-5, and Gate-C certification
 
 on:
   pull_request:
@@ -9,6 +9,7 @@ on:
   push:
     branches:
       - 'agent/erdos-1084-sigma5-stabilization-lean-20260819'
+      - 'agent/erdos-1084-target-b-occupied-compactness-ci-20260819'
     paths:
       - 'erdos1084/**'
       - '.github/workflows/erdos1084-lean.yml'
@@ -40,6 +41,8 @@ jobs:
           diff -u erdos1084/gate_e/gate_e_recovery_output.txt /tmp/gate-e-recovery-output.txt
           python3 erdos1084/gate_e/verify_tetrahedral_polycrystal_tests.py > /tmp/gate-e-polycrystal-output.txt
           diff -u erdos1084/gate_e/tetrahedral_polycrystal_output.txt /tmp/gate-e-polycrystal-output.txt
+          python3 erdos1084/gate_c/verify_fcc_hcp_voronoi_cells.py > /tmp/gate-c-voronoi-output.txt
+          diff -u erdos1084/gate_c/fcc_hcp_voronoi_output.txt /tmp/gate-c-voronoi-output.txt
       - name: Reject Lean placeholders and explicit project axioms
         run: |
           if grep -R --include='*.lean' -nE '(^|[^[:alnum:]_])(sorry|admit|sorryAx)([^[:alnum:]_]|$)' erdos1084/formal; then
@@ -71,12 +74,14 @@ jobs:
           lake env lean Erdos1084KeplerTests.lean
           lake env lean Erdos1084BarlowTests.lean
           lake env lean Erdos1084GateBTests.lean
+          lake env lean Erdos1084GateCTests.lean
           lake env lean Erdos1084GateDTests.lean
           lake env lean Erdos1084GateETests.lean
           lake env lean Erdos1084Sigma5Tests.lean
           lake env lean Erdos1084AxiomAudit.lean
           lake env lean Erdos1084BarlowAxiomAudit.lean
           lake env lean Erdos1084GateBAxiomAudit.lean
+          lake env lean Erdos1084GateCAxiomAudit.lean
           lake env lean Erdos1084GateDAxiomAudit.lean
           lake env lean Erdos1084GateEAxiomAudit.lean
           lake env lean Erdos1084Sigma5AxiomAudit.lean
