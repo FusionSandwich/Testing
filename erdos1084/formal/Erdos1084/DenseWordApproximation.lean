@@ -6,7 +6,7 @@ namespace Erdos1084
 # Finite-word approximation from a qualitative density hypothesis
 
 This module separates finite-word bookkeeping from the geometric theorem that
-the concrete FCC twin generators are dense in `SO(3)`.  Once a generator family
+the concrete FCC twin generators are dense in `SO(3)`. Once a generator family
 is known to hit every nonempty open set by finite words, the existence of a
 finite approximating word and its recursively evaluated intermediate states is
 formalized here.
@@ -50,23 +50,26 @@ def evalGeneratorWord (generator : ι → G) : List (SignedGenerator ι) → G
       SignedGenerator.eval generator letter * evalGeneratorWord generator rest :=
   rfl
 
-/-- Every word has a finite list of intermediate group states. -/
+/--
+The suffix states of a finite word, listed from the identity state to the value
+of the full word. In particular, the final entry is always the word value.
+-/
 def generatorWordStates
     (generator : ι → G) : List (SignedGenerator ι) → List G
   | [] => [1]
   | letter :: rest =>
-      1 :: (generatorWordStates generator rest).map
-        (fun g => SignedGenerator.eval generator letter * g)
+      generatorWordStates generator rest ++
+        [evalGeneratorWord generator (letter :: rest)]
 
-/-- The last intermediate state is the value of the word. -/
+/-- The final recorded state is the value of the word. -/
 theorem generatorWordStates_getLast?_eq
     (generator : ι → G) (word : List (SignedGenerator ι)) :
     (generatorWordStates generator word).getLast? =
       some (evalGeneratorWord generator word) := by
-  induction word with
-  | nil => simp [generatorWordStates, evalGeneratorWord]
-  | cons letter rest ih =>
-      simp [generatorWordStates, evalGeneratorWord, ih]
+  cases word with
+  | nil => rfl
+  | cons letter rest =>
+      simp [generatorWordStates]
 
 /-- The set of values represented by finite signed generator words. -/
 def finiteWordValues (generator : ι → G) : Set G :=
@@ -104,7 +107,7 @@ theorem exists_word_in_neighborhood
 
 /--
 Every successful approximation property has a witness with some finite natural
-word length.  Minimality is an ordinary well-ordering consequence and is not
+word length. Minimality is an ordinary well-ordering consequence and is not
 needed for the qualitative diagonal argument.
 -/
 theorem exists_finite_word_length
