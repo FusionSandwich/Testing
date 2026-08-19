@@ -3,10 +3,11 @@ import Erdos1084
 /-!
 # Coherent-twin axiom and signature audit
 
-The exact rational computations and abstract topological-group and scaling implications are
-formalized without project-specific axioms. Density of the concrete subgroup in `SO(3)`, the
-algebraic-integer irrationality argument for the twin angle, the geometric lamella and cross-section
-theorems, and the flat-boundary-compatible branching problem remain in the ordinary dossier.
+The exact rational computations and abstract topological-group, finite-word, and scaling
+implications are formalized without project-specific axioms. Density of the concrete subgroup in
+`SO(3)`, the algebraic-integer irrationality argument for the twin angle, the geometric lamella and
+cross-section theorems, and the flat-boundary-compatible branching problem remain in the ordinary
+dossier.
 -/
 
 #print axioms Erdos1084.fccTwinOne_orthogonal
@@ -17,6 +18,12 @@ theorems, and the flat-boundary-compatible branching problem remain in the ordin
 #print axioms Erdos1084.relation_universal_of_closed_dense_identityClass
 #print axioms Erdos1084.relation_universal_of_closed_dense_subgroup
 #print axioms Erdos1084.equivalence_universal_of_closed_dense_identitySubgroup
+
+#print axioms Erdos1084.generatorWordStates_getLast?_eq
+#print axioms Erdos1084.one_mem_finiteWordValues
+#print axioms Erdos1084.exists_word_mem_open
+#print axioms Erdos1084.exists_word_in_neighborhood
+#print axioms Erdos1084.exists_finite_word_length
 
 #print axioms Erdos1084.fccFourSectorHolonomy_trace
 #print axioms Erdos1084.fccFourSectorHolonomy_trace_not_integer
@@ -38,15 +45,24 @@ theorems, and the flat-boundary-compatible branching problem remain in the ordin
 #print axioms Erdos1084.macroscopicCoverage_forces_areaOrder_lateral
 #print axioms Erdos1084.coverageDensity_le_lateralDensity
 
+#print axioms Erdos1084.recoveryCost_surfaceDensity_bound
+#print axioms Erdos1084.recoveryCost_surfaceDensity_le_epsilon
+#print axioms Erdos1084.recoveryCost_surfaceDensity_lt_epsilon
+#print axioms Erdos1084.diagonalRecovery_lt_epsilon
+
 #check Erdos1084.RatMat3
 #check Erdos1084.fccTwinOne
 #check Erdos1084.fccTwinTwo
 #check Erdos1084.fccTwinProduct
 #check Erdos1084.relIdentityClass
 #check Erdos1084.relIdentitySubgroup
+#check Erdos1084.SignedGenerator
+#check Erdos1084.evalGeneratorWord
+#check Erdos1084.generatorWordStates
 #check Erdos1084.fccReflectionOne
 #check Erdos1084.fccReflectionTwo
 #check Erdos1084.fccFourSectorHolonomy
 #check Erdos1084.contactDeficit_le_lineOrder
 #check Erdos1084.plateletArray_surfaceDensity_le_invScale
 #check Erdos1084.macroscopicCoverage_forces_areaOrder_lateral
+#check Erdos1084.diagonalRecovery_lt_epsilon
