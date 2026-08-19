@@ -46,7 +46,7 @@ Set
 \[
  D=\max_{i,j}|c_i-c_j|.
 \]
-Choose an integer $N$ such that
+Choose a positive integer $N$ such that
 \begin{equation}\label{eq:Nchoice}
  2N>D+2r,
 \end{equation}
@@ -59,18 +59,21 @@ and put
  V=\vol(T)=N^3\det\Lambda.
 \]
 We use the quotient metric and translation-invariant volume measure on the flat
-torus $T$.
+torus $T$.  The shortest nonzero vector of $L$ has length $2N$, so the
+injectivity radius of $T$ is $N$.  In particular, \cref{eq:Nchoice} implies
+$N>r$.
 
 Let $\pi:\mathbb R^3\to T$ be the quotient map.  It is injective on $U_r$.
 For if $x,y\in U_r$ and $x-y=\ell\in L\setminus\{0\}$, choose $i,j$ with
-$|x-c_i|\le r$ and $|y-c_j|\le r$.  Since the shortest nonzero vector of $L$
-has length $2N$,
+$|x-c_i|\le r$ and $|y-c_j|\le r$.  Then
 \[
  2N\le|\ell|
  \le |x-c_i|+|c_i-c_j|+|c_j-y|
  \le2r+D,
 \]
-contrary to \cref{eq:Nchoice}.  Hence, writing
+contrary to \cref{eq:Nchoice}.  Since $r<N$, each Euclidean ball
+$c_i+rB$ maps isometrically onto the closed torus ball of radius $r$ centered at
+$\pi(c_i)$.  Hence, writing
 \[
  \overline C=\pi(\{c_1,\ldots,c_n\}),
  \qquad
@@ -78,9 +81,23 @@ contrary to \cref{eq:Nchoice}.  Hence, writing
 \]
 we have
 \begin{equation}\label{eq:torusvolume}
+ \overline U=\bigcup_{i=1}^n\overline B_T(\pi(c_i),r),
+ \qquad
  \vol_T(\overline U)=\vol(U_r).
 \end{equation}
-The same estimate shows that $\overline C$ is a unit-ball packing on $T$.
+
+The set $\overline C$ is a unit-ball packing on $T$.  Indeed, if distinct
+centers had torus distance less than two, then for some $\ell\in L$,
+\[
+ |c_i-c_j-\ell|<2.
+\]
+For $\ell=0$ this contradicts the original packing condition.  For
+$\ell\ne0$ it gives
+\[
+ 2N\le|\ell|<|c_i-c_j|+2\le D+2\le D+2r,
+\]
+again contradicting \cref{eq:Nchoice}.  Thus periodic copies of the original
+cluster introduce no new overlap.
 
 The finite quotient $\Lambda/L$ has $N^3$ elements.  For $t\in T$, let
 \[
@@ -91,7 +108,8 @@ be the translated FCC center set on $T$, and define
  m(t)=\#(Q_t\setminus\overline U).
 \]
 For every fixed $q\in\Lambda/L$, the point $t+q$ is uniformly distributed on
-$T$ as $t$ varies.  Translation invariance gives
+$T$ as $t$ varies.  Summing the corresponding indicator functions and using
+translation invariance gives
 \begin{equation}\label{eq:averagefiller}
  \frac1V\int_T m(t)\,dt
  =N^3\left(1-\frac{\vol_T(\overline U)}V\right).
@@ -115,11 +133,11 @@ Now consider
 This is a unit-ball packing on $T$.  The points in each of the two parts are
 mutually separated by at least two.  If $q\in Q_{t_0}\setminus\overline U$, then
 $q$ has torus distance strictly larger than $r\ge2$ from every point of
-$\overline C$, because $\overline U$ is the union of the closed radius-$r$ torus
-balls centered at $\overline C$.
+$\overline C$, by the first identity in \cref{eq:torusvolume}.
 
 Lifting this torus packing to $\mathbb R^3$ gives an $L$-periodic unit-ball
-packing with $n+m(t_0)$ balls per fundamental cell.  By the Kepler theorem,
+packing with $n+m(t_0)$ balls per fundamental cell.  Its periodic density is
+$\bigl(n+m(t_0)\bigr)\kappa/V$.  By the Kepler theorem,
 \begin{equation}\label{eq:keplerperiodic}
  \bigl(n+m(t_0)\bigr)\kappa\le\delta_3V.
 \end{equation}
