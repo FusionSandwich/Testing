@@ -150,7 +150,9 @@ theorem kpEndpointElevenCos_lt_31_div_1000 :
       rtLower * rtS = (11 * rtS ^ 2 - 20 * rtS) / 2 := by
         dsimp [rtLower]
         ring
-      _ = (33 - 20 * rtS) / 2 := by rw [rtS_sq]
+      _ = (33 - 20 * rtS) / 2 := by
+        rw [rtS_sq]
+        norm_num
   have hs := rtS_lower_433_div_250
   have hy := kpLowerY_lt_881
   dsimp [kpEndpointElevenCos]
@@ -168,7 +170,6 @@ theorem kpRadius_lt_53_div_25 :
 theorem kpEndpointEleven_product_lt_one
     {r : ℝ} (hr2 : 2 ≤ r) (hrStar : r ≤ kpRadius) :
     kpEndpointElevenCos * r * (4 * r ^ 2 - 3) < 1 := by
-  have hA0 : 0 < kpEndpointElevenCos := kpEndpointElevenCos_pos
   have hA : kpEndpointElevenCos < (31 : ℝ) / 1000 :=
     kpEndpointElevenCos_lt_31_div_1000
   have hr0 : 0 < r := by linarith
@@ -273,23 +274,52 @@ theorem kpEndpointElevenProfile_hasDerivAt
   have htne : Real.sqrt (r ^ 2 - 1) ≠ 0 :=
     ne_of_gt (Real.sqrt_pos.2 hrad)
   have hsq : HasDerivAt (fun x : ℝ => x ^ 2) (2 * r) r := by
-    convert (hasDerivAt_id r).pow 2 using 1 <;> ring
+    simpa [pow_two, two_mul] using
+      (hasDerivAt_id r).mul (hasDerivAt_id r)
   have hinner : HasDerivAt (fun x : ℝ => x ^ 2 - 1) (2 * r) r := by
-    convert hsq.sub_const 1 using 1 <;> ring
+    simpa using hsq.sub_const 1
   have hsqrt := hinner.sqrt hradne
-  have hxsqrt := (hasDerivAt_id r).mul hsqrt
+  have hxsqrt :
+      HasDerivAt
+        (fun x : ℝ => x * Real.sqrt (x ^ 2 - 1))
+        (Real.sqrt (r ^ 2 - 1) +
+          r * (2 * r / (2 * Real.sqrt (r ^ 2 - 1)))) r := by
+    simpa using (hasDerivAt_id r).mul hsqrt
+  have hlinear :
+      HasDerivAt (fun x : ℝ => kpEndpointElevenCos * x)
+        kpEndpointElevenCos r := by
+    simpa using (hasDerivAt_id r).const_mul kpEndpointElevenCos
   have hpoly :
       HasDerivAt
         (fun x : ℝ => x ^ 2 + kpEndpointElevenCos * x)
         (2 * r + kpEndpointElevenCos) r := by
-    convert hsq.add ((hasDerivAt_id r).const_mul kpEndpointElevenCos) using 1 <;> ring
-  have hraw := hpoly.sub (hxsqrt.const_mul kpEndpointElevenSin)
-  convert hraw using 1
-  · rfl
-  · dsimp [kpEndpointElevenDerivative]
+    simpa using hsq.add hlinear
+  have hscaled :
+      HasDerivAt
+        (fun x : ℝ => kpEndpointElevenSin *
+          (x * Real.sqrt (x ^ 2 - 1)))
+        (kpEndpointElevenSin *
+          (Real.sqrt (r ^ 2 - 1) +
+            r * (2 * r / (2 * Real.sqrt (r ^ 2 - 1))))) r := by
+    simpa using hxsqrt.const_mul kpEndpointElevenSin
+  have hraw :
+      HasDerivAt kpEndpointElevenProfile
+        ((2 * r + kpEndpointElevenCos) -
+          kpEndpointElevenSin *
+            (Real.sqrt (r ^ 2 - 1) +
+              r * (2 * r / (2 * Real.sqrt (r ^ 2 - 1))))) r := by
+    simpa [kpEndpointElevenProfile] using hpoly.sub hscaled
+  have hderiv :
+      (2 * r + kpEndpointElevenCos) -
+          kpEndpointElevenSin *
+            (Real.sqrt (r ^ 2 - 1) +
+              r * (2 * r / (2 * Real.sqrt (r ^ 2 - 1)))) =
+        kpEndpointElevenDerivative r := by
+    dsimp [kpEndpointElevenDerivative]
     field_simp [htne]
     rw [Real.sq_sqrt (le_of_lt hrad)]
     ring
+  simpa only [hderiv] using hraw
 
 /-- The concrete derivative is negative throughout the optimized interval. -/
 theorem kpEndpointElevenDerivative_neg
@@ -307,7 +337,7 @@ theorem kpEndpointElevenProfile_strictAntiOn :
   · unfold kpEndpointElevenProfile
     fun_prop
   · intro r hr
-    have hrIcc : r ∈ Set.Icc (2 : ℝ) kpRadius := Set.interior_subset hr
+    have hrIcc : r ∈ Set.Icc (2 : ℝ) kpRadius := interior_subset hr
     have hr1 : 1 < r := by linarith [hrIcc.1]
     rw [(kpEndpointElevenProfile_hasDerivAt hr1).deriv]
     exact kpEndpointElevenDerivative_neg hrIcc.1 hrIcc.2
@@ -317,16 +347,23 @@ theorem kpRadius_mul_rtLower :
     kpRadius * rtLower = -1 := by
   have hrec := kpRadius_reciprocal_eq_neg_lower
   have hrne : kpRadius ≠ 0 := ne_of_gt kpRadius_pos
-  apply (eq_div_iff hrne).mp
-  simpa [div_eq_mul_inv, one_div] using hrec.symm
+  have h : (1 : ℝ) = (-rtLower) * kpRadius :=
+    (div_eq_iff hrne).mp hrec
+  calc
+    kpRadius * rtLower = -((-rtLower) * kpRadius) := by ring
+    _ = -1 := by rw [← h]
 
 /-- Projection of the rotated endpoint coordinates onto the lower endpoint. -/
 theorem kpEndpointEleven_projection :
     kpEndpointElevenCos * rtLower +
       kpEndpointElevenSin * kpLowerY = rtS / 2 := by
-  have hcircle := kp_lower_endpoint_circle
-  dsimp [kpEndpointElevenCos, kpEndpointElevenSin]
-  nlinarith [hcircle]
+  calc
+    kpEndpointElevenCos * rtLower +
+        kpEndpointElevenSin * kpLowerY =
+      rtS * (rtLower ^ 2 + kpLowerY ^ 2) / 2 := by
+        dsimp [kpEndpointElevenCos, kpEndpointElevenSin]
+        ring
+    _ = rtS / 2 := by rw [kp_lower_endpoint_circle]; ring
 
 /-- The square root at the optimizer is `r_*` times the lower endpoint height. -/
 theorem kpRadius_sqrt_sub_one :
@@ -353,14 +390,36 @@ theorem kpEndpointElevenProfile_at_optimizer :
   have hrL := kpRadius_mul_rtLower
   have hsqrt := kpRadius_sqrt_sub_one
   have hQ := kpEndpointOneProfile_at_optimizer
-  rw [hQ]
-  dsimp [kpEndpointElevenProfile, kpQ]
-  rw [hsqrt]
-  have hr2L : kpRadius ^ 2 * rtLower = -kpRadius := by
+  have hlin :
+      kpEndpointElevenCos -
+          kpRadius * kpEndpointElevenSin * kpLowerY =
+        -kpRadius * rtS / 2 := by
     calc
-      kpRadius ^ 2 * rtLower = kpRadius * (kpRadius * rtLower) := by ring
-      _ = -kpRadius := by rw [hrL]; ring
-  nlinarith
+      kpEndpointElevenCos -
+          kpRadius * kpEndpointElevenSin * kpLowerY =
+        -(kpEndpointElevenCos * (kpRadius * rtLower) +
+            kpRadius * kpEndpointElevenSin * kpLowerY) := by
+          rw [hrL]
+          ring
+      _ = -(kpRadius *
+          (kpEndpointElevenCos * rtLower +
+            kpEndpointElevenSin * kpLowerY)) := by ring
+      _ = -(kpRadius * (rtS / 2)) := by rw [hproj]
+      _ = -kpRadius * rtS / 2 := by ring
+  rw [hQ]
+  change kpEndpointElevenProfile kpRadius =
+    kpRadius ^ 2 * (1 - rtS / 2)
+  rw [kpEndpointElevenProfile, hsqrt]
+  calc
+    kpRadius ^ 2 + kpEndpointElevenCos * kpRadius -
+        kpEndpointElevenSin *
+          (kpRadius * (kpRadius * kpLowerY)) =
+      kpRadius ^ 2 + kpRadius *
+        (kpEndpointElevenCos -
+          kpRadius * kpEndpointElevenSin * kpLowerY) := by ring
+    _ = kpRadius ^ 2 + kpRadius * (-kpRadius * rtS / 2) := by
+      rw [hlin]
+    _ = kpRadius ^ 2 * (1 - rtS / 2) := by ring
 
 /-- Fully concrete unique optimality theorem, with no degree-eleven monotonicity parameter. -/
 theorem kpRadius_unique_oneRadius_optimum_concrete :
