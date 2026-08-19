@@ -43,19 +43,20 @@ theorem cutset_energy_lower
     (hcount : c0 * (bad.card : ℝ) ≤ M * E) :
     (c0 / M) * (N : ℝ) ^ 2 ≤ E := by
   have hnat : N * N ≤ bad.card := grid_separator_card bad hits
+  have hnatPow : N ^ 2 ≤ bad.card := by
+    simpa [pow_two] using hnat
   have hreal : (N : ℝ) ^ 2 ≤ (bad.card : ℝ) := by
-    exact_mod_cast hnat
+    exact_mod_cast hnatPow
   have hgap : c0 * (N : ℝ) ^ 2 ≤ c0 * (bad.card : ℝ) :=
     mul_le_mul_of_nonneg_left hreal hc0
   have htotal : c0 * (N : ℝ) ^ 2 ≤ M * E :=
     le_trans hgap hcount
-  have hMne : M ≠ 0 := ne_of_gt hM
-  apply (div_le_iff₀ hM).2
+  have htarget : (c0 * (N : ℝ) ^ 2) / M ≤ E :=
+    (div_le_iff₀ hM).2 htotal
   calc
-    (c0 / M * (N : ℝ) ^ 2) * M = c0 * (N : ℝ) ^ 2 := by
-      field_simp [hMne]
+    (c0 / M) * (N : ℝ) ^ 2 = (c0 * (N : ℝ) ^ 2) / M := by
       ring
-    _ ≤ M * E := htotal
+    _ ≤ E := htarget
 
 /-- Scalar inball implication used for interface calibration bodies. -/
 theorem calibration_inball_scalar
