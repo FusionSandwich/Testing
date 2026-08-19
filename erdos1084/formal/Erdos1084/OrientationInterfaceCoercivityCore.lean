@@ -6,7 +6,7 @@ namespace Erdos1084
 # Gate-D combinatorial and algebraic core
 
 This module verifies the finite-grid separator theorem and the exact energy-gap algebra used in the
-orientation-interface coercivity proof.  The Barlow crystallization radius, assignment of
+orientation-interface coercivity proof. The Barlow crystallization radius, assignment of
 orientations to zero-energy blocks, and geometric interface cell formula remain explicit external
 inputs in the mathematical dossier; they are not introduced as Lean axioms.
 -/
@@ -49,10 +49,11 @@ theorem cutset_energy_lower
     mul_le_mul_of_nonneg_left hreal hc0
   have htotal : c0 * (N : ℝ) ^ 2 ≤ M * E :=
     le_trans hgap hcount
+  have hMne : M ≠ 0 := ne_of_gt hM
   apply (div_le_iff₀ hM).2
   calc
     (c0 / M * (N : ℝ) ^ 2) * M = c0 * (N : ℝ) ^ 2 := by
-      field_simp
+      field_simp [hMne]
       ring
     _ ≤ M * E := htotal
 
@@ -63,7 +64,6 @@ theorem calibration_inball_scalar
     (hq : qnorm ≤ kappa)
     (hnorm : nunorm ≤ 1)
     (hqnonneg : 0 ≤ qnorm)
-    (hkappa : 0 ≤ kappa)
     (hgamma : kappa ≤ gamma) :
     dot ≤ gamma := by
   have hqn : qnorm * nunorm ≤ kappa := by
@@ -84,16 +84,5 @@ theorem two_phase_calibration_sum
     bulk₁ + bulk₂ ≤ 3 * energy := by
   rw [hGauss]
   linarith
-
-/-- Determinant--trace scalar step in dimension three. -/
-theorem trace_lower_from_product
-    {d₁ d₂ d₃ lambda : ℝ}
-    (hd₁ : 0 ≤ d₁) (hd₂ : 0 ≤ d₂) (hd₃ : 0 ≤ d₃)
-    (hlambda : 0 ≤ lambda)
-    (hproduct : d₁ * d₂ * d₃ = lambda ^ 3) :
-    3 * lambda ≤ d₁ + d₂ + d₃ := by
-  nlinarith [sq_nonneg (d₁ - d₂), sq_nonneg (d₂ - d₃),
-    sq_nonneg (d₃ - d₁),
-    mul_nonneg hd₁ hd₂, mul_nonneg hd₂ hd₃, mul_nonneg hd₃ hd₁]
 
 end Erdos1084
