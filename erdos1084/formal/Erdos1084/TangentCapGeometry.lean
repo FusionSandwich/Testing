@@ -28,6 +28,7 @@ theorem tangent_neighbor_norm_sq
     ‖r • u - (2 : ℝ) • v‖ ^ 2 =
       r ^ 2 + 4 - 4 * r * ⟪u, v⟫_ℝ := by
   rw [norm_sub_sq_real]
+  rw [real_inner_smul_left, real_inner_smul_right]
   simp [norm_smul, hu, hv, abs_of_nonneg hr]
   ring
 
@@ -40,10 +41,9 @@ theorem tangent_neighbor_mem_iff_inner
   have hsq := tangent_neighbor_norm_sq hu hv (le_of_lt hr)
   constructor
   · intro hnorm
-    have hnorm0 : 0 ≤ ‖r • u - (2 : ℝ) • v‖ := norm_nonneg _
     have hsquare :
         ‖r • u - (2 : ℝ) • v‖ ^ 2 ≤ r ^ 2 := by
-      nlinarith
+      nlinarith [norm_nonneg (r • u - (2 : ℝ) • v)]
     apply (div_le_iff₀ hr).2
     rw [hsq] at hsquare
     nlinarith
@@ -54,8 +54,7 @@ theorem tangent_neighbor_mem_iff_inner
         ‖r • u - (2 : ℝ) • v‖ ^ 2 ≤ r ^ 2 := by
       rw [hsq]
       nlinarith
-    have hnorm0 : 0 ≤ ‖r • u - (2 : ℝ) • v‖ := norm_nonneg _
-    nlinarith
+    nlinarith [norm_nonneg (r • u - (2 : ℝ) • v)]
 
 end
 
