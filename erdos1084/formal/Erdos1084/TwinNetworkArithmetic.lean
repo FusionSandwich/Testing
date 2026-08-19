@@ -31,7 +31,6 @@ theorem degreeDeficitSum_le_twelve_badCard
       intro i _
       by_cases hi : i ∈ bad
       · simp [hi]
-        omega
       · simp [hi, hgood i hi]
     _ = 12 * bad.card := by
       simp
@@ -59,7 +58,10 @@ theorem contactDeficit_le_lineOrder
     (hD : D ≤ 6 * bad)
     (hbad : bad ≤ C₁ * T + C₀) :
     D ≤ 6 * C₁ * T + 6 * C₀ := by
-  omega
+  calc
+    D ≤ 6 * bad := hD
+    _ ≤ 6 * (C₁ * T + C₀) := Nat.mul_le_mul_left 6 hbad
+    _ = 6 * C₁ * T + 6 * C₀ := by ring
 
 /--
 Scalar form of the deletion estimate: if deleting `removed` sites changes the
@@ -91,6 +93,7 @@ theorem pureLineOrder_surfaceScale_bound
     (hT : 0 < T)
     (hcost : cost ≤ A * T) :
     cost / T ^ 2 ≤ A / T := by
-  simpa using lineOrder_surfaceScale_bound hT (B := 0) hcost
+  apply lineOrder_surfaceScale_bound hT (B := 0)
+  simpa using hcost
 
 end Erdos1084
