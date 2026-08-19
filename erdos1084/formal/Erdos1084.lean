@@ -20,6 +20,7 @@ import Erdos1084.BarlowInvariantMeasureArithmetic
 import Erdos1084.OrientationInterfaceCoercivityCore
 import Erdos1084.GateERecoveryArithmetic
 import Erdos1084.FiniteSpherePacking
+import Erdos1084.Phase1PublishedInputs
 
 /-!
 # Erdős Problem 1084: formalized certification spine
@@ -28,10 +29,11 @@ The library contains certified algebraic and abstract-assembly routes for the ra
 Kepler, periodic Barlow, invariant-measure Barlow, Gate-D interface, and Gate-E exact-mass
 recovery programs.
 
-The Phase-I contact model now directly defines finite minimum-separation configurations in
-Euclidean three-space, their exact distance-one contact graphs, contact counts, degrees, and
-integer degree-deficit identity. The kissing-number degree bound remains a visible geometric
-input rather than a hidden project axiom.
+The Phase-I contact model directly defines finite minimum-separation configurations in Euclidean
+three-space, their exact distance-one contact graphs, contact counts, degrees, and integer
+degree-deficit identity. `Phase1PublishedInputs` now connects one actual finite contact graph to
+the strict `2.0465` assembly through an explicit geometric certificate. The five named geometric
+inputs remain visible theorem data rather than hidden project axioms.
 
 The Gate-D module formally verifies:
 
