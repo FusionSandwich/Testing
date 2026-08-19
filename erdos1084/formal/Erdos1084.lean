@@ -30,8 +30,10 @@ The library contains certified algebraic and abstract-assembly routes for the ra
 Kepler, periodic Barlow, invariant-measure Barlow, Gate-D interface, Gate-E exact-mass recovery,
 and exact Sigma-5 two-lattice transition programs.
 
-`KeplerOneRadiusConcrete.lean` now discharges the former degree-eleven monotonicity parameter and
-proves the fully concrete unique optimizer theorem for the one-radius affine method.
+`KeplerOneRadiusConcrete.lean` certifies the concrete degree-eleven endpoint constants, the exact
+factorization controlling its derivative, a uniform negative-derivative expression on
+`[2,kpRadius]`, and the exact endpoint crossing.  The ordinary mathematical dossier supplies the
+completed calculus wrapper and unique minimax proof.
 
 `FiniteSpherePacking.lean` begins the foundational end-to-end layer: finite minimum-separation
 configurations, their Euclidean contact graphs, contact counts, degrees, and the exact degree-
