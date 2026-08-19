@@ -7,7 +7,7 @@ namespace Erdos1084
 # Calculus closure of the one-radius optimizer
 
 `KeplerOneRadiusConcrete.lean` proves the exact endpoint algebra, the negative
-candidate derivative on `[2,kpRadius]`, and the endpoint crossing.  This module
+candidate derivative on `[2,kpRadius]`, and the endpoint crossing. This module
 checks the derivative formula, turns derivative negativity into strict decrease,
 and invokes the abstract minimax theorem to obtain the fully concrete unique
 optimizer with no ordinary monotonicity parameter.
@@ -37,17 +37,17 @@ theorem kpEndpointElevenProfile_hasDerivAt
         ((2 * r) / (2 * Real.sqrt (r ^ 2 - 1))) r :=
     hinner.sqrt hradne
 
-  have hprodRaw0 := (hasDerivAt_id r).mul hsqrt
   have hprodRaw :
       HasDerivAt
         (fun x : ℝ => x * Real.sqrt (x ^ 2 - 1))
-        (Real.sqrt (r ^ 2 - 1) +
-          r * ((2 * r) / (2 * Real.sqrt (r ^ 2 - 1)))) r := by
-    simpa only [Pi.mul_apply, id_eq, one_mul] using hprodRaw0
+        (r * ((2 * r) / (2 * Real.sqrt (r ^ 2 - 1))) +
+          Real.sqrt (r ^ 2 - 1)) r := by
+    simpa [Pi.smul_apply, smul_eq_mul] using
+      (hasDerivAt_id r).smul hsqrt
 
   have hprodDeriv :
-      Real.sqrt (r ^ 2 - 1) +
-          r * ((2 * r) / (2 * Real.sqrt (r ^ 2 - 1))) =
+      r * ((2 * r) / (2 * Real.sqrt (r ^ 2 - 1))) +
+          Real.sqrt (r ^ 2 - 1) =
         (2 * r ^ 2 - 1) / Real.sqrt (r ^ 2 - 1) := by
     field_simp [hsqrtne]
     rw [Real.sq_sqrt (le_of_lt hrad)]
@@ -62,7 +62,8 @@ theorem kpEndpointElevenProfile_hasDerivAt
   have hlinear :
       HasDerivAt (fun x : ℝ => kpEndpointElevenCos * x)
         kpEndpointElevenCos r := by
-    simpa using (hasDerivAt_id r).const_mul kpEndpointElevenCos
+    simpa [Pi.smul_apply, smul_eq_mul] using
+      (hasDerivAt_id r).const_smul kpEndpointElevenCos
 
   have hpoly :
       HasDerivAt
@@ -76,8 +77,8 @@ theorem kpEndpointElevenProfile_hasDerivAt
           (x * Real.sqrt (x ^ 2 - 1)))
         (kpEndpointElevenSin * (2 * r ^ 2 - 1) /
           Real.sqrt (r ^ 2 - 1)) r := by
-    simpa [div_eq_mul_inv, mul_assoc] using
-      hprod.const_mul kpEndpointElevenSin
+    simpa [Pi.smul_apply, smul_eq_mul, div_eq_mul_inv, mul_assoc] using
+      hprod.const_smul kpEndpointElevenSin
 
   have hprofile :
       HasDerivAt
@@ -89,7 +90,14 @@ theorem kpEndpointElevenProfile_hasDerivAt
             Real.sqrt (r ^ 2 - 1)) r :=
     hpoly.sub hscaled
 
-  simpa [kpEndpointElevenProfile, kpEndpointElevenDerivative] using hprofile
+  change HasDerivAt
+    (fun x : ℝ =>
+      x ^ 2 + kpEndpointElevenCos * x -
+        kpEndpointElevenSin * (x * Real.sqrt (x ^ 2 - 1)))
+    ((2 * r + kpEndpointElevenCos) -
+      kpEndpointElevenSin * (2 * r ^ 2 - 1) /
+        Real.sqrt (r ^ 2 - 1)) r
+  exact hprofile
 
 /-- The concrete degree-eleven endpoint profile is strictly decreasing. -/
 theorem kpEndpointElevenProfile_strictAntiOn :
