@@ -1,0 +1,47 @@
+name: Erdős 1084 Phase-I tangent-cap geometry
+
+on:
+  pull_request:
+    branches: [testing]
+    paths:
+      - 'erdos1084/formal/Erdos1084/TangentCapGeometry.lean'
+      - 'erdos1084/formal/Erdos1084TangentCap*.lean'
+      - '.github/workflows/erdos1084-phase1-tangent-cap.yml'
+  push:
+    branches:
+      - 'agent/erdos-1084-phase1-contact-model-lean-20260819'
+    paths:
+      - 'erdos1084/formal/Erdos1084/TangentCapGeometry.lean'
+      - 'erdos1084/formal/Erdos1084TangentCap*.lean'
+      - '.github/workflows/erdos1084-phase1-tangent-cap.yml'
+  workflow_dispatch:
+
+jobs:
+  tangent-cap:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reject placeholders and project axioms
+        run: |
+          if grep -R --include='*.lean' -nE '(^|[^[:alnum:]_])(sorry|admit|sorryAx)([^[:alnum:]_]|$)' erdos1084/formal; then
+            echo 'Lean placeholder found' >&2
+            exit 1
+          fi
+          if grep -R --include='*.lean' -nE '^[[:space:]]*(axiom|constant)[[:space:]]+' erdos1084/formal/Erdos1084; then
+            echo 'Project-specific axiom/constant declaration found' >&2
+            exit 1
+          fi
+      - name: Install Elan
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf \
+            https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
+            | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Build and audit
+        working-directory: erdos1084/formal
+        run: |
+          lake update
+          lake exe cache get
+          lake build
+          lake env lean Erdos1084TangentCapTests.lean
+          lake env lean Erdos1084TangentCapAxiomAudit.lean
