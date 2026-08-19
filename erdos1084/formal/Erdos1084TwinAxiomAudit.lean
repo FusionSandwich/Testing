@@ -6,9 +6,9 @@ import Erdos1084
 The exact rational computations and abstract topological-group, finite-word, scaling, interface-
 bookkeeping, and countable-null implications are formalized without project-specific axioms.
 Density of the concrete subgroup in `SO(3)`, the algebraic-integer irrationality argument for the
-twin angle, the geometric lamella and cross-section theorems, nullity of Euclidean spheres and
-planar circle sections, the vacuum-slab cell competitor, and the flat-boundary-compatible branching
-problem remain in the ordinary dossier.
+twin angle, the geometric lamella and planar-section theorems, the vacuum-slab cell competitor,
+and the flat-boundary-compatible branching problem remain in the ordinary dossier. Nullity of
+full finite-dimensional metric spheres is imported from mathlib's additive-Haar theorem.
 -/
 
 #print axioms Erdos1084.fccTwinOne_orthogonal
@@ -68,6 +68,10 @@ problem remain in the ordinary dossier.
 #print axioms Erdos1084.measure_zero_of_subset_pairParameterUnion
 #print axioms Erdos1084.measure_zero_of_pair_witness
 
+#print axioms Erdos1084.measure_pairTranslationSphere_zero
+#print axioms Erdos1084.measure_abruptSphereTranslationSet_zero
+#print axioms Erdos1084.measure_abruptExceptionalSubset_zero
+
 #check Erdos1084.RatMat3
 #check Erdos1084.RatVec3
 #check Erdos1084.fccTwinOne
@@ -89,4 +93,4 @@ problem remain in the ordinary dossier.
 #check Erdos1084.diagonalRecovery_lt_epsilon
 #check Erdos1084.relaxedInterface_le_twoCracks
 #check Erdos1084.measure_pairParameterUnion_zero
-#check Erdos1084.measure_zero_of_pair_witness
+#check Erdos1084.measure_abruptSphereTranslationSet_zero
