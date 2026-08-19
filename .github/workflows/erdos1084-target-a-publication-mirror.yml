@@ -31,16 +31,23 @@ jobs:
           git rev-parse HEAD | tee /tmp/erdos1084-testing-mirror-head.txt
       - name: Reproduce the exact coefficient certificate
         run: make -C erdos1084/publication_mirror verify
-      - name: Check finite-density and spherical-review records
+      - name: Check finite-density, lower-bound, and spherical-review records
         run: |
-          grep -F 'head: c99ac73bc3ddc8c7dc2118ddd88a76a07938d455' \
+          grep -F 'head: f805b022bf947a28d7dfedc40e638d1849534eb3' \
             erdos1084/publication_mirror/MATH_SOURCE_HEAD.txt
           test -f erdos1084/publication_mirror/FINITE_KEPLER_TORUS_COMPLETION_PROOF.md
-          grep -F 'source head: c99ac73bc3ddc8c7dc2118ddd88a76a07938d455' \
+          grep -F 'source head: f805b022bf947a28d7dfedc40e638d1849534eb3' \
             erdos1084/publication_mirror/FINITE_KEPLER_TORUS_COMPLETION_PROOF.md
+          test -f erdos1084/publication_mirror/FCC_PARALLELEPIPED_LOWER_BOUND.md
+          grep -F 'source head: f805b022bf947a28d7dfedc40e638d1849534eb3' \
+            erdos1084/publication_mirror/FCC_PARALLELEPIPED_LOWER_BOUND.md
           grep -F 'Finite FCC torus-completion theorem:' \
             erdos1084/publication_mirror/SOURCE_REVIEW_STATUS.txt
+          grep -F 'FCC matching-order lower construction:' \
+            erdos1084/publication_mirror/SOURCE_REVIEW_STATUS.txt
           grep -F 'INTERNAL ADVERSARIAL REVIEW PASS' \
+            erdos1084/publication_mirror/SOURCE_REVIEW_STATUS.txt
+          grep -F 'EXACT FINITE COUNT PASS' \
             erdos1084/publication_mirror/SOURCE_REVIEW_STATUS.txt
           grep -F 'Spherical-neighborhood application:' \
             erdos1084/publication_mirror/SOURCE_REVIEW_STATUS.txt
@@ -90,5 +97,6 @@ jobs:
             erdos1084/publication_mirror/MATH_SOURCE_HEAD.txt
             erdos1084/publication_mirror/SOURCE_REVIEW_STATUS.txt
             erdos1084/publication_mirror/FINITE_KEPLER_TORUS_COMPLETION_PROOF.md
+            erdos1084/publication_mirror/FCC_PARALLELEPIPED_LOWER_BOUND.md
             erdos1084/publication_mirror/paper/erdos_1084_target_a.pdf
             erdos1084/publication_mirror/computation/target_a_coefficient_output.txt
