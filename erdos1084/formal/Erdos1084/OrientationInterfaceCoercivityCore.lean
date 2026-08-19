@@ -77,7 +77,21 @@ theorem calibration_inball_scalar
       _ ≤ kappa := hq
   exact le_trans (le_trans hdot hqn) hgamma
 
-/-- Two-phase algebra behind the common-calibration divergence sum. -/
+/--
+Exact two-phase cancellation of the constant phase translations in a common calibration.
+-/
+theorem two_phase_translation_calibration
+    {transport₁ transport₂ phase₁ phase₂ phaseInterface
+      exteriorEnergy₁ exteriorEnergy₂ interfaceEnergy : ℝ}
+    (hPhaseBalance : phase₁ + phase₂ + phaseInterface = 0)
+    (hExterior₁ : transport₁ + phase₁ ≤ exteriorEnergy₁)
+    (hExterior₂ : transport₂ + phase₂ ≤ exteriorEnergy₂)
+    (hInterface : phaseInterface ≤ interfaceEnergy) :
+    transport₁ + transport₂ ≤
+      exteriorEnergy₁ + exteriorEnergy₂ + interfaceEnergy := by
+  linarith
+
+/-- A simple aggregate form of the same calibration algebra. -/
 theorem two_phase_calibration_sum
     {bulk₁ bulk₂ exterior₁ exterior₂ interface energy : ℝ}
     (hGauss : bulk₁ + bulk₂ = exterior₁ + exterior₂ + interface)
