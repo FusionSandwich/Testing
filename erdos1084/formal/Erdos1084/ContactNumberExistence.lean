@@ -21,7 +21,8 @@ theorem linePoint_dist_sq {n : ℕ} (i j : Fin n) :
     dist (linePoint i) (linePoint j) ^ 2 =
       (2 * (i.val : ℝ) - 2 * (j.val : ℝ)) ^ 2 := by
   rw [EuclideanSpace.dist_sq_eq]
-  norm_num [linePoint, Real.dist_eq]
+  simp [linePoint, Fin.sum_univ_succ]
+  ring
 
 /-- The explicit line configuration is unit-separated. -/
 def lineConfiguration (n : ℕ) : UnitSeparatedConfiguration (Fin n) where
@@ -44,8 +45,7 @@ def lineConfiguration (n : ℕ) : UnitSeparatedConfiguration (Fin n) where
           exact_mod_cast hnat
         nlinarith
     have hsq := linePoint_dist_sq i j
-    have hdist0 : 0 ≤ dist (linePoint i) (linePoint j) := dist_nonneg
-    nlinarith
+    nlinarith [dist_nonneg (linePoint i) (linePoint j)]
 
 /-- Every simple contact graph has fewer edges than the successor of the ambient `Sym2` cardinal. -/
 theorem contactCount_lt_sym2_card_succ
