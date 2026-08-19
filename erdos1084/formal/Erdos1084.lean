@@ -20,17 +20,18 @@ import Erdos1084.BarlowInvariantMeasureArithmetic
 import Erdos1084.OrientationInterfaceCoercivityCore
 import Erdos1084.GateERecoveryArithmetic
 import Erdos1084.Sigma5UnionStabilization
+import Erdos1084.FiniteSpherePacking
 
 /-!
 # Erdős Problem 1084: formalized certification spine
 
 The library contains certified algebraic and abstract-assembly routes for the radius-two,
 Kepler, periodic Barlow, invariant-measure Barlow, Gate-D interface, Gate-E exact-mass recovery,
-and the exact Sigma-5 two-lattice transition-stabilization programs.
+and exact Sigma-5 two-lattice transition programs.
 
-The Sigma-5 module verifies a 1024-state Bellman certificate proving that arbitrary-width,
-coincidence-periodic transitions whose sites belong to the union of the two ideal FCC lattices
-have deficit at least 16 per coincidence cell. It does not represent off-lattice transition sites.
+`FiniteSpherePacking.lean` begins the foundational end-to-end layer: finite minimum-separation
+configurations, their Euclidean contact graphs, contact counts, degrees, and the exact degree-
+deficit identity are now represented directly in Lean.
 
 The geometric lattice-count asymptotics, Gate-C Gamma convergence, orientation selection, sharp
 fully relaxed interface cells, and foundational proofs of the imported geometric theorems remain
