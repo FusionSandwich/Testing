@@ -1,0 +1,17 @@
+ORIENTATION-INTERFACE CUTSET CERTIFICATE
+status: PASS
+
+N=1: minimum vertex cut=1=N^2
+N=2: minimum vertex cut=4=N^2
+N=3: minimum vertex cut=9=N^2
+N=4: minimum vertex cut=16=N^2
+N=5: minimum vertex cut=25=N^2
+N=6: minimum vertex cut=36=N^2
+N=7: minimum vertex cut=49=N^2
+N=8: minimum vertex cut=64=N^2
+
+Certified combinatorial input:
+every bad-cell separator of opposite faces in an N^3 coarse grid has at least N^2 cells.
+
+Coercivity formula after the local energy-gap and overlap estimates:
+  kappa_ori = c0 / (M_L * L^2) > 0
