@@ -15,6 +15,10 @@ on:
       - '.github/workflows/erdos1084-phase1-publication-verification.yml'
   workflow_dispatch:
 
+concurrency:
+  group: erdos1084-phase1-publication-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   publication-verification:
     runs-on: ubuntu-latest
