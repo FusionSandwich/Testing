@@ -30,6 +30,7 @@ import Erdos1084.TwinNetworkArithmetic
 import Erdos1084.TwinPlateletArithmetic
 import Erdos1084.DiagonalRecoveryArithmetic
 import Erdos1084.InterfaceUpperBoundArithmetic
+import Erdos1084.CountableNullUnion
 import Erdos1084.OrientationInterfaceCoercivityCore
 import Erdos1084.GateERecoveryArithmetic
 import Erdos1084.Sigma5UnionStabilization
@@ -41,8 +42,8 @@ import Erdos1084.FiniteSpherePacking
 The library contains certified algebraic and abstract-assembly routes for the radius-two,
 Kepler, periodic Barlow, invariant-measure Barlow, Gate-C occupied compactness, coherent-twin
 closure, exact normal approximation, finite-word approximation, holonomy, fan, network, platelet,
-diagonal-recovery, and two-crack interface arithmetic, Gate-D interface algebra, Gate-E exact-mass
-recovery, and exact Sigma-5 two-lattice transition programs.
+diagonal-recovery, two-crack interface, and countable-null translation arithmetic, Gate-D
+interface algebra, Gate-E exact-mass recovery, and exact Sigma-5 two-lattice transition programs.
 
 `KeplerOneRadiusConcrete.lean` certifies the concrete degree-eleven endpoint constants, the exact
 factorization controlling its derivative, a uniform negative-derivative expression on
@@ -69,14 +70,15 @@ inverse-mesoscopic-scale rim estimate and the fixed-normal coverage obstruction 
 arrays. `DiagonalRecoveryArithmetic.lean` certifies the normalization and epsilon bookkeeping for
 word-dependent line, point, and angular mismatch costs. `InterfaceUpperBoundArithmetic.lean`
 certifies the normalized and relaxed-infimum bookkeeping for the universal vacuum-slab two-crack
-upper bound.
+upper bound. `CountableNullUnion.lean` certifies that a doubly countable union of pairwise null
+parameter sets is null, the measure-theoretic spine of abrupt-translation genericity.
 
 `FiniteSpherePacking.lean` represents finite minimum-separation configurations, their Euclidean
 contact graphs, contact counts, degrees, and the exact degree-deficit identity directly in Lean.
 
 The Kepler and isoperimetric source theorems, Hales FCC/HCP local recognition, geometric Voronoi
 realization, density of the concrete twin-generated subgroup in `SO(3)`, irrationality of the FCC
-twin angle as a multiple of `π`, and the existence of a flat-boundary-compatible branching twin
-network remain visible ordinary mathematical inputs or open geometric tasks. They are not hidden
-as project axioms.
+twin angle as a multiple of `π`, nullity of Euclidean spheres and planar circle sections, and the
+existence of a flat-boundary-compatible branching twin network remain visible ordinary
+mathematical inputs or open geometric tasks. They are not hidden as project axioms.
 -/
