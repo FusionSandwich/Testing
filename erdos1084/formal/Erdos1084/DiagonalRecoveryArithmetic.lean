@@ -27,8 +27,7 @@ theorem recoveryCost_surfaceDensity_bound
   calc
     cost ≤ A * T + B + C * angle * T ^ 2 := hcost
     _ = (A / T + B / T ^ 2 + C * angle) * T ^ 2 := by
-      field_simp [ne_of_gt hT]
-      ring
+      field_simp [ne_of_gt hT] <;> ring
 
 /-- Three component estimates of size `ε/3` give total normalized cost at most `ε`. -/
 theorem recoveryCost_surfaceDensity_le_epsilon
@@ -63,14 +62,8 @@ theorem lineTerm_small_of_scale
     (hT : 0 < T)
     (hscale : 3 * A < ε * T) :
     A / T < ε / 3 := by
-  have hthree : (0 : ℝ) < 3 := by norm_num
-  have hεT : A * 3 < ε * T := by linarith
-  have hdiv : A < ε * T / 3 := by
-    exact (lt_div_iff₀ hthree).2 (by simpa [mul_comm] using hεT)
-  exact (div_lt_iff₀ hT).2 <| by
-    calc
-      A < ε * T / 3 := hdiv
-      _ = (ε / 3) * T := by ring
+  apply (div_lt_iff₀ hT).2
+  nlinarith
 
 /-- A word-dependent finite point constant is negligible at sufficiently large `T²`. -/
 theorem pointTerm_small_of_scale
@@ -79,13 +72,8 @@ theorem pointTerm_small_of_scale
     (hscale : 3 * B < ε * T ^ 2) :
     B / T ^ 2 < ε / 3 := by
   have hT2 : 0 < T ^ 2 := sq_pos_of_pos hT
-  have hthree : (0 : ℝ) < 3 := by norm_num
-  have hdiv : B < ε * T ^ 2 / 3 := by
-    exact (lt_div_iff₀ hthree).2 (by nlinarith)
-  exact (div_lt_iff₀ hT2).2 <| by
-    calc
-      B < ε * T ^ 2 / 3 := hdiv
-      _ = (ε / 3) * T ^ 2 := by ring
+  apply (div_lt_iff₀ hT2).2
+  nlinarith
 
 /-- Combine explicit scale and angular conditions into the diagonal epsilon estimate. -/
 theorem diagonalRecovery_lt_epsilon
