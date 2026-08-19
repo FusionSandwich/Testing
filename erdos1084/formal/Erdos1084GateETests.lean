@@ -17,6 +17,14 @@ example (t : ℤ) :
 example : (192 : ℤ) ^ 3 = 432 * (128 : ℤ) ^ 2 :=
   gateE_fcc_leading_cube
 
+example
+    {m baseD shell correctionD : ℝ}
+    (hbase : baseD ≤ 36 * m ^ 2)
+    (hshell : shell ≤ 2 * m ^ 2 + 2 * m + 1)
+    (hadd : correctionD ≤ baseD + 6 * shell) :
+    correctionD ≤ 48 * m ^ 2 + 12 * m + 6 :=
+  gateE_correction_cluster_bound hbase hshell hadd
+
 example (r : ℤ) :
     3 * gateETriHexNumber r - gateETriHexEdges r = 6 * r + 3 :=
   gateE_tri_hex_deficit r
