@@ -1,10 +1,10 @@
-# Final coherent-twin and abrupt-interface formalization CI checkpoint
+# Definitive coherent-twin and abrupt-interface formalization CI checkpoint
 
 Date: 2026-08-19
 
 This commit triggers a clean public CI run over the complete current bundle:
 
-- fully concrete one-radius calculus and optimizer;
+- fully concrete one-radius derivative, strict decrease, and optimizer;
 - occupied-set defect halo;
 - exact FCC/HCP Voronoi cells;
 - coherent-twin matrices and exact seven-letter normal word;
@@ -16,4 +16,4 @@ This commit triggers a clean public CI run over the complete current bundle:
 - finite periodic weighted contact-arrangement bookkeeping;
 - all pre-existing radius-two through Sigma-5 certificates, tests, and audits.
 
-Final checkpoint generation: 2.
+Final checkpoint generation: 3.
