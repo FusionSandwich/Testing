@@ -37,17 +37,21 @@ theorem kpEndpointElevenProfile_hasDerivAt
         ((2 * r) / (2 * Real.sqrt (r ^ 2 - 1))) r :=
     hinner.sqrt hradne
 
+  have hprodRaw0 := HasDerivAt.mul (hasDerivAt_id r) hsqrt
   have hprodRaw :
       HasDerivAt
         (fun x : ℝ => x * Real.sqrt (x ^ 2 - 1))
-        (r * ((2 * r) / (2 * Real.sqrt (r ^ 2 - 1))) +
-          Real.sqrt (r ^ 2 - 1)) r := by
-    simpa [Pi.smul_apply, smul_eq_mul] using
-      (hasDerivAt_id r).smul hsqrt
+        (Real.sqrt (r ^ 2 - 1) +
+          r * ((2 * r) / (2 * Real.sqrt (r ^ 2 - 1)))) r := by
+    change HasDerivAt
+      (fun x : ℝ => x * Real.sqrt (x ^ 2 - 1))
+      (1 * Real.sqrt (r ^ 2 - 1) +
+        r * ((2 * r) / (2 * Real.sqrt (r ^ 2 - 1)))) r at hprodRaw0
+    simpa using hprodRaw0
 
   have hprodDeriv :
-      r * ((2 * r) / (2 * Real.sqrt (r ^ 2 - 1))) +
-          Real.sqrt (r ^ 2 - 1) =
+      Real.sqrt (r ^ 2 - 1) +
+          r * ((2 * r) / (2 * Real.sqrt (r ^ 2 - 1))) =
         (2 * r ^ 2 - 1) / Real.sqrt (r ^ 2 - 1) := by
     field_simp [hsqrtne]
     rw [Real.sq_sqrt (le_of_lt hrad)]
@@ -62,8 +66,7 @@ theorem kpEndpointElevenProfile_hasDerivAt
   have hlinear :
       HasDerivAt (fun x : ℝ => kpEndpointElevenCos * x)
         kpEndpointElevenCos r := by
-    simpa [Pi.smul_apply, smul_eq_mul] using
-      (hasDerivAt_id r).const_smul kpEndpointElevenCos
+    simpa using HasDerivAt.const_mul kpEndpointElevenCos (hasDerivAt_id r)
 
   have hpoly :
       HasDerivAt
@@ -77,8 +80,8 @@ theorem kpEndpointElevenProfile_hasDerivAt
           (x * Real.sqrt (x ^ 2 - 1)))
         (kpEndpointElevenSin * (2 * r ^ 2 - 1) /
           Real.sqrt (r ^ 2 - 1)) r := by
-    simpa [Pi.smul_apply, smul_eq_mul, div_eq_mul_inv, mul_assoc] using
-      hprod.const_smul kpEndpointElevenSin
+    have hraw := HasDerivAt.const_mul kpEndpointElevenSin hprod
+    simpa [div_eq_mul_inv, mul_assoc] using hraw
 
   have hprofile :
       HasDerivAt
