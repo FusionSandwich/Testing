@@ -17,6 +17,7 @@ cap of angular radius `arccos(1/r)`.
 noncomputable section
 
 open Real
+open scoped InnerProductSpace
 
 variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
 
