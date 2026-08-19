@@ -1,6 +1,7 @@
-name: Erdős 1084 Kepler, Barlow, Gate-D, and Gate-E certification
+name: Erdős 1084 corrected Rogers, Kepler, Barlow, Gate-D, and Gate-E certification
 
-# Public certification receipt for the finite arithmetic, separator, recovery, and limit cores.
+# Public certification receipt for the finite arithmetic, abstract assembly,
+# separator, recovery, and conditional-limit cores.
 on:
   pull_request:
     branches: [testing]
@@ -9,7 +10,7 @@ on:
       - '.github/workflows/erdos1084-lean.yml'
   push:
     branches:
-      - 'agent/erdos-1084-gate-e-limit-lean-20260819'
+      - 'agent/erdos-1084-rogers-core-repair-lean-20260819'
     paths:
       - 'erdos1084/**'
       - '.github/workflows/erdos1084-lean.yml'
@@ -20,8 +21,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Reproduce exact radius-two and Gate-A through Gate-E certificates
+      - name: Reproduce corrected Rogers and retained exact certificates
         run: |
+          python3 erdos1084/rogers/verify_rogers_outer_parallel.py > /tmp/rogers-outer-parallel-output.txt
+          diff -u erdos1084/rogers/rogers_outer_parallel_output.txt /tmp/rogers-outer-parallel-output.txt
           python3 erdos1084/radius_two/verify_radius_two.py > erdos1084/radius_two/verification_output_regenerated.txt
           diff -u erdos1084/radius_two/verification_output.txt erdos1084/radius_two/verification_output_regenerated.txt
           python3 erdos1084/radius_two/verify_1673_envelope.py > erdos1084/radius_two/verification_1673_output_regenerated.txt
@@ -70,6 +73,7 @@ jobs:
           lake env lean Erdos1084AssemblyTests.lean
           lake env lean Erdos1084OptimizedTests.lean
           lake env lean Erdos1084KeplerTests.lean
+          lake env lean Erdos1084RogersTests.lean
           lake env lean Erdos1084BarlowTests.lean
           lake env lean Erdos1084GateBTests.lean
           lake env lean Erdos1084GateDTests.lean
