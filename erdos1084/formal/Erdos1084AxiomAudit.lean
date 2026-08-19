@@ -7,11 +7,11 @@ The external geometric theorems are passed as explicit hypotheses to bridge lemm
 This file checks that the project theorems introduce no project-specific axioms or
 hidden placeholders.
 
-Important: `#print axioms` does not list ordinary theorem parameters. The Rogers and
-Kepler theorem signatures must therefore also be inspected. Their external content
-appears as explicit global-surface inputs, local-charge hypotheses, power-scale data,
-a visible degree-eleven monotonicity parameter, a positive stability parameter, and
-matching asymptotic bounds.
+Important: `#print axioms` does not list ordinary theorem parameters. The
+dodecahedral, Rogers, and Kepler theorem signatures must therefore also be inspected.
+Their external content appears as explicit global-surface inputs, local-charge
+hypotheses, power-scale data, a visible degree-eleven monotonicity parameter, a
+positive stability parameter, and matching asymptotic bounds.
 -/
 
 #print axioms Erdos1084.kissing_twelve_closed_cap_cover
@@ -38,6 +38,12 @@ matching asymptotic bounds.
 #print axioms Erdos1084.rogers_surface_assembly_strict
 #print axioms Erdos1084.rogers_contact_upper_from_surface
 
+#print axioms Erdos1084.dodecahedral_surface_scale_cubed_certificate
+#print axioms Erdos1084.dodecahedral_clean_lt_scale_mul_local_lower
+#print axioms Erdos1084.dodecahedral_clean_lt_scale_mul_local
+#print axioms Erdos1084.dodecahedral_surface_assembly_strict
+#print axioms Erdos1084.dodecahedral_contact_upper_from_surface
+
 #print axioms Erdos1084.kpStableLocalCoeff_gt
 #print axioms Erdos1084.kp_stable_local_identity
 #print axioms Erdos1084.kp_stable_local_surface_input_of_charges
@@ -61,9 +67,11 @@ matching asymptotic bounds.
 #check Erdos1084.KeplerLocalSurfaceInput
 #check Erdos1084.KeplerStableLocalSurfaceInput
 #check Erdos1084.RogersGlobalSurfaceInput
-#check Erdos1084.rogersSigmaUpper
-#check Erdos1084.rogersSurfaceScale
-#check Erdos1084.rogersClean
+#check Erdos1084.DodecahedralGlobalSurfaceInput
+#check Erdos1084.dodecahedralDensityUpper
+#check Erdos1084.dodecahedralSurfaceScale
+#check Erdos1084.dodecahedralClean
+#check Erdos1084.dodecahedral_contact_upper_from_surface
 #check Erdos1084.rogers_contact_upper_from_surface
 #check Erdos1084.kp_optimized_degree_charge
 #check Erdos1084.kpRadius_unique_oneRadius_optimum
