@@ -6,6 +6,12 @@ on:
     paths:
       - 'erdos1084/**'
       - '.github/workflows/erdos1084-lean.yml'
+  push:
+    branches:
+      - 'agent/erdos-1084-gate-d-orientation-lean-20260818'
+    paths:
+      - 'erdos1084/**'
+      - '.github/workflows/erdos1084-lean.yml'
   workflow_dispatch:
 
 jobs:
