@@ -37,12 +37,12 @@ theorem kpEndpointElevenProfile_hasDerivAt
         ((2 * r) / (2 * Real.sqrt (r ^ 2 - 1))) r :=
     hinner.sqrt hradne
 
-  have hprodRaw :
-      HasDerivAt
-        (fun x : ℝ => x * Real.sqrt (x ^ 2 - 1))
-        (Real.sqrt (r ^ 2 - 1) +
-          r * ((2 * r) / (2 * Real.sqrt (r ^ 2 - 1)))) r := by
-    simpa using (hasDerivAt_id r).mul hsqrt
+  have hprodRaw0 := (hasDerivAt_id r).mul hsqrt
+  change HasDerivAt
+      (fun x : ℝ => x * Real.sqrt (x ^ 2 - 1))
+      (Real.sqrt (r ^ 2 - 1) +
+        r * ((2 * r) / (2 * Real.sqrt (r ^ 2 - 1)))) r at hprodRaw0
+  have hprodRaw := hprodRaw0
 
   have hprodDeriv :
       Real.sqrt (r ^ 2 - 1) +
@@ -73,9 +73,10 @@ theorem kpEndpointElevenProfile_hasDerivAt
       HasDerivAt
         (fun x : ℝ => kpEndpointElevenSin *
           (x * Real.sqrt (x ^ 2 - 1)))
-        (kpEndpointElevenSin *
-          ((2 * r ^ 2 - 1) / Real.sqrt (r ^ 2 - 1))) r := by
-    simpa using hprod.const_mul kpEndpointElevenSin
+        (kpEndpointElevenSin * (2 * r ^ 2 - 1) /
+          Real.sqrt (r ^ 2 - 1)) r := by
+    simpa [div_eq_mul_inv, mul_assoc] using
+      hprod.const_mul kpEndpointElevenSin
 
   have hprofile :
       HasDerivAt
@@ -83,8 +84,8 @@ theorem kpEndpointElevenProfile_hasDerivAt
           x ^ 2 + kpEndpointElevenCos * x -
             kpEndpointElevenSin * (x * Real.sqrt (x ^ 2 - 1)))
         ((2 * r + kpEndpointElevenCos) -
-          kpEndpointElevenSin *
-            ((2 * r ^ 2 - 1) / Real.sqrt (r ^ 2 - 1))) r :=
+          kpEndpointElevenSin * (2 * r ^ 2 - 1) /
+            Real.sqrt (r ^ 2 - 1)) r :=
     hpoly.sub hscaled
 
   simpa [kpEndpointElevenProfile, kpEndpointElevenDerivative] using hprofile
