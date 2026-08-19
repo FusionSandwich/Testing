@@ -2,7 +2,7 @@ import Erdos1084
 
 /-!
 # Coherent-twin arithmetic, normal approximation, closure, word, holonomy, fan,
-# network, platelet, diagonal-recovery, interface-upper-bound, and null-union tests
+# network, platelet, diagonal-recovery, interface, and translation-nullity tests
 -/
 
 #check Erdos1084.fccTwinOne_orthogonal
@@ -81,3 +81,8 @@ import Erdos1084
 #check Erdos1084.subset_pairParameterUnion
 #check Erdos1084.measure_zero_of_subset_pairParameterUnion
 #check Erdos1084.measure_zero_of_pair_witness
+
+#check Erdos1084.abruptSphereTranslationSet
+#check Erdos1084.measure_pairTranslationSphere_zero
+#check Erdos1084.measure_abruptSphereTranslationSet_zero
+#check Erdos1084.measure_abruptExceptionalSubset_zero
