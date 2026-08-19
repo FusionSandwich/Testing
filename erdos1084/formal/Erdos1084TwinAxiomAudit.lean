@@ -15,6 +15,12 @@ dossier.
 #print axioms Erdos1084.fccTwinProduct_trace
 #print axioms Erdos1084.fccTwinProduct_trace_not_integer
 
+#print axioms Erdos1084.fccNormal001Word_length
+#print axioms Erdos1084.fccNormal001Image_value
+#print axioms Erdos1084.fccNormal001Image_normSq
+#print axioms Erdos1084.fccNormal001Image_transverseSq
+#print axioms Erdos1084.fccNormal001Image_transverseSq_lt
+
 #print axioms Erdos1084.relation_universal_of_closed_dense_identityClass
 #print axioms Erdos1084.relation_universal_of_closed_dense_subgroup
 #print axioms Erdos1084.equivalence_universal_of_closed_dense_identitySubgroup
@@ -51,9 +57,12 @@ dossier.
 #print axioms Erdos1084.diagonalRecovery_lt_epsilon
 
 #check Erdos1084.RatMat3
+#check Erdos1084.RatVec3
 #check Erdos1084.fccTwinOne
 #check Erdos1084.fccTwinTwo
 #check Erdos1084.fccTwinProduct
+#check Erdos1084.fccNormal001Word
+#check Erdos1084.fccNormal001Image
 #check Erdos1084.relIdentityClass
 #check Erdos1084.relIdentitySubgroup
 #check Erdos1084.SignedGenerator
