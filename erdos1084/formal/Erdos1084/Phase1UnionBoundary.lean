@@ -6,9 +6,9 @@ namespace Erdos1084
 /-!
 # Boundary ownership for a finite union of congruent balls
 
-This module formalizes the topological part of the Phase-I boundary bridge.  Every point of the
+This module formalizes the topological part of the Phase-I boundary bridge. Every point of the
 boundary of a finite union of closed balls belongs to an exposed patch of at least one generating
-sphere.  No geometric-measure-theory theorem is assumed here.
+sphere. No geometric-measure-theory theorem is assumed here.
 -/
 
 noncomputable section
@@ -31,7 +31,7 @@ theorem phase1EnlargedUnion_isClosed
     {ι : Type*} [Finite ι]
     (X : UnitSeparatedConfiguration ι) (r : ℝ) :
     IsClosed (phase1EnlargedUnion X r) := by
-  exact isClosed_iUnion fun i => Metric.isClosed_closedBall
+  exact isClosed_iUnion_of_finite fun i => Metric.isClosed_closedBall
 
 /-- Every generating closed ball is contained in the enlarged union. -/
 theorem phase1_closedBall_subset_union
@@ -74,7 +74,8 @@ theorem phase1_frontier_subset_iUnion_exposed
   apply mem_iUnion.2
   refine ⟨i, ?_⟩
   constructor
-  · simpa [Metric.mem_sphere] using hdist
+  · rw [Metric.mem_sphere]
+    simpa [dist_comm] using hdist
   · intro hother
     rcases mem_iUnion.1 hother with ⟨j, hxj⟩
     exact hxnotball j.1 hxj
