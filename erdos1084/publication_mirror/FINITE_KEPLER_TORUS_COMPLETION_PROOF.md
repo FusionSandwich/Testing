@@ -5,7 +5,7 @@ Source provenance:
 ```text
 FusionSandwich/Math
 branch: agent/erdos-1084-target-a-publication-20260819
-source head: f805b022bf947a28d7dfedc40e638d1849534eb3
+source head: 9ae62f9b8cc4eb24b8e546b3d3235bc499098e2d
 ```
 
 ## Theorem
