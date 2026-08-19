@@ -51,8 +51,10 @@ theorem cutset_energy_lower
     mul_le_mul_of_nonneg_left hreal hc0
   have htotal : c0 * (N : ℝ) ^ 2 ≤ M * E :=
     le_trans hgap hcount
+  have htotal' : c0 * (N : ℝ) ^ 2 ≤ E * M := by
+    simpa [mul_comm] using htotal
   have htarget : (c0 * (N : ℝ) ^ 2) / M ≤ E :=
-    (div_le_iff₀ hM).2 htotal
+    (div_le_iff₀ hM).2 htotal'
   calc
     (c0 / M) * (N : ℝ) ^ 2 = (c0 * (N : ℝ) ^ 2) / M := by
       ring
