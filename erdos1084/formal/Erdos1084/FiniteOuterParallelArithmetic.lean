@@ -6,7 +6,7 @@ namespace Erdos1084
 # Finite Kepler outer-parallel arithmetic
 
 This file formalizes the exact normalization used after applying the finite truncated-density
-corollary.  The geometric source theorem supplies
+corollary. The geometric source theorem supplies
 
 `n * vol(B³) / vol(U) ≤ π / sqrt(18)`.
 
@@ -45,7 +45,6 @@ theorem phase1_ballVolume_div_keplerDensity :
   have hs2 : Real.sqrt 2 ≠ 0 := ne_of_gt (Real.sqrt_pos.2 (by norm_num))
   rw [phase1UnitBallVolume, phase1KeplerDensity, phase1_sqrt_eighteen]
   field_simp [hpi, hs2]
-  ring
 
 /--
 The finite truncated-density inequality implies the exact finite outer-parallel volume bound.
