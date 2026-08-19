@@ -1,0 +1,22 @@
+ERDOS 1084 TARGET-A INDEPENDENT SOURCE REVIEW
+
+Math source head:
+e415f5864d52e8d61c97d90bc8cfae2fc46ed3ef
+
+Spherical-neighborhood application:
+PASS
+- measurable-set hypothesis matches;
+- closed cap-neighborhood identity matches;
+- rho_d+s_* <= 5*pi/6 < pi;
+- open/closed cap conventions differ by an H^2-null set;
+- degree twelve is handled separately.
+
+Bezdek--Langi finite specialization:
+PARTIAL PASS / SOURCE-PROOF BLOCKER
+- finite packings are in Definition 1.1;
+- the quotient stabilizes to n*vol(B)/vol(P_lambda);
+- equation (1.2) exactly matches the required finite claim;
+- independent proof of equation (1.2) is OPEN because the displayed product-of-limsups derivation is not valid from the definitions alone.
+
+Submission classification:
+HOLD UNIVERSAL 2.0465 UNTIL EQUATION (1.2) IS INDEPENDENTLY PROVED, CLARIFIED BY THE AUTHORS, OR REPLACED BY A VERIFIED FINITE INPUT.
