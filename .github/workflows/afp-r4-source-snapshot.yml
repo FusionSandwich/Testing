@@ -1,0 +1,69 @@
+name: AFP R4 source snapshot
+
+on:
+  push:
+    branches:
+      - agent/afp-r4-formalization-release-20260819
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+
+      - name: Record exact source object
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "repository=${GITHUB_REPOSITORY}"
+            echo "branch=${GITHUB_REF_NAME}"
+            echo "head=$(git rev-parse HEAD)"
+            echo "tree=$(git rev-parse HEAD^{tree})"
+            echo "accepted_r1_head=d05c98e5f1e211228940c7094df661c27d9e040b"
+            echo "accepted_r1_tree=3c23cec0ebd25ca49706402774c25c395789a0d4"
+          } | tee "${RUNNER_TEMP}/afp-r4-source-object.txt"
+          git merge-base --is-ancestor d05c98e5f1e211228940c7094df661c27d9e040b HEAD
+          test "$(git rev-parse d05c98e5f1e211228940c7094df661c27d9e040b^{tree})" = 3c23cec0ebd25ca49706402774c25c395789a0d4
+
+      - name: Create scoped source snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          tar \
+            --exclude='.git' \
+            --exclude='.lake' \
+            --exclude='__pycache__' \
+            --exclude='*.pyc' \
+            --exclude='tmp' \
+            --exclude='RAFM_*.ipynb' \
+            -czf "${RUNNER_TEMP}/afp-r4-source.tar.gz" \
+            .github .gitignore README.md afp_barrier_gate1 docs tools scripts output 2>/dev/null || \
+          tar \
+            --exclude='.git' \
+            --exclude='.lake' \
+            --exclude='__pycache__' \
+            --exclude='*.pyc' \
+            --exclude='tmp' \
+            --exclude='RAFM_*.ipynb' \
+            -czf "${RUNNER_TEMP}/afp-r4-source.tar.gz" \
+            .github .gitignore README.md afp_barrier_gate1 docs
+          sha256sum "${RUNNER_TEMP}/afp-r4-source.tar.gz" \
+            | tee "${RUNNER_TEMP}/afp-r4-source.tar.gz.sha256"
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: afp-r4-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/afp-r4-source.tar.gz
+            ${{ runner.temp }}/afp-r4-source.tar.gz.sha256
+            ${{ runner.temp }}/afp-r4-source-object.txt
+          if-no-files-found: error
+          compression-level: 0
