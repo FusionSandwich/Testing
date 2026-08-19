@@ -18,22 +18,31 @@ import Erdos1084.BarlowSequence
 import Erdos1084.BarlowCellArithmetic
 import Erdos1084.BarlowInvariantMeasureArithmetic
 import Erdos1084.OrientationInterfaceCoercivityCore
+import Erdos1084.GateERecoveryArithmetic
 
 /-!
 # Erdős Problem 1084: formalized certification spine
 
 The library contains certified algebraic and abstract-assembly routes for the radius-two,
-Kepler, periodic Barlow, invariant-measure Barlow, and Gate-D interface programs.
+Kepler, periodic Barlow, invariant-measure Barlow, Gate-D interface, and Gate-E exact-mass
+recovery programs.
 
 The Gate-D module formally verifies:
 
 * the `N²` lower bound for a bad-cell separator of opposite faces in an `N³` grid;
-* the conversion of that separator count and a local energy gap into a surface-order energy lower
-  bound;
+* conversion of that separator count and a local energy gap into a surface-order lower bound;
 * the scalar inball implication for interface calibration bodies;
-* the elementary two-phase divergence-sum algebra.
+* exact cancellation algebra for two-phase common calibrations.
 
-The assignment of exact Barlow orientations to good coarse blocks, orientation propagation on
-overlaps, the interface cell formula, and the Brenier common-core calibration theorem are
-maintained in the canonical mathematical dossier. They are not hidden as project axioms.
+The Gate-E module formally verifies:
+
+* the FCC leading coefficient cube `432`;
+* exact FCC shell increments;
+* triangular-layer reservoir point, edge, and deficit formulas;
+* the lower-order scaling of exact-mass corrections;
+* exact leading-order falsification values for simple tetrahedral polycrystals.
+
+The geometric lattice-count asymptotics, Gate-C Gamma convergence, exact-mass terrace placement,
+orientation selection, and sharp interface cell problems are maintained in the canonical
+mathematical dossier. They are not hidden as project axioms.
 -/
