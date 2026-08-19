@@ -22,10 +22,12 @@ import Erdos1084.BarlowCellArithmetic
 import Erdos1084.BarlowInvariantMeasureArithmetic
 import Erdos1084.FccTwinArithmetic
 import Erdos1084.ClosedDenseEquivalence
+import Erdos1084.DenseWordApproximation
 import Erdos1084.TwinHolonomyArithmetic
 import Erdos1084.TwinFanRecurrence
 import Erdos1084.TwinNetworkArithmetic
 import Erdos1084.TwinPlateletArithmetic
+import Erdos1084.DiagonalRecoveryArithmetic
 import Erdos1084.OrientationInterfaceCoercivityCore
 import Erdos1084.GateERecoveryArithmetic
 import Erdos1084.Sigma5UnionStabilization
@@ -36,8 +38,9 @@ import Erdos1084.FiniteSpherePacking
 
 The library contains certified algebraic and abstract-assembly routes for the radius-two,
 Kepler, periodic Barlow, invariant-measure Barlow, Gate-C occupied compactness, coherent-twin
-closure, holonomy, fan, network, and platelet scaling, Gate-D interface algebra, Gate-E exact-mass
-recovery, and exact Sigma-5 two-lattice transition programs.
+closure, finite-word approximation, holonomy, fan, network, platelet, and diagonal-recovery
+arithmetic, Gate-D interface algebra, Gate-E exact-mass recovery, and exact Sigma-5 two-lattice
+transition programs.
 
 `KeplerOneRadiusConcrete.lean` certifies the concrete degree-eleven endpoint constants, the exact
 factorization controlling its derivative, a uniform negative-derivative expression on
@@ -51,13 +54,16 @@ deficit is `2 D` and every neighbor list has cardinality at most twelve.
 
 `FccTwinArithmetic.lean` checks the exact rational coherent-twin matrices, their powers, and the
 product trace `16/9`. `ClosedDenseEquivalence.lean` proves that a closed identity class containing
-a dense subgroup makes a left-invariant relation universal. `TwinHolonomyArithmetic.lean` checks
-the noninteger `115/81` return trace of the naive four-sector twin cross.
+a dense subgroup makes a left-invariant relation universal. `DenseWordApproximation.lean`
+formalizes finite signed words, their intermediate states, and qualitative open-neighborhood
+approximation from an explicit finite-word density hypothesis. `TwinHolonomyArithmetic.lean`
+checks the noninteger `115/81` return trace of the naive four-sector twin cross.
 `TwinFanRecurrence.lean` formalizes the constant-angle recurrence and the implication from finite
 fan closure to an integer relation with `π`. `TwinNetworkArithmetic.lean` certifies the bad-site,
 deletion, line-order, and surface-scaling estimates for a compatible finite twin complex.
 `TwinPlateletArithmetic.lean` certifies the inverse-mesoscopic-scale rim estimate and the fixed-
-normal coverage obstruction for platelet arrays.
+normal coverage obstruction for platelet arrays. `DiagonalRecoveryArithmetic.lean` certifies the
+normalization and epsilon bookkeeping for word-dependent line, point, and angular mismatch costs.
 
 `FiniteSpherePacking.lean` represents finite minimum-separation configurations, their Euclidean
 contact graphs, contact counts, degrees, and the exact degree-deficit identity directly in Lean.
