@@ -7,7 +7,7 @@ namespace Erdos1084
 /-!
 # Final granular foundational interfaces for Phase I
 
-Existence of `f₃(n)` and the no-isolated-vertex theorem are proved internally.  The remaining
+Existence of `f₃(n)` and the no-isolated-vertex theorem are proved internally. The remaining
 fields are exactly the geometric ports still required: kissing number twelve, the global
 outer-parallel/isoperimetric surface bound, and the local spherical-neighborhood exposed-area
 bound.
@@ -68,7 +68,7 @@ def toPublishedInput (foundation : Phase1FoundationalInputFinal) :
     obtain ⟨X, hX⟩ := hmax.1
     let global := foundation.global_surface_data hn hmax hX
     let local := foundation.local_surface_data hn hmax hX global
-    refine ⟨X, hX, ?_⟩
+    refine ⟨X, hX, ⟨?_⟩⟩
     exact
       { scale := phase1TwoThirdsScale n
         boundaryArea := global.boundaryArea
