@@ -1,0 +1,142 @@
+\maketitle
+
+\begin{abstract}
+Let $f_3(n)$ be the maximum number of pairs at distance one among $n$ points in
+$\R^3$ whose mutual distances are at least one.  We prove, for every integer
+$n\ge2$,
+\[
+ \boxed{f_3(n)<6n-2.0465\,n^{2/3}.}
+\]
+More precisely,
+\[
+ f_3(n)\le6n-c_Kn^{2/3},
+ \qquad
+ c_K=
+ \left(\frac{18}{\pi^2}\right)^{1/3}
+ \left(103-\frac{117\sqrt3}{2}\right)
+ =2.046505556385112\ldots .
+\]
+The global finite-volume estimate follows from the truncated-density theorem of
+Bezdek and L\'angi: when the outer radius is at least one, the supremum of
+truncated densities over all unit-ball packings---including finite packings---equals
+the ordinary sphere-packing density.  Locally, the union of covering caps on an
+enlarged sphere is a fixed geodesic neighborhood of the pairwise
+interior-disjoint radius-$\pi/6$ contact caps.  Spherical-neighborhood
+isoperimetry and a convex-chord argument reduce the optimal degreewise affine
+charge to degrees one and eleven.  An exact minimax calculation selects
+\[
+ r_*=(40+22\sqrt3)/37.
+\]
+All new algebra and the clean decimal comparison are accompanied by exact rational
+certificates, and the algebraic local-to-global spine is Lean-checked from explicit
+geometric hypotheses.  No crystallization, lattice, or asymptotic-shape assumption
+is used.
+\end{abstract}
+
+\section{Introduction}
+
+Let
+\[
+ f_3(n)=\max\bigl\{\#\{\{x,y\}\subset X:|x-y|=1\}: |X|=n,
+ |x-y|\ge1\text{ for }x\ne y\bigr\}.
+\]
+After multiplying all distances by two, $f_3(n)$ is the maximum contact number of
+a packing of $n$ congruent unit balls.  The kissing number in dimension three
+gives $f_3(n)\le6n$.  Erd\H{o}s asked for the correct surface-order subtraction
+\cite{Erdos1975}.  Bezdek and Reid proved the explicit estimate
+\begin{equation}\label{eq:BR}
+ f_3(n)<6n-0.926n^{2/3}
+\end{equation}
+using enlarged unions, truncated Voronoi cells, Euclidean isoperimetry, and a
+local spherical-cap density bound \cite{BezdekReid2013}.  See also
+\cite{BezdekKhan2018}.
+
+The proof below has the same global/local architecture but uses two different
+ingredients.  The global input is the truncated-density identity of Bezdek and
+L\'angi \cite{BezdekLangi2025}.  Their definition takes the supremum over all
+packings, and finite packings are explicitly among the admissible objects.  For
+outer radius at least one, this supremum equals the ordinary packing density.
+Thus the Kepler density supplies a finite enlarged-union volume bound, not merely
+an asymptotic one.
+
+The local input is spherical-neighborhood isoperimetry.  Around a fixed ball,
+contact directions are separated by at least $\pi/3$, so their radius-$\pi/6$
+caps have disjoint interiors.  If the packing balls are enlarged to radius $r$,
+a tangent neighbor covers a cap of angular radius $\alpha=\arccos(1/r)$.  The
+covering-cap union is exactly the $(\alpha-\pi/6)$-neighborhood of the disjoint
+contact-cap union.  A spherical cap minimizes neighborhood measure among sets of
+given measure, and the resulting local exposed-area expression is convex in the
+cosine of the equal-area cap radius.
+
+\begin{theorem}[universal contact bound]\label{thm:main}
+For every integer $n\ge2$,
+\begin{equation}\label{eq:mainexact}
+ f_3(n)\le6n-c_Kn^{2/3},
+ \qquad
+ c_K=
+ \left(\frac{18}{\pi^2}\right)^{1/3}
+ \left(103-\frac{117\sqrt3}{2}\right).
+\end{equation}
+Moreover,
+\begin{equation}\label{eq:clean}
+ c_K=2.046505556385112\ldots>\frac{4093}{2000},
+\end{equation}
+and therefore
+\[
+ f_3(n)<6n-2.0465\,n^{2/3}.
+\]
+\end{theorem}
+
+The radius is not chosen numerically.
+
+\begin{theorem}[optimality within the one-radius method]\label{thm:optimality}
+Within the one-radius, equal-area-cap, degreewise-affine method defined in
+\cref{sec:method}, over every $r\ge2$, the coefficient is uniquely maximized at
+\begin{equation}\label{eq:rstar}
+ r_*=
+ \frac{40+22\sqrt3}{37}=2.110949128824737\ldots .
+\end{equation}
+\end{theorem}
+
+The optimality assertion is intentionally restricted to this method class.  No
+claim is made that $c_K$ is the optimal universal contact-number coefficient, that
+the normalized deficit has a limit, or that any close-packed lattice is globally
+extremal.
+
+\section{Normalization and connected maximizers}
+
+Scale an admissible minimum-distance-one configuration by two and center a closed
+unit ball at each scaled point.  Write the centers as $c_1,\ldots,c_n$.  Thus
+$|c_i-c_j|\ge2$, with contact exactly at equality.  Let $E$ be the set of
+undirected contacts, let $d_i$ be the contact degree at $c_i$, and put
+\begin{equation}\label{eq:deficit}
+ D=6n-|E|.
+\end{equation}
+The handshaking identity gives
+\begin{equation}\label{eq:handshake}
+ \sum_{i=1}^n(12-d_i)=12n-2|E|=2D.
+\end{equation}
+
+For fixed $n$, the attainable contact counts form a nonempty subset of the finite
+set $\{0,\ldots,\binom n2\}$, so the maximum is attained.
+
+\begin{lemma}[connected maximizer]\label{lem:connected}
+Every contact-maximizing packing with $n\ge2$ has connected contact graph.
+\end{lemma}
+
+\begin{proof}
+Suppose the graph is disconnected and partition its centers into two nonempty
+unions of components, $A$ and $C$.  Every cross-distance is then strictly larger
+than two.  Keep $A$ fixed and translate $C$ continuously in a direction that
+brings a chosen cross-pair together.  At the first time at which the minimum
+cross-distance reaches two, all cross-distances are still at least two, all old
+contacts are preserved, and a new contact has appeared.  This contradicts
+maximality.
+\end{proof}
+
+Hence, for a maximizing packing,
+\begin{equation}\label{eq:degreerange}
+ 1\le d_i\le12,
+\end{equation}
+where the upper bound is the three-dimensional kissing-number theorem
+\cite{SchuetteWaerden1953}.  This also covers $n=2$.
