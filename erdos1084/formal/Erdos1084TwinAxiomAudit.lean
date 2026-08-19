@@ -3,10 +3,10 @@ import Erdos1084
 /-!
 # Coherent-twin axiom and signature audit
 
-The exact rational computations and abstract topological-group implications are
-formalized without project-specific axioms.  Density of the concrete subgroup in
-`SO(3)`, the algebraic-integer irrationality argument for the twin angle, and the
-geometric coherent-network existence problem remain in the ordinary dossier.
+The exact rational computations and abstract topological-group and scaling implications are
+formalized without project-specific axioms. Density of the concrete subgroup in `SO(3)`, the
+algebraic-integer irrationality argument for the twin angle, the geometric lamella and cross-section
+theorems, and the flat-boundary-compatible branching problem remain in the ordinary dossier.
 -/
 
 #print axioms Erdos1084.fccTwinOne_orthogonal
@@ -31,6 +31,13 @@ geometric coherent-network existence problem remain in the ordinary dossier.
 #print axioms Erdos1084.deletion_deficit_increase_le_six
 #print axioms Erdos1084.lineOrder_surfaceScale_bound
 
+#print axioms Erdos1084.plateletArray_cost_le_area_div_scale
+#print axioms Erdos1084.plateletArray_surfaceDensity_le_invScale
+#print axioms Erdos1084.squarePlateletArray_surfaceDensity
+#print axioms Erdos1084.transverseCoverage_forces_lateralArea
+#print axioms Erdos1084.macroscopicCoverage_forces_areaOrder_lateral
+#print axioms Erdos1084.coverageDensity_le_lateralDensity
+
 #check Erdos1084.RatMat3
 #check Erdos1084.fccTwinOne
 #check Erdos1084.fccTwinTwo
@@ -41,3 +48,5 @@ geometric coherent-network existence problem remain in the ordinary dossier.
 #check Erdos1084.fccReflectionTwo
 #check Erdos1084.fccFourSectorHolonomy
 #check Erdos1084.contactDeficit_le_lineOrder
+#check Erdos1084.plateletArray_surfaceDensity_le_invScale
+#check Erdos1084.macroscopicCoverage_forces_areaOrder_lateral
