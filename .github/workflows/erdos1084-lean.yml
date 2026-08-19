@@ -1,4 +1,4 @@
-name: Erdős 1084 Kepler, Barlow, Gate-E, Sigma-5, and Gate-C certification
+name: Erdős 1084 Kepler, Barlow, Gate-E, Sigma-5, Gate-C, and twin certification
 
 on:
   pull_request:
@@ -11,6 +11,7 @@ on:
       - 'agent/erdos-1084-sigma5-stabilization-lean-20260819'
       - 'agent/erdos-1084-target-b-occupied-compactness-ci-20260819'
       - 'agent/erdos-1084-target-b-twin-closure-ci-20260819'
+      - 'agent/erdos-1084-twin-formal-network-ci-20260819'
     paths:
       - 'erdos1084/**'
       - '.github/workflows/erdos1084-lean.yml'
@@ -78,6 +79,7 @@ jobs:
           lake env lean Erdos1084BarlowTests.lean
           lake env lean Erdos1084GateBTests.lean
           lake env lean Erdos1084GateCTests.lean
+          lake env lean Erdos1084TwinTests.lean
           lake env lean Erdos1084GateDTests.lean
           lake env lean Erdos1084GateETests.lean
           lake env lean Erdos1084Sigma5Tests.lean
@@ -85,6 +87,7 @@ jobs:
           lake env lean Erdos1084BarlowAxiomAudit.lean
           lake env lean Erdos1084GateBAxiomAudit.lean
           lake env lean Erdos1084GateCAxiomAudit.lean
+          lake env lean Erdos1084TwinAxiomAudit.lean
           lake env lean Erdos1084GateDAxiomAudit.lean
           lake env lean Erdos1084GateEAxiomAudit.lean
           lake env lean Erdos1084Sigma5AxiomAudit.lean
