@@ -1,0 +1,58 @@
+name: Erdős 1084 final Phase-I Lean assembly
+
+on:
+  pull_request:
+    branches: [testing]
+    paths:
+      - 'erdos1084/formal/Erdos1084/Phase1*.lean'
+      - 'erdos1084/formal/Erdos1084Phase1*.lean'
+      - '.github/workflows/erdos1084-phase1-final.yml'
+  push:
+    branches:
+      - 'agent/erdos-1084-phase1-contact-model-lean-20260819'
+  workflow_dispatch:
+
+jobs:
+  phase1-final:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reject placeholders and explicit project axioms
+        run: |
+          if grep -R --include='*.lean' -nE '(^|[^[:alnum:]_])(sorry|admit|sorryAx)([^[:alnum:]_]|$)' erdos1084/formal; then
+            echo 'Lean placeholder found' >&2
+            exit 1
+          fi
+          if grep -R --include='*.lean' -nE '^[[:space:]]*(axiom|constant)[[:space:]]+' erdos1084/formal/Erdos1084; then
+            echo 'Project-specific axiom/constant declaration found' >&2
+            exit 1
+          fi
+      - name: Install Elan
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf \
+            https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
+            | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Resolve mathlib and build Phase-I modules
+        working-directory: erdos1084/formal
+        run: |
+          lake update
+          lake exe cache get
+          lake build Erdos1084.Phase1BoundaryGeometry
+          lake build Erdos1084.Phase1LocalCap
+          lake build Erdos1084.Phase1EndToEnd
+          lake build Erdos1084.Phase1CertifiedTheorem
+          lake build Erdos1084.Phase1MaximalTheorem
+      - name: Compile Phase-I tests and audits
+        working-directory: erdos1084/formal
+        run: |
+          lake env lean Erdos1084Phase1ContactTests.lean
+          lake env lean Erdos1084Phase1BoundaryTests.lean
+          lake env lean Erdos1084Phase1EndToEndTests.lean
+          lake env lean Erdos1084Phase1CertifiedTests.lean
+          lake env lean Erdos1084Phase1MaximalTests.lean
+          lake env lean Erdos1084Phase1ContactAxiomAudit.lean
+          lake env lean Erdos1084Phase1BoundaryAxiomAudit.lean
+          lake env lean Erdos1084Phase1EndToEndAxiomAudit.lean
+          lake env lean Erdos1084Phase1CertifiedAxiomAudit.lean
+          lake env lean Erdos1084Phase1MaximalAxiomAudit.lean
