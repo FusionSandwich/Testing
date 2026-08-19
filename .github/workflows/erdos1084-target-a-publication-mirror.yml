@@ -1,6 +1,11 @@
 name: Erdős 1084 Target-A public publication mirror
 
 on:
+  pull_request:
+    branches:
+      - 'agent/erdos-1084-phase1-contact-model-lean-20260819'
+    paths:
+      - '.github/workflows/erdos1084-target-a-publication-mirror.yml'
   push:
     branches:
       - 'agent/erdos-1084-phase1-publication-verification-20260819'
