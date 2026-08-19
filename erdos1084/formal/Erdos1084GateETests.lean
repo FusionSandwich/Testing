@@ -23,20 +23,17 @@ example (r : ℤ) :
 
 example
     {r s d : ℝ}
-    (hr : 1 ≤ r)
-    (hs0 : 0 ≤ s)
     (hs : s ≤ 6 * r)
     (hd : d ≤ (6 * r - 3) + 2 * s) :
     d ≤ 18 * r - 3 :=
-  gateE_partial_ring_bound hr hs0 hs hd
+  gateE_partial_ring_bound hs hd
 
 example
     {ε C cost : ℝ}
     (hε : 0 < ε)
-    (hC : 0 ≤ C)
     (hcost : cost ≤ C / ε) :
     ε ^ 2 * cost ≤ C * ε :=
-  gateE_scaled_mass_correction hε hC hcost
+  gateE_scaled_mass_correction hε hcost
 
 example : gateETetraComplexCube 5 5 = 1215 / 2 :=
   gateE_tetra_five_closed
