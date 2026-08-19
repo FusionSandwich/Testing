@@ -73,7 +73,7 @@ def toPublishedInput (foundation : Phase1FoundationalInputComplete) :
     have hpos := contactDegree_pos_of_maximizer hn hmax hX
     have hle12 :=
       hasContactDegreeAtMostTwelve_of_kissing foundation.kissing_number X
-    refine ⟨X, hX, ?_⟩
+    refine ⟨X, hX, ⟨?_⟩⟩
     exact
       { scale := phase1TwoThirdsScale n
         boundaryArea := global.boundaryArea
