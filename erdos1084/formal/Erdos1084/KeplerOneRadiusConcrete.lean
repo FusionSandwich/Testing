@@ -274,66 +274,51 @@ theorem kpEndpointElevenProfile_hasDerivAt
   have htne : Real.sqrt (r ^ 2 - 1) ≠ 0 :=
     ne_of_gt (Real.sqrt_pos.2 hrad)
   have hsqRaw := (hasDerivAt_id r).mul (hasDerivAt_id r)
+  change HasDerivAt (fun x : ℝ => x * x) (r + r) r at hsqRaw
   have hsq : HasDerivAt (fun x : ℝ => x ^ 2) (2 * r) r := by
-    convert hsqRaw using 1
-    · funext x
-      simp [pow_two]
-    · ring
-  have hinner : HasDerivAt (fun x : ℝ => x ^ 2 - 1) (2 * r) r := by
-    convert hsq.sub_const 1 using 1
-    · funext x
-      simp
-    · ring
+    simpa [pow_two, two_mul] using hsqRaw
+  have hinner : HasDerivAt (fun x : ℝ => x ^ 2 - 1) (2 * r) r :=
+    hsq.sub_const 1
   have hsqrt := hinner.sqrt hradne
   have hxsqrtRaw := (hasDerivAt_id r).mul hsqrt
-  have hxsqrt :
-      HasDerivAt
-        (fun x : ℝ => x * Real.sqrt (x ^ 2 - 1))
-        (Real.sqrt (r ^ 2 - 1) +
-          r * (2 * r / (2 * Real.sqrt (r ^ 2 - 1)))) r := by
-    convert hxsqrtRaw using 1
-    · funext x
-      simp
-    · ring
+  change HasDerivAt
+    (fun x : ℝ => x * Real.sqrt (x ^ 2 - 1))
+    (Real.sqrt (r ^ 2 - 1) +
+      r * (2 * r / (2 * Real.sqrt (r ^ 2 - 1)))) r at hxsqrtRaw
+  have hxsqrt := hxsqrtRaw
   have hlinearRaw := (hasDerivAt_id r).const_mul kpEndpointElevenCos
-  have hlinear :
-      HasDerivAt (fun x : ℝ => kpEndpointElevenCos * x)
-        kpEndpointElevenCos r := by
-    convert hlinearRaw using 1
-    · funext x
-      simp
-    · ring
-  have hpoly :
-      HasDerivAt
-        (fun x : ℝ => x ^ 2 + kpEndpointElevenCos * x)
-        (2 * r + kpEndpointElevenCos) r := by
-    convert hsq.add hlinear using 1
-    · funext x
-      simp
-    · ring
+  change HasDerivAt (fun x : ℝ => kpEndpointElevenCos * x)
+    kpEndpointElevenCos r at hlinearRaw
+  have hlinear := hlinearRaw
+  have hpolyRaw := hsq.add hlinear
+  change HasDerivAt
+    (fun x : ℝ => x ^ 2 + kpEndpointElevenCos * x)
+    (2 * r + kpEndpointElevenCos) r at hpolyRaw
+  have hpoly := hpolyRaw
   have hscaledRaw := hxsqrt.const_mul kpEndpointElevenSin
-  have hscaled :
-      HasDerivAt
-        (fun x : ℝ => kpEndpointElevenSin *
-          (x * Real.sqrt (x ^ 2 - 1)))
-        (kpEndpointElevenSin *
-          (Real.sqrt (r ^ 2 - 1) +
-            r * (2 * r / (2 * Real.sqrt (r ^ 2 - 1))))) r := by
-    convert hscaledRaw using 1
-    · funext x
-      simp
-    · ring
+  change HasDerivAt
+    (fun x : ℝ => kpEndpointElevenSin *
+      (x * Real.sqrt (x ^ 2 - 1)))
+    (kpEndpointElevenSin *
+      (Real.sqrt (r ^ 2 - 1) +
+        r * (2 * r / (2 * Real.sqrt (r ^ 2 - 1))))) r at hscaledRaw
+  have hscaled := hscaledRaw
   have hrawRaw := hpoly.sub hscaled
+  change HasDerivAt
+    (fun x : ℝ =>
+      x ^ 2 + kpEndpointElevenCos * x -
+        kpEndpointElevenSin * (x * Real.sqrt (x ^ 2 - 1)))
+    ((2 * r + kpEndpointElevenCos) -
+      kpEndpointElevenSin *
+        (Real.sqrt (r ^ 2 - 1) +
+          r * (2 * r / (2 * Real.sqrt (r ^ 2 - 1))))) r at hrawRaw
   have hraw :
       HasDerivAt kpEndpointElevenProfile
         ((2 * r + kpEndpointElevenCos) -
           kpEndpointElevenSin *
             (Real.sqrt (r ^ 2 - 1) +
               r * (2 * r / (2 * Real.sqrt (r ^ 2 - 1))))) r := by
-    convert hrawRaw using 1
-    · funext x
-      simp [kpEndpointElevenProfile]
-    · ring
+    simpa [kpEndpointElevenProfile] using hrawRaw
   have hderiv :
       (2 * r + kpEndpointElevenCos) -
           kpEndpointElevenSin *
