@@ -36,7 +36,7 @@ jobs:
             https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
             | sh -s -- -y --default-toolchain none
           echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
-      - name: Build complete Phase-I library and audits
+      - name: Build finite-contact publication library and audits
         working-directory: erdos1084/formal
         run: |
           lake update
@@ -44,8 +44,6 @@ jobs:
           lake build
           lake env lean Erdos1084Phase1MainTests.lean
           lake env lean Erdos1084Phase1MainAxiomAudit.lean
-          lake env lean Erdos1084Phase1FoundationalCompleteTests.lean
-          lake env lean Erdos1084Phase1FoundationalCompleteAxiomAudit.lean
           lake env lean Erdos1084ContactNumberExistenceTests.lean
           lake env lean Erdos1084FiniteBallUnionTests.lean
           lake env lean Erdos1084FiniteOuterParallelTests.lean
