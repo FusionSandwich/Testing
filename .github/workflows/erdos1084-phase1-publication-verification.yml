@@ -1,6 +1,6 @@
 name: Erdős 1084 Phase-I publication verification
 
-# Single exact-head workflow for the finite-paper Lean spine.
+# Exact-head verification for the finite-paper theorem spine only.
 on:
   pull_request:
     branches:
@@ -41,12 +41,20 @@ jobs:
             https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
             | sh -s -- -y --default-toolchain none
           echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
-      - name: Build finite-contact publication library and audits
+      - name: Build publication modules only
         working-directory: erdos1084/formal
         run: |
           lake update
           lake exe cache get
-          lake build
+          lake build \
+            Erdos1084.Phase1MainTheorem \
+            Erdos1084.ContactNumberExistence \
+            Erdos1084.FiniteBallUnionBoundary \
+            Erdos1084.FiniteOuterParallelArithmetic \
+            Erdos1084.TangentCapGeometry
+      - name: Compile theorem tests and signature audits
+        working-directory: erdos1084/formal
+        run: |
           lake env lean Erdos1084Phase1MainTests.lean
           lake env lean Erdos1084Phase1MainAxiomAudit.lean
           lake env lean Erdos1084ContactNumberExistenceTests.lean
