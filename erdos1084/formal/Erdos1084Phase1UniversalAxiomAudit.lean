@@ -1,0 +1,7 @@
+import Erdos1084.Phase1UniversalTheorem
+
+#print axioms Erdos1084.UnitSeparatedConfiguration.phase1_universal_20465
+#print axioms Erdos1084.UnitSeparatedConfiguration.phase1_universal_deficit_20465
+
+#check Erdos1084.UnitSeparatedConfiguration.Phase1NamedInputPackage
+#check Erdos1084.UnitSeparatedConfiguration.phase1_universal_20465
