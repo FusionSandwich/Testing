@@ -19,8 +19,6 @@ import Erdos1084.BarlowCellArithmetic
 import Erdos1084.BarlowInvariantMeasureArithmetic
 import Erdos1084.OrientationInterfaceCoercivityCore
 import Erdos1084.GateERecoveryArithmetic
-
-/-! Phase-I direct contact model and geometric bridges. -/
 import Erdos1084.FiniteSpherePacking
 import Erdos1084.FiniteBallUnionBoundary
 import Erdos1084.FiniteOuterParallelArithmetic
