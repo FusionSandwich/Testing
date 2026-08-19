@@ -29,6 +29,7 @@ import Erdos1084.TwinFanRecurrence
 import Erdos1084.TwinNetworkArithmetic
 import Erdos1084.TwinPlateletArithmetic
 import Erdos1084.DiagonalRecoveryArithmetic
+import Erdos1084.InterfaceUpperBoundArithmetic
 import Erdos1084.OrientationInterfaceCoercivityCore
 import Erdos1084.GateERecoveryArithmetic
 import Erdos1084.Sigma5UnionStabilization
@@ -40,8 +41,8 @@ import Erdos1084.FiniteSpherePacking
 The library contains certified algebraic and abstract-assembly routes for the radius-two,
 Kepler, periodic Barlow, invariant-measure Barlow, Gate-C occupied compactness, coherent-twin
 closure, exact normal approximation, finite-word approximation, holonomy, fan, network, platelet,
-and diagonal-recovery arithmetic, Gate-D interface algebra, Gate-E exact-mass recovery, and exact
-Sigma-5 two-lattice transition programs.
+diagonal-recovery, and two-crack interface arithmetic, Gate-D interface algebra, Gate-E exact-mass
+recovery, and exact Sigma-5 two-lattice transition programs.
 
 `KeplerOneRadiusConcrete.lean` certifies the concrete degree-eleven endpoint constants, the exact
 factorization controlling its derivative, a uniform negative-derivative expression on
@@ -66,7 +67,9 @@ angle recurrence and the implication from finite fan closure to an integer relat
 estimates for a compatible finite twin complex. `TwinPlateletArithmetic.lean` certifies the
 inverse-mesoscopic-scale rim estimate and the fixed-normal coverage obstruction for platelet
 arrays. `DiagonalRecoveryArithmetic.lean` certifies the normalization and epsilon bookkeeping for
-word-dependent line, point, and angular mismatch costs.
+word-dependent line, point, and angular mismatch costs. `InterfaceUpperBoundArithmetic.lean`
+certifies the normalized and relaxed-infimum bookkeeping for the universal vacuum-slab two-crack
+upper bound.
 
 `FiniteSpherePacking.lean` represents finite minimum-separation configurations, their Euclidean
 contact graphs, contact counts, degrees, and the exact degree-deficit identity directly in Lean.
