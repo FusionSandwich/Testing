@@ -63,7 +63,8 @@ theorem attainableContactCount_le_choose
     k ≤ n.choose 2 := by
   classical
   rcases h with ⟨X, rfl⟩
-  exact X.contactGraph.card_edgeFinset_le_card_choose_two
+  simpa [UnitSeparatedConfiguration.contactCount] using
+    X.contactGraph.card_edgeFinset_le_card_choose_two
 
 /-- The set of attainable contact counts is nonempty. -/
 theorem attainableContactCount_nonempty (n : ℕ) :
