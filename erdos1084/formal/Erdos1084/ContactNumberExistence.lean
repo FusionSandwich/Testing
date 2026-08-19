@@ -23,7 +23,6 @@ theorem linePoint_dist_sq {n : ℕ} (i j : Fin n) :
   rw [EuclideanSpace.dist_sq_eq]
   simp [linePoint, Fin.sum_univ_succ]
   rw [Real.dist_eq, sq_abs]
-  ring
 
 /-- The explicit line configuration is unit-separated. -/
 def lineConfiguration (n : ℕ) : UnitSeparatedConfiguration (Fin n) where
