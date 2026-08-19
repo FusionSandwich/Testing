@@ -33,9 +33,11 @@ jobs:
         run: make -C erdos1084/publication_mirror verify
       - name: Check finite-density and spherical-review records
         run: |
-          grep -F 'head: 21c25ce3a6f13f46ab5af4289043ed6edb2215aa' \
+          grep -F 'head: c99ac73bc3ddc8c7dc2118ddd88a76a07938d455' \
             erdos1084/publication_mirror/MATH_SOURCE_HEAD.txt
           test -f erdos1084/publication_mirror/FINITE_KEPLER_TORUS_COMPLETION_PROOF.md
+          grep -F 'source head: c99ac73bc3ddc8c7dc2118ddd88a76a07938d455' \
+            erdos1084/publication_mirror/FINITE_KEPLER_TORUS_COMPLETION_PROOF.md
           grep -F 'Finite FCC torus-completion theorem:' \
             erdos1084/publication_mirror/SOURCE_REVIEW_STATUS.txt
           grep -F 'INTERNAL ADVERSARIAL REVIEW PASS' \
