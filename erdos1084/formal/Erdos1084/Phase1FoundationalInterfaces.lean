@@ -7,7 +7,7 @@ namespace Erdos1084
 # Granular foundational interfaces for Phase I
 
 This module decomposes `Phase1PublishedInput` into the exact independent geometric obligations
-that remain to be ported from the named published theorems.  It prevents a single opaque
+that remain to be ported from the named published theorems. It prevents a single opaque
 certificate field from obscuring which theorem supplies which inequality.
 -/
 
@@ -35,7 +35,7 @@ structure Phase1LocalSurfaceData {n : ℕ}
 /--
 Exact foundational obligations that construct the Phase-I certificate.
 
-No field is declared as a Lean axiom.  A foundational development supplies a value of this
+No field is declared as a Lean axiom. A foundational development supplies a value of this
 structure by proving the listed theorems.
 -/
 structure Phase1FoundationalInput where
@@ -79,7 +79,7 @@ def toPublishedInput (foundation : Phase1FoundationalInput) :
     obtain ⟨X, hX⟩ := hmax.1
     let global := foundation.global_surface_data hn hmax hX
     let local := foundation.local_surface_data hn hmax hX global
-    refine ⟨X, hX, ?_⟩
+    refine ⟨X, hX, ⟨?_⟩⟩
     exact
       { scale := phase1TwoThirdsScale n
         boundaryArea := global.boundaryArea
