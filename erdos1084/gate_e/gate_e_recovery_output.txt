@@ -1,0 +1,23 @@
+GATE-E EXACT-MASS RECOVERY CERTIFICATE
+status: PASS
+FCC lattice density coefficient = 128
+FCC missing-bond coefficient per six directions = 192
+limiting coefficient cube = 432
+limiting coefficient = 6 * cubert(2)
+
+hex patch formulas:
+  N_r = 3 r^2 + 3 r + 1
+  E_r = 9 r^2 + 3 r
+  3 N_r - E_r = 6 r + 3
+
+prefix reservoir checked for every q <= 100000
+proved bound: 3 q - E(P_q) <= 18 r(q) - 3 for r(q) >= 1
+tightest checked slack record = (1, 0, 3, 3)
+
+exact FCC shell identities:
+  n_(t+1)-n_t = 384 t^2 + 504 t + 200
+  D_(t+1)-D_t = 384 t + 252
+
+Certified use:
+an O(n^(2/3)) particle-count error can be corrected on a close-packed terrace
+at O(n^(1/3)) contact-deficit cost, which is o(n^(2/3)).
