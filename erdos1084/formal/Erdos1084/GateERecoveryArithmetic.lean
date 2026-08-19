@@ -5,10 +5,10 @@ namespace Erdos1084
 /-!
 # Gate-E exact recovery arithmetic
 
-This module checks the exact FCC leading constants, the triangular-layer mass-reservoir formulas,
-the surface-order shell increments, and the finite tetrahedral-complex falsification values.
-The geometric lattice-count and Gamma-convergence arguments remain theorem-level inputs in the
-canonical mathematical dossier rather than hidden axioms.
+This module checks the exact FCC leading constants, the exact-cardinality correction-cluster
+algebra, the auxiliary triangular-layer formulas, the surface-order shell increments, and the
+finite tetrahedral-complex falsification values.  The geometric lattice counts and Gamma-
+convergence arguments remain theorem-level inputs in the canonical mathematical dossier.
 -/
 
 /-- Exact FCC Wulff-family point count polynomial. -/
@@ -43,6 +43,20 @@ theorem gateE_fcc_closed_cube :
     (6 : ℤ) ^ 3 * 2 = 432 := by
   norm_num
 
+/--
+Algebraic exact-cardinality correction bound.
+
+An FCC parity box has base deficit at most `36 m²`; the next box shell contains at most
+`2 m²+2m+1` sites; and each arbitrarily added shell site raises `6N-E` by at most six.
+-/
+theorem gateE_correction_cluster_bound
+    {m baseD shell correctionD : ℝ}
+    (hbase : baseD ≤ 36 * m ^ 2)
+    (hshell : shell ≤ 2 * m ^ 2 + 2 * m + 1)
+    (hadd : correctionD ≤ baseD + 6 * shell) :
+    correctionD ≤ 48 * m ^ 2 + 12 * m + 6 := by
+  linarith
+
 /-- Number of sites in a triangular-lattice hexagon of radius `r`. -/
 def gateETriHexNumber (r : ℤ) : ℤ :=
   3 * r ^ 2 + 3 * r + 1
@@ -57,12 +71,7 @@ theorem gateE_tri_hex_deficit (r : ℤ) :
   simp [gateETriHexNumber, gateETriHexEdges]
   ring
 
-/--
-Abstract bound for a partial outer ring.
-
-The complete inner hexagon has deficit `6r-3`; at most `6r` outer-ring sites are added, and each
-site increases the deficit by at most two because it has at least one previous in-plane neighbor.
--/
+/-- Auxiliary bound for a partial outer ring. -/
 theorem gateE_partial_ring_bound
     {r s d : ℝ}
     (hs : s ≤ 6 * r)
@@ -70,7 +79,7 @@ theorem gateE_partial_ring_bound
     d ≤ 18 * r - 3 := by
   linarith
 
-/-- An `O(ε⁻¹)` mass-correction cost is negligible after surface scaling by `ε²`. -/
+/-- An `O(ε⁻¹)` terrace-correction cost is negligible after surface scaling by `ε²`. -/
 theorem gateE_scaled_mass_correction
     {ε C cost : ℝ}
     (hε : 0 < ε)
