@@ -31,14 +31,18 @@ jobs:
           git rev-parse HEAD | tee /tmp/erdos1084-testing-mirror-head.txt
       - name: Reproduce the exact coefficient certificate
         run: make -C erdos1084/publication_mirror verify
-      - name: Check source-review records and submission hold
+      - name: Check finite-density and spherical-review records
         run: |
-          grep -F 'head: e415f5864d52e8d61c97d90bc8cfae2fc46ed3ef' \
+          grep -F 'head: 21c25ce3a6f13f46ab5af4289043ed6edb2215aa' \
             erdos1084/publication_mirror/MATH_SOURCE_HEAD.txt
+          test -f erdos1084/publication_mirror/FINITE_KEPLER_TORUS_COMPLETION_PROOF.md
+          grep -F 'Finite FCC torus-completion theorem:' \
+            erdos1084/publication_mirror/SOURCE_REVIEW_STATUS.txt
+          grep -F 'INTERNAL ADVERSARIAL REVIEW PASS' \
+            erdos1084/publication_mirror/SOURCE_REVIEW_STATUS.txt
           grep -F 'Spherical-neighborhood application:' \
             erdos1084/publication_mirror/SOURCE_REVIEW_STATUS.txt
-          grep -F 'PASS' erdos1084/publication_mirror/SOURCE_REVIEW_STATUS.txt
-          grep -F 'independent proof of equation (1.2) is OPEN' \
+          grep -F 'equation (1.2) is no longer a dependency' \
             erdos1084/publication_mirror/SOURCE_REVIEW_STATUS.txt
       - name: Install TeX
         run: |
@@ -83,5 +87,6 @@ jobs:
             /tmp/erdos1084-target-a-mirror-pdf.sha256
             erdos1084/publication_mirror/MATH_SOURCE_HEAD.txt
             erdos1084/publication_mirror/SOURCE_REVIEW_STATUS.txt
+            erdos1084/publication_mirror/FINITE_KEPLER_TORUS_COMPLETION_PROOF.md
             erdos1084/publication_mirror/paper/erdos_1084_target_a.pdf
             erdos1084/publication_mirror/computation/target_a_coefficient_output.txt
