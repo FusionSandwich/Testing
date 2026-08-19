@@ -1,0 +1,7 @@
+import Erdos1084.Phase1DecimalTheorem
+
+#print axioms Erdos1084.UnitSeparatedConfiguration.kpClean_eq_20465
+#print axioms Erdos1084.UnitSeparatedConfiguration.phase1_f3Nat_bound_20465
+#print axioms Erdos1084.UnitSeparatedConfiguration.phase1_f3Nat_deficit_bound_20465
+
+#check Erdos1084.UnitSeparatedConfiguration.phase1_f3Nat_bound_20465
