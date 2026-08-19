@@ -6,9 +6,9 @@ namespace Erdos1084
 # Finite weighted contact arrangements
 
 A tangentially periodic abrupt interface reduces to finitely many candidate
-site-orbit pairs.  Each candidate has a contact locus in translation space and a
-nonnegative integer multiplicity.  This module certifies the finite support,
-weight bound, and deficit-minimization bookkeeping.  Construction of the circle
+site-orbit pairs. Each candidate has a contact locus in translation space and a
+nonnegative integer multiplicity. This module certifies the finite support,
+weight bound, and deficit-minimization bookkeeping. Construction of the circle
 and conflict-disk arrangement remains geometric.
 -/
 
@@ -23,7 +23,7 @@ noncomputable def weightedContactCount
     (candidates : Finset ι) (weight : ι → ℕ)
     (active : ι → α → Prop) (t : α) : ℕ := by
   classical
-  exact ∑ i ∈ candidates, if active i t then weight i else 0
+  exact ∑ i in candidates, if active i t then weight i else 0
 
 /-- The finite support of all candidate contact loci. -/
 def contactArrangementSupport
@@ -47,13 +47,11 @@ theorem weightedContactCount_le_totalWeight
     (candidates : Finset ι) (weight : ι → ℕ)
     (active : ι → α → Prop) (t : α) :
     weightedContactCount candidates weight active t ≤
-      ∑ i ∈ candidates, weight i := by
+      ∑ i in candidates, weight i := by
   classical
   unfold weightedContactCount
   apply Finset.sum_le_sum
   intro i hi
-  apply Finset.sum_le_sum
-  intro _i _hi
   by_cases hactive : active i t
   · simp [hactive]
   · simp [hactive]
@@ -75,7 +73,10 @@ theorem abruptDeficitZ_antitone
     (h : recovered₁ ≤ recovered₂) :
     abruptDeficitZ twoCrack recovered₂ ≤
       abruptDeficitZ twoCrack recovered₁ := by
-  exact_mod_cast h
+  have hz : (recovered₁ : ℤ) ≤ (recovered₂ : ℤ) := by
+    exact_mod_cast h
+  simp [abruptDeficitZ]
+  linarith
 
 /-- Maximizing the finite weighted contact count minimizes the abrupt deficit. -/
 theorem abruptDeficitZ_minimized_of_count_maximized
@@ -94,7 +95,7 @@ theorem abruptDeficitZ_minimized_of_count_maximized
 theorem abruptDeficitZ_ge_twoCrack_sub_totalWeight
     (candidates : Finset ι) (weight : ι → ℕ)
     (active : ι → α → Prop) (twoCrack : ℕ) (t : α) :
-    abruptDeficitZ twoCrack (∑ i ∈ candidates, weight i) ≤
+    abruptDeficitZ twoCrack (∑ i in candidates, weight i) ≤
       abruptDeficitZ twoCrack
         (weightedContactCount candidates weight active t) := by
   exact abruptDeficitZ_antitone
