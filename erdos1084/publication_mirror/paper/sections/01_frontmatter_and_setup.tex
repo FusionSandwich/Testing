@@ -16,21 +16,28 @@ More precisely,
  \left(103-\frac{117\sqrt3}{2}\right)
  =2.046505556385112\ldots .
 \]
-The global finite-volume estimate follows from the truncated-density theorem of
-Bezdek and L\'angi: when the outer radius is at least one, the supremum of
-truncated densities over all unit-ball packings---including finite packings---equals
-the ordinary sphere-packing density.  Locally, the union of covering caps on an
-enlarged sphere is a fixed geodesic neighborhood of the pairwise
-interior-disjoint radius-$\pi/6$ contact caps.  Spherical-neighborhood
-isoperimetry and a convex-chord argument reduce the optimal degreewise affine
-charge to degrees one and eleven.  An exact minimax calculation selects
+The global finite-volume estimate is proved by an FCC torus-completion
+argument.  A finite packing and its radius-$r$ outer-parallel union are embedded
+without wrap-around in a sufficiently large flat torus whose period lattice is a
+coarse sublattice of the FCC lattice.  A random translate of the FCC packing is
+then retained only outside the outer-parallel union.  Translation averaging and
+the Kepler theorem give, for every $r\ge2$,
+\[
+ n\operatorname{vol}(B^3)
+ \le\frac{\pi}{\sqrt{18}}\operatorname{vol}(U_r).
+\]
+Locally, the union of covering caps on an enlarged sphere is a fixed geodesic
+neighborhood of the pairwise interior-disjoint radius-$\pi/6$ contact caps.
+Spherical-neighborhood isoperimetry and a convex-chord argument reduce the
+optimal degreewise affine charge to degrees one and eleven.  An exact minimax
+calculation selects
 \[
  r_*=(40+22\sqrt3)/37.
 \]
-All new algebra and the clean decimal comparison are accompanied by exact rational
-certificates, and the algebraic local-to-global spine is Lean-checked from explicit
-geometric hypotheses.  No crystallization, lattice, or asymptotic-shape assumption
-is used.
+All new algebra and the clean decimal comparison are accompanied by exact
+rational certificates, and the algebraic local-to-global spine is Lean-checked
+from explicit geometric hypotheses.  No lattice or crystallization assumption is
+imposed on the finite extremizer.
 \end{abstract}
 
 \section{Introduction}
@@ -52,12 +59,25 @@ local spherical-cap density bound \cite{BezdekReid2013}.  See also
 \cite{BezdekKhan2018}.
 
 The proof below has the same global/local architecture but uses two different
-ingredients.  The global input is the truncated-density identity of Bezdek and
-L\'angi \cite{BezdekLangi2025}.  Their definition takes the supremum over all
-packings, and finite packings are explicitly among the admissible objects.  For
-outer radius at least one, this supremum equals the ordinary packing density.
-Thus the Kepler density supplies a finite enlarged-union volume bound, not merely
-an asymptotic one.
+ingredients.  The global input is a finite completion principle.  Given a finite
+unit-ball packing and the union $U_r$ of its concentric radius-$r$ balls, with
+$r\ge2$, place the cluster on a sufficiently large flat torus obtained from a
+coarse sublattice of the FCC lattice.  Randomly translate the FCC center set and
+retain precisely those filler centers lying outside $U_r$.  Their expected hard
+ball volume is
+\[
+ \delta_3\bigl(\operatorname{vol}(T)-\operatorname{vol}(U_r)\bigr),
+\]
+where $\delta_3=\pi/\sqrt{18}$.  The original cluster together with a suitable
+translate of the retained filler is a torus packing.  Lifting it periodically and
+applying the Kepler theorem yields
+\[
+ n\operatorname{vol}(B^3)\le\delta_3\operatorname{vol}(U_r).
+\]
+This directly proves the finite outer-parallel estimate needed here.  It is
+related to the truncated-density language of Bezdek and L\'angi
+\cite{BezdekLangi2025}, but it does not require a product identity for separately
+taken upper limits.
 
 The local input is spherical-neighborhood isoperimetry.  Around a fixed ball,
 contact directions are separated by at least $\pi/3$, so their radius-$\pi/6$
@@ -101,7 +121,7 @@ Within the one-radius, equal-area-cap, degreewise-affine method defined in
 The optimality assertion is intentionally restricted to this method class.  No
 claim is made that $c_K$ is the optimal universal contact-number coefficient, that
 the normalized deficit has a limit, or that any close-packed lattice is globally
-extremal.
+extremal for the finite contact problem.
 
 \section{Normalization and connected maximizers}
 
