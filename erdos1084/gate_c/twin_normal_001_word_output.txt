@@ -1,0 +1,9 @@
+FCC twin-word normal approximation: PASS
+  word length: 7
+  word: T2^-1 T1 T2^-1 T1^-1 T2 T1^-1 T2
+  reference normal numerator: (1,1,1)
+  image numerator: (-125,-229,3779)/2187
+  image numerator squared norm: 3
+  target normal: [001]
+  exact squared transverse error: 68066/14348907
+  certified bound: squared transverse error < 1/200
