@@ -20,6 +20,7 @@ import Erdos1084.BarlowInvariantMeasureArithmetic
 import Erdos1084.OrientationInterfaceCoercivityCore
 import Erdos1084.GateERecoveryArithmetic
 import Erdos1084.FiniteSpherePacking
+import Erdos1084.ContactExtremizer
 import Erdos1084.Phase1PublishedInputs
 
 /-!
@@ -31,9 +32,11 @@ recovery programs.
 
 The Phase-I contact model directly defines finite minimum-separation configurations in Euclidean
 three-space, their exact distance-one contact graphs, contact counts, degrees, and integer
-degree-deficit identity. `Phase1PublishedInputs` now connects one actual finite contact graph to
-the strict `2.0465` assembly through an explicit geometric certificate. The five named geometric
-inputs remain visible theorem data rather than hidden project axioms.
+degree-deficit identity. `ContactExtremizer` defines `f3 n` as the greatest attainable finite
+contact count and selects an actual maximizing configuration. `Phase1PublishedInputs` connects one
+actual finite contact graph to the strict `2.0465` assembly through an explicit geometric
+certificate. The five named geometric inputs remain visible theorem data rather than hidden
+project axioms.
 
 The Gate-D module formally verifies:
 
