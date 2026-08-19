@@ -65,11 +65,17 @@ theorem phase1_volume_lower_of_kepler_density
   have hmul : ((4 * Real.pi / 3) * n) * Real.sqrt 18 ≤ Real.pi * V :=
     (le_div_iff₀ hs18pos).1 hdiv
   have hcancel : (4 / 3 : ℝ) * n * Real.sqrt 18 ≤ V := by
-    apply (mul_le_mul_left Real.pi_pos).1
-    calc
-      Real.pi * ((4 / 3 : ℝ) * n * Real.sqrt 18) =
-          ((4 * Real.pi / 3) * n) * Real.sqrt 18 := by ring
-      _ ≤ Real.pi * V := hmul
+    by_contra hnot
+    have hrev : V < (4 / 3 : ℝ) * n * Real.sqrt 18 := lt_of_not_ge hnot
+    have hmulRev :
+        Real.pi * V < Real.pi * ((4 / 3 : ℝ) * n * Real.sqrt 18) :=
+      mul_lt_mul_of_pos_left hrev Real.pi_pos
+    have hright :
+        Real.pi * ((4 / 3 : ℝ) * n * Real.sqrt 18) =
+          ((4 * Real.pi / 3) * n) * Real.sqrt 18 := by
+      ring
+    rw [hright] at hmulRev
+    exact (not_lt_of_ge hmul) hmulRev
   calc
     4 * Real.sqrt 2 * n = (4 / 3 : ℝ) * n * Real.sqrt 18 := by
       rw [phase1_sqrt_eighteen]
@@ -95,8 +101,10 @@ theorem phase1_global_surface_of_volume_isoperimetry
     (hAnonneg : 0 ≤ A)
     (hIso : 36 * Real.pi * V ^ 2 ≤ A ^ 3) :
     4 * Real.pi * K * x ≤ A := by
+  have hsqrt2nonneg : 0 ≤ Real.sqrt 2 := Real.sqrt_nonneg _
+  have hnnonneg : 0 ≤ n := le_of_lt hpower.n_pos
   have hbaseNonneg : 0 ≤ 4 * Real.sqrt 2 * n := by
-    positivity
+    exact mul_nonneg (mul_nonneg (by norm_num) hsqrt2nonneg) hnnonneg
   have hV2 : (4 * Real.sqrt 2 * n) ^ 2 ≤ V ^ 2 := by
     have hprod : 0 ≤
         (V - 4 * Real.sqrt 2 * n) * (V + 4 * Real.sqrt 2 * n) :=
@@ -114,8 +122,9 @@ theorem phase1_global_surface_of_volume_isoperimetry
       _ = 36 * Real.pi * (4 * Real.sqrt 2 * n) ^ 2 := by
         rw [hbaseSq]
         ring
-      _ ≤ 36 * Real.pi * V ^ 2 :=
-        mul_le_mul_of_nonneg_left hV2 (by positivity)
+      _ ≤ 36 * Real.pi * V ^ 2 := by
+        have hfactor : 0 ≤ 36 * Real.pi := by positivity
+        exact mul_le_mul_of_nonneg_left hV2 hfactor
       _ ≤ A ^ 3 := hIso
   have htargetNonneg : 0 ≤ 4 * Real.pi * K * x := by
     exact mul_nonneg
