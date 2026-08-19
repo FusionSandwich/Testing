@@ -1,0 +1,33 @@
+PERIODIC BARLOW GATE-A EXACT CERTIFICATE
+status: PASS
+enumerated primitive symmetry classes through period 12: 269
+
+Exact periodic Wulff formula:
+  Vol(W_hat) = 16 + n_plus*n_minus/period^2
+  Vol(W)     = 32 + 2*n_plus*n_minus/period^2
+  c_tau^3    = 432 + 27*n_plus*n_minus/period^2
+
+Calibrations:
+  FCC c^3 = 432
+  HCP c^3 = 1755/4
+
+Decision theorem:
+  c_tau^3 >= 432 for every periodic Barlow word.
+  Equality holds exactly for constant chirality, i.e. FCC up to reflection.
+
+Correlation test:
+  energy depends only on one-symbol chirality frequency;
+  pair, triple, and full-word order do not affect the cell value.
+
+period  1: classes=  1, energy_classes= 1, cube_range=[432, 432]
+period  2: classes=  1, energy_classes= 1, cube_range=[1755/4, 1755/4]
+period  3: classes=  1, energy_classes= 1, cube_range=[438, 438]
+period  4: classes=  2, energy_classes= 2, cube_range=[6993/16, 1755/4]
+period  5: classes=  3, energy_classes= 2, cube_range=[10908/25, 10962/25]
+period  6: classes=  5, energy_classes= 3, cube_range=[1743/4, 1755/4]
+period  7: classes=  8, energy_classes= 3, cube_range=[21330/49, 21492/49]
+period  8: classes= 14, energy_classes= 4, cube_range=[27837/64, 1755/4]
+period  9: classes= 21, energy_classes= 4, cube_range=[1304/3, 1316/3]
+period 10: classes= 39, energy_classes= 5, cube_range=[43443/100, 1755/4]
+period 11: classes= 62, energy_classes= 5, cube_range=[52542/121, 53082/121]
+period 12: classes=112, energy_classes= 6, cube_range=[6945/16, 1755/4]
