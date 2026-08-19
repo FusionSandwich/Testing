@@ -1,6 +1,12 @@
 name: Erdős 1084 Phase-I publication verification
 
 on:
+  pull_request:
+    branches:
+      - 'agent/erdos-1084-phase1-contact-model-lean-20260819'
+    paths:
+      - 'erdos1084/formal/**'
+      - '.github/workflows/erdos1084-phase1-publication-verification.yml'
   push:
     branches:
       - 'agent/erdos-1084-phase1-publication-verification-20260819'
