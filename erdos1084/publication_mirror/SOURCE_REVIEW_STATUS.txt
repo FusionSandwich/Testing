@@ -1,7 +1,7 @@
 ERDOS 1084 TARGET-A INDEPENDENT REVIEW STATUS
 
 Math source head:
-c99ac73bc3ddc8c7dc2118ddd88a76a07938d455
+f805b022bf947a28d7dfedc40e638d1849534eb3
 
 Finite FCC torus-completion theorem:
 INTERNAL ADVERSARIAL REVIEW PASS
@@ -14,6 +14,13 @@ INTERNAL ADVERSARIAL REVIEW PASS
 - the combined torus packing lifts periodically;
 - the Kepler upper bound cancels the torus volume and gives vol(U_r)>=4sqrt(2)n;
 - no limsup product and no Bezdek--Langi equation (1.2) is used.
+
+FCC matching-order lower construction:
+EXACT FINITE COUNT PASS
+- f_3(m^3)>=6m^3-9m^2+3m for every positive integer m;
+- an appended FCC contact chain gives f_3(n)>6n-24n^(2/3)-12n^(1/3)-5 for every positive integer n;
+- the secondary order n^(2/3) is therefore rigorous from both sides;
+- no exact normalized-deficit constant or limit is claimed.
 
 Spherical-neighborhood application:
 PASS
@@ -31,4 +38,4 @@ NON-LOAD-BEARING OPEN SOURCE ISSUE
 - equation (1.2) is no longer a dependency of the Target-A theorem.
 
 Submission classification:
-CORE FINITE-DENSITY BLOCKER RESOLVED. EXTERNAL SPECIALIST AND PRIORITY REVIEW OF THE TORUS-COMPLETION PROOF REMAIN REQUIRED BEFORE SUBMISSION AUTHORIZATION.
+CORE FINITE-DENSITY BLOCKER RESOLVED AND N^(2/3) ORDER MATCHED. EXTERNAL SPECIALIST AND PRIORITY REVIEW OF THE TORUS-COMPLETION PROOF REMAIN REQUIRED BEFORE SUBMISSION AUTHORIZATION.
