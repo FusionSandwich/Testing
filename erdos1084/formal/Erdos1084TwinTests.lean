@@ -2,7 +2,8 @@ import Erdos1084
 
 /-!
 # Coherent-twin arithmetic, normal approximation, closure, word, holonomy, fan,
-# network, platelet, diagonal-recovery, interface, and translation-nullity tests
+# network, platelet, diagonal-recovery, interface, translation-nullity, and
+# finite-arrangement tests
 -/
 
 #check Erdos1084.fccTwinOne_orthogonal
@@ -86,3 +87,13 @@ import Erdos1084
 #check Erdos1084.measure_pairTranslationSphere_zero
 #check Erdos1084.measure_abruptSphereTranslationSet_zero
 #check Erdos1084.measure_abruptExceptionalSubset_zero
+
+#check Erdos1084.weightedContactCount
+#check Erdos1084.contactArrangementSupport
+#check Erdos1084.weightedContactCount_eq_zero_of_not_mem_support
+#check Erdos1084.weightedContactCount_le_totalWeight
+#check Erdos1084.contactCount_le_candidateCard
+#check Erdos1084.abruptDeficitZ
+#check Erdos1084.abruptDeficitZ_antitone
+#check Erdos1084.abruptDeficitZ_minimized_of_count_maximized
+#check Erdos1084.abruptDeficitZ_ge_twoCrack_sub_totalWeight
