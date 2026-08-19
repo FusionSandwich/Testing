@@ -17,22 +17,23 @@ import Erdos1084.NormalizedDeficitLimitCore
 import Erdos1084.BarlowSequence
 import Erdos1084.BarlowCellArithmetic
 import Erdos1084.BarlowInvariantMeasureArithmetic
+import Erdos1084.OrientationInterfaceCoercivityCore
 
 /-!
 # Erdős Problem 1084: formalized certification spine
 
 The library contains certified algebraic and abstract-assembly routes for the radius-two,
-Kepler, periodic Barlow, and invariant-measure Barlow programs.
+Kepler, periodic Barlow, invariant-measure Barlow, and Gate-D interface programs.
 
-The Gate-B module formalizes:
+The Gate-D module formally verifies:
 
-* the real one-symbol-marginal volume and coefficient formulas;
-* FCC lower bounds and equality cases on `p ∈ [0,1]`;
-* continuity of the coefficient polynomial;
-* an exact non-subadditivity certificate for the raw directionwise infimum;
-* exact arithmetic for the common convex-envelope body of volume `57/2` and cube `1539/4`.
+* the `N²` lower bound for a bad-cell separator of opposite faces in an `N³` grid;
+* the conversion of that separator count and a local energy gap into a surface-order energy lower
+  bound;
+* the scalar inball implication for interface calibration bodies;
+* the elementary two-phase divergence-sum algebra.
 
-The density of periodic orbit measures, weak-* continuity of the full support bodies, the
-periodized-prefix seam theorem, and the geometric intersection-body proof are maintained in the
-canonical mathematical dossier. They are not hidden as project axioms.
+The assignment of exact Barlow orientations to good coarse blocks, orientation propagation on
+overlaps, the interface cell formula, and the Brenier common-core calibration theorem are
+maintained in the canonical mathematical dossier. They are not hidden as project axioms.
 -/
