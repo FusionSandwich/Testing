@@ -29,7 +29,6 @@ theorem plateletArray_cost_le_area_div_scale
     cost ≤ C * N * ell := hcost
     _ = (C / ell) * (N * ell ^ 2) := by
       field_simp [ne_of_gt hell]
-      ring
     _ ≤ (C / ell) * T ^ 2 := hmul
     _ = C * T ^ 2 / ell := by ring
 
@@ -75,14 +74,14 @@ theorem transverseCoverage_forces_lateralArea
     (hcoverage : covered ≤ lateral / (2 * s)) :
     2 * s * covered ≤ lateral := by
   have hden : 0 < 2 * s := by positivity
-  exact (le_div_iff₀ hden).mp hcoverage
+  have hraw : covered * (2 * s) ≤ lateral :=
+    (le_div_iff₀ hden).mp hcoverage
+  simpa [mul_comm, mul_left_comm, mul_assoc] using hraw
 
 /-- Area-order coverage at a fixed transverse angle forces area-order lateral wall. -/
 theorem macroscopicCoverage_forces_areaOrder_lateral
     {covered lateral s c T : ℝ}
     (hs : 0 < s)
-    (hc : 0 ≤ c)
-    (hT : 0 ≤ T)
     (hcovered : c * T ^ 2 ≤ covered)
     (hcoverage : covered ≤ lateral / (2 * s)) :
     2 * s * c * T ^ 2 ≤ lateral := by
@@ -105,6 +104,5 @@ theorem coverageDensity_le_lateralDensity
     covered / T ^ 2 ≤ (lateral / (2 * s₀)) / T ^ 2 := hdiv
     _ = lateral / T ^ 2 / (2 * s₀) := by
       field_simp [ne_of_gt hs₀, ne_of_gt hT]
-      ring
 
 end Erdos1084
