@@ -11,6 +11,7 @@ import Erdos1084.RadiusTwoOptimizedAssembly
 import Erdos1084.KeplerOuterParallel
 import Erdos1084.KeplerOptimizedChord
 import Erdos1084.KeplerOneRadiusOptimality
+import Erdos1084.KeplerOneRadiusConcrete
 import Erdos1084.SeparatedCapStabilityCore
 import Erdos1084.GlobalDegreeConstraints
 import Erdos1084.NormalizedDeficitLimitCore
@@ -28,6 +29,9 @@ import Erdos1084.FiniteSpherePacking
 The library contains certified algebraic and abstract-assembly routes for the radius-two,
 Kepler, periodic Barlow, invariant-measure Barlow, Gate-D interface, Gate-E exact-mass recovery,
 and exact Sigma-5 two-lattice transition programs.
+
+`KeplerOneRadiusConcrete.lean` now discharges the former degree-eleven monotonicity parameter and
+proves the fully concrete unique optimizer theorem for the one-radius affine method.
 
 `FiniteSpherePacking.lean` begins the foundational end-to-end layer: finite minimum-separation
 configurations, their Euclidean contact graphs, contact counts, degrees, and the exact degree-
