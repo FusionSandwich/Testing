@@ -1,0 +1,5 @@
+FusionSandwich/Math
+branch: agent/erdos-1084-target-a-publication-20260819
+head: e415f5864d52e8d61c97d90bc8cfae2fc46ed3ef
+
+This public mirror reproduces the manuscript, exact verifier, and reviewed geometry section from the stated private Math source head.
