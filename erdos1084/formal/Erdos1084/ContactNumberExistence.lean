@@ -6,7 +6,7 @@ namespace Erdos1084
 /-!
 # Existence of the finite three-dimensional contact number
 
-The set of possible contact counts is nonempty and finite.  This file constructs a canonical
+The set of possible contact counts is nonempty and finite. This file constructs a canonical
 maximum and proves that it satisfies `IsThreeDimensionalContactNumber` for every `n`.
 -/
 
@@ -14,7 +14,14 @@ noncomputable section
 
 /-- An explicit line configuration, used only to prove nonemptiness of the configuration class. -/
 def linePoint {n : ℕ} (i : Fin n) : Point3 :=
-  fun j : Fin 3 => if j = 0 then 2 * (i.val : ℝ) else 0
+  !₂[2 * (i.val : ℝ), 0, 0]
+
+/-- Squared distance in the explicit line configuration. -/
+theorem linePoint_dist_sq {n : ℕ} (i j : Fin n) :
+    dist (linePoint i) (linePoint j) ^ 2 =
+      (2 * (i.val : ℝ) - 2 * (j.val : ℝ)) ^ 2 := by
+  rw [EuclideanSpace.dist_sq_eq]
+  norm_num [linePoint, Real.dist_eq]
 
 /-- The explicit line configuration is unit-separated. -/
 def lineConfiguration (n : ℕ) : UnitSeparatedConfiguration (Fin n) where
@@ -25,19 +32,20 @@ def lineConfiguration (n : ℕ) : UnitSeparatedConfiguration (Fin n) where
       intro h
       apply hij
       exact Fin.ext h
-    have hnat : 1 ≤ Nat.dist i.val j.val := Nat.one_le_iff_ne.mpr hval
-    have habs : (1 : ℝ) ≤ |(i.val : ℝ) - (j.val : ℝ)| := by
-      exact_mod_cast hnat
-    have hcoord :
-        (2 : ℝ) ≤ ‖(linePoint i - linePoint j) (0 : Fin 3)‖ := by
-      simp [linePoint, Real.norm_eq_abs]
-      nlinarith
-    have hcoordle :
-        ‖(linePoint i - linePoint j) (0 : Fin 3)‖ ≤
-          ‖linePoint i - linePoint j‖ :=
-      norm_apply_le_norm (linePoint i - linePoint j) 0
-    rw [dist_eq_norm]
-    linarith
+    have hdiffSq :
+        (1 : ℝ) ≤ (2 * (i.val : ℝ) - 2 * (j.val : ℝ)) ^ 2 := by
+      rcases lt_or_gt_of_ne hval with hijlt | hjilt
+      · have hnat : i.val + 1 ≤ j.val := Nat.succ_le_iff.mpr hijlt
+        have hreal : (i.val : ℝ) + 1 ≤ (j.val : ℝ) := by
+          exact_mod_cast hnat
+        nlinarith
+      · have hnat : j.val + 1 ≤ i.val := Nat.succ_le_iff.mpr hjilt
+        have hreal : (j.val : ℝ) + 1 ≤ (i.val : ℝ) := by
+          exact_mod_cast hnat
+        nlinarith
+    have hsq := linePoint_dist_sq i j
+    have hdist0 : 0 ≤ dist (linePoint i) (linePoint j) := dist_nonneg
+    nlinarith
 
 /-- Every simple contact graph has fewer edges than the successor of the ambient `Sym2` cardinal. -/
 theorem contactCount_lt_sym2_card_succ
@@ -45,8 +53,11 @@ theorem contactCount_lt_sym2_card_succ
     X.contactCount < Fintype.card (Sym2 (Fin n)) + 1 := by
   classical
   apply Nat.lt_succ_of_le
-  unfold UnitSeparatedConfiguration.contactCount
-  exact Finset.card_le_univ_card
+  have hle :
+      X.contactGraph.edgeFinset.card ≤
+        (Finset.univ : Finset (Sym2 (Fin n))).card :=
+    Finset.card_le_card (Finset.subset_univ _)
+  simpa [UnitSeparatedConfiguration.contactCount] using hle
 
 /-- Finite set of all attainable contact counts for `n` labelled points. -/
 noncomputable def attainableContactCounts (n : ℕ) : Finset ℕ := by
