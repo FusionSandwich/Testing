@@ -1,5 +1,6 @@
 name: Erdős 1084 Phase-I publication verification
 
+# Single exact-head workflow for the finite-paper Lean spine.
 on:
   pull_request:
     branches:
