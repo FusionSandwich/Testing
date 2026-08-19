@@ -47,23 +47,23 @@ strict theorem.
 The finite theorem uses the following named published inputs:
 \begin{enumerate}[label=(\roman*),leftmargin=2.2em]
 \item the three-dimensional kissing number;
-\item the Bezdek--L\'angi truncated-density definition and identity
-$\delta(\lambda)=\delta_3$ for $\lambda\ge1$;
 \item the Kepler density $\delta_3=\pi/\sqrt{18}$;
 \item Euclidean isoperimetry for bounded finite-perimeter sets;
 \item spherical-neighborhood isoperimetry for measurable subsets of $\Sph^2$.
 \end{enumerate}
-The finite specialization of (ii) is explicit: for a finite packing the numerator
-and denominator in the defining quotient stabilize for large truncation radius.
+The finite outer-parallel inequality itself is proved in
+\cref{prop:finitekepler} from the explicit FCC lattice, translation averaging on
+a compact flat torus, and input (ii).  In particular, the theorem does not depend
+on Bezdek--L\'angi equation (1.2) or on any product rule for separate limsups.
 
 The accompanying exact verifier checks the optimized-radius identities in
 $\mathbb Q(\sqrt3)$, rigorous rational bounds for $\sqrt3$ and $\pi$, and the
 positive cubed margin proving $c_K>2.0465$.  The public Lean development checks the
 finite contact-model relations, the optimized local algebra, the degree-sum and
 surface-assembly implications, and the relational conclusion for $f_3(n)$ from
-explicit published-input structures.  It does not claim foundational Lean
-reconstructions of (i)--(v); ordinary theorem parameters remain visible in the
-load-bearing signatures.
+explicit geometric-input structures.  It does not yet reconstruct the flat-torus
+completion proof or foundational versions of (i)--(iv); ordinary theorem
+parameters remain visible in the load-bearing signatures.
 
 No Barlow, crystallization, $\Gamma$-convergence, interface, or Wulff-selection
 result enters the proof.  The existence and exact value of
