@@ -1,0 +1,8 @@
+import Erdos1084.Phase1F3Theorem
+
+#print axioms Erdos1084.UnitSeparatedConfiguration.phase1_f3Nat_bound
+#print axioms Erdos1084.UnitSeparatedConfiguration.phase1_f3Nat_deficit_bound
+
+#check Erdos1084.UnitSeparatedConfiguration.Phase1F3Certificate
+#check Erdos1084.UnitSeparatedConfiguration.phase1_f3Nat_bound
+#check Erdos1084.UnitSeparatedConfiguration.phase1_f3Nat_deficit_bound
