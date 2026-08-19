@@ -11,6 +11,7 @@ the formal arithmetic and abstract matching-bounds core introduces no project-sp
 #print axioms Erdos1084.gateE_fcc_number_increment
 #print axioms Erdos1084.gateE_fcc_deficit_increment
 #print axioms Erdos1084.gateE_fcc_leading_cube
+#print axioms Erdos1084.gateE_correction_cluster_bound
 #print axioms Erdos1084.gateE_tri_hex_deficit
 #print axioms Erdos1084.gateE_partial_ring_bound
 #print axioms Erdos1084.gateE_scaled_mass_correction
@@ -20,6 +21,7 @@ the formal arithmetic and abstract matching-bounds core introduces no project-sp
 
 #check Erdos1084.gateEFccNumber
 #check Erdos1084.gateEFccDeficit
+#check Erdos1084.gateE_correction_cluster_bound
 #check Erdos1084.gateETriHexNumber
 #check Erdos1084.gateETriHexEdges
 #check Erdos1084.gateETetraComplexCube
