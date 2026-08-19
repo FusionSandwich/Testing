@@ -1,0 +1,14 @@
+FCC contact Voronoi cell: PASS
+  contact halfspaces: 12
+  vertices: 14
+  facets: 12
+  maximum physical squared radius: 2
+  rational-coordinate volume: 2
+  physical volume: 2 * (2*sqrt(2)) = 4*sqrt(2)
+HCP contact Voronoi cell: PASS
+  contact halfspaces: 12
+  vertices: 14
+  facets: 12
+  maximum physical squared radius: 2
+  rational-coordinate volume: 4/3
+  physical volume: (4/3) * (3*sqrt(2)) = 4*sqrt(2)
