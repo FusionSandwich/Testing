@@ -65,8 +65,6 @@ site increases the deficit by at most two because it has at least one previous i
 -/
 theorem gateE_partial_ring_bound
     {r s d : ℝ}
-    (hr : 1 ≤ r)
-    (hs0 : 0 ≤ s)
     (hs : s ≤ 6 * r)
     (hd : d ≤ (6 * r - 3) + 2 * s) :
     d ≤ 18 * r - 3 := by
@@ -76,7 +74,6 @@ theorem gateE_partial_ring_bound
 theorem gateE_scaled_mass_correction
     {ε C cost : ℝ}
     (hε : 0 < ε)
-    (hC : 0 ≤ C)
     (hcost : cost ≤ C / ε) :
     ε ^ 2 * cost ≤ C * ε := by
   have hεsq : 0 ≤ ε ^ 2 := sq_nonneg ε
@@ -85,7 +82,6 @@ theorem gateE_scaled_mass_correction
     ε ^ 2 * cost ≤ ε ^ 2 * (C / ε) := hmul
     _ = C * ε := by
       field_simp [ne_of_gt hε]
-      ring
 
 /-- Leading coefficient cube for a face-glued tetrahedral complex. -/
 def gateETetraComplexCube (q s : ℚ) : ℚ :=
