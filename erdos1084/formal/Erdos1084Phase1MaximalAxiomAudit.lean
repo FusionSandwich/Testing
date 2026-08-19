@@ -1,0 +1,8 @@
+import Erdos1084.Phase1MaximalTheorem
+
+#print axioms Erdos1084.UnitSeparatedConfiguration.Phase1CertifiedMaximizer.maximizer_bound
+#print axioms Erdos1084.UnitSeparatedConfiguration.Phase1CertifiedMaximizer.universal_bound
+
+#check Erdos1084.UnitSeparatedConfiguration.Phase1CertifiedMaximizer
+#check Erdos1084.UnitSeparatedConfiguration.Phase1CertifiedMaximizer.maximizer_bound
+#check Erdos1084.UnitSeparatedConfiguration.Phase1CertifiedMaximizer.universal_bound
