@@ -19,10 +19,23 @@ import Erdos1084.BarlowCellArithmetic
 import Erdos1084.BarlowInvariantMeasureArithmetic
 import Erdos1084.OrientationInterfaceCoercivityCore
 import Erdos1084.GateERecoveryArithmetic
+
+/-! Phase-I direct contact model and geometric bridges. -/
 import Erdos1084.FiniteSpherePacking
+import Erdos1084.FiniteBallUnionBoundary
+import Erdos1084.FiniteOuterParallelArithmetic
+import Erdos1084.TangentCapGeometry
 import Erdos1084.ContactExtremizer
 import Erdos1084.Phase1UnionBoundary
 import Erdos1084.Phase1PublishedInputs
+import Erdos1084.Phase1EndToEnd
+import Erdos1084.Phase1ContactNumber
+import Erdos1084.ContactNumberExistence
+import Erdos1084.MaximizerNoIsolated
+import Erdos1084.Phase1MainTheorem
+import Erdos1084.PowerScaleUniqueness
+import Erdos1084.Phase1CanonicalScale
+import Erdos1084.Phase1FoundationalInterfaces
 
 /-!
 # Erdős Problem 1084: formalized certification spine
@@ -33,12 +46,17 @@ recovery programs.
 
 The Phase-I contact model directly defines finite minimum-separation configurations in Euclidean
 three-space, their exact distance-one contact graphs, contact counts, degrees, and integer
-degree-deficit identity. `ContactExtremizer` defines `f3 n` as the greatest attainable finite
-contact count and selects an actual maximizing configuration. `Phase1UnionBoundary` proves the
-topological ownership of the boundary of a finite enlarged-ball union by exposed sphere patches.
-`Phase1PublishedInputs` connects one actual finite contact graph to the strict `2.0465` assembly
-through an explicit geometric certificate. The five named geometric inputs remain visible theorem
-data rather than hidden project axioms.
+degree-deficit identity. `ContactExtremizer` and `ContactNumberExistence` construct the greatest
+attainable finite contact count and select an actual maximizing configuration.
+`MaximizerNoIsolated` proves the no-isolated-vertex property by a supporting-coordinate
+relocation. `FiniteBallUnionBoundary` and `Phase1UnionBoundary` prove the topological ownership
+of a finite enlarged-ball union boundary by exposed sphere patches.
+`FiniteOuterParallelArithmetic` checks the exact Kepler-density normalization, while
+`TangentCapGeometry` checks the tangent-neighbor cap equation.
+`Phase1PublishedInputs`, `Phase1EndToEnd`, `Phase1ContactNumber`, `Phase1MainTheorem`,
+`Phase1CanonicalScale`, and `Phase1FoundationalInterfaces` connect one actual finite contact
+graph to the strict canonical `2.0465` theorem through explicit geometric data.
+The five named geometric inputs remain visible theorem fields rather than hidden project axioms.
 
 The Gate-D module formally verifies:
 
