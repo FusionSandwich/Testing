@@ -1,0 +1,82 @@
+name: Erdős 1084 Target-A public publication mirror
+
+on:
+  push:
+    branches:
+      - 'agent/erdos-1084-phase1-publication-verification-20260819'
+    paths:
+      - '.github/workflows/erdos1084-target-a-publication-mirror.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: erdos1084-target-a-publication-mirror
+  cancel-in-progress: true
+
+jobs:
+  publication-mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the exact Math publication branch
+        uses: actions/checkout@v4
+        with:
+          repository: FusionSandwich/Math
+          ref: agent/erdos-1084-target-a-publication-20260819
+          path: math
+          fetch-depth: 1
+      - name: Record the exact Math source head
+        run: |
+          git -C math rev-parse HEAD | tee /tmp/erdos1084-math-head.txt
+          git -C math status --short
+      - name: Reproduce the exact coefficient certificate
+        run: make -C math/erdos_1084/publication_core verify
+      - name: Check source-review records and submission hold
+        run: |
+          test -f math/erdos_1084/publication_core/reviews/BEZDEK_LANGI_FINITE_SPECIALIZATION_REVIEW.md
+          test -f math/erdos_1084/publication_core/reviews/SPHERICAL_NEIGHBORHOOD_APPLICATION_REVIEW.md
+          grep -F 'INDEPENDENT PROOF OF EQUATION (1.2): OPEN' \
+            math/erdos_1084/publication_core/SOURCE_AUDIT.md
+          grep -F 'SPHERICAL-NEIGHBORHOOD GATE: PASS' \
+            math/erdos_1084/publication_core/reviews/SPHERICAL_NEIGHBORHOOD_APPLICATION_REVIEW.md
+      - name: Install TeX
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y latexmk texlive-latex-extra lmodern poppler-utils
+      - name: Rebuild the manuscript
+        run: |
+          make -C math/erdos_1084/publication_core clean
+          make -C math/erdos_1084/publication_core paper
+      - name: Reject unresolved LaTeX diagnostics
+        run: |
+          log=math/erdos_1084/publication_core/paper/erdos_1084_target_a.log
+          if grep -nE 'Overfull|Underfull|LaTeX Warning|Undefined' "$log"; then
+            echo 'LaTeX diagnostic gate failed' >&2
+            exit 1
+          fi
+          pdfinfo math/erdos_1084/publication_core/paper/erdos_1084_target_a.pdf \
+            | grep -E '^(Pages|Page size|File size):'
+      - name: Generate exact-head source and PDF receipts
+        run: |
+          cd math/erdos_1084/publication_core
+          find . -type f \
+            ! -path './paper/*.pdf' \
+            ! -path './paper/*.aux' \
+            ! -path './paper/*.log' \
+            ! -path './paper/*.out' \
+            ! -path './paper/*.fls' \
+            ! -path './paper/*.fdb_latexmk' \
+            -print0 | sort -z | xargs -0 sha256sum \
+            > /tmp/erdos1084-target-a-source-manifest.sha256
+          sha256sum paper/erdos_1084_target_a.pdf \
+            > /tmp/erdos1084-target-a-pdf.sha256
+          cat /tmp/erdos1084-target-a-source-manifest.sha256
+          cat /tmp/erdos1084-target-a-pdf.sha256
+      - name: Upload the public publication receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: erdos-1084-target-a-publication-mirror
+          path: |
+            /tmp/erdos1084-math-head.txt
+            /tmp/erdos1084-target-a-source-manifest.sha256
+            /tmp/erdos1084-target-a-pdf.sha256
+            math/erdos_1084/publication_core/paper/erdos_1084_target_a.pdf
+            math/erdos_1084/publication_core/computation/target_a_coefficient_output.txt
