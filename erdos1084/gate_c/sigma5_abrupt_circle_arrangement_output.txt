@@ -1,0 +1,10 @@
+FINITE CONTACT CIRCLE ARRANGEMENT: PASS
+  input: erdos1084/gate_c/sigma5_abrupt_circle_arrangement.json
+  raw circles: 4
+  coincident-circle classes: 4
+  open conflict disks: 4
+  exact global maximum weight: 4
+  supplied admissible witness: (0,0)
+  active witness circles: c00,c10,c01,c11
+  exact maximum candidate locations: 1
+    (0, 0)

@@ -1,0 +1,11 @@
+FRACTIONAL DEVELOPMENT LP CERTIFICATE: PASS
+  certificate type: primal
+  interfaces: 5
+  developments: 5
+  total development weight: 1
+  e0: expected 1/5, physical 1/5, slack 0
+  e1: expected 1/5, physical 1/5, slack 0
+  e2: expected 1/5, physical 1/5, slack 0
+  e3: expected 1/5, physical 1/5, slack 0
+  e4: expected 1/5, physical 1/5, slack 0
+  positive weights: d0=1/5, d1=1/5, d2=1/5, d3=1/5, d4=1/5

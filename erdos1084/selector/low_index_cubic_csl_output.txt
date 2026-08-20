@@ -1,0 +1,22 @@
+LOW-INDEX CUBIC CSL DOUBLE-COSET CERTIFICATE
+status: PASS
+proper cubic rotation group size: 24
+primitive norm valuation bound: v2(N(q)) <= 2
+reduced index 3:
+  exhaustive norms: 3, 6, 12
+  primitive quaternions enumerated: 192
+  cubic double-coset classes: 1
+  representative quaternion: (3,1,1,1)
+  representative rotation: 60-degree coherent [111] twin
+reduced index 5:
+  exhaustive norms: 5, 10, 20
+  primitive quaternions enumerated: 288
+  cubic double-coset classes: 1
+  standard representative quaternion: (2,0,0,1)
+  standard rotation: (1/5)*[[3,-4,0],[4,3,0],[0,0,5]]
+  norm-20 representative (3,3,1,1) is explicitly cubic-equivalent
+  left cubic symmetry: [-1,0,0; 0,1,0; 0,0,-1]
+  right cubic symmetry: [0,1,0; 0,0,-1; -1,0,0]
+selector consequence:
+  the only reduced indices below 7 are the coherent Sigma-3 class
+  and the Sigma-5 [001] class

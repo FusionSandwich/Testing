@@ -1,0 +1,14 @@
+ICOSAHEDRAL SPANNING-TREE DEVELOPMENT CERTIFICATE
+status: PASS
+vertices: 12
+edges / radial interfaces: 30
+vertex degree: 5
+branch interfaces in one primal spanning tree: 11
+uncut dual adjacency edges: 19
+exact primal spanning-tree count: 5184000
+trees containing each fixed edge: 1900800
+uniform branch marginal: 11/30
+incidence identity: 30*1900800 = 11*5184000
+selector consequence:
+  physical interface ratio >= 11/30 on every equal-jump radial face
+  implies the sharp FCC bound for the averaged spanning-tree development family

@@ -1,0 +1,16 @@
+twin generator T1: PASS
+  determinant: 1
+  order divides: 6
+  square is FCC signed-permutation symmetry: yes
+  cube equals minus twin-plane reflection: yes
+twin generator T2: PASS
+  determinant: 1
+  order divides: 6
+  square is FCC signed-permutation symmetry: yes
+  cube equals minus twin-plane reflection: yes
+product T1*T2: PASS
+  tetrahedral axis scalar product: -1/3
+  quaternion scalar part: 5/6
+  exact rotation trace: 16/9
+  trace is a rational noninteger: yes
+  product has infinite order: certified by the root-of-unity trace argument

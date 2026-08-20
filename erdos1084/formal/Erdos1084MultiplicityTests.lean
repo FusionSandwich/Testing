@@ -1,0 +1,55 @@
+import Erdos1084
+
+/-!
+# Developed-multiplicity, calibration-deficit, averaged-development, dual, and tree tests
+-/
+
+#check Erdos1084.multiplicity_twoLevel_factorization
+#check Erdos1084.multiplicity_quadraticFactor_nonneg
+#check Erdos1084.multiplicity_twoLevel_cube_bound
+#check Erdos1084.multiplicity_finset_cube_bound
+#check Erdos1084.nonneg_le_of_cube_le_cube
+#check Erdos1084.multiplicity_totalRoot_square_le
+#check Erdos1084.multiplicity_wulff_energy_assembly
+#check Erdos1084.developedMultiplicity_fcc_coefficient_cube
+
+#check Erdos1084.calibrationUnderpayment
+#check Erdos1084.calibrationUnderpayment_nonneg
+#check Erdos1084.developed_le_physical_add_underpayment
+#check Erdos1084.calibrationUnderpayment_eq_zero_iff
+#check Erdos1084.sum_developed_le_physical_add_underpayment
+#check Erdos1084.developedPerimeter_le_physicalEnergy_add_deficit
+#check Erdos1084.physicalEnergy_ge_sharp_sub_deficit
+#check Erdos1084.calibrationDeficit_selector_bound
+#check Erdos1084.calibrationDeficit_selector_sharp
+#check Erdos1084.subsharp_implies_calibrationDeficit
+#check Erdos1084.subsharp_implies_sum_underpayment
+#check Erdos1084.calibrationDeficit_fcc_coefficient_cube
+
+#check Erdos1084.expectedDevelopmentCost
+#check Erdos1084.expectedInterfaceJump
+#check Erdos1084.averagedDevelopment_scalar_bound
+#check Erdos1084.expectedDevelopmentCost_eq_sum_expectedInterface
+#check Erdos1084.averagedDevelopment_selector_aggregate
+#check Erdos1084.averagedDevelopment_selector_interfacewise
+#check Erdos1084.uniformCycle_totalPhysical_ge_jump
+#check Erdos1084.fivefold_uniform_threshold
+#check Erdos1084.calibrationUnderpayment_expected_le_average
+
+#check Erdos1084.pricedDevelopmentCut
+#check Erdos1084.pricedPhysicalInterfaces
+#check Erdos1084.expectedPricedCut_eq_priceExpectedJump
+#check Erdos1084.priceExpectedJump_le_physical
+#check Erdos1084.feasibleDevelopment_implies_dualBound
+#check Erdos1084.IsFractionalDevelopmentFeasible
+#check Erdos1084.not_feasible_of_strict_dualGap
+#check Erdos1084.minimumPricedCut_le_physical_of_feasible
+
+#check Erdos1084.transitionWordProduct
+#check Erdos1084.pathDevelopment
+#check Erdos1084.pathDevelopment_root
+#check Erdos1084.pathDevelopment_child
+#check Erdos1084.pathDevelopment_eq_of_path_eq
+#check Erdos1084.pathDevelopment_cycle_closes
+#check Erdos1084.pathDevelopment_cycle_identity
+#check Erdos1084.pathDevelopment_backtrack

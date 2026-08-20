@@ -1,0 +1,99 @@
+import Erdos1084
+
+/-!
+# Coherent-twin arithmetic, normal approximation, closure, word, holonomy, fan,
+# network, platelet, diagonal-recovery, interface, translation-nullity, and
+# finite-arrangement tests
+-/
+
+#check Erdos1084.fccTwinOne_orthogonal
+#check Erdos1084.fccTwinTwo_orthogonal
+#check Erdos1084.fccTwinOne_det
+#check Erdos1084.fccTwinTwo_det
+#check Erdos1084.fccTwinOne_pow_two
+#check Erdos1084.fccTwinTwo_pow_two
+#check Erdos1084.fccTwinOne_pow_three
+#check Erdos1084.fccTwinTwo_pow_three
+#check Erdos1084.fccTwinOne_pow_six
+#check Erdos1084.fccTwinTwo_pow_six
+#check Erdos1084.fccTwinProduct_trace
+#check Erdos1084.fccTwinProduct_trace_not_integer
+
+#check Erdos1084.fccNormal001Word_length
+#check Erdos1084.fccNormal001Image_value
+#check Erdos1084.fccNormal001Image_normSq
+#check Erdos1084.fccNormal001Image_transverseSq
+#check Erdos1084.fccNormal001Image_transverseSq_lt
+
+#check Erdos1084.relIdentitySubgroup
+#check Erdos1084.relation_universal_of_closed_dense_identityClass
+#check Erdos1084.relation_universal_of_closed_dense_subgroup
+#check Erdos1084.equivalence_universal_of_closed_dense_identitySubgroup
+
+#check Erdos1084.SignedGenerator
+#check Erdos1084.evalGeneratorWord
+#check Erdos1084.generatorWordStates
+#check Erdos1084.generatorWordStates_getLast?_eq
+#check Erdos1084.finiteWordValues
+#check Erdos1084.exists_word_mem_open
+#check Erdos1084.exists_word_in_neighborhood
+#check Erdos1084.exists_finite_word_length
+
+#check Erdos1084.fccReflectionProduct_trace
+#check Erdos1084.fccFourSectorHolonomy_trace
+#check Erdos1084.fccFourSectorHolonomy_trace_not_integer
+#check Erdos1084.fourSectorHolonomy_not_allowed_of_integerTrace
+
+#check Erdos1084.fanAngle_difference_constant
+#check Erdos1084.fanAngle_eq_initial_add
+#check Erdos1084.finiteFanClosure_implies_angle_relation
+#check Erdos1084.no_finiteFanClosure_of_no_angle_relation
+
+#check Erdos1084.degreeDeficitSum_le_twelve_badCard
+#check Erdos1084.contactDeficit_le_six_badCard
+#check Erdos1084.contactDeficit_le_lineOrder
+#check Erdos1084.deletion_deficit_increase_le_six
+#check Erdos1084.lineOrder_surfaceScale_bound
+#check Erdos1084.pureLineOrder_surfaceScale_bound
+
+#check Erdos1084.plateletArray_cost_le_area_div_scale
+#check Erdos1084.plateletArray_surfaceDensity_le_invScale
+#check Erdos1084.squarePlateletArray_surfaceDensity
+#check Erdos1084.transverseCoverage_forces_lateralArea
+#check Erdos1084.macroscopicCoverage_forces_areaOrder_lateral
+#check Erdos1084.coverageDensity_le_lateralDensity
+
+#check Erdos1084.recoveryCost_surfaceDensity_bound
+#check Erdos1084.recoveryCost_surfaceDensity_le_epsilon
+#check Erdos1084.recoveryCost_surfaceDensity_lt_epsilon
+#check Erdos1084.lineTerm_small_of_scale
+#check Erdos1084.pointTerm_small_of_scale
+#check Erdos1084.diagonalRecovery_lt_epsilon
+
+#check Erdos1084.twoCrack_normalized_additivity
+#check Erdos1084.twoCrack_eta_upper
+#check Erdos1084.twoCrack_eta_upper_strict
+#check Erdos1084.relaxedInterface_le_selectedCracks
+#check Erdos1084.relaxedInterface_le_twoCracks
+#check Erdos1084.relaxedInterface_le_twoCracks_add_epsilon
+
+#check Erdos1084.pairParameterUnion
+#check Erdos1084.measure_pairParameterUnion_zero
+#check Erdos1084.subset_pairParameterUnion
+#check Erdos1084.measure_zero_of_subset_pairParameterUnion
+#check Erdos1084.measure_zero_of_pair_witness
+
+#check Erdos1084.abruptSphereTranslationSet
+#check Erdos1084.measure_pairTranslationSphere_zero
+#check Erdos1084.measure_abruptSphereTranslationSet_zero
+#check Erdos1084.measure_abruptExceptionalSubset_zero
+
+#check Erdos1084.weightedContactCount
+#check Erdos1084.contactArrangementSupport
+#check Erdos1084.weightedContactCount_eq_zero_of_not_mem_support
+#check Erdos1084.weightedContactCount_le_totalWeight
+#check Erdos1084.contactCount_le_candidateCard
+#check Erdos1084.abruptDeficitZ
+#check Erdos1084.abruptDeficitZ_antitone
+#check Erdos1084.abruptDeficitZ_minimized_of_count_maximized
+#check Erdos1084.abruptDeficitZ_ge_twoCrack_sub_totalWeight

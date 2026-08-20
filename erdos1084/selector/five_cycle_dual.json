@@ -1,0 +1,16 @@
+{
+  "description": "Five-cycle below the exact one-fifth threshold.",
+  "interfaces": ["e0", "e1", "e2", "e3", "e4"],
+  "developments": [
+    {"id": "d0", "jump": {"e0": "1"}},
+    {"id": "d1", "jump": {"e1": "1"}},
+    {"id": "d2", "jump": {"e2": "1"}},
+    {"id": "d3", "jump": {"e3": "1"}},
+    {"id": "d4", "jump": {"e4": "1"}}
+  ],
+  "physical": {"e0": "19/100", "e1": "19/100", "e2": "19/100", "e3": "19/100", "e4": "19/100"},
+  "certificate": {
+    "type": "dual",
+    "prices": {"e0": "1", "e1": "1", "e2": "1", "e3": "1", "e4": "1"}
+  }
+}
