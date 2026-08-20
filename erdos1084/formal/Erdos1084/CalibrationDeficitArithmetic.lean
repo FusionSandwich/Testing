@@ -37,7 +37,7 @@ theorem developed_le_physical_add_underpayment
     linarith
   · have hsub : 0 ≤ developed - physical := sub_nonneg.mpr (le_of_not_ge h)
     rw [max_eq_right hsub]
-    exact le_rfl
+    linarith
 
 /-- Vanishing underpayment is equivalent to physical domination. -/
 theorem calibrationUnderpayment_eq_zero_iff
