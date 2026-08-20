@@ -7,7 +7,7 @@ namespace Erdos1084
 
 The human proof shows that every one of the twelve radial fivefold axes must be
 incident to a noncoherent cut, while one triangular cut face has only two radial
-endpoints.  This module certifies the resulting six-cut count and the exact
+endpoints. This module certifies the resulting six-cut count and the exact
 surface-coefficient comparisons for the twenty-tetrahedron model.
 -/
 
@@ -30,7 +30,7 @@ def icosahedralEffectiveFaces (lambda : ℝ) : ℝ :=
   20 + 12 * lambda
 
 /-- Leading coefficient cube of the equal-tetrahedron icosahedral face model. -/
-def icosahedralCoeffCube (lambda : ℝ) : ℝ :=
+noncomputable def icosahedralCoeffCube (lambda : ℝ) : ℝ :=
   (243 / 16) * icosahedralEffectiveFaces lambda ^ 3 / 20 ^ 2
 
 /-- Six full two-crack cuts have exact cube `31104/25`. -/
@@ -50,7 +50,7 @@ theorem sigma5_twoCrack_ratio :
   norm_num
 
 /-- Rational upper certificate for the critical cut-cost ratio. -/
-def icosahedralCriticalUpper : ℝ := 207629 / 1000000
+noncomputable def icosahedralCriticalUpper : ℝ := 207629 / 1000000
 
 /-- At the rational ratio `0.207629`, the icosahedral cube is already above FCC. -/
 theorem icosahedral_criticalUpper_cube_gt_fcc :
