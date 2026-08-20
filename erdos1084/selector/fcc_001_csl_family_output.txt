@@ -1,0 +1,22 @@
+FCC [001] COINCIDENCE-FAMILY ABRUPT AUDIT
+status: PASS
+primitive parameter audit range: 1 <= m <= 80, 0 <= n <= m
+primitive pairs checked: 1967
+smallest nontrivial reduced index: 5
+first distinct nontrivial reduced indices: 5, 13, 17, 25, 29, 37, 41, 53, 61, 65, 73, 85
+general formula:
+  maximum restored abrupt cross contacts per cell = 4
+  two-crack deficit per cell = 4*Sigma
+  abrupt deficit per cell = 4*Sigma-4
+  physical coincidence area = Sigma
+  abrupt density = 4*(1-1/Sigma)
+  ratio to two cracks = 1-1/Sigma
+nontrivial family bound:
+  Sigma >= 5
+  abrupt ratio >= 4/5
+  abrupt density >= 16/5
+Sigma-5 equality case:
+  parameter pair (m,n) = (2,1)
+  rotation numerator = [[3,-4],[4,3]]
+  rotation denominator = 5
+  density = 16/5
