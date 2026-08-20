@@ -1,7 +1,7 @@
 import Erdos1084
 
 /-!
-# Icosahedral holonomy-cut arithmetic smoke tests
+# Icosahedral holonomy-cut and spanning-tree development arithmetic smoke tests
 -/
 
 #check Erdos1084.icosahedral_six_cuts_of_two_endpoint_cover
@@ -15,3 +15,11 @@ import Erdos1084
 #check Erdos1084.icosahedral_criticalUpper_cube_gt_fcc
 #check Erdos1084.icosahedralCoeffCube_mono
 #check Erdos1084.icosahedral_not_below_fcc_of_ratio_ge_criticalUpper
+
+#check Erdos1084.icosa_spanningTree_incidence_identity
+#check Erdos1084.icosa_spanningTree_edge_marginal
+#check Erdos1084.icosa_spanningTree_marginal_gt_oneFifth
+#check Erdos1084.sigma5_ratio_gt_icosa_spanningTree_threshold
+#check Erdos1084.icosa_uniformPhysical_ge_elevenCuts
+#check Erdos1084.icosa_spanningTree_selector_scalar
+#check Erdos1084.icosa_spanningTree_threshold_gt_3666
