@@ -15,6 +15,8 @@ import Erdos1084.KeplerOneRadiusConcrete
 import Erdos1084.KeplerOneRadiusCalculus
 import Erdos1084.FccIsotropicBaseline
 import Erdos1084.MultiplicityWulffArithmetic
+import Erdos1084.CalibrationDeficitArithmetic
+import Erdos1084.TreeDevelopmentArithmetic
 import Erdos1084.IcosahedralCutArithmetic
 import Erdos1084.SeparatedCapStabilityCore
 import Erdos1084.GlobalDegreeConstraints
@@ -48,8 +50,9 @@ The library contains certified algebraic and abstract-assembly routes for the ra
 Kepler, periodic Barlow, invariant-measure Barlow, Gate-C occupied compactness, coherent-twin
 closure, exact normal approximation, holonomy and fan obstructions, icosahedral cut arithmetic,
 network and platelet scaling, diagonal recovery, two-crack interface bounds, abrupt-translation
-nullity, finite periodic contact arrangements, the FCC isotropic baseline, and developed-
-multiplicity Wulff arithmetic, together with Gate-D, Gate-E, and exact Sigma-5 certification.
+nullity, finite periodic contact arrangements, the FCC isotropic baseline, developed-multiplicity
+Wulff arithmetic, selector calibration deficits, and finite path development, together with
+Gate-D, Gate-E, and exact Sigma-5 certification.
 
 `KeplerOneRadiusCalculus.lean` proves the actual degree-eleven derivative formula, strict decrease
 on `[2,kpRadius]`, and the fully concrete unique one-radius minimax theorem.
@@ -57,9 +60,14 @@ on `[2,kpRadius]`, and the fully concrete unique one-radius minimax theorem.
 `FccIsotropicBaseline.lean` proves the ordered-magnitude identity behind
 `phi_FCC >= sqrt(3)|xi|`. `MultiplicityWulffArithmetic.lean` proves the finite power inequality
 `(sum x_i^3)^2 <= (sum x_i^2)^3` and the coefficient cube `432` for developed multiplicities.
-`IcosahedralCutArithmetic.lean` certifies that twelve fivefold axes and two endpoints per cut force
-at least six area-order cuts, that six two-crack cuts have cube `31104/25 > 432`, and that any
-average cut-cost ratio at least `0.207629` cannot beat FCC in the rigid icosahedral model.
+`CalibrationDeficitArithmetic.lean` records the exact shortfall by which a physical interface can
+underpay its developed jump, proves the sharp FCC lower bound minus the total shortfall, and proves
+that every below-FCC competitor needs an area-order total shortfall. `TreeDevelopmentArithmetic.lean`
+formalizes finite transition-word development, child recursion, backtracking, and the exact
+holonomy identity for closed paths. `IcosahedralCutArithmetic.lean` certifies that twelve fivefold
+axes and two endpoints per cut force at least six area-order cuts, that six two-crack cuts have cube
+`31104/25 > 432`, and that any average cut-cost ratio at least `0.207629` cannot beat FCC in the
+rigid icosahedral model.
 
 `DefectHalo.lean` proves the exact `26 D` closed defect-halo bound. The coherent-twin modules check
 the exact matrices, product trace `16/9`, seven-letter normal approximation, closed-dense relation
