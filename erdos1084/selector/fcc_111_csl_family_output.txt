@@ -1,0 +1,19 @@
+FCC [111] COINCIDENCE-FAMILY ABRUPT AUDIT
+status: PASS
+primitive Eisenstein audit box: |a|,|b| <= 80
+primitive pairs checked: 15728
+smallest nontrivial reduced index: 7
+first distinct nontrivial reduced indices: 7, 13, 19, 31, 37, 43, 49, 61, 67, 73, 79, 91
+general formula:
+  maximum restored abrupt cross contacts per cell = 3
+  two-crack deficit per cell = 3*Sigma
+  abrupt deficit per cell = 3*Sigma-3
+  ratio to two cracks = 1-1/Sigma
+nontrivial family bound:
+  Sigma >= 7
+  abrupt ratio >= 6/7
+index-seven equality case:
+  Eisenstein parameter pair (a,b) = (3,1)
+  norm = 7
+  cell deficit = 18
+  density = 12*sqrt(3)/7
