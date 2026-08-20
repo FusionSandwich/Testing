@@ -73,7 +73,7 @@ theorem fccOrderedTension_square_eq_iff
     ring
 
 /-- The exact isotropic continuum coefficient cube. -/
-def fccIsotropicCoeffCube : ℝ := 54 * Real.pi * Real.sqrt 3
+noncomputable def fccIsotropicCoeffCube : ℝ := 54 * Real.pi * Real.sqrt 3
 
 /-- The isotropic baseline cube is positive. -/
 theorem fccIsotropicCoeffCube_pos : 0 < fccIsotropicCoeffCube := by
