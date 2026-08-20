@@ -1,7 +1,7 @@
 import Erdos1084
 
 /-!
-# Developed-multiplicity, calibration-deficit, averaged-development, and tree-development tests
+# Developed-multiplicity, calibration-deficit, averaged-development, dual, and tree tests
 -/
 
 #check Erdos1084.multiplicity_twoLevel_factorization
@@ -35,6 +35,15 @@ import Erdos1084
 #check Erdos1084.uniformCycle_totalPhysical_ge_jump
 #check Erdos1084.fivefold_uniform_threshold
 #check Erdos1084.calibrationUnderpayment_expected_le_average
+
+#check Erdos1084.pricedDevelopmentCut
+#check Erdos1084.pricedPhysicalInterfaces
+#check Erdos1084.expectedPricedCut_eq_priceExpectedJump
+#check Erdos1084.priceExpectedJump_le_physical
+#check Erdos1084.feasibleDevelopment_implies_dualBound
+#check Erdos1084.IsFractionalDevelopmentFeasible
+#check Erdos1084.not_feasible_of_strict_dualGap
+#check Erdos1084.minimumPricedCut_le_physical_of_feasible
 
 #check Erdos1084.transitionWordProduct
 #check Erdos1084.pathDevelopment
