@@ -1,12 +1,12 @@
 import Erdos1084
 
 /-!
-# Developed-multiplicity, calibration-deficit, and tree-development axiom audit
+# Developed-multiplicity, calibration-deficit, averaged-development, and tree-development audit
 
-The finite power, positive-part, interface-sum, path-product, and coefficient arithmetic are
-formalized without project-specific axioms. BV coarea, the anisotropic Wulff inequality, geometric
-existence of compatible coherent developments, and physical interface domination remain explicit
-analytic or geometric inputs in the human proofs.
+The finite power, positive-part, interface-sum, finite averaging, cycle-threshold, and path-product
+arithmetic are formalized without project-specific axioms. BV coarea, the anisotropic Wulff
+inequality, geometric existence of compatible developments, enumeration of admissible branch sets,
+and physical interface domination remain explicit analytic or geometric inputs in the human proofs.
 -/
 
 #print axioms Erdos1084.multiplicity_twoLevel_factorization
@@ -30,6 +30,14 @@ analytic or geometric inputs in the human proofs.
 #print axioms Erdos1084.subsharp_implies_sum_underpayment
 #print axioms Erdos1084.calibrationDeficit_fcc_coefficient_cube
 
+#print axioms Erdos1084.averagedDevelopment_scalar_bound
+#print axioms Erdos1084.expectedDevelopmentCost_eq_sum_expectedInterface
+#print axioms Erdos1084.averagedDevelopment_selector_aggregate
+#print axioms Erdos1084.averagedDevelopment_selector_interfacewise
+#print axioms Erdos1084.uniformCycle_totalPhysical_ge_jump
+#print axioms Erdos1084.fivefold_uniform_threshold
+#print axioms Erdos1084.calibrationUnderpayment_expected_le_average
+
 #print axioms Erdos1084.pathDevelopment_root
 #print axioms Erdos1084.pathDevelopment_child
 #print axioms Erdos1084.pathDevelopment_eq_of_path_eq
@@ -37,12 +45,12 @@ analytic or geometric inputs in the human proofs.
 #print axioms Erdos1084.pathDevelopment_cycle_identity
 #print axioms Erdos1084.pathDevelopment_backtrack
 
-#check Erdos1084.multiplicity_finset_cube_bound
 #check Erdos1084.multiplicity_wulff_energy_assembly
-#check Erdos1084.developedMultiplicity_fcc_coefficient_cube
 #check Erdos1084.calibrationDeficit_selector_bound
 #check Erdos1084.calibrationDeficit_selector_sharp
 #check Erdos1084.subsharp_implies_sum_underpayment
+#check Erdos1084.averagedDevelopment_selector_aggregate
+#check Erdos1084.fivefold_uniform_threshold
+#check Erdos1084.calibrationUnderpayment_expected_le_average
 #check Erdos1084.pathDevelopment
-#check Erdos1084.pathDevelopment_child
 #check Erdos1084.pathDevelopment_cycle_identity
