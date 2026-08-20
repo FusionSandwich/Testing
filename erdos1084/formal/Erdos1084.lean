@@ -15,6 +15,7 @@ import Erdos1084.KeplerOneRadiusConcrete
 import Erdos1084.KeplerOneRadiusCalculus
 import Erdos1084.FccIsotropicBaseline
 import Erdos1084.MultiplicityWulffArithmetic
+import Erdos1084.IcosahedralCutArithmetic
 import Erdos1084.SeparatedCapStabilityCore
 import Erdos1084.GlobalDegreeConstraints
 import Erdos1084.DefectHalo
@@ -45,57 +46,30 @@ import Erdos1084.FiniteSpherePacking
 
 The library contains certified algebraic and abstract-assembly routes for the radius-two,
 Kepler, periodic Barlow, invariant-measure Barlow, Gate-C occupied compactness, coherent-twin
-closure, exact normal approximation, finite-word approximation, holonomy, fan, network, platelet,
-diagonal-recovery, two-crack interface, abrupt-translation nullity, finite periodic contact
-arrangements, the FCC isotropic baseline, and developed-multiplicity Wulff arithmetic, Gate-D
-interface algebra, Gate-E exact-mass recovery, and exact Sigma-5 two-lattice transition programs.
+closure, exact normal approximation, holonomy and fan obstructions, icosahedral cut arithmetic,
+network and platelet scaling, diagonal recovery, two-crack interface bounds, abrupt-translation
+nullity, finite periodic contact arrangements, the FCC isotropic baseline, and developed-
+multiplicity Wulff arithmetic, together with Gate-D, Gate-E, and exact Sigma-5 certification.
 
-`KeplerOneRadiusConcrete.lean` certifies the concrete degree-eleven endpoint constants, the exact
-factorization controlling its derivative, a uniform negative-derivative expression on
-`[2,kpRadius]`, and the exact endpoint crossing. `KeplerOneRadiusCalculus.lean` proves the actual
-derivative formula, strict decrease on `[2,kpRadius]`, and the fully concrete unique minimax
-theorem with no endpoint-profile hypothesis.
+`KeplerOneRadiusCalculus.lean` proves the actual degree-eleven derivative formula, strict decrease
+on `[2,kpRadius]`, and the fully concrete unique one-radius minimax theorem.
 
-`FccIsotropicBaseline.lean` proves the ordered-magnitude polynomial identity behind the sharp
-pointwise bound `phi_FCC >= sqrt(3)|xi|`, the exact continuum baseline cube
-`54*pi*sqrt(3)`, and its strict separation from the FCC cube `432`.
-`MultiplicityWulffArithmetic.lean` proves the finite power inequality
-`(sum x_i^3)^2 <= (sum x_i^2)^3`, the developed-level Wulff energy assembly, and the exact
-particle-coefficient cube `432`.
+`FccIsotropicBaseline.lean` proves the ordered-magnitude identity behind
+`phi_FCC >= sqrt(3)|xi|`. `MultiplicityWulffArithmetic.lean` proves the finite power inequality
+`(sum x_i^3)^2 <= (sum x_i^2)^3` and the coefficient cube `432` for developed multiplicities.
+`IcosahedralCutArithmetic.lean` certifies that twelve fivefold axes and two endpoints per cut force
+at least six area-order cuts, that six two-crack cuts have cube `31104/25 > 432`, and that any
+average cut-cost ratio at least `0.207629` cannot beat FCC in the rigid icosahedral model.
 
-`DefectHalo.lean` proves the exact finite combinatorial bound that the closed one-step halo of
-vertices with contact degree below twelve has cardinality at most `26 D` when the total degree
-deficit is `2 D` and every neighbor list has cardinality at most twelve.
-
-`FccTwinArithmetic.lean` checks the exact rational coherent-twin matrices, their powers, and the
-product trace `16/9`. `TwinNormalApproximationExample.lean` checks a seven-letter word whose
-endpoint `{111}` normal has squared transverse error `68066/14348907 < 1/200` relative to `[001]`.
-`ClosedDenseEquivalence.lean` proves that a closed identity class containing a dense subgroup makes
-a left-invariant relation universal. `DenseWordApproximation.lean` formalizes finite signed words,
-their intermediate states, and qualitative open-neighborhood approximation from an explicit
-finite-word density hypothesis. `TwinHolonomyArithmetic.lean` checks the noninteger `115/81`
-return trace of the naive four-sector twin cross. `TwinFanRecurrence.lean` formalizes the constant-
-angle recurrence and the implication from finite fan closure to an integer relation with `π`.
-`TwinNetworkArithmetic.lean` certifies the bad-site, deletion, line-order, and surface-scaling
-estimates for a compatible finite twin complex. `TwinPlateletArithmetic.lean` certifies the
-inverse-mesoscopic-scale rim estimate and the fixed-normal coverage obstruction for platelet
-arrays. `DiagonalRecoveryArithmetic.lean` certifies the normalization and epsilon bookkeeping for
-word-dependent line, point, and angular mismatch costs. `InterfaceUpperBoundArithmetic.lean`
-certifies the normalized and relaxed-infimum bookkeeping for the universal vacuum-slab two-crack
-upper bound. `CountableNullUnion.lean` certifies the doubly countable null-union bookkeeping.
-`AbruptSphereTranslation.lean` combines that bookkeeping with mathlib's finite-dimensional
-additive-Haar sphere-nullity theorem to prove that translations creating any abrupt exact contact
-between two countable point families form a null set. `FiniteContactArrangement.lean` certifies the
-finite support, total-weight bound, and abrupt-deficit minimization logic for a tangentially
-periodic weighted contact arrangement.
-
-`FiniteSpherePacking.lean` represents finite minimum-separation configurations, their Euclidean
-contact graphs, contact counts, degrees, and the exact degree-deficit identity directly in Lean.
+`DefectHalo.lean` proves the exact `26 D` closed defect-halo bound. The coherent-twin modules check
+the exact matrices, product trace `16/9`, seven-letter normal approximation, closed-dense relation
+collapse, four-sector holonomy trace `115/81`, finite-fan recurrence, network line-order bounds,
+platelet scaling, and diagonal epsilon bookkeeping.
 
 The Kepler and isoperimetric source theorems, Hales FCC/HCP local recognition, geometric Voronoi
-realization, anisotropic BV coarea, the Wulff inequality, existence of coherent developments,
-density of the concrete twin-generated subgroup in `SO(3)`, irrationality of the FCC twin angle as
-a multiple of `π`, planar circle-section nullity, finite algebraic arrangement enumeration, and the
-existence of a flat-boundary-compatible branching twin network remain visible ordinary
-mathematical inputs or open geometric tasks. They are not hidden as project axioms.
+realization, anisotropic BV coarea, the Wulff inequality, existence and interface domination of
+coherent developments, density of the concrete twin-generated subgroup in `SO(3)`, the
+root-of-unity twin-angle argument, and the fully relaxed off-lattice interface classification
+remain visible ordinary mathematical inputs or open geometric tasks. They are not hidden as
+project axioms.
 -/
