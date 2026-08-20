@@ -7,13 +7,15 @@ namespace Erdos1084
 
 The human crystallographic theorem proves that a commensurate `[001]` twist of
 reduced coincidence index `Sigma` restores at most four abrupt cross contacts per
-cell.  The two-crack deficit is `4*Sigma`, so the density and ratio are
+cell. The two-crack deficit is `4*Sigma`, so the density and ratio are
 
 `4*(1-1/Sigma)` and `1-1/Sigma`.
 
 This module certifies the formula arithmetic, monotonicity, the nontrivial
 `Sigma>=5` lower bound, and comparison with the selector thresholds.
 -/
+
+noncomputable section
 
 /-- Abrupt ratio to the two-crack value as a function of positive index. -/
 def fcc001AbruptRatio (sigma : ℝ) : ℝ :=
@@ -84,5 +86,7 @@ theorem fcc001AbruptCellDeficit_eq
 theorem fcc001AbruptCellDeficit_five :
     fcc001AbruptCellDeficit 5 = 16 := by
   norm_num [fcc001AbruptCellDeficit]
+
+end
 
 end Erdos1084
