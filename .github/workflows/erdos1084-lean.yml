@@ -1,4 +1,4 @@
-name: Erdős 1084 Kepler, Barlow, Gate-E, Sigma-5, Gate-C, and twin certification
+name: Erdős 1084 Kepler, Barlow, selector, and interface certification
 
 on:
   pull_request:
@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Reproduce exact radius-two and Gate-A through Gate-E certificates
+      - name: Reproduce exact certificates
         run: |
           python3 erdos1084/radius_two/verify_radius_two.py > erdos1084/radius_two/verification_output_regenerated.txt
           diff -u erdos1084/radius_two/verification_output.txt erdos1084/radius_two/verification_output_regenerated.txt
@@ -81,6 +81,7 @@ jobs:
           lake env lean Erdos1084KeplerCalculusTests.lean
           lake env lean Erdos1084FccBaselineTests.lean
           lake env lean Erdos1084MultiplicityTests.lean
+          lake env lean Erdos1084IcosahedralCutTests.lean
           lake env lean Erdos1084BarlowTests.lean
           lake env lean Erdos1084GateBTests.lean
           lake env lean Erdos1084GateCTests.lean
@@ -92,6 +93,7 @@ jobs:
           lake env lean Erdos1084KeplerCalculusAxiomAudit.lean
           lake env lean Erdos1084FccBaselineAxiomAudit.lean
           lake env lean Erdos1084MultiplicityAxiomAudit.lean
+          lake env lean Erdos1084IcosahedralCutAxiomAudit.lean
           lake env lean Erdos1084BarlowAxiomAudit.lean
           lake env lean Erdos1084GateBAxiomAudit.lean
           lake env lean Erdos1084GateCAxiomAudit.lean
