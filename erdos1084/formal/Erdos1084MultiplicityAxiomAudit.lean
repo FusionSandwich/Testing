@@ -1,12 +1,13 @@
 import Erdos1084
 
 /-!
-# Developed-multiplicity, calibration-deficit, averaged-development, and tree-development audit
+# Developed-multiplicity, calibration-deficit, averaged-development, dual, and tree audit
 
-The finite power, positive-part, interface-sum, finite averaging, cycle-threshold, and path-product
-arithmetic are formalized without project-specific axioms. BV coarea, the anisotropic Wulff
-inequality, geometric existence of compatible developments, enumeration of admissible branch sets,
-and physical interface domination remain explicit analytic or geometric inputs in the human proofs.
+The finite power, positive-part, interface-sum, finite averaging, cycle-threshold, dual-price, and
+path-product arithmetic are formalized without project-specific axioms. BV coarea, the anisotropic
+Wulff inequality, geometric existence of compatible developments, enumeration of admissible branch
+sets, converse polyhedral separation, and physical interface domination remain explicit analytic
+or geometric inputs in the human proofs.
 -/
 
 #print axioms Erdos1084.multiplicity_twoLevel_factorization
@@ -38,6 +39,12 @@ and physical interface domination remain explicit analytic or geometric inputs i
 #print axioms Erdos1084.fivefold_uniform_threshold
 #print axioms Erdos1084.calibrationUnderpayment_expected_le_average
 
+#print axioms Erdos1084.expectedPricedCut_eq_priceExpectedJump
+#print axioms Erdos1084.priceExpectedJump_le_physical
+#print axioms Erdos1084.feasibleDevelopment_implies_dualBound
+#print axioms Erdos1084.not_feasible_of_strict_dualGap
+#print axioms Erdos1084.minimumPricedCut_le_physical_of_feasible
+
 #print axioms Erdos1084.pathDevelopment_root
 #print axioms Erdos1084.pathDevelopment_child
 #print axioms Erdos1084.pathDevelopment_eq_of_path_eq
@@ -52,5 +59,7 @@ and physical interface domination remain explicit analytic or geometric inputs i
 #check Erdos1084.averagedDevelopment_selector_aggregate
 #check Erdos1084.fivefold_uniform_threshold
 #check Erdos1084.calibrationUnderpayment_expected_le_average
+#check Erdos1084.IsFractionalDevelopmentFeasible
+#check Erdos1084.not_feasible_of_strict_dualGap
 #check Erdos1084.pathDevelopment
 #check Erdos1084.pathDevelopment_cycle_identity
