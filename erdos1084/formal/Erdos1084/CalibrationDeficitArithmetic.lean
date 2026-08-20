@@ -6,8 +6,8 @@ namespace Erdos1084
 # Calibration-deficit reduction for the developed-multiplicity selector
 
 A developed grain complex has one reference jump cost on each interface, while
-the physical model pays its relaxed interface cost.  Their positive difference
-is the calibration deficit.  This module proves the facewise inequality, finite
+the physical model pays its relaxed interface cost. Their positive difference
+is the calibration deficit. This module proves the facewise inequality, finite
 sum assembly, sharp lower bound with a total deficit, and the necessary
 area-order deficit for every below-FCC competitor.
 
@@ -24,7 +24,7 @@ def calibrationUnderpayment (developed physical : ℝ) : ℝ :=
 /-- The calibration underpayment is nonnegative. -/
 theorem calibrationUnderpayment_nonneg (developed physical : ℝ) :
     0 ≤ calibrationUnderpayment developed physical := by
-  simp [calibrationUnderpayment]
+  exact le_max_left _ _
 
 /-- Every developed jump is bounded by physical cost plus its positive shortfall. -/
 theorem developed_le_physical_add_underpayment
@@ -33,11 +33,11 @@ theorem developed_le_physical_add_underpayment
   unfold calibrationUnderpayment
   by_cases h : developed ≤ physical
   · have hsub : developed - physical ≤ 0 := sub_nonpos.mpr h
-    simp [max_eq_left (le_of_eq rfl), hsub]
-    exact h
+    rw [max_eq_left hsub]
+    linarith
   · have hsub : 0 ≤ developed - physical := sub_nonneg.mpr (le_of_not_ge h)
     rw [max_eq_right hsub]
-    ring_nf
+    ring
 
 /-- Vanishing underpayment is equivalent to physical domination. -/
 theorem calibrationUnderpayment_eq_zero_iff
@@ -46,13 +46,12 @@ theorem calibrationUnderpayment_eq_zero_iff
   unfold calibrationUnderpayment
   constructor
   · intro h
-    have hmax : max 0 (developed - physical) = 0 := h
-    have hle : developed - physical ≤ 0 := by
-      exact le_of_max_eq_left hmax
+    have hle : developed - physical ≤ max 0 (developed - physical) :=
+      le_max_right _ _
+    rw [h] at hle
     linarith
   · intro h
-    have hsub : developed - physical ≤ 0 := sub_nonpos.mpr h
-    simp [max_eq_left (le_of_eq rfl), hsub]
+    exact max_eq_left (sub_nonpos.mpr h)
 
 /-- Finite interface sum of developed jumps is bounded by physical costs plus deficits. -/
 theorem sum_developed_le_physical_add_underpayment
