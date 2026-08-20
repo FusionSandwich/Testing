@@ -55,11 +55,7 @@ theorem multiplicity_finset_cube_bound
     exact Finset.sum_nonneg fun i hi => sq_nonneg (x i)
   calc
     (s.sum fun i => x i ^ 3) ^ 2 =
-        (s.sum fun i => (x i ^ 2) * x i) ^ 2 := by
-      congr 2
-      apply Finset.sum_congr rfl
-      intro i hi
-      ring
+        (s.sum fun i => (x i ^ 2) * x i) ^ 2 := by rfl
     _ ≤ (s.sum fun i => (x i ^ 2) ^ 2) *
           (s.sum fun i => x i ^ 2) := hcs
     _ ≤ (s.sum fun i => x i ^ 2) ^ 2 *
@@ -85,13 +81,12 @@ theorem nonneg_le_of_cube_le_cube
 /--
 Cube-root coordinate form of finite `2/3`-power subadditivity.
 If `totalRoot^3` is the sum of the level cubes, then its square is at most the
-sum of the level squares.
+sum of the level squares. The algebraic statement is valid without separate
+sign hypotheses on the individual roots.
 -/
 theorem multiplicity_totalRoot_square_le
     {ι : Type*} (s : Finset ι) (root : ι → ℝ) (totalRoot : ℝ)
-    (hroot : ∀ i ∈ s, 0 ≤ root i)
-    (htotal : totalRoot ^ 3 = s.sum fun i => root i ^ 3)
-    (htotalNonneg : 0 ≤ totalRoot) :
+    (htotal : totalRoot ^ 3 = s.sum fun i => root i ^ 3) :
     totalRoot ^ 2 ≤ s.sum fun i => root i ^ 2 := by
   let sumSq : ℝ := s.sum fun i => root i ^ 2
   have hsumSq : 0 ≤ sumSq := by
@@ -114,14 +109,12 @@ the total energy is at least `C*totalRoot^2`.
 theorem multiplicity_wulff_energy_assembly
     {ι : Type*} (s : Finset ι)
     (root energy : ι → ℝ) (totalRoot C : ℝ)
-    (hroot : ∀ i ∈ s, 0 ≤ root i)
     (hC : 0 ≤ C)
     (hlevel : ∀ i ∈ s, C * root i ^ 2 ≤ energy i)
-    (htotal : totalRoot ^ 3 = s.sum fun i => root i ^ 3)
-    (htotalNonneg : 0 ≤ totalRoot) :
+    (htotal : totalRoot ^ 3 = s.sum fun i => root i ^ 3) :
     C * totalRoot ^ 2 ≤ s.sum energy := by
   have hrootSq := multiplicity_totalRoot_square_le
-    s root totalRoot hroot htotal htotalNonneg
+    s root totalRoot htotal
   have hscaled : C * totalRoot ^ 2 ≤ C * (s.sum fun i => root i ^ 2) :=
     mul_le_mul_of_nonneg_left hrootSq hC
   have hlevels : C * (s.sum fun i => root i ^ 2) ≤ s.sum energy := by
