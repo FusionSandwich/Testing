@@ -60,6 +60,14 @@ jobs:
             > /tmp/icosa-spanning-tree-output.txt
           diff -u erdos1084/selector/icosa_spanning_tree_developments_output.txt \
             /tmp/icosa-spanning-tree-output.txt
+          python3 erdos1084/selector/verify_fcc_001_csl_family.py \
+            > /tmp/fcc-001-csl-family-output.txt
+          diff -u erdos1084/selector/fcc_001_csl_family_output.txt \
+            /tmp/fcc-001-csl-family-output.txt
+          python3 erdos1084/selector/verify_fcc_111_csl_family.py \
+            > /tmp/fcc-111-csl-family-output.txt
+          diff -u erdos1084/selector/fcc_111_csl_family_output.txt \
+            /tmp/fcc-111-csl-family-output.txt
       - name: Reject Lean placeholders and explicit project axioms
         run: |
           if grep -R --include='*.lean' -nE '(^|[^[:alnum:]_])(sorry|admit|sorryAx)([^[:alnum:]_]|$)' erdos1084/formal; then
@@ -93,6 +101,7 @@ jobs:
           lake env lean Erdos1084FccBaselineTests.lean
           lake env lean Erdos1084MultiplicityTests.lean
           lake env lean Erdos1084IcosahedralCutTests.lean
+          lake env lean Erdos1084CslTests.lean
           lake env lean Erdos1084BarlowTests.lean
           lake env lean Erdos1084GateBTests.lean
           lake env lean Erdos1084GateCTests.lean
@@ -105,6 +114,7 @@ jobs:
           lake env lean Erdos1084FccBaselineAxiomAudit.lean
           lake env lean Erdos1084MultiplicityAxiomAudit.lean
           lake env lean Erdos1084IcosahedralCutAxiomAudit.lean
+          lake env lean Erdos1084CslAxiomAudit.lean
           lake env lean Erdos1084BarlowAxiomAudit.lean
           lake env lean Erdos1084GateBAxiomAudit.lean
           lake env lean Erdos1084GateCAxiomAudit.lean
