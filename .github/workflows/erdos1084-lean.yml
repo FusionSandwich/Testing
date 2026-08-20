@@ -80,6 +80,7 @@ jobs:
           lake env lean Erdos1084KeplerTests.lean
           lake env lean Erdos1084KeplerCalculusTests.lean
           lake env lean Erdos1084FccBaselineTests.lean
+          lake env lean Erdos1084MultiplicityTests.lean
           lake env lean Erdos1084BarlowTests.lean
           lake env lean Erdos1084GateBTests.lean
           lake env lean Erdos1084GateCTests.lean
@@ -90,6 +91,7 @@ jobs:
           lake env lean Erdos1084AxiomAudit.lean
           lake env lean Erdos1084KeplerCalculusAxiomAudit.lean
           lake env lean Erdos1084FccBaselineAxiomAudit.lean
+          lake env lean Erdos1084MultiplicityAxiomAudit.lean
           lake env lean Erdos1084BarlowAxiomAudit.lean
           lake env lean Erdos1084GateBAxiomAudit.lean
           lake env lean Erdos1084GateCAxiomAudit.lean
