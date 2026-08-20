@@ -17,6 +17,7 @@ import Erdos1084.FccIsotropicBaseline
 import Erdos1084.MultiplicityWulffArithmetic
 import Erdos1084.CalibrationDeficitArithmetic
 import Erdos1084.AveragedDevelopmentArithmetic
+import Erdos1084.DevelopmentCutDualArithmetic
 import Erdos1084.TreeDevelopmentArithmetic
 import Erdos1084.IcosahedralCutArithmetic
 import Erdos1084.SeparatedCapStabilityCore
@@ -52,8 +53,8 @@ Kepler, periodic Barlow, invariant-measure Barlow, Gate-C occupied compactness, 
 closure, exact normal approximation, holonomy and fan obstructions, icosahedral cut arithmetic,
 network and platelet scaling, diagonal recovery, two-crack interface bounds, abrupt-translation
 nullity, finite periodic contact arrangements, the FCC isotropic baseline, developed-multiplicity
-Wulff arithmetic, selector calibration deficits, averaged developments, and finite path
-development, together with Gate-D, Gate-E, and exact Sigma-5 certification.
+Wulff arithmetic, selector calibration deficits, averaged developments, fractional cut duality,
+and finite path development, together with Gate-D, Gate-E, and exact Sigma-5 certification.
 
 `KeplerOneRadiusCalculus.lean` proves the actual degree-eleven derivative formula, strict decrease
 on `[2,kpRadius]`, and the fully concrete unique one-radius minimax theorem.
@@ -67,11 +68,13 @@ that every below-FCC competitor needs an area-order total shortfall.
 `AveragedDevelopmentArithmetic.lean` proves that a probability distribution over admissible
 developments only requires physical interfaces to dominate the expected cut-jump vector; it also
 certifies the exact `1/k` uniform cycle threshold and the positive-part averaging improvement.
-`TreeDevelopmentArithmetic.lean` formalizes finite transition-word development, child recursion,
-backtracking, and the exact holonomy identity for closed paths. `IcosahedralCutArithmetic.lean`
-certifies that twelve fivefold axes and two endpoints per cut force at least six area-order cuts,
-that six two-crack cuts have cube `31104/25 > 432`, and that any average cut-cost ratio at least
-`0.207629` cannot beat FCC in the rigid icosahedral model.
+`DevelopmentCutDualArithmetic.lean` proves the nonnegative-price dual implication and that a strict
+priced cut gap rules out every fractional development. `TreeDevelopmentArithmetic.lean`
+formalizes finite transition-word development, child recursion, backtracking, and the exact
+holonomy identity for closed paths. `IcosahedralCutArithmetic.lean` certifies that twelve fivefold
+axes and two endpoints per cut force at least six area-order cuts, that six two-crack cuts have cube
+`31104/25 > 432`, and that any average cut-cost ratio at least `0.207629` cannot beat FCC in the
+rigid icosahedral model.
 
 `DefectHalo.lean` proves the exact `26 D` closed defect-halo bound. The coherent-twin modules check
 the exact matrices, product trace `16/9`, seven-letter normal approximation, closed-dense relation
@@ -81,7 +84,7 @@ platelet scaling, and diagonal epsilon bookkeeping.
 The Kepler and isoperimetric source theorems, Hales FCC/HCP local recognition, geometric Voronoi
 realization, anisotropic BV coarea, the Wulff inequality, existence and interface domination of
 coherent developments, density of the concrete twin-generated subgroup in `SO(3)`, the
-root-of-unity twin-angle argument, and the fully relaxed off-lattice interface classification
-remain visible ordinary mathematical inputs or open geometric tasks. They are not hidden as
-project axioms.
+root-of-unity twin-angle argument, finite-dimensional converse LP separation, and the fully relaxed
+off-lattice interface classification remain visible ordinary mathematical inputs or open
+geometric tasks. They are not hidden as project axioms.
 -/
