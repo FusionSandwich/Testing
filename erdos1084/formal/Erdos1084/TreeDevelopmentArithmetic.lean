@@ -5,8 +5,8 @@ namespace Erdos1084
 /-!
 # Finite path development bookkeeping for coherent grain trees
 
-A rooted tree gives every grain one unique finite edge path from the root.  The
-geometric coherent-continuation maps label those edges by group elements.  This
+A rooted tree gives every grain one unique finite edge path from the root. The
+geometric coherent-continuation maps label those edges by group elements. This
 module formalizes the path-product development and the exact child recursion.
 Existence and uniqueness of the root paths in a geometric grain tree remain the
 standard graph-theoretic input.
@@ -68,7 +68,10 @@ theorem pathDevelopment_cycle_identity
     cycle.prod = 1 := by
   have hmul : (rootPath v).prod * cycle.prod = (rootPath v).prod := by
     simpa [transitionWordProduct, pathDevelopment] using hclose
-  exact mul_left_cancel hmul
+  have hmul' :
+      (rootPath v).prod * cycle.prod = (rootPath v).prod * 1 := by
+    simpa using hmul
+  exact mul_left_cancel hmul'
 
 /-- Reversing a transition is represented by the inverse group element. -/
 theorem pathDevelopment_backtrack
