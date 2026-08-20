@@ -1,7 +1,7 @@
 import Erdos1084
 
 /-!
-# Developed-multiplicity, calibration-deficit, and tree-development smoke tests
+# Developed-multiplicity, calibration-deficit, averaged-development, and tree-development tests
 -/
 
 #check Erdos1084.multiplicity_twoLevel_factorization
@@ -25,6 +25,16 @@ import Erdos1084
 #check Erdos1084.subsharp_implies_calibrationDeficit
 #check Erdos1084.subsharp_implies_sum_underpayment
 #check Erdos1084.calibrationDeficit_fcc_coefficient_cube
+
+#check Erdos1084.expectedDevelopmentCost
+#check Erdos1084.expectedInterfaceJump
+#check Erdos1084.averagedDevelopment_scalar_bound
+#check Erdos1084.expectedDevelopmentCost_eq_sum_expectedInterface
+#check Erdos1084.averagedDevelopment_selector_aggregate
+#check Erdos1084.averagedDevelopment_selector_interfacewise
+#check Erdos1084.uniformCycle_totalPhysical_ge_jump
+#check Erdos1084.fivefold_uniform_threshold
+#check Erdos1084.calibrationUnderpayment_expected_le_average
 
 #check Erdos1084.transitionWordProduct
 #check Erdos1084.pathDevelopment
