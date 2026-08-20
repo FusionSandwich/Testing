@@ -56,6 +56,10 @@ jobs:
           python3 erdos1084/selector/verify_development_lp_certificate.py \
             erdos1084/selector/five_cycle_dual.json > /tmp/five-cycle-dual-output.txt
           diff -u erdos1084/selector/five_cycle_dual_output.txt /tmp/five-cycle-dual-output.txt
+          python3 erdos1084/selector/verify_icosa_spanning_tree_developments.py \
+            > /tmp/icosa-spanning-tree-output.txt
+          diff -u erdos1084/selector/icosa_spanning_tree_developments_output.txt \
+            /tmp/icosa-spanning-tree-output.txt
       - name: Reject Lean placeholders and explicit project axioms
         run: |
           if grep -R --include='*.lean' -nE '(^|[^[:alnum:]_])(sorry|admit|sorryAx)([^[:alnum:]_]|$)' erdos1084/formal; then
