@@ -11,6 +11,8 @@ per cell. The two-crack deficit is `3*Sigma`, so the ratio is `1-1/Sigma` and
 the physical density is `2*sqrt(3)*(1-1/Sigma)`.
 -/
 
+noncomputable section
+
 /-- Abrupt ratio to the two-crack value. -/
 def fcc111AbruptRatio (sigma : ℝ) : ℝ :=
   1 - 1 / sigma
@@ -82,5 +84,7 @@ theorem fcc111AbruptCellDeficit_eq
 theorem fcc111AbruptCellDeficit_seven :
     fcc111AbruptCellDeficit 7 = 18 := by
   norm_num [fcc111AbruptCellDeficit]
+
+end
 
 end Erdos1084
