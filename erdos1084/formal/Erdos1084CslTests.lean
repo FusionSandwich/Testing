@@ -1,7 +1,7 @@
 import Erdos1084
 
 /-!
-# FCC high-symmetry coincidence-family arithmetic smoke tests
+# FCC high-symmetry and general Bravais-channel abrupt arithmetic smoke tests
 -/
 
 #check Erdos1084.fcc001AbruptRatio
@@ -27,3 +27,18 @@ import Erdos1084
 #check Erdos1084.fcc111AbruptCellDeficit
 #check Erdos1084.fcc111AbruptCellDeficit_eq
 #check Erdos1084.fcc111AbruptCellDeficit_seven
+
+#check Erdos1084.bravaisAbruptRatioLower
+#check Erdos1084.triangularAbruptRatioLower
+#check Erdos1084.bravaisAbruptRatioLower_seven
+#check Erdos1084.triangularAbruptRatioLower_seven
+#check Erdos1084.bravaisAbruptRatioLower_mono
+#check Erdos1084.triangularAbruptRatioLower_mono
+#check Erdos1084.bravaisAbruptRatioLower_ge_threeSevenths
+#check Erdos1084.triangularAbruptRatioLower_ge_fourSevenths
+#check Erdos1084.bravaisAbruptRatioLower_indexSeven_gt_icosaThreshold
+#check Erdos1084.bravais_le_triangular_ratioLower
+#check Erdos1084.bravaisAbruptCellDeficitLower
+#check Erdos1084.bravaisAbruptCellDeficitLower_eq
+#check Erdos1084.triangularAbruptCellDeficitLower
+#check Erdos1084.triangularAbruptCellDeficitLower_eq
