@@ -1,0 +1,9 @@
+FRACTIONAL DEVELOPMENT LP CERTIFICATE: PASS
+  certificate type: dual
+  interfaces: 5
+  developments: 5
+  priced physical budget: 19/20
+  minimum priced development cut: 1
+  strict dual gap: 1/20
+  minimizing developments: d0, d1, d2, d3, d4
+  positive prices: e0=1, e1=1, e2=1, e3=1, e4=1
