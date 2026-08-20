@@ -1,0 +1,16 @@
+{
+  "description": "Uniform fractional development on a five-cycle.",
+  "interfaces": ["e0", "e1", "e2", "e3", "e4"],
+  "developments": [
+    {"id": "d0", "jump": {"e0": "1"}},
+    {"id": "d1", "jump": {"e1": "1"}},
+    {"id": "d2", "jump": {"e2": "1"}},
+    {"id": "d3", "jump": {"e3": "1"}},
+    {"id": "d4", "jump": {"e4": "1"}}
+  ],
+  "physical": {"e0": "1/5", "e1": "1/5", "e2": "1/5", "e3": "1/5", "e4": "1/5"},
+  "certificate": {
+    "type": "primal",
+    "weights": {"d0": "1/5", "d1": "1/5", "d2": "1/5", "d3": "1/5", "d4": "1/5"}
+  }
+}
