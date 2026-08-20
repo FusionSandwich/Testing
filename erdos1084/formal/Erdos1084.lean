@@ -23,6 +23,7 @@ import Erdos1084.IcosahedralCutArithmetic
 import Erdos1084.IcosahedralSpanningTreeArithmetic
 import Erdos1084.Fcc001CslArithmetic
 import Erdos1084.Fcc111CslArithmetic
+import Erdos1084.BravaisAbruptArithmetic
 import Erdos1084.SeparatedCapStabilityCore
 import Erdos1084.GlobalDegreeConstraints
 import Erdos1084.DefectHalo
@@ -54,11 +55,12 @@ import Erdos1084.FiniteSpherePacking
 The library contains certified algebraic and abstract-assembly routes for the radius-two,
 Kepler, periodic Barlow, invariant-measure Barlow, Gate-C occupied compactness, coherent-twin
 closure, exact normal approximation, holonomy and fan obstructions, icosahedral cut and spanning-
-tree arithmetic, high-symmetry FCC coincidence-family arithmetic, network and platelet scaling,
-diagonal recovery, two-crack interface bounds, abrupt-translation nullity, finite periodic contact
-arrangements, the FCC isotropic baseline, developed-multiplicity Wulff arithmetic, selector
-calibration deficits, averaged developments, fractional cut duality, and finite path development,
-together with Gate-D, Gate-E, and exact Sigma-5 certification.
+tree arithmetic, high-symmetry FCC coincidence-family and general Bravais-channel abrupt
+arithmetic, network and platelet scaling, diagonal recovery, two-crack interface bounds, abrupt-
+translation nullity, finite periodic contact arrangements, the FCC isotropic baseline, developed-
+multiplicity Wulff arithmetic, selector calibration deficits, averaged developments, fractional
+cut duality, and finite path development, together with Gate-D, Gate-E, and exact Sigma-5
+certification.
 
 `KeplerOneRadiusCalculus.lean` proves the actual degree-eleven derivative formula, strict decrease
 on `[2,kpRadius]`, and the fully concrete unique one-radius minimax theorem.
@@ -81,8 +83,10 @@ cut incidence bound and its rigid-model coefficient threshold.
 primal-spanning-tree development family, the spanning-tree incidence identity, and its comparison
 with the restricted Sigma-5 ratio. `Fcc001CslArithmetic.lean` and
 `Fcc111CslArithmetic.lean` certify the exact abrupt ratios `1-1/Sigma`, the nontrivial lower bounds
-`4/5` and `6/7`, and their strict separation from the `11/30` canonical development threshold for
-the commensurate `[001]` and `[111]` twist families.
+`4/5` and `6/7`, and their strict separation from `11/30` for the commensurate `[001]` and `[111]`
+twist families. `BravaisAbruptArithmetic.lean` certifies the universal conditional index-seven
+lower envelope `1-4/Sigma`, its exact `3/7` value at seven, the stronger triangular envelope, and
+both natural deficit identities.
 
 `DefectHalo.lean` proves the exact `26 D` closed defect-halo bound. The coherent-twin modules check
 the exact matrices, product trace `16/9`, seven-letter normal approximation, closed-dense relation
@@ -92,8 +96,9 @@ platelet scaling, and diagonal epsilon bookkeeping.
 The Kepler and isoperimetric source theorems, Hales FCC/HCP local recognition, geometric Voronoi
 realization, anisotropic BV coarea, the Wulff inequality, existence and interface domination of
 coherent developments, planar primal-tree/dual-tree topology, square- and triangular-lattice
-coincidence classifications, density of the concrete twin-generated subgroup in `SO(3)`, the
-root-of-unity twin-angle argument, finite-dimensional converse LP separation, and the fully
-relaxed off-lattice interface classification remain visible ordinary mathematical inputs or open
-geometric tasks. They are not hidden as project axioms.
+coincidence classifications, the planar parallelohedron theorem and crystallographic channel
+decomposition, density of the concrete twin-generated subgroup in `SO(3)`, the root-of-unity
+twin-angle argument, finite-dimensional converse LP separation, and the fully relaxed off-lattice
+interface classification remain visible ordinary mathematical inputs or open geometric tasks.
+They are not hidden as project axioms.
 -/
