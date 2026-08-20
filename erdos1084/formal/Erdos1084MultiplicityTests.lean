@@ -1,7 +1,7 @@
 import Erdos1084
 
 /-!
-# Developed-multiplicity Wulff arithmetic smoke tests
+# Developed-multiplicity, calibration-deficit, and tree-development smoke tests
 -/
 
 #check Erdos1084.multiplicity_twoLevel_factorization
@@ -12,3 +12,25 @@ import Erdos1084
 #check Erdos1084.multiplicity_totalRoot_square_le
 #check Erdos1084.multiplicity_wulff_energy_assembly
 #check Erdos1084.developedMultiplicity_fcc_coefficient_cube
+
+#check Erdos1084.calibrationUnderpayment
+#check Erdos1084.calibrationUnderpayment_nonneg
+#check Erdos1084.developed_le_physical_add_underpayment
+#check Erdos1084.calibrationUnderpayment_eq_zero_iff
+#check Erdos1084.sum_developed_le_physical_add_underpayment
+#check Erdos1084.developedPerimeter_le_physicalEnergy_add_deficit
+#check Erdos1084.physicalEnergy_ge_sharp_sub_deficit
+#check Erdos1084.calibrationDeficit_selector_bound
+#check Erdos1084.calibrationDeficit_selector_sharp
+#check Erdos1084.subsharp_implies_calibrationDeficit
+#check Erdos1084.subsharp_implies_sum_underpayment
+#check Erdos1084.calibrationDeficit_fcc_coefficient_cube
+
+#check Erdos1084.transitionWordProduct
+#check Erdos1084.pathDevelopment
+#check Erdos1084.pathDevelopment_root
+#check Erdos1084.pathDevelopment_child
+#check Erdos1084.pathDevelopment_eq_of_path_eq
+#check Erdos1084.pathDevelopment_cycle_closes
+#check Erdos1084.pathDevelopment_cycle_identity
+#check Erdos1084.pathDevelopment_backtrack
