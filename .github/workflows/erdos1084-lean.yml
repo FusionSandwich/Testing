@@ -1,0 +1,103 @@
+name: Erdős 1084 Kepler, Barlow, selector, and interface certification
+
+on:
+  pull_request:
+    branches: [testing]
+    paths:
+      - 'erdos1084/**'
+      - '.github/workflows/erdos1084-lean.yml'
+  push:
+    branches:
+      - 'agent/erdos-1084-sigma5-stabilization-lean-20260819'
+      - 'agent/erdos-1084-target-b-occupied-compactness-ci-20260819'
+      - 'agent/erdos-1084-target-b-twin-closure-ci-20260819'
+      - 'agent/erdos-1084-twin-formal-network-ci-20260819'
+    paths:
+      - 'erdos1084/**'
+      - '.github/workflows/erdos1084-lean.yml'
+  workflow_dispatch:
+
+jobs:
+  certification:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reproduce exact certificates
+        run: |
+          python3 erdos1084/radius_two/verify_radius_two.py > erdos1084/radius_two/verification_output_regenerated.txt
+          diff -u erdos1084/radius_two/verification_output.txt erdos1084/radius_two/verification_output_regenerated.txt
+          python3 erdos1084/radius_two/verify_1673_envelope.py > erdos1084/radius_two/verification_1673_output_regenerated.txt
+          diff -u erdos1084/radius_two/verification_1673_output.txt erdos1084/radius_two/verification_1673_output_regenerated.txt
+          rm -rf /tmp/barlow-gate-a
+          mkdir -p /tmp/barlow-gate-a
+          python3 erdos1084/gate_a/solve_periodic_barlow_gate_a.py \
+            --max-period 12 \
+            --output-dir /tmp/barlow-gate-a \
+            > /tmp/barlow-gate-a-output.txt
+          diff -u erdos1084/gate_a/gate_a_output.txt /tmp/barlow-gate-a-output.txt
+          python3 erdos1084/gate_b/verify_gate_b.py > /tmp/barlow-gate-b-output.txt
+          diff -u erdos1084/gate_b/gate_b_output.txt /tmp/barlow-gate-b-output.txt
+          python3 erdos1084/gate_d/verify_orientation_cutset.py > /tmp/orientation-cutset-output.txt
+          diff -u erdos1084/gate_d/orientation_cutset_output.txt /tmp/orientation-cutset-output.txt
+          python3 erdos1084/gate_e/verify_gate_e_recovery.py > /tmp/gate-e-recovery-output.txt
+          diff -u erdos1084/gate_e/gate_e_recovery_output.txt /tmp/gate-e-recovery-output.txt
+          python3 erdos1084/gate_e/verify_tetrahedral_polycrystal_tests.py > /tmp/gate-e-polycrystal-output.txt
+          diff -u erdos1084/gate_e/tetrahedral_polycrystal_output.txt /tmp/gate-e-polycrystal-output.txt
+          python3 erdos1084/gate_c/verify_fcc_hcp_voronoi_cells.py > /tmp/gate-c-voronoi-output.txt
+          diff -u erdos1084/gate_c/fcc_hcp_voronoi_output.txt /tmp/gate-c-voronoi-output.txt
+          python3 erdos1084/gate_c/verify_fcc_twin_group.py > /tmp/gate-c-twin-output.txt
+          diff -u erdos1084/gate_c/fcc_twin_group_output.txt /tmp/gate-c-twin-output.txt
+          python3 erdos1084/gate_c/verify_twin_normal_001_word.py > /tmp/twin-normal-001-output.txt
+          diff -u erdos1084/gate_c/twin_normal_001_word_output.txt /tmp/twin-normal-001-output.txt
+      - name: Reject Lean placeholders and explicit project axioms
+        run: |
+          if grep -R --include='*.lean' -nE '(^|[^[:alnum:]_])(sorry|admit|sorryAx)([^[:alnum:]_]|$)' erdos1084/formal; then
+            echo 'Lean placeholder found' >&2
+            exit 1
+          fi
+          if grep -R --include='*.lean' -nE '^[[:space:]]*(axiom|constant)[[:space:]]+' erdos1084/formal/Erdos1084; then
+            echo 'Project-specific axiom/constant declaration found' >&2
+            exit 1
+          fi
+      - name: Install Elan
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf \
+            https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
+            | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Resolve mathlib and build
+        working-directory: erdos1084/formal
+        run: |
+          lake update
+          lake exe cache get
+          lake build
+      - name: Compile theorem smoke tests and axiom audits
+        working-directory: erdos1084/formal
+        run: |
+          lake env lean Erdos1084Tests.lean
+          lake env lean Erdos1084AssemblyTests.lean
+          lake env lean Erdos1084OptimizedTests.lean
+          lake env lean Erdos1084KeplerTests.lean
+          lake env lean Erdos1084KeplerCalculusTests.lean
+          lake env lean Erdos1084FccBaselineTests.lean
+          lake env lean Erdos1084MultiplicityTests.lean
+          lake env lean Erdos1084IcosahedralCutTests.lean
+          lake env lean Erdos1084BarlowTests.lean
+          lake env lean Erdos1084GateBTests.lean
+          lake env lean Erdos1084GateCTests.lean
+          lake env lean Erdos1084TwinTests.lean
+          lake env lean Erdos1084GateDTests.lean
+          lake env lean Erdos1084GateETests.lean
+          lake env lean Erdos1084Sigma5Tests.lean
+          lake env lean Erdos1084AxiomAudit.lean
+          lake env lean Erdos1084KeplerCalculusAxiomAudit.lean
+          lake env lean Erdos1084FccBaselineAxiomAudit.lean
+          lake env lean Erdos1084MultiplicityAxiomAudit.lean
+          lake env lean Erdos1084IcosahedralCutAxiomAudit.lean
+          lake env lean Erdos1084BarlowAxiomAudit.lean
+          lake env lean Erdos1084GateBAxiomAudit.lean
+          lake env lean Erdos1084GateCAxiomAudit.lean
+          lake env lean Erdos1084TwinAxiomAudit.lean
+          lake env lean Erdos1084GateDAxiomAudit.lean
+          lake env lean Erdos1084GateEAxiomAudit.lean
+          lake env lean Erdos1084Sigma5AxiomAudit.lean

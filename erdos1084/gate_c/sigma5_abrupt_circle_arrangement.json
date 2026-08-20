@@ -1,0 +1,17 @@
+{
+  "description": "Four nearest difference-lattice contact loci at the Sigma-5 [001] abrupt optimum. The open disks are the corresponding hard-core conflict regions; the origin lies on all four boundaries.",
+  "circles": [
+    {"id": "c00", "center": ["-1/5", "2/5"], "radius_sq": "1/5", "weight": 1},
+    {"id": "c10", "center": ["-2/5", "-1/5"], "radius_sq": "1/5", "weight": 1},
+    {"id": "c01", "center": ["2/5", "1/5"], "radius_sq": "1/5", "weight": 1},
+    {"id": "c11", "center": ["1/5", "-2/5"], "radius_sq": "1/5", "weight": 1}
+  ],
+  "conflict_disks": [
+    {"id": "d00", "center": ["-1/5", "2/5"], "radius_sq": "1/5"},
+    {"id": "d10", "center": ["-2/5", "-1/5"], "radius_sq": "1/5"},
+    {"id": "d01", "center": ["2/5", "1/5"], "radius_sq": "1/5"},
+    {"id": "d11", "center": ["1/5", "-2/5"], "radius_sq": "1/5"}
+  ],
+  "witness": ["0", "0"],
+  "claimed_maximum": 4
+}
