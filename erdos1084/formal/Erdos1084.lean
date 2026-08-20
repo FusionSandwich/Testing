@@ -20,6 +20,7 @@ import Erdos1084.AveragedDevelopmentArithmetic
 import Erdos1084.DevelopmentCutDualArithmetic
 import Erdos1084.TreeDevelopmentArithmetic
 import Erdos1084.IcosahedralCutArithmetic
+import Erdos1084.IcosahedralSpanningTreeArithmetic
 import Erdos1084.SeparatedCapStabilityCore
 import Erdos1084.GlobalDegreeConstraints
 import Erdos1084.DefectHalo
@@ -50,11 +51,12 @@ import Erdos1084.FiniteSpherePacking
 
 The library contains certified algebraic and abstract-assembly routes for the radius-two,
 Kepler, periodic Barlow, invariant-measure Barlow, Gate-C occupied compactness, coherent-twin
-closure, exact normal approximation, holonomy and fan obstructions, icosahedral cut arithmetic,
-network and platelet scaling, diagonal recovery, two-crack interface bounds, abrupt-translation
-nullity, finite periodic contact arrangements, the FCC isotropic baseline, developed-multiplicity
-Wulff arithmetic, selector calibration deficits, averaged developments, fractional cut duality,
-and finite path development, together with Gate-D, Gate-E, and exact Sigma-5 certification.
+closure, exact normal approximation, holonomy and fan obstructions, icosahedral cut and spanning-
+tree arithmetic, network and platelet scaling, diagonal recovery, two-crack interface bounds,
+abrupt-translation nullity, finite periodic contact arrangements, the FCC isotropic baseline,
+developed-multiplicity Wulff arithmetic, selector calibration deficits, averaged developments,
+fractional cut duality, and finite path development, together with Gate-D, Gate-E, and exact
+Sigma-5 certification.
 
 `KeplerOneRadiusCalculus.lean` proves the actual degree-eleven derivative formula, strict decrease
 on `[2,kpRadius]`, and the fully concrete unique one-radius minimax theorem.
@@ -71,10 +73,11 @@ certifies the exact `1/k` uniform cycle threshold and the positive-part averagin
 `DevelopmentCutDualArithmetic.lean` proves the nonnegative-price dual implication and that a strict
 priced cut gap rules out every fractional development. `TreeDevelopmentArithmetic.lean`
 formalizes finite transition-word development, child recursion, backtracking, and the exact
-holonomy identity for closed paths. `IcosahedralCutArithmetic.lean` certifies that twelve fivefold
-axes and two endpoints per cut force at least six area-order cuts, that six two-crack cuts have cube
-`31104/25 > 432`, and that any average cut-cost ratio at least `0.207629` cannot beat FCC in the
-rigid icosahedral model.
+holonomy identity for closed paths. `IcosahedralCutArithmetic.lean` certifies the necessary six-
+cut incidence bound and its rigid-model coefficient threshold.
+`IcosahedralSpanningTreeArithmetic.lean` certifies the exact `11/30` marginal of the unconditional
+primal-spanning-tree development family, the spanning-tree incidence identity, and its comparison
+with the restricted Sigma-5 ratio.
 
 `DefectHalo.lean` proves the exact `26 D` closed defect-halo bound. The coherent-twin modules check
 the exact matrices, product trace `16/9`, seven-letter normal approximation, closed-dense relation
@@ -83,8 +86,8 @@ platelet scaling, and diagonal epsilon bookkeeping.
 
 The Kepler and isoperimetric source theorems, Hales FCC/HCP local recognition, geometric Voronoi
 realization, anisotropic BV coarea, the Wulff inequality, existence and interface domination of
-coherent developments, density of the concrete twin-generated subgroup in `SO(3)`, the
-root-of-unity twin-angle argument, finite-dimensional converse LP separation, and the fully relaxed
-off-lattice interface classification remain visible ordinary mathematical inputs or open
-geometric tasks. They are not hidden as project axioms.
+coherent developments, planar primal-tree/dual-tree topology, density of the concrete twin-
+generated subgroup in `SO(3)`, the root-of-unity twin-angle argument, finite-dimensional converse
+LP separation, and the fully relaxed off-lattice interface classification remain visible ordinary
+mathematical inputs or open geometric tasks. They are not hidden as project axioms.
 -/
