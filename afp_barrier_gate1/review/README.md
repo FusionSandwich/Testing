@@ -1,5 +1,7 @@
 # AFP R5 hostile independent review
 
+**Delivery status:** `COMPLETE_REVIEW_PACKAGE_SAVED`
+
 This directory contains the independent non-human mathematical and formal-methods review of the immutable AFP R5 release.
 
 ## Pinned review target
@@ -34,7 +36,9 @@ No counterexample was found to the core sharp frontier, final equality chain, or
 
 - No manuscript, Lean source, numerical source, release file, or scientific claim ledger was modified.
 - The review branch was created directly from final commit `653d8945a5e91515f7a382ed42a8f4f51c0f0094`.
-- The page map resolves Corollary 6.3 to PDF p. 8 and Theorem 7.2 and its proof to PDF pp. 13–14.
+- The exact page map resolves Corollary 6.3 to PDF p. 8 and Theorem 7.2 and its proof to PDF pp. 13–14.
+- GitHub blob IDs for the dated package match independently computed local blob IDs; the recorded SHA-256 manifest is internally consistent.
+- The net Git comparison against R5 contains review artifacts only.
 - P2F remains computationally inconclusive and supplies no physical conclusion.
 - This review is not identifiable human peer review, journal acceptance, literature-priority certification, physical validation, or experimental calibration.
 
