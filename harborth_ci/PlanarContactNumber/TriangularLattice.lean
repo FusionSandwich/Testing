@@ -11,6 +11,7 @@ def axialQ (a b : ℤ) : ℤ := a ^ 2 + a * b + b ^ 2
 /-- A useful sum-of-squares identity for the triangular quadratic form. -/
 theorem four_mul_axialQ (a b : ℤ) :
     4 * axialQ a b = (2 * a + b) ^ 2 + 3 * b ^ 2 := by
+  unfold axialQ
   ring
 
 /-- The triangular quadratic form is nonnegative. -/
@@ -54,6 +55,7 @@ theorem axialQ_eq_one_iff (a b : ℤ) :
   · intro hq
     have h1 := four_mul_axialQ a b
     have h2 : 4 * axialQ a b = (2 * b + a) ^ 2 + 3 * a ^ 2 := by
+      unfold axialQ
       ring
     have ha2 : a ^ 2 ≤ 1 := by
       nlinarith [sq_nonneg (2 * b + a)]
@@ -63,7 +65,11 @@ theorem axialQ_eq_one_iff (a b : ℤ) :
     have ha_upper : a ≤ 1 := by nlinarith
     have hb_lower : -1 ≤ b := by nlinarith
     have hb_upper : b ≤ 1 := by nlinarith
-    interval_cases a <;> interval_cases b <;> norm_num [axialQ] at hq ⊢
+    have ha_cases : a = -1 ∨ a = 0 ∨ a = 1 := by omega
+    have hb_cases : b = -1 ∨ b = 0 ∨ b = 1 := by omega
+    rcases ha_cases with (rfl | rfl | rfl) <;>
+      rcases hb_cases with (rfl | rfl | rfl)
+    all_goals norm_num [axialQ] at hq ⊢
   · rintro (⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ |
       ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩) <;>
       norm_num [axialQ]
@@ -93,7 +99,6 @@ theorem triangularPoint_dist_sq (p q : Axial) :
     plane_dist_sq]
   have hsqrt : (Real.sqrt (3 : ℝ)) ^ 2 = 3 := Real.sq_sqrt (by norm_num)
   norm_num [axialQ]
-  push_cast
   nlinarith
 
 /-- Distinct triangular-lattice points are at Euclidean distance at least one. -/
@@ -101,14 +106,14 @@ theorem one_le_dist_triangularPoint {p q : Axial} (hpq : p ≠ q) :
     (1 : ℝ) ≤ dist (triangularPoint p) (triangularPoint q) := by
   have hdelta : p.1 - q.1 ≠ 0 ∨ p.2 - q.2 ≠ 0 := by
     by_contra h
-    push_neg at h
+    push Not at h
     apply hpq
     apply Prod.ext <;> omega
   have hq := one_le_axialQ_of_ne (p.1 - q.1) (p.2 - q.2) hdelta
   have hqR : (1 : ℝ) ≤ (axialQ (p.1 - q.1) (p.2 - q.2) : ℝ) := by
     exact_mod_cast hq
   have hsq := triangularPoint_dist_sq p q
-  have hdist := dist_nonneg (triangularPoint p) (triangularPoint q)
+  have hdist : 0 ≤ dist (triangularPoint p) (triangularPoint q) := dist_nonneg
   nlinarith
 
 /-- The triangular-lattice embedding is injective. -/
@@ -142,7 +147,7 @@ theorem triangularPoint_dist_eq_one_iff (p q : Axial) :
     have hsq := triangularPoint_dist_sq p q
     have hcast : (axialQ (p.1 - q.1) (p.2 - q.2) : ℝ) = 1 := by
       exact_mod_cast hq
-    have hdist := dist_nonneg (triangularPoint p) (triangularPoint q)
+    have hdist : 0 ≤ dist (triangularPoint p) (triangularPoint q) := dist_nonneg
     nlinarith
 
 /-- Fully expanded six-direction contact criterion. -/
