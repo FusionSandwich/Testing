@@ -38,7 +38,6 @@ theorem harborthReal_add_le {a b : ℕ} (ha : 1 ≤ a) (hb : 1 ≤ b) :
     harborthReal a + harborthReal b ≤ harborthReal (a + b) := by
   have hA : 0 ≤ 12 * (a : ℝ) - 3 := radicand_nonneg ha
   have hB : 0 ≤ 12 * (b : ℝ) - 3 := radicand_nonneg hb
-  have hab : 1 ≤ a + b := by omega
   have hsqA := Real.sq_sqrt hA
   have hsqB := Real.sq_sqrt hB
   have ha3 := three_le_sqrt_radicand ha
@@ -47,17 +46,15 @@ theorem harborthReal_add_le {a b : ℕ} (ha : 1 ≤ a) (hb : 1 ≤ b) :
       0 ≤ (Real.sqrt (12 * (a : ℝ) - 3) - 3) *
         (Real.sqrt (12 * (b : ℝ) - 3) - 3) :=
     mul_nonneg (sub_nonneg.mpr ha3) (sub_nonneg.mpr hb3)
-  have hcast : (((a + b : ℕ) : ℝ)) = (a : ℝ) + (b : ℝ) := by norm_num
   have hsqrt :
-      Real.sqrt (12 * (((a + b : ℕ) : ℝ)) - 3) ≤
+      Real.sqrt (12 * ((a : ℝ) + (b : ℝ)) - 3) ≤
         Real.sqrt (12 * (a : ℝ) - 3) + Real.sqrt (12 * (b : ℝ) - 3) := by
     rw [Real.sqrt_le_iff]
     constructor
     · positivity
-    · rw [hcast]
-      nlinarith
+    · nlinarith
   simp only [harborthReal, Nat.cast_add]
-  linarith
+  linarith [hsqrt]
 
 /-- The concavity inequality used when two induced subgraphs overlap in one cut vertex. -/
 theorem harborthReal_oneVertexSum_le {a b : ℕ} (ha : 2 ≤ a) (hb : 2 ≤ b) :
@@ -66,7 +63,6 @@ theorem harborthReal_oneVertexSum_le {a b : ℕ} (ha : 2 ≤ a) (hb : 2 ≤ b) :
   have hb1 : 1 ≤ b := by omega
   have hA : 0 ≤ 12 * (a : ℝ) - 3 := radicand_nonneg ha1
   have hB : 0 ≤ 12 * (b : ℝ) - 3 := radicand_nonneg hb1
-  have hab : 1 ≤ a + b - 1 := by omega
   have hsqA := Real.sq_sqrt hA
   have hsqB := Real.sq_sqrt hB
   have ha3 := three_le_sqrt_radicand ha1
@@ -83,16 +79,15 @@ theorem harborthReal_oneVertexSum_le {a b : ℕ} (ha : 2 ≤ a) (hb : 2 ≤ b) :
     rw [Nat.cast_sub hab_ge]
     norm_num
   have hsqrt :
-      Real.sqrt (12 * (((a + b - 1 : ℕ) : ℝ)) - 3) ≤
+      Real.sqrt (12 * ((a : ℝ) + (b : ℝ) - 1) - 3) ≤
         Real.sqrt (12 * (a : ℝ) - 3) + Real.sqrt (12 * (b : ℝ) - 3) - 3 := by
     rw [Real.sqrt_le_iff]
     constructor
     · exact hsum_nonneg
-    · rw [hcast]
-      nlinarith
+    · nlinarith
   simp only [harborthReal]
   rw [hcast]
-  linarith
+  linarith [hsqrt]
 
 /-- A convenient exact-floor criterion for a nonnegative real number. -/
 theorem natFloor_eq_of_bounds {x : ℝ} {z : ℕ}
