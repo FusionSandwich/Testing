@@ -1,0 +1,140 @@
+name: Harborth Lean scratch compiler
+
+on:
+  push:
+    branches:
+      - agent/harborth-lean-ci-scratch-20260823
+  pull_request:
+    paths:
+      - 'harborth_ci/**'
+      - '.github/workflows/harborth-lean-scratch.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lean:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reject placeholders and project axioms
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -R --include='*.lean' -nE '(^|[^[:alnum:]_])(sorry|admit)([^[:alnum:]_]|$)' harborth_ci; then
+            exit 1
+          fi
+          if grep -R --include='*.lean' -nE '^[[:space:]]*(axiom|constant)[[:space:]]' harborth_ci; then
+            exit 1
+          fi
+      - name: Restore Lean and mathlib cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.elan
+            harborth_ci/.lake/packages
+          key: harborth-lean-v4.29.0-${{ hashFiles('harborth_ci/lakefile.toml', 'harborth_ci/lean-toolchain') }}
+      - name: Install Lean and build
+        shell: bash
+        run: |
+          set -euxo pipefail
+          if [ ! -x "$HOME/.elan/bin/lake" ]; then
+            curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain none
+          fi
+          export PATH="$HOME/.elan/bin:$PATH"
+          cd harborth_ci
+          lake update 2>&1 | tee lake-update.log
+          lake exe cache get 2>&1 | tee cache-get.log
+          lake build 2>&1 | tee lean-build.log
+      - name: Package portable Lean environment
+        if: success() && hashFiles('harborth_ci/EXPORT_ENV') != ''
+        shell: bash
+        run: |
+          set -euxo pipefail
+          tar --zstd -cf harborth_ci/lean-env.tar.zst \
+            -C "$HOME" .elan \
+            -C "$GITHUB_WORKSPACE/harborth_ci" .lake lake-manifest.json
+          split --bytes=450MiB --numeric-suffixes=0 --suffix-length=2 \
+            harborth_ci/lean-env.tar.zst harborth_ci/lean-env.part.
+          rm harborth_ci/lean-env.tar.zst
+      - name: Upload environment chunk 00
+        if: success() && hashFiles('harborth_ci/lean-env.part.00') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: harborth-lean-env-${{ github.run_id }}-00
+          path: harborth_ci/lean-env.part.00
+          compression-level: 0
+          retention-days: 1
+          if-no-files-found: error
+      - name: Upload environment chunk 01
+        if: success() && hashFiles('harborth_ci/lean-env.part.01') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: harborth-lean-env-${{ github.run_id }}-01
+          path: harborth_ci/lean-env.part.01
+          compression-level: 0
+          retention-days: 1
+          if-no-files-found: error
+      - name: Upload environment chunk 02
+        if: success() && hashFiles('harborth_ci/lean-env.part.02') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: harborth-lean-env-${{ github.run_id }}-02
+          path: harborth_ci/lean-env.part.02
+          compression-level: 0
+          retention-days: 1
+          if-no-files-found: error
+      - name: Upload environment chunk 03
+        if: success() && hashFiles('harborth_ci/lean-env.part.03') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: harborth-lean-env-${{ github.run_id }}-03
+          path: harborth_ci/lean-env.part.03
+          compression-level: 0
+          retention-days: 1
+          if-no-files-found: error
+      - name: Upload environment chunk 04
+        if: success() && hashFiles('harborth_ci/lean-env.part.04') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: harborth-lean-env-${{ github.run_id }}-04
+          path: harborth_ci/lean-env.part.04
+          compression-level: 0
+          retention-days: 1
+          if-no-files-found: error
+      - name: Upload environment chunk 05
+        if: success() && hashFiles('harborth_ci/lean-env.part.05') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: harborth-lean-env-${{ github.run_id }}-05
+          path: harborth_ci/lean-env.part.05
+          compression-level: 0
+          retention-days: 1
+          if-no-files-found: error
+      - name: Upload environment chunk 06
+        if: success() && hashFiles('harborth_ci/lean-env.part.06') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: harborth-lean-env-${{ github.run_id }}-06
+          path: harborth_ci/lean-env.part.06
+          compression-level: 0
+          retention-days: 1
+          if-no-files-found: error
+      - name: Upload environment chunk 07
+        if: success() && hashFiles('harborth_ci/lean-env.part.07') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: harborth-lean-env-${{ github.run_id }}-07
+          path: harborth_ci/lean-env.part.07
+          compression-level: 0
+          retention-days: 1
+          if-no-files-found: error
+      - name: Upload diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: harborth-lean-scratch-${{ github.run_id }}
+          path: harborth_ci/*.log
+          if-no-files-found: warn
