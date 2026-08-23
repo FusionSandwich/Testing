@@ -7,6 +7,12 @@ on:
     paths:
       - 'harborth_ci/**'
       - '.github/workflows/harborth-lean4-verification.yml'
+  pull_request:
+    branches:
+      - testing
+    paths:
+      - 'harborth_ci/**'
+      - '.github/workflows/harborth-lean4-verification.yml'
   workflow_dispatch:
 
 permissions:
