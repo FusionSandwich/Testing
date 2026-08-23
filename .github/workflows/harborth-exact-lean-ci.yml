@@ -7,6 +7,12 @@ on:
     paths:
       - 'harborth_ci/**'
       - '.github/workflows/harborth-exact-lean-ci.yml'
+  pull_request:
+    branches:
+      - testing
+    paths:
+      - 'harborth_ci/**'
+      - '.github/workflows/harborth-exact-lean-ci.yml'
   workflow_dispatch:
 
 permissions:
