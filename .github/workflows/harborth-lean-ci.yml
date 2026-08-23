@@ -1,0 +1,31 @@
+name: Harborth Lean compile farm
+
+on:
+  push:
+    branches: [harborth-lean-ci]
+    paths:
+      - 'harborth-ci/**'
+      - '.github/workflows/harborth-lean-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+      - uses: leanprover/lean-action@6835ef47e8423fa9e9eacfcbb8fdf83fae42c820
+        with:
+          lake-package-directory: harborth-ci
+          build: true
+          test: false
+          use-mathlib-cache: true
+          nanoda: false
+      - name: Reject proof escapes
+        run: |
+          if grep -RInE --include='*.lean' '\b(sorry|admit|axiom|unsafe)\b' harborth-ci; then
+            echo 'Forbidden Lean trust escape found.' >&2
+            exit 1
+          fi
