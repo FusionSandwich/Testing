@@ -37,6 +37,7 @@ theorem axialQ_pos {p : Axial} (hp : p ≠ (0, 0)) : 0 < axialQ p := by
 
 /-- Integer positivity upgrades to a lower bound by one. -/
 theorem one_le_axialQ {p : Axial} (hp : p ≠ (0, 0)) : 1 ≤ axialQ p := by
+  have h := axialQ_pos hp
   omega
 
 /-- The six unit directions in axial coordinates. -/
