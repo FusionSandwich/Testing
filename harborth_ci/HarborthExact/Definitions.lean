@@ -1,6 +1,4 @@
-import Mathlib.Analysis.InnerProductSpace.PiL2
-import Mathlib.Combinatorics.SimpleGraph.Finite
-import Mathlib.Data.Int.Floor
+import Mathlib
 
 open scoped EuclideanGeometry
 
