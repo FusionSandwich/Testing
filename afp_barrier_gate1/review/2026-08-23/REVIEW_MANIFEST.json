@@ -77,11 +77,19 @@
     "p1c_proof": "afp_barrier_gate1/pure_math/covariance/P1C_EQUALITY_GEOMETRY.md",
     "p1d_proof": "afp_barrier_gate1/pure_math/covariance/P1D_QUANTITATIVE_STABILITY.md",
     "p1e_proof": "docs/publication_program/P1E_SHORT_GAP_S2_CONSTRUCTION.md",
-    "p1e_guard": "afp_barrier_gate1/pure_math/covariance/p1e_short_gap_cauchy_guard_audit.py"
+    "p1e_guard": "afp_barrier_gate1/pure_math/covariance/p1e_short_gap_cauchy_guard_audit.py",
+    "lean_flagship_modules": [
+      "afp_barrier_gate1/AFPBarrier/QuadraticFidelityFoundation.lean",
+      "afp_barrier_gate1/AFPBarrier/QuadraticFidelityLowerBound.lean",
+      "afp_barrier_gate1/AFPBarrier/QuadraticEqualityGeometry.lean",
+      "afp_barrier_gate1/AFPBarrier/QuadraticFidelityStability.lean",
+      "afp_barrier_gate1/AFPBarrier/QuadraticFidelityConstruction.lean"
+    ]
   },
   "review_files": [
     "SOURCE_BINDING.md",
     "PDF_PAGE_AND_THEOREM_MAP.md",
+    "LEAN_SIGNATURE_CROSSWALK.md",
     "REMEDIATION_CHECKLIST.md",
     "R6_REMEDIATION_HANDOFF.md",
     "REVIEW_MANIFEST.json",
