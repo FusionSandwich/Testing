@@ -134,7 +134,8 @@ theorem axialNormSq_eq_one_iff (d : Axial) :
       have hb : 2 ≤ b := by omega
       nlinarith [sq_nonneg (b - 1)]
     interval_cases a <;> interval_cases b <;>
-      norm_num [axialNormSq] at h ⊢
+      norm_num [axialNormSq] at h
+    all_goals norm_num
   · rintro (rfl | rfl | rfl | rfl | rfl | rfl) <;>
       norm_num [axialNormSq]
 
