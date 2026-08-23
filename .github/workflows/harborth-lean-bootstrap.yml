@@ -1,0 +1,88 @@
+name: Harborth Lean bootstrap
+
+on:
+  push:
+    branches:
+      - codex/lean-bootstrap-harborth-20260823
+    paths:
+      - 'lean-bootstrap/**'
+      - '.github/workflows/harborth-lean-bootstrap.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Elan
+        shell: bash
+        run: |
+          set -euxo pipefail
+          curl https://elan.lean-lang.org/elan-init.sh -sSf | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+
+      - name: Resolve dependencies
+        working-directory: lean-bootstrap
+        shell: bash
+        run: |
+          set -euxo pipefail
+          lake update
+          lean --version
+          lake --version
+          cat lake-manifest.json
+
+      - name: Download Mathlib cache
+        working-directory: lean-bootstrap
+        shell: bash
+        run: |
+          set -euxo pipefail
+          lake exe cache get
+
+      - name: Build imports
+        working-directory: lean-bootstrap
+        shell: bash
+        run: |
+          set -euxo pipefail
+          lake build
+
+      - name: Package Lean toolchain
+        working-directory: lean-bootstrap
+        shell: bash
+        run: |
+          set -euxo pipefail
+          toolchain_root="$(dirname "$(dirname "$(elan which lean)")")"
+          tar -I 'zstd -7 -T0' -cf lean-4.32.2-linux.tar.zst -C "$(dirname "$toolchain_root")" "$(basename "$toolchain_root")"
+          sha256sum lean-4.32.2-linux.tar.zst
+          du -h lean-4.32.2-linux.tar.zst
+
+      - name: Package dependency tree
+        working-directory: lean-bootstrap
+        shell: bash
+        run: |
+          set -euxo pipefail
+          tar -I 'zstd -5 -T0' -cf harborth-lake-deps.tar.zst .lake lake-manifest.json lakefile.toml lean-toolchain
+          sha256sum harborth-lake-deps.tar.zst
+          du -h harborth-lake-deps.tar.zst
+
+      - name: Upload Lean toolchain
+        uses: actions/upload-artifact@v4
+        with:
+          name: lean-4.32.2-linux
+          path: lean-bootstrap/lean-4.32.2-linux.tar.zst
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+
+      - name: Upload dependency tree
+        uses: actions/upload-artifact@v4
+        with:
+          name: harborth-lake-deps
+          path: lean-bootstrap/harborth-lake-deps.tar.zst
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
