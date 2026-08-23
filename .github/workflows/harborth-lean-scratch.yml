@@ -48,6 +48,23 @@ jobs:
           lake update 2>&1 | tee lake-update.log
           lake exe cache get 2>&1 | tee cache-get.log
           lake build 2>&1 | tee lean-build.log
+      - name: Package portable Lean environment
+        if: success() && hashFiles('harborth_ci/EXPORT_ENV') != ''
+        shell: bash
+        run: |
+          set -euxo pipefail
+          tar --zstd -cf harborth_ci/lean-env.tar.zst \
+            -C "$HOME" .elan \
+            -C "$GITHUB_WORKSPACE/harborth_ci" .lake lake-manifest.json
+      - name: Upload portable Lean environment
+        if: success() && hashFiles('harborth_ci/EXPORT_ENV') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: harborth-lean-environment-${{ github.run_id }}
+          path: harborth_ci/lean-env.tar.zst
+          compression-level: 0
+          retention-days: 1
+          if-no-files-found: error
       - name: Upload diagnostics
         if: always()
         uses: actions/upload-artifact@v4
