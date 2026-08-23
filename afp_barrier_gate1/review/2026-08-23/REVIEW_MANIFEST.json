@@ -1,0 +1,90 @@
+{
+  "schema": "afp-hostile-external-review-v1",
+  "generated_date": "2026-08-23",
+  "review_type": "independent AI-assisted mathematical and formal-methods review; not identifiable human peer review",
+  "repository": "FusionSandwich/Testing",
+  "reviewed_branch": "codex/afp-major-revision-r5-20260822",
+  "final_binding_commit": "653d8945a5e91515f7a382ed42a8f4f51c0f0094",
+  "scientific_snapshot": "9783a69e8f079d61c100bc87ea653ec9c981c2fe",
+  "review_delivery_branch": "review/afp-hostile-external-20260823",
+  "reviewed_pdf": {
+    "path": "output/pdf/FLAGSHIP_MANUSCRIPT.pdf",
+    "sha256": "87b8a77af8c53e2bfa2b24fcc1cf95fef8c798181b7f0828e61d25eaa7267c8d",
+    "bytes": 337798,
+    "pages": 23
+  },
+  "recommendation": "MAJOR REVISION",
+  "blocking_items": [
+    {
+      "id": "B1",
+      "claim": "Corollary 6.3 is not auditable as a theorem-grade statement",
+      "pdf_reference": "p. 8"
+    },
+    {
+      "id": "B2",
+      "claim": "Theorem 7.2 has an under-disclosed exact-certificate boundary",
+      "pdf_reference": "pp. 9-14; theorem/proof pp. 13-14"
+    }
+  ],
+  "theorem_disposition": {
+    "Proposition 2.1": "VERIFIED",
+    "Theorem 3.1": "VERIFIED",
+    "Proposition 3.2": "VERIFIED",
+    "Theorem 4.1": "VERIFIED",
+    "Theorem 5.1": "VERIFIED",
+    "Theorem 5.2": "VERIFIED",
+    "Theorem 5.3": "VERIFIED",
+    "Proposition 5.4": "VERIFIED",
+    "Corollary 5.5": "PARTLY_VERIFIED_EXTERNAL_INPUT",
+    "Corollary 5.6": "VERIFIED",
+    "Theorem 6.1": "VERIFIED",
+    "Corollary 6.2": "VERIFIED",
+    "Corollary 6.3": "NOT_AUDITABLE_AS_STATED",
+    "Theorem 7.1": "VERIFIED",
+    "Theorem 7.2": "PROVED_CONDITIONALLY_ON_ARCHIVED_EXACT_CERTIFICATE",
+    "Open Problem 7.3": "OPEN_CORRECTLY_SCOPED"
+  },
+  "pdf_page_map": {
+    "Proposition 2.1": "p. 3",
+    "Theorem 3.1": "p. 4",
+    "Proposition 3.2": "p. 4",
+    "Theorem 4.1": "p. 4",
+    "Theorem 5.1": "p. 5",
+    "Theorem 5.2": "p. 5",
+    "Theorem 5.3": "p. 6",
+    "Proposition 5.4": "p. 6",
+    "Corollary 5.5": "p. 6",
+    "Corollary 5.6": "p. 7",
+    "Theorem 6.1": "p. 7",
+    "Corollary 6.2": "p. 8",
+    "Corollary 6.3": "p. 8",
+    "Theorem 7.1": "p. 9",
+    "Theorem 7.2": "pp. 13-14",
+    "Open Problem 7.3": "p. 14",
+    "Appendix D formalization boundary": "pp. 18-19",
+    "Related-theorem and hypothesis-transfer matrix": "pp. 21-23"
+  },
+  "source_paths": {
+    "manuscript": "docs/publication_program/p1f_manuscript/FLAGSHIP_MANUSCRIPT.md",
+    "lean_claim_audit": "afp_barrier_gate1/release/LEAN_CLAIM_AUDIT.md",
+    "reviewer_bundle": "afp_barrier_gate1/release/REVIEWER_BUNDLE.md",
+    "claim_evidence_matrix": "afp_barrier_gate1/release/CLAIM_EVIDENCE_MATRIX.md",
+    "p2f_archive": "afp_barrier_gate1/release/P2F_INCONCLUSIVE_ARCHIVE.md",
+    "prior_art": "afp_barrier_gate1/release/PRIOR_ART_AND_NOVELTY.md",
+    "validation": "afp_barrier_gate1/release/VALIDATION_REPORT.md",
+    "p1a_proof": "afp_barrier_gate1/pure_math/covariance/P1A_QUADRATIC_FIDELITY_FOUNDATION.md",
+    "p1b_proof": "afp_barrier_gate1/pure_math/covariance/P1B_SHARP_QUADRATIC_DEFECT_BOUND.md",
+    "p1c_proof": "afp_barrier_gate1/pure_math/covariance/P1C_EQUALITY_GEOMETRY.md",
+    "p1d_proof": "afp_barrier_gate1/pure_math/covariance/P1D_QUANTITATIVE_STABILITY.md",
+    "p1e_proof": "docs/publication_program/P1E_SHORT_GAP_S2_CONSTRUCTION.md",
+    "p1e_guard": "afp_barrier_gate1/pure_math/covariance/p1e_short_gap_cauchy_guard_audit.py"
+  },
+  "review_files": [
+    "SOURCE_BINDING.md",
+    "AFP_HOSTILE_EXTERNAL_REFEREE_REPORT.md",
+    "REMEDIATION_CHECKLIST.md",
+    "R6_REMEDIATION_HANDOFF.md",
+    "REVIEW_MANIFEST.json",
+    "SHA256SUMS.txt"
+  ]
+}
