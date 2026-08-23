@@ -136,8 +136,6 @@ theorem harborth_boundary_step_pos {n e a t et : ℕ}
     (e : ℝ) ≤ harborthReal n := by
   have hn : 1 ≤ n := by omega
   have hsizeR : (n : ℝ) = (a : ℝ) + (t : ℝ) := by exact_mod_cast hsize
-  have haR : (3 : ℝ) ≤ a := by exact_mod_cast ha
-  have htR : (1 : ℝ) ≤ t := by exact_mod_cast ht
   have hdegreeR : (e : ℝ) + 3 ≤ 2 * (n : ℝ) + (t : ℝ) := by exact_mod_cast hdegree
   have hremoveR : (e : ℝ) + 6 ≤ (et : ℝ) + 3 * (a : ℝ) := by exact_mod_cast hremove
   let At : ℝ := 12 * (t : ℝ) - 3
@@ -157,25 +155,32 @@ theorem harborth_boundary_step_pos {n e a t et : ℕ}
   let y : ℝ := 3 * (n : ℝ) - (e : ℝ)
   have hy : 6 + Real.sqrt At ≤ y := by
     dsimp [y]
-    nlinarith
+    linarith [hremoveR, hind', hsizeR]
   have ht_lower : (n : ℝ) - y + 3 ≤ (t : ℝ) := by
     dsimp [y]
-    nlinarith
-  have hy6 : 0 ≤ y - 6 := by nlinarith
+    linarith [hdegreeR]
+  have hy6 : 0 ≤ y - 6 := by
+    linarith [hy, hAt0]
+  have hroot_le : Real.sqrt At ≤ y - 6 := by
+    linarith [hy]
+  have hfactor :
+      0 ≤ ((y - 6) - Real.sqrt At) * ((y - 6) + Real.sqrt At) :=
+    mul_nonneg (sub_nonneg.mpr hroot_le) (add_nonneg hy6 hAt0)
   have hsq1 : At ≤ (y - 6) ^ 2 := by
-    nlinarith [sq_nonneg ((y - 6) - Real.sqrt At)]
+    nlinarith [hAtsq, hfactor]
   have hlin : An ≤ At + 12 * y - 36 := by
     dsimp [At, An]
-    nlinarith
+    linarith [ht_lower]
   have hpoly : At + 12 * y - 36 ≤ y ^ 2 := by
-    nlinarith
+    nlinarith [hsq1]
   have hsq2 : An ≤ y ^ 2 := hlin.trans hpoly
-  have hy0 : 0 ≤ y := by nlinarith
+  have hy0 : 0 ≤ y := by
+    linarith [hy, hAt0]
   have hsqrt_le : Real.sqrt An ≤ y := by
-    nlinarith [sq_nonneg (Real.sqrt An - y)]
+    nlinarith [hAnsq, hsq2, sq_nonneg (Real.sqrt An + y)]
   dsimp [harborthReal]
   dsimp [An, y] at hsqrt_le
-  nlinarith
+  linarith
 
 /-- Convert a real upper bound on an integer contact count into the exact floor bound. -/
 theorem int_le_floor_harborth {n e : ℕ} (h : (e : ℝ) ≤ harborthReal n) :
