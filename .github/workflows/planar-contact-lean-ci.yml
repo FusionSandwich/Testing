@@ -1,0 +1,22 @@
+name: Planar contact number Lean scratch CI
+
+on:
+  push:
+    branches:
+      - ci/planar-contact-lean4-20260823
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: lean_ci
+          build: true
+          test: false
+          use-mathlib-cache: true
