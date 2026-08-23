@@ -1,0 +1,9 @@
+import PlanarContactNumber
+
+#print axioms PlanarContactNumber.floor_harborthReal_shellN
+#print axioms PlanarContactNumber.floor_harborthReal_partial
+#print axioms PlanarContactNumber.floor_harborthReal_eq_shellCandidateZ
+#print axioms PlanarContactNumber.interior_induction_closure
+#print axioms PlanarContactNumber.boundary_only_closure
+#print axioms PlanarContactNumber.f₂_eq_of_realized_of_upper
+#print axioms PlanarContactNumber.axialNormSq_nonneg
