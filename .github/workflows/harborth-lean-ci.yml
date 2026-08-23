@@ -6,6 +6,11 @@ on:
     paths:
       - 'harborth-ci/**'
       - '.github/workflows/harborth-lean-ci.yml'
+  pull_request:
+    branches: [testing]
+    paths:
+      - 'harborth-ci/**'
+      - '.github/workflows/harborth-lean-ci.yml'
   workflow_dispatch:
 
 permissions:
