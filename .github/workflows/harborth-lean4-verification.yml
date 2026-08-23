@@ -38,28 +38,16 @@ jobs:
             ! grep -RInE '^[[:space:]]*(axiom|opaque)[[:space:]]' harborth_ci/PlanarContactNumber harborth_ci/PlanarContactNumber.lean
           } 2>&1 | tee harborth_ci/ci-logs/source-audit.log
 
-      - name: Install Elan
-        shell: bash
-        run: |
-          set -o pipefail
-          curl https://elan.lean-lang.org/elan-init.sh -sSf | sh -s -- -y --default-toolchain none 2>&1 | tee harborth_ci/ci-logs/elan-install.log
-          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
-
-      - name: Resolve and cache mathlib
-        working-directory: harborth_ci
-        shell: bash
-        run: |
-          set -o pipefail
-          lake update 2>&1 | tee ci-logs/lake-update.log
-          lake exe cache get 2>&1 | tee ci-logs/cache-get.log
-
-      - name: Build project
-        working-directory: harborth_ci
-        shell: bash
-        run: |
-          set -o pipefail
-          lean --version 2>&1 | tee ci-logs/lean-version.log
-          lake build 2>&1 | tee ci-logs/lake-build.log
+      - name: Build with maintained Lean action
+        id: lean-build
+        uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: harborth_ci
+          build: true
+          test: false
+          lint: false
+          use-mathlib-cache: true
+          use-github-cache: true
 
       - name: Audit theorem axioms
         working-directory: harborth_ci
