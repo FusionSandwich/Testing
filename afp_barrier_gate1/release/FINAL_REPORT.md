@@ -6,12 +6,12 @@
 - Branch: `codex/afp-major-revision-r6-20260823`
 - Exact R5 parent: `653d8945a5e91515f7a382ed42a8f4f51c0f0094`
 - R5 scientific snapshot: `9783a69e8f079d61c100bc87ea653ec9c981c2fe`
+- R6 scientific-content commit: `648691e9225359d0983d71fa332408fc7bdbadd9`
 - R5 hostile review: **MAJOR REVISION**
 - R6 disposition: internal repair candidate; external acceptance not claimed
 
-The scientific-content commit is inserted into this report after that
-milestone is created. The final branch-head commit cannot contain its own SHA;
-the pushed head is Git metadata reported at handoff.
+The final branch-head commit cannot contain its own SHA; the pushed head is
+Git metadata reported at handoff.
 
 ## Completed repair
 

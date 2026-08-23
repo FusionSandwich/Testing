@@ -31,7 +31,7 @@ archive names are provenance labels only; the SHA is controlling. Every
 | R4 | `agent/afp-r4-formalization-release-20260819` | `f0ec4a8e539ebf72f5324f92439b56545ea8d2c5` | exact base | `AUTHORITATIVE_BASE` |
 | R5 scientific content | `codex/afp-major-revision-r5-20260822` | `9783a69e8f079d61c100bc87ea653ec9c981c2fe` | direct R4 descendant | `CORRECTED_INTERNAL_RELEASE` |
 | R5 final head | `codex/afp-major-revision-r5-20260822` | `653d8945a5e91515f7a382ed42a8f4f51c0f0094` | descendant of R5 scientific content | `HOSTILE_REVIEWED_MAJOR_REVISION` |
-| R6 scientific content | `codex/afp-major-revision-r6-20260823` | `SCIENTIFIC_COMMIT_PENDING` | direct R5-final descendant | `INTERNAL_REPAIR_CANDIDATE_AWAITING_EXTERNAL_REVIEW` |
+| R6 scientific content | `codex/afp-major-revision-r6-20260823` | `648691e9225359d0983d71fa332408fc7bdbadd9` | direct R5-final descendant | `INTERNAL_REPAIR_CANDIDATE_AWAITING_EXTERNAL_REVIEW` |
 
 ## Divergent and noncanonical lines
 

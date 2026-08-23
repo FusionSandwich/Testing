@@ -18,6 +18,7 @@ theorem. Its certificate and independent verifier are release artifacts.
 |---|---|
 | repository | `FusionSandwich/Testing` |
 | R6 branch | `codex/afp-major-revision-r6-20260823` |
+| R6 scientific-content commit | `648691e9225359d0983d71fa332408fc7bdbadd9` |
 | P1E source commit | `4e461c10f069cd7eb4614e7d52b886637dff134b` |
 | P1E source tree | `2474126498a50b0315d0a6e5ab703f0717c00a79` |
 | R5 candidate tag | `afp-r5-internal-rc-20260822` |
