@@ -1,0 +1,75 @@
+name: Planar contact Lean compiler harness
+
+on:
+  pull_request:
+    branches: [testing]
+    paths:
+      - 'planar_contact_ci/**'
+      - '.github/workflows/planar-contact-lean-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lean:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    defaults:
+      run:
+        working-directory: planar_contact_ci
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Reject proof placeholders and custom axioms
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -R --include='*.lean' -nE '(^|[^[:alnum:]_])(sorry|admit|sorryAx)([^[:alnum:]_]|$)' .; then
+            echo 'Lean placeholder found' >&2
+            exit 1
+          fi
+          if grep -R --include='*.lean' -nE '^[[:space:]]*(axiom|axioms|postulate)[[:space:]]' .; then
+            echo 'Custom axiom found' >&2
+            exit 1
+          fi
+      - name: Install Elan and pinned Lean
+        working-directory: .
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
+            | sh -s -- -y --default-toolchain "$(cat planar_contact_ci/lean-toolchain)"
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Resolve mathlib and download cache
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake update 2>&1 | tee lake-update.log
+          lake exe cache get 2>&1 | tee cache-get.log
+      - name: Build without warnings
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake build --wfail 2>&1 | tee lean-build.log
+      - name: Print axiom surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake env lean PlanarContactAxiomAudit.lean 2>&1 | tee axiom-audit.log
+          if grep -q 'sorryAx' axiom-audit.log; then
+            echo "A declaration depends on sorryAx" >&2
+            exit 1
+          fi
+      - name: Upload diagnostic logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: planar-contact-lean-${{ github.run_id }}
+          path: |
+            planar_contact_ci/lake-update.log
+            planar_contact_ci/cache-get.log
+            planar_contact_ci/lean-build.log
+            planar_contact_ci/axiom-audit.log
+            planar_contact_ci/lake-manifest.json
+          if-no-files-found: warn

@@ -1,0 +1,88 @@
+name: Planar contact local compiler bundle
+
+on:
+  pull_request:
+    branches: [testing]
+    paths:
+      - '.github/workflows/planar-contact-toolchain-bundle.yml'
+      - 'planar_contact_ci/lean-toolchain'
+      - 'planar_contact_ci/lakefile.lean'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pinned Lean
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
+            | sh -s -- -y --default-toolchain "$(cat planar_contact_ci/lean-toolchain)"
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Resolve and cache mathlib
+        working-directory: planar_contact_ci
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake update
+          lake exe cache get
+          lake build PlanarContact.Definitions
+      - name: Pack and split compiler dependency tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p compiler-bundle/toolchains compiler-bundle/project bundle-parts
+          cp -a "$HOME/.elan/toolchains/leanprover--lean4---v4.33.0" compiler-bundle/toolchains/
+          cp -a planar_contact_ci/.lake compiler-bundle/project/
+          cp planar_contact_ci/lean-toolchain planar_contact_ci/lakefile.lean \
+            planar_contact_ci/lake-manifest.json compiler-bundle/project/
+          tar -I 'zstd -3 -T0' -cf lean433-mathlib433-bundle.tar.zst compiler-bundle
+          sha256sum lean433-mathlib433-bundle.tar.zst | tee bundle-parts/SHA256SUM
+          split -b 400M -d -a 2 lean433-mathlib433-bundle.tar.zst bundle-parts/part-
+          ls -lh bundle-parts
+      - name: Upload manifest
+        uses: actions/upload-artifact@v4
+        with:
+          name: lean433-bundle-manifest
+          path: bundle-parts/SHA256SUM
+          compression-level: 0
+          retention-days: 2
+          if-no-files-found: error
+      - name: Upload part 00
+        uses: actions/upload-artifact@v4
+        with: {name: lean433-bundle-part-00, path: bundle-parts/part-00, compression-level: 0, retention-days: 2, if-no-files-found: error}
+      - name: Upload part 01
+        uses: actions/upload-artifact@v4
+        with: {name: lean433-bundle-part-01, path: bundle-parts/part-01, compression-level: 0, retention-days: 2, if-no-files-found: error}
+      - name: Upload part 02
+        uses: actions/upload-artifact@v4
+        with: {name: lean433-bundle-part-02, path: bundle-parts/part-02, compression-level: 0, retention-days: 2, if-no-files-found: error}
+      - name: Upload part 03
+        uses: actions/upload-artifact@v4
+        with: {name: lean433-bundle-part-03, path: bundle-parts/part-03, compression-level: 0, retention-days: 2, if-no-files-found: error}
+      - name: Upload part 04
+        uses: actions/upload-artifact@v4
+        with: {name: lean433-bundle-part-04, path: bundle-parts/part-04, compression-level: 0, retention-days: 2, if-no-files-found: error}
+      - name: Upload part 05
+        uses: actions/upload-artifact@v4
+        with: {name: lean433-bundle-part-05, path: bundle-parts/part-05, compression-level: 0, retention-days: 2, if-no-files-found: error}
+      - name: Upload part 06
+        uses: actions/upload-artifact@v4
+        with: {name: lean433-bundle-part-06, path: bundle-parts/part-06, compression-level: 0, retention-days: 2, if-no-files-found: error}
+      - name: Upload part 07
+        uses: actions/upload-artifact@v4
+        with: {name: lean433-bundle-part-07, path: bundle-parts/part-07, compression-level: 0, retention-days: 2, if-no-files-found: error}
+      - name: Upload part 08
+        if: ${{ hashFiles('bundle-parts/part-08') != '' }}
+        uses: actions/upload-artifact@v4
+        with: {name: lean433-bundle-part-08, path: bundle-parts/part-08, compression-level: 0, retention-days: 2, if-no-files-found: error}
+      - name: Upload part 09
+        if: ${{ hashFiles('bundle-parts/part-09') != '' }}
+        uses: actions/upload-artifact@v4
+        with: {name: lean433-bundle-part-09, path: bundle-parts/part-09, compression-level: 0, retention-days: 2, if-no-files-found: error}
