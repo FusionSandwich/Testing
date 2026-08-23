@@ -17,6 +17,7 @@ The review does not modify the reviewed snapshot and does not claim identifiable
 
 - `SOURCE_BINDING.md` — immutable review object and status disclaimer.
 - `PDF_PAGE_AND_THEOREM_MAP.md` — exact physical-page map for every flagship theorem and blocking finding.
+- `LEAN_SIGNATURE_CROSSWALK.md` — declaration-level boundary between the five flagship Lean modules and the manuscript claims.
 - `REMEDIATION_CHECKLIST.md` — blocking and major-revision gate.
 - `R6_REMEDIATION_HANDOFF.md` — bounded next-pass handoff preserving R5 immutability.
 - `REVIEW_MANIFEST.json` — machine-readable disposition and page map.
