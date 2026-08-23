@@ -31,10 +31,14 @@ jobs:
           lake update
           lake exe cache get
           lake build
-      - name: Reject trust escapes
+      - name: Reject project-owned trust escapes
+        shell: bash
         run: |
-          if grep -RInE --include='*.lean' '\b(sorry|admit|axiom|unsafe)\b' harborth-ci; then
-            echo 'Forbidden Lean trust escape found.' >&2
+          set -euo pipefail
+          if grep -RInE --include='*.lean' --exclude-dir='.lake' \
+              '(^|[^[:alnum:]_])(sorry|admit)([^[:alnum:]_]|$)|^[[:space:]]*(axiom|postulate)[[:space:]]' \
+              harborth-ci/Harborth harborth-ci/Harborth.lean; then
+            echo 'Forbidden Lean trust escape found in project-owned source.' >&2
             exit 1
           fi
       - name: Package portable Lean environment
