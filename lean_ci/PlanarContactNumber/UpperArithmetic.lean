@@ -163,18 +163,22 @@ theorem harborth_boundary_step_pos {n e a t et : ℕ}
   have hy6 : 0 ≤ y - 6 := by nlinarith
   have hsq1 : At ≤ (y - 6) ^ 2 := by
     nlinarith [sq_nonneg ((y - 6) - Real.sqrt At)]
-  have hsq2 : An ≤ y ^ 2 := by
-    dsimp [At, An] at *
+  have hlin : An ≤ At + 12 * y - 36 := by
+    dsimp [At, An]
     nlinarith
+  have hpoly : At + 12 * y - 36 ≤ y ^ 2 := by
+    nlinarith
+  have hsq2 : An ≤ y ^ 2 := hlin.trans hpoly
   have hy0 : 0 ≤ y := by nlinarith
   have hsqrt_le : Real.sqrt An ≤ y := by
     nlinarith [sq_nonneg (Real.sqrt An - y)]
-  dsimp [harborthReal, An, y] at *
+  dsimp [harborthReal]
+  dsimp [An, y] at hsqrt_le
   nlinarith
 
 /-- Convert a real upper bound on an integer contact count into the exact floor bound. -/
 theorem int_le_floor_harborth {n e : ℕ} (h : (e : ℝ) ≤ harborthReal n) :
     (e : ℤ) ≤ ⌊harborthReal n⌋ := by
-  exact Int.le_floor.mpr (by exact_mod_cast h)
+  exact Int.le_floor.mpr (by simpa using h)
 
 end PlanarContactNumber
