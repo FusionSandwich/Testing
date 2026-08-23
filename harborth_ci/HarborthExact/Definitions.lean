@@ -15,9 +15,9 @@ def OneSeparated {ι : Type*} (x : ι → Point2) : Prop :=
 def contactGraph {ι : Type*} (x : ι → Point2) : SimpleGraph ι where
   Adj i j := dist (x i) (x j) = 1
   symm i j hij := by simpa [dist_comm] using hij
-  loopless := by
+  loopless := ⟨by
     intro i hii
-    simpa using hii
+    simpa using hii⟩
 
 @[simp]
 theorem contactGraph_adj {ι : Type*} (x : ι → Point2) (i j : ι) :
