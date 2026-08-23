@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - ci/harborth-lean4-verification-20260823
+      - ci/harborth-geometric-core-20260823
     paths:
       - 'harborth_ci/**'
       - '.github/workflows/harborth-lean4-verification.yml'
@@ -72,5 +73,19 @@ jobs:
         with:
           name: harborth-lean4-${{ github.run_id }}-${{ github.run_attempt }}
           path: harborth_ci/ci-logs
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload source snapshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: harborth-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            harborth_ci/PlanarContactNumber
+            harborth_ci/PlanarContactNumber.lean
+            harborth_ci/lakefile.toml
+            harborth_ci/lean-toolchain
+            harborth_ci/lake-manifest.json
           if-no-files-found: error
           retention-days: 30
