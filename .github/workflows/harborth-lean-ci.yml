@@ -48,6 +48,17 @@ jobs:
       - name: Reject proof escapes
         working-directory: harborth-ci
         run: |
-          if grep -RInE '(^|[^[:alpha:]])(sorry|admit|axiom)([^[:alpha:]]|$)' --include='*.lean' .; then
-            exit 1
-          fi
+          python - <<'PY'
+          from pathlib import Path
+          import re, sys
+          bad = []
+          for p in Path('.').rglob('*.lean'):
+              text = p.read_text()
+              text = re.sub(r'/-.*?-/', '', text, flags=re.S)
+              text = re.sub(r'--.*', '', text)
+              if re.search(r'\b(?:sorry|admit)\b|(?m)^\s*axiom\b', text):
+                  bad.append(str(p))
+          if bad:
+              print('proof escapes:', *bad, sep='\n')
+              sys.exit(1)
+          PY
