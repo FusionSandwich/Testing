@@ -18,7 +18,8 @@ This directory contains the independent non-human mathematical and formal-method
 
 - `AFP_HOSTILE_INDEPENDENT_REFEREE_REPORT_2026-08-23.md` — full prioritized referee report, replacement language, theorem dispositions, and terminal recommendation.
 - `2026-08-23/PDF_PAGE_AND_THEOREM_MAP.md` — exact physical-page map for all flagship results and blocking findings.
-- `2026-08-23/REVIEW_MANIFEST.json` — machine-readable source binding, theorem dispositions, and page map.
+- `2026-08-23/LEAN_SIGNATURE_CROSSWALK.md` — independent declaration-level comparison of the five flagship Lean modules against the manuscript claims.
+- `2026-08-23/REVIEW_MANIFEST.json` — machine-readable source binding, theorem dispositions, page map, and formal-source inventory.
 - `2026-08-23/REMEDIATION_CHECKLIST.md` — exact blocking and major-revision gate.
 - `2026-08-23/R6_REMEDIATION_HANDOFF.md` — bounded next-pass handoff preserving R5 immutability.
 - `2026-08-23/SHA256SUMS.txt` — deterministic hashes for the dated review package.
@@ -37,6 +38,7 @@ No counterexample was found to the core sharp frontier, final equality chain, or
 - No manuscript, Lean source, numerical source, release file, or scientific claim ledger was modified.
 - The review branch was created directly from final commit `653d8945a5e91515f7a382ed42a8f4f51c0f0094`.
 - The exact page map resolves Corollary 6.3 to PDF p. 8 and Theorem 7.2 and its proof to PDF pp. 13–14.
+- The signature crosswalk independently confirms that the Lean surface is finite algebra with explicit premises, not whole-paper formalization.
 - GitHub blob IDs for the dated package match independently computed local blob IDs; the recorded SHA-256 manifest is internally consistent.
 - The net Git comparison against R5 contains review artifacts only.
 - P2F remains computationally inconclusive and supplies no physical conclusion.
