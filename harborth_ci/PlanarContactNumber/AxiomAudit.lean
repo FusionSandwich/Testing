@@ -1,0 +1,10 @@
+import PlanarContactNumber
+
+#print axioms PlanarContactNumber.contactNumber_le_square
+#print axioms PlanarContactNumber.realized_le_f₂
+#print axioms PlanarContactNumber.floor_harborthReal_shellN
+#print axioms PlanarContactNumber.floor_harborthReal_partial
+#print axioms PlanarContactNumber.harborthReal_add_le
+#print axioms PlanarContactNumber.harborthReal_cut_le
+#print axioms PlanarContactNumber.interior_induction_closure
+#print axioms PlanarContactNumber.boundary_only_closure
