@@ -14,21 +14,20 @@ structure Configuration (n : ℕ) where
 
 namespace Configuration
 
-variable {n : ℕ} (C : Configuration n)
+variable {n : ℕ}
 
 /-- The contact graph: two labels are adjacent exactly when their points are one unit apart. -/
-def contactGraph : SimpleGraph (Fin n) where
-  Adj i j := i ≠ j ∧ dist (C.point i) (C.point j) = 1
-  symm i j h := ⟨h.1.symm, by simpa [dist_comm] using h.2⟩
-  loopless i h := h.1 rfl
+def contactGraph (C : Configuration n) : SimpleGraph (Fin n) :=
+  SimpleGraph.fromRel fun i j => dist (C.point i) (C.point j) = 1
 
 /-- The exact number of unordered unit-distance pairs in a configuration. -/
-noncomputable def contactCount : ℕ := by
+noncomputable def contactCount (C : Configuration n) : ℕ := by
   classical
   exact C.contactGraph.edgeFinset.card
 
-@[simp] theorem contactGraph_adj {i j : Fin n} :
-    C.contactGraph.Adj i j ↔ i ≠ j ∧ dist (C.point i) (C.point j) = 1 := Iff.rfl
+@[simp] theorem contactGraph_adj (C : Configuration n) {i j : Fin n} :
+    C.contactGraph.Adj i j ↔ i ≠ j ∧ dist (C.point i) (C.point j) = 1 := by
+  simp [contactGraph, dist_comm]
 
 end Configuration
 
@@ -36,13 +35,16 @@ end Configuration
 def Attainable (n k : ℕ) : Prop := ∃ C : Configuration n, C.contactCount = k
 
 /-- The real-valued Harborth expression before taking its floor. -/
-def harborthReal (n : ℕ) : ℝ := 3 * (n : ℝ) - Real.sqrt (12 * (n : ℝ) - 3)
+noncomputable def harborthReal (n : ℕ) : ℝ :=
+  3 * (n : ℝ) - Real.sqrt (12 * (n : ℝ) - 3)
 
 /-- The proposed exact planar contact number. -/
 noncomputable def harborthNumber (n : ℕ) : ℕ := ⌊harborthReal n⌋₊
 
 /-- The extremal contact number, defined as the greatest attainable count below the
 number of unordered pairs. -/
-noncomputable def f₂ (n : ℕ) : ℕ := Nat.findGreatest (Attainable n) (n.choose 2)
+noncomputable def f₂ (n : ℕ) : ℕ := by
+  classical
+  exact Nat.findGreatest (Attainable n) (n.choose 2)
 
 end PlanarContact
