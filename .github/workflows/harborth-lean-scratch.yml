@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - agent/harborth-lean-ci-scratch-20260823
+  pull_request:
+    paths:
+      - 'harborth_ci/**'
+      - '.github/workflows/harborth-lean-scratch.yml'
   workflow_dispatch:
 
 permissions:
