@@ -37,14 +37,64 @@ jobs:
           if [ -f HarborthPlanarAxiomAudit.lean ]; then
             lake env lean HarborthPlanarAxiomAudit.lean
           fi
-      - name: Package compiler and mathlib cache
+      - name: Package compiler and mathlib cache in downloadable chunks
         run: |
           tar --zstd -cf harborth-lean-env.tar.zst \
             -C "$HOME" .elan \
             -C "$GITHUB_WORKSPACE" harborth_planar/.lake harborth_planar/lake-manifest.json
+          split -b 400M -d -a 2 harborth-lean-env.tar.zst harborth-lean-env.part-
+          sha256sum harborth-lean-env.part-* > harborth-lean-env.sha256
       - uses: actions/upload-artifact@v4
         with:
-          name: harborth-lean-env
-          path: harborth-lean-env.tar.zst
+          name: harborth-lean-env-manifest
+          path: harborth-lean-env.sha256
+          if-no-files-found: error
+          compression-level: 0
+      - uses: actions/upload-artifact@v4
+        with:
+          name: harborth-lean-env-part-00
+          path: harborth-lean-env.part-00
+          if-no-files-found: error
+          compression-level: 0
+      - uses: actions/upload-artifact@v4
+        with:
+          name: harborth-lean-env-part-01
+          path: harborth-lean-env.part-01
+          if-no-files-found: error
+          compression-level: 0
+      - uses: actions/upload-artifact@v4
+        with:
+          name: harborth-lean-env-part-02
+          path: harborth-lean-env.part-02
+          if-no-files-found: error
+          compression-level: 0
+      - uses: actions/upload-artifact@v4
+        with:
+          name: harborth-lean-env-part-03
+          path: harborth-lean-env.part-03
+          if-no-files-found: error
+          compression-level: 0
+      - uses: actions/upload-artifact@v4
+        with:
+          name: harborth-lean-env-part-04
+          path: harborth-lean-env.part-04
+          if-no-files-found: error
+          compression-level: 0
+      - uses: actions/upload-artifact@v4
+        with:
+          name: harborth-lean-env-part-05
+          path: harborth-lean-env.part-05
+          if-no-files-found: error
+          compression-level: 0
+      - uses: actions/upload-artifact@v4
+        with:
+          name: harborth-lean-env-part-06
+          path: harborth-lean-env.part-06
+          if-no-files-found: error
+          compression-level: 0
+      - uses: actions/upload-artifact@v4
+        with:
+          name: harborth-lean-env-part-07
+          path: harborth-lean-env.part-07
           if-no-files-found: error
           compression-level: 0
