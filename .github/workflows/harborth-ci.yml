@@ -1,0 +1,29 @@
+name: Harborth Lean CI mirror
+
+on:
+  push:
+    branches:
+      - agent/harborth-lean-ci-20260823
+    paths:
+      - 'harborth-ci/**'
+      - '.github/workflows/harborth-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lean:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Elan
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Build
+        working-directory: harborth-ci
+        run: |
+          lake update
+          lake exe cache get
+          lake build
