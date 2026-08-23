@@ -1,0 +1,36 @@
+name: Harborth f2 Lean scratch compiler
+
+on:
+  push:
+    branches: ['ci/harborth-f2-lean-20260823']
+  pull_request:
+    branches: [testing]
+    paths:
+      - 'harborth_f2_ci/**'
+      - '.github/workflows/harborth-f2-scratch.yml'
+  workflow_dispatch:
+
+jobs:
+  lean:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reject placeholders and custom postulates
+        run: |
+          if grep -R --include='*.lean' -nE '(^|[^[:alnum:]_])(sorry|admit)([^[:alnum:]_]|$)' harborth_f2_ci; then
+            echo 'Forbidden Lean placeholder found' >&2
+            exit 1
+          fi
+      - name: Install Elan
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Resolve mathlib and build
+        working-directory: harborth_f2_ci
+        run: |
+          lake update
+          lake exe cache get
+          lake build
+      - name: Compile smoke tests
+        working-directory: harborth_f2_ci
+        run: lake env lean HarborthF2Tests.lean
