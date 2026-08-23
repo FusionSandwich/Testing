@@ -1,0 +1,50 @@
+name: Harborth planar contact Lean
+
+on:
+  pull_request:
+    branches: [testing]
+    paths:
+      - 'harborth_planar/**'
+      - '.github/workflows/harborth-planar-lean.yml'
+  workflow_dispatch:
+
+jobs:
+  lean:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reject placeholders and project axioms
+        run: |
+          if grep -R --include='*.lean' -nE '(^|[^[:alnum:]_])(sorry|admit|axiom)([^[:alnum:]_]|$)' harborth_planar; then
+            echo 'Lean placeholder or project axiom found' >&2
+            exit 1
+          fi
+      - name: Install Elan
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf \
+            https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
+            | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Resolve mathlib and build
+        working-directory: harborth_planar
+        run: |
+          lake update
+          lake exe cache get
+          lake build
+      - name: Audit theorem axioms when present
+        working-directory: harborth_planar
+        run: |
+          if [ -f HarborthPlanarAxiomAudit.lean ]; then
+            lake env lean HarborthPlanarAxiomAudit.lean
+          fi
+      - name: Package compiler and mathlib cache
+        run: |
+          tar --zstd -cf harborth-lean-env.tar.zst \
+            -C "$HOME" .elan \
+            -C "$GITHUB_WORKSPACE" harborth_planar/.lake harborth_planar/lake-manifest.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: harborth-lean-env
+          path: harborth-lean-env.tar.zst
+          if-no-files-found: error
+          compression-level: 0
