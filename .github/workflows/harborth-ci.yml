@@ -1,0 +1,123 @@
+name: Harborth Lean CI mirror
+
+on:
+  push:
+    branches:
+      - agent/harborth-lean-ci-20260823
+    paths:
+      - 'harborth-ci/**'
+      - '.github/workflows/harborth-ci.yml'
+  pull_request:
+    paths:
+      - 'harborth-ci/**'
+      - '.github/workflows/harborth-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lean:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Elan
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Build
+        working-directory: harborth-ci
+        run: |
+          lake update
+          lake exe cache get
+          lake build
+      - name: Reject project-owned trust escapes
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -RInE --include='*.lean' --exclude-dir='.lake' \
+              '(^|[^[:alnum:]_])(sorry|admit)([^[:alnum:]_]|$)|^[[:space:]]*(axiom|postulate)[[:space:]]' \
+              harborth-ci/Harborth harborth-ci/Harborth.lean; then
+            echo 'Forbidden Lean trust escape found in project-owned source.' >&2
+            exit 1
+          fi
+      - name: Package and split portable Lean environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          LEAN_BIN="$HOME/.elan/bin/lean"
+          TOOLCHAIN_DIR="$(dirname "$(dirname "$(readlink -f "$LEAN_BIN")")")"
+          TOOLCHAIN_NAME="$(basename "$TOOLCHAIN_DIR")"
+          mkdir -p /tmp/harborth-env/toolchains /tmp/harborth-env/project /tmp/harborth-parts
+          cp -a "$TOOLCHAIN_DIR" "/tmp/harborth-env/toolchains/$TOOLCHAIN_NAME"
+          cp -a harborth-ci/.lake /tmp/harborth-env/project/.lake
+          cp harborth-ci/lake-manifest.json /tmp/harborth-env/project/lake-manifest.json
+          cp harborth-ci/lakefile.lean /tmp/harborth-env/project/lakefile.lean
+          cp harborth-ci/lean-toolchain /tmp/harborth-env/project/lean-toolchain
+          tar --use-compress-program='zstd -5 -T0' -cf /tmp/harborth-lean-env.tar.zst -C /tmp harborth-env
+          split -b 450M -d -a 2 /tmp/harborth-lean-env.tar.zst /tmp/harborth-parts/part-
+          sha256sum /tmp/harborth-parts/part-* | tee /tmp/harborth-parts/SHA256SUMS
+          ls -lh /tmp/harborth-parts
+      - uses: actions/upload-artifact@v4
+        with:
+          name: harborth-env-part-00
+          path: /tmp/harborth-parts/part-00
+          compression-level: 0
+          retention-days: 1
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: harborth-env-part-01
+          path: /tmp/harborth-parts/part-01
+          compression-level: 0
+          retention-days: 1
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: harborth-env-part-02
+          path: /tmp/harborth-parts/part-02
+          compression-level: 0
+          retention-days: 1
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: harborth-env-part-03
+          path: /tmp/harborth-parts/part-03
+          compression-level: 0
+          retention-days: 1
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: harborth-env-part-04
+          path: /tmp/harborth-parts/part-04
+          compression-level: 0
+          retention-days: 1
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: harborth-env-part-05
+          path: /tmp/harborth-parts/part-05
+          compression-level: 0
+          retention-days: 1
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: harborth-env-part-06
+          path: /tmp/harborth-parts/part-06
+          compression-level: 0
+          retention-days: 1
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: harborth-env-part-07
+          path: /tmp/harborth-parts/part-07
+          compression-level: 0
+          retention-days: 1
+          if-no-files-found: ignore
+      - uses: actions/upload-artifact@v4
+        with:
+          name: harborth-env-sha256
+          path: /tmp/harborth-parts/SHA256SUMS
+          compression-level: 0
+          retention-days: 1
+          if-no-files-found: error
