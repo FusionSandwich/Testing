@@ -1,0 +1,11 @@
+name = "planar_contact_number"
+version = "0.1.0"
+defaultTargets = ["PlanarContactNumber"]
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "v4.30.0"
+
+[[lean_lib]]
+name = "PlanarContactNumber"
