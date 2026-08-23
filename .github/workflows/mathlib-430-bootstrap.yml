@@ -16,9 +16,15 @@ jobs:
     timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
-      - uses: leanprover/lean-action@v1
-        with:
-          lean-version: v4.30.0
+      - name: Install pinned Lean
+        run: |
+          set -euxo pipefail
+          curl --fail --location --silent --show-error https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -o /tmp/elan-init.sh
+          sh /tmp/elan-init.sh -y --default-toolchain none
+          "$HOME/.elan/bin/elan" toolchain install leanprover/lean4:v4.30.0
+          "$HOME/.elan/bin/elan" default leanprover/lean4:v4.30.0
+          "$HOME/.elan/bin/lean" --version
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
       - name: Build cached environment
         run: |
           set -euxo pipefail
@@ -28,7 +34,7 @@ jobs:
           cd /tmp/hm
           lake update
           lake exe cache get
-          lake build Mathlib.Data.Real.Sqrt Mathlib.Analysis.Complex.Basic Mathlib.Tactic
+          lake build Mathlib.Analysis.Complex.Basic Mathlib.Tactic
           tar --use-compress-program='zstd -6 -T0' -cf /tmp/mathlib.tar.zst .lake/packages lake-manifest.json lakefile.lean lean-toolchain
           sha256sum /tmp/mathlib.tar.zst > /tmp/mathlib.tar.zst.sha256
           split -b 400M -d -a 2 /tmp/mathlib.tar.zst /tmp/mathlib.part-
