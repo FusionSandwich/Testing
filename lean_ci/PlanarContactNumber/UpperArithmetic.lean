@@ -126,6 +126,7 @@ theorem harborth_boundary_step_zero {n e : ℕ} (hn : 3 ≤ n)
   dsimp [harborthReal]
   nlinarith
 
+set_option maxHeartbeats 1000000 in
 /-- The `t>0` numerical branch of Harborth's boundary induction. -/
 theorem harborth_boundary_step_pos {n e a t et : ℕ}
     (hsize : n = a + t) (ha : 3 ≤ a) (ht : 1 ≤ t)
