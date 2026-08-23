@@ -41,6 +41,7 @@ noncomputable def finContactNumber (n : ℕ) (x : Fin n → Point) : ℕ :=
 theorem finiteContactNumber_le_choose {α : Type*} [Fintype α] (x : α → Point) :
     finiteContactNumber x ≤ (Fintype.card α).choose 2 := by
   classical
-  exact (contactGraph x).card_edgeFinset_le_card_choose_two
+  simpa [finiteContactNumber] using
+    (contactGraph x).card_edgeFinset_le_card_choose_two
 
 end PlanarContactNumber
