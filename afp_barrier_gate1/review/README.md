@@ -1,6 +1,6 @@
-# AFP R5 hostile independent review artifacts
+# AFP R5 hostile independent review
 
-This directory contains an independent non-human mathematical and formal-methods review of the immutable AFP R5 release identified below.
+This directory contains the independent non-human mathematical and formal-methods review of the immutable AFP R5 release.
 
 ## Pinned review target
 
@@ -9,31 +9,33 @@ This directory contains an independent non-human mathematical and formal-methods
 - Final binding commit: `653d8945a5e91515f7a382ed42a8f4f51c0f0094`
 - Scientific-content commit: `9783a69e8f079d61c100bc87ea653ec9c981c2fe`
 - Manuscript: `output/pdf/FLAGSHIP_MANUSCRIPT.pdf`
-- Manuscript release SHA-256: `87b8a77af8c53e2bfa2b24fcc1cf95fef8c798181b7f0828e61d25eaa7267c8d`
+- Manuscript SHA-256: `87b8a77af8c53e2bfa2b24fcc1cf95fef8c798181b7f0828e61d25eaa7267c8d`
+- Physical pages: `23`
 
-## Artifacts
+## Canonical artifacts
 
-- `AFP_HOSTILE_INDEPENDENT_REFEREE_REPORT_2026-08-23.md` — prioritized mathematical and formal-methods referee report, replacement language, theorem dispositions, and terminal recommendation.
-- `AFP_HOSTILE_INDEPENDENT_REFEREE_MANIFEST_2026-08-23.json` — machine-readable provenance, theorem status map, formalization boundary, blocking findings, and minimum revision gate.
+- `AFP_HOSTILE_INDEPENDENT_REFEREE_REPORT_2026-08-23.md` — full prioritized referee report, replacement language, theorem dispositions, and terminal recommendation.
+- `2026-08-23/PDF_PAGE_AND_THEOREM_MAP.md` — exact physical-page map for all flagship results and blocking findings.
+- `2026-08-23/REVIEW_MANIFEST.json` — machine-readable source binding, theorem dispositions, and page map.
+- `2026-08-23/REMEDIATION_CHECKLIST.md` — exact blocking and major-revision gate.
+- `2026-08-23/R6_REMEDIATION_HANDOFF.md` — bounded next-pass handoff preserving R5 immutability.
+- `2026-08-23/SHA256SUMS.txt` — deterministic hashes for the dated review package.
 
 ## Result
 
 `MAJOR_REVISION`
 
-The report finds no counterexample to the core sharp frontier, final equality chain, or exact weighted master budget. It identifies two publication-blocking deficiencies:
+No counterexample was found to the core sharp frontier, final equality chain, or exact weighted master budget. Two publication-blocking deficiencies remain:
 
-1. Corollary 6.3 is not theorem-grade as printed.
-2. Theorem 7.2 does not adequately disclose or package its exact symbolic/rational certificate dependency.
+1. Corollary 6.3 is not theorem-grade as printed; it must be quantified or demoted.
+2. Theorem 7.2 under-discloses and under-packages its exact symbolic/rational certificate dependency.
 
-## Scope and independence
+## Scope and verification
 
-- No manuscript, Lean source, numerical source, release file, or scientific claim ledger was modified by this review.
+- No manuscript, Lean source, numerical source, release file, or scientific claim ledger was modified.
 - The review branch was created directly from final commit `653d8945a5e91515f7a382ed42a8f4f51c0f0094`.
+- The page map resolves Corollary 6.3 to PDF p. 8 and Theorem 7.2 and its proof to PDF pp. 13–14.
+- P2F remains computationally inconclusive and supplies no physical conclusion.
 - This review is not identifiable human peer review, journal acceptance, literature-priority certification, physical validation, or experimental calibration.
-- The release's P2F benchmark remains computationally inconclusive and supplies no physical conclusion.
 
-## Final verification
-
-The net Git diff from the pinned final commit contains only the three permanent files in this directory. The temporary PDF access pointer used during review was deleted. The branch is ahead of the pinned release commit without modifying, deleting, or renaming any scientific or release artifact.
-
-The exact repair gate is recorded in the referee report and manifest. After those revisions, the corrected manuscript should undergo a new identifiable human mathematical and formal-methods review.
+After the recorded corrections, the revised manuscript requires a new identifiable human mathematical and formal-methods review.
