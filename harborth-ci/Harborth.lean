@@ -1,1 +1,1 @@
-import Harborth.Definitions
+import Harborth.FiniteMaximum
