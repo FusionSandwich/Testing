@@ -3,6 +3,8 @@ name: Harborth Lean CI
 on:
   push:
     branches: [codex/harborth-lean-ci-20260823]
+  pull_request:
+    branches: [testing]
   workflow_dispatch:
 
 permissions:
