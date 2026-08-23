@@ -1,3 +1,4 @@
 import PlanarContactNumber.Definitions
 import PlanarContactNumber.HarborthArithmetic
 import PlanarContactNumber.UpperArithmetic
+import PlanarContactNumber.TriangularLattice
