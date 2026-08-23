@@ -2,3 +2,4 @@ import PlanarContactNumber.Definitions
 import PlanarContactNumber.HarborthArithmetic
 import PlanarContactNumber.ShellDecomposition
 import PlanarContactNumber.UpperArithmetic
+import PlanarContactNumber.Optimization
