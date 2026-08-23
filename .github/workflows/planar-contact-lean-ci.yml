@@ -1,0 +1,37 @@
+name: Planar contact number Lean scratch CI
+
+on:
+  push:
+    branches:
+      - ci/planar-contact-lean4-20260823
+  pull_request:
+    branches:
+      - testing
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Elan
+        run: |
+          curl https://elan.lean-lang.org/elan-init.sh -sSf | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Restore Lake packages and compiled cache
+        uses: actions/cache@v4
+        with:
+          path: lean_ci/.lake
+          key: planar-contact-lean-v4.30-${{ hashFiles('lean_ci/lean-toolchain', 'lean_ci/lakefile.toml') }}
+      - name: Resolve dependencies
+        working-directory: lean_ci
+        run: lake update
+      - name: Download mathlib cache
+        working-directory: lean_ci
+        run: lake exe cache get
+      - name: Build
+        working-directory: lean_ci
+        run: lake build
