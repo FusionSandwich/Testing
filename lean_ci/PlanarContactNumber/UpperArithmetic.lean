@@ -116,7 +116,7 @@ theorem harborth_boundary_step_zero {n e : ℕ} (hn : 3 ≤ n)
     (hdegree : e + 3 ≤ 2 * n) :
     (e : ℝ) ≤ harborthReal n := by
   have hn1 : 1 ≤ n := by omega
-  have hnR : (3 : ℝ) ≤ n := by exact_mod_cast hn
+  have hnR : (3 : ℝ)) ≤ n := by exact_mod_cast hn
   have heR : (e : ℝ) + 3 ≤ 2 * (n : ℝ) := by exact_mod_cast hdegree
   have hrad := harborth_radicand_nonneg hn1
   have hs := Real.sq_sqrt hrad
@@ -147,9 +147,7 @@ theorem harborth_boundary_step_pos {n e a t et : ℕ}
     dsimp [An]
     exact harborth_radicand_nonneg hn
   have hAtsq : Real.sqrt At ^ 2 = At := Real.sq_sqrt hAt
-  have hAnsq : Real.sqrt An ^ 2 = An := Real.sq_sqrt hAn
   have hAt0 : 0 ≤ Real.sqrt At := Real.sqrt_nonneg At
-  have hAn0 : 0 ≤ Real.sqrt An := Real.sqrt_nonneg An
   have hind' : (et : ℝ) ≤ 3 * (t : ℝ) - Real.sqrt At := by
     simpa [harborthReal, At] using hind
   let y : ℝ := 3 * (n : ℝ) - (e : ℝ)
@@ -176,8 +174,8 @@ theorem harborth_boundary_step_pos {n e a t et : ℕ}
   have hsq2 : An ≤ y ^ 2 := hlin.trans hpoly
   have hy0 : 0 ≤ y := by
     linarith [hy, hAt0]
-  have hsqrt_le : Real.sqrt An ≤ y := by
-    nlinarith [hAnsq, hsq2, sq_nonneg (Real.sqrt An + y)]
+  have hsqrt_le : Real.sqrt An ≤ y :=
+    Real.sqrt_le_iff.mpr ⟨hy0, hsq2⟩
   dsimp [harborthReal]
   dsimp [An, y] at hsqrt_le
   linarith
