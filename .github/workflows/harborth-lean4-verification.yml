@@ -1,0 +1,76 @@
+name: Harborth Lean 4 verification
+
+on:
+  push:
+    branches:
+      - ci/harborth-lean4-verification-20260823
+    paths:
+      - 'harborth_ci/**'
+      - '.github/workflows/harborth-lean4-verification.yml'
+  pull_request:
+    branches:
+      - testing
+    paths:
+      - 'harborth_ci/**'
+      - '.github/workflows/harborth-lean4-verification.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare diagnostics
+        run: mkdir -p harborth_ci/ci-logs
+
+      - name: Source audit
+        shell: bash
+        run: |
+          set -o pipefail
+          {
+            echo "head_sha=${GITHUB_SHA}"
+            echo "toolchain=$(cat harborth_ci/lean-toolchain)"
+            ! grep -RInE '(^|[^[:alnum:]_])(sorry|admit)([^[:alnum:]_]|$)' harborth_ci/PlanarContactNumber harborth_ci/PlanarContactNumber.lean
+            ! grep -RInE '^[[:space:]]*(axiom|opaque)[[:space:]]' harborth_ci/PlanarContactNumber harborth_ci/PlanarContactNumber.lean
+          } 2>&1 | tee harborth_ci/ci-logs/source-audit.log
+
+      - name: Generate pinned Lake manifest
+        shell: bash
+        run: |
+          set -o pipefail
+          curl https://elan.lean-lang.org/elan-init.sh -sSf | sh -s -- -y --default-toolchain none 2>&1 | tee harborth_ci/ci-logs/elan-bootstrap.log
+          cd harborth_ci
+          "$HOME/.elan/bin/lake" --version 2>&1 | tee ci-logs/lake-version.log
+          "$HOME/.elan/bin/lake" update 2>&1 | tee ci-logs/lake-update.log
+          sha256sum lake-manifest.json | tee ci-logs/lake-manifest.sha256
+
+      - name: Build with maintained Lean action
+        id: lean-build
+        uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: harborth_ci
+          build: true
+          test: false
+          lint: false
+          use-mathlib-cache: true
+          use-github-cache: true
+
+      - name: Audit theorem axioms
+        working-directory: harborth_ci
+        shell: bash
+        run: |
+          set -o pipefail
+          lake env lean PlanarContactNumber/AxiomAudit.lean 2>&1 | tee ci-logs/axiom-audit.log
+
+      - name: Upload diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: harborth-lean4-${{ github.run_id }}-${{ github.run_attempt }}
+          path: harborth_ci/ci-logs
+          if-no-files-found: error
+          retention-days: 30
