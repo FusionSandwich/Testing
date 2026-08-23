@@ -27,7 +27,7 @@ theorem contactGraph_adj {ι : Type*} (x : ι → Point2) (i j : ι) :
 
 /-- Number of unordered unit-distance pairs. -/
 noncomputable def contactCount {ι : Type*} [Fintype ι] (x : ι → Point2) : ℕ :=
-  (contactGraph x).edgeFinset.card
+  (@SimpleGraph.edgeFinset ι (contactGraph x) (contactGraph x).fintypeEdgeSet).card
 
 /-- An exact contact count attained by a one-separated `n`-point configuration. -/
 def Achievable (n m : ℕ) : Prop :=
