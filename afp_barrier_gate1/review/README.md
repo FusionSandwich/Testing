@@ -32,4 +32,8 @@ The report finds no counterexample to the core sharp frontier, final equality ch
 - This review is not identifiable human peer review, journal acceptance, literature-priority certification, physical validation, or experimental calibration.
 - The release's P2F benchmark remains computationally inconclusive and supplies no physical conclusion.
 
+## Final verification
+
+The net Git diff from the pinned final commit contains only the three permanent files in this directory. The temporary PDF access pointer used during review was deleted. The branch is ahead of the pinned release commit without modifying, deleting, or renaming any scientific or release artifact.
+
 The exact repair gate is recorded in the referee report and manifest. After those revisions, the corrected manuscript should undergo a new identifiable human mathematical and formal-methods review.
