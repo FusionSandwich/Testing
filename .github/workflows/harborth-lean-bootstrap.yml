@@ -7,6 +7,12 @@ on:
     paths:
       - 'lean-bootstrap/**'
       - '.github/workflows/harborth-lean-bootstrap.yml'
+  pull_request:
+    branches:
+      - testing
+    paths:
+      - 'lean-bootstrap/**'
+      - '.github/workflows/harborth-lean-bootstrap.yml'
   workflow_dispatch:
 
 permissions:
