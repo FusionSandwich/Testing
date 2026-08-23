@@ -116,7 +116,7 @@ theorem harborth_boundary_step_zero {n e : ℕ} (hn : 3 ≤ n)
     (hdegree : e + 3 ≤ 2 * n) :
     (e : ℝ) ≤ harborthReal n := by
   have hn1 : 1 ≤ n := by omega
-  have hnR : (3 : ℝ)) ≤ n := by exact_mod_cast hn
+  have hnR : (3 : ℝ) ≤ n := by exact_mod_cast hn
   have heR : (e : ℝ) + 3 ≤ 2 * (n : ℝ) := by exact_mod_cast hdegree
   have hrad := harborth_radicand_nonneg hn1
   have hs := Real.sq_sqrt hrad
