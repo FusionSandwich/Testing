@@ -20,6 +20,16 @@ jobs:
       - uses: leanprover/lean-action@v1
         with:
           lake-package-directory: lean_ci
-          build: true
+          auto-config: false
+          build: false
           test: false
-          use-mathlib-cache: true
+          lint: false
+      - name: Resolve dependencies
+        working-directory: lean_ci
+        run: lake update
+      - name: Download mathlib cache
+        working-directory: lean_ci
+        run: lake exe cache get
+      - name: Build
+        working-directory: lean_ci
+        run: lake build
