@@ -1,0 +1,55 @@
+name: Harborth Lean compile farm
+
+on:
+  push:
+    branches: [harborth-lean-ci]
+    paths:
+      - 'harborth-ci/**'
+      - '.github/workflows/harborth-lean-ci.yml'
+  pull_request:
+    branches: [testing]
+    paths:
+      - 'harborth-ci/**'
+      - '.github/workflows/harborth-lean-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      LEAN_NUM_THREADS: "2"
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+      - name: Restore Lean build cache
+        uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25
+        with:
+          path: |
+            ~/.elan
+            harborth-ci/.lake/packages
+            harborth-ci/.lake/build
+          key: harborth-lean-v4.30-${{ hashFiles('harborth-ci/lean-toolchain', 'harborth-ci/lakefile.lean') }}
+      - name: Install pinned Elan
+        run: |
+          curl --fail --location --silent --show-error \
+            https://raw.githubusercontent.com/leanprover/elan/464c9d28395000a2a0128e07081e4956d50eced2/elan-init.sh \
+            --output /tmp/elan-init.sh
+          sh /tmp/elan-init.sh -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Resolve dependencies and fetch Mathlib cache
+        working-directory: harborth-ci
+        run: |
+          lake update
+          lake exe cache get
+      - name: Build
+        working-directory: harborth-ci
+        run: lake build
+      - name: Reject proof escapes in project sources
+        run: |
+          if grep -RInE --include='*.lean' '\b(sorry|admit|axiom|unsafe)\b' \
+              harborth-ci/Harborth harborth-ci/Harborth.lean; then
+            echo 'Forbidden Lean trust escape found.' >&2
+            exit 1
+          fi
