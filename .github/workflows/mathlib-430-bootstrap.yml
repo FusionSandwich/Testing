@@ -1,0 +1,94 @@
+name: Mathlib 4.30 bootstrap
+
+on:
+  push:
+    branches: [codex/lean-toolchain-download-manifest-20260823]
+    paths: ['.github/workflows/mathlib-430-bootstrap.yml']
+  pull_request:
+    paths: ['.github/workflows/mathlib-430-bootstrap.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pinned Lean
+        run: |
+          set -euxo pipefail
+          curl --fail --location --silent --show-error https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -o /tmp/elan-init.sh
+          sh /tmp/elan-init.sh -y --default-toolchain none
+          "$HOME/.elan/bin/elan" toolchain install leanprover/lean4:v4.30.0
+          "$HOME/.elan/bin/elan" default leanprover/lean4:v4.30.0
+          "$HOME/.elan/bin/lean" --version
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Build cached environment
+        run: |
+          set -euxo pipefail
+          mkdir -p /tmp/hm
+          printf '%s\n' 'leanprover/lean4:v4.30.0' > /tmp/hm/lean-toolchain
+          printf '%s\n' 'import Lake' 'open Lake DSL' 'package «Harborth» where' 'require mathlib from git "https://github.com/leanprover-community/mathlib4.git" @ "v4.30.0"' 'lean_lib «Harborth» where' > /tmp/hm/lakefile.lean
+          cd /tmp/hm
+          lake update
+          lake exe cache get
+          lake build Mathlib.Analysis.Complex.Basic Mathlib.Tactic
+          tar --use-compress-program='zstd -6 -T0' -cf /tmp/mathlib.tar.zst .lake/packages lake-manifest.json lakefile.lean lean-toolchain
+          sha256sum /tmp/mathlib.tar.zst > /tmp/mathlib.tar.zst.sha256
+          split -b 400M -d -a 2 /tmp/mathlib.tar.zst /tmp/mathlib.part-
+          touch /tmp/mathlib.part-00 /tmp/mathlib.part-01 /tmp/mathlib.part-02 /tmp/mathlib.part-03 /tmp/mathlib.part-04 /tmp/mathlib.part-05 /tmp/mathlib.part-06 /tmp/mathlib.part-07
+          sha256sum /tmp/mathlib.part-* > /tmp/mathlib.parts.sha256
+          ls -lh /tmp/mathlib.tar.zst /tmp/mathlib.part-*
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mathlib-430-part-00
+          path: |
+            /tmp/mathlib.part-00
+            /tmp/mathlib.parts.sha256
+            /tmp/mathlib.tar.zst.sha256
+          compression-level: 0
+          retention-days: 1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mathlib-430-part-01
+          path: /tmp/mathlib.part-01
+          compression-level: 0
+          retention-days: 1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mathlib-430-part-02
+          path: /tmp/mathlib.part-02
+          compression-level: 0
+          retention-days: 1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mathlib-430-part-03
+          path: /tmp/mathlib.part-03
+          compression-level: 0
+          retention-days: 1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mathlib-430-part-04
+          path: /tmp/mathlib.part-04
+          compression-level: 0
+          retention-days: 1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mathlib-430-part-05
+          path: /tmp/mathlib.part-05
+          compression-level: 0
+          retention-days: 1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mathlib-430-part-06
+          path: /tmp/mathlib.part-06
+          compression-level: 0
+          retention-days: 1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mathlib-430-part-07
+          path: /tmp/mathlib.part-07
+          compression-level: 0
+          retention-days: 1

@@ -1,0 +1,69 @@
+name: Lean Harborth bootstrap
+
+on:
+  push:
+    branches: [codex/lean-toolchain-download-manifest-20260823]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runner diagnostic
+        run: |
+          set -euxo pipefail
+          uname -a
+          echo runner-ok
+      - name: Install Elan and Lean 4.30.0
+        run: |
+          set -euxo pipefail
+          curl --fail --location --silent --show-error https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -o /tmp/elan-init.sh
+          sh /tmp/elan-init.sh -y --default-toolchain none
+          "$HOME/.elan/bin/elan" toolchain install leanprover/lean4:v4.30.0
+          "$HOME/.elan/bin/elan" default leanprover/lean4:v4.30.0
+          "$HOME/.elan/bin/lean" --version
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Package and split toolchain
+        run: |
+          set -euxo pipefail
+          LEAN_BIN="$($HOME/.elan/bin/elan which lean)"
+          TOOLCHAIN="$(dirname "$(dirname "$LEAN_BIN")")"
+          TOOLCHAIN_NAME="$(basename "$TOOLCHAIN")"
+          test -x "$TOOLCHAIN/bin/lean"
+          "$TOOLCHAIN/bin/lean" --version
+          tar --use-compress-program='zstd -3 -T0' -cf /tmp/lean-4.30.0-linux-toolchain.tar.zst -C "$(dirname "$TOOLCHAIN")" "$TOOLCHAIN_NAME"
+          sha256sum /tmp/lean-4.30.0-linux-toolchain.tar.zst > /tmp/lean-4.30.0-linux-toolchain.tar.zst.sha256
+          split -b 256M -d -a 2 /tmp/lean-4.30.0-linux-toolchain.tar.zst /tmp/lean-toolchain.part-
+          test -f /tmp/lean-toolchain.part-00
+          test -f /tmp/lean-toolchain.part-01
+          test -f /tmp/lean-toolchain.part-02
+          sha256sum /tmp/lean-toolchain.part-* > /tmp/lean-toolchain.parts.sha256
+          ls -lh /tmp/lean-4.30.0-linux-toolchain.tar.zst /tmp/lean-toolchain.part-*
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lean-4.30.0-toolchain-part-00
+          path: /tmp/lean-toolchain.part-00
+          compression-level: 0
+          retention-days: 1
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lean-4.30.0-toolchain-part-01
+          path: /tmp/lean-toolchain.part-01
+          compression-level: 0
+          retention-days: 1
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lean-4.30.0-toolchain-part-02
+          path: |
+            /tmp/lean-toolchain.part-02
+            /tmp/lean-toolchain.parts.sha256
+            /tmp/lean-4.30.0-linux-toolchain.tar.zst.sha256
+          compression-level: 0
+          retention-days: 1
+          if-no-files-found: error
