@@ -1,0 +1,103 @@
+name: Harborth exact Lean CI
+
+on:
+  push:
+    branches:
+      - ci/harborth-exact-lean-20260823
+    paths:
+      - 'harborth_ci/**'
+      - '.github/workflows/harborth-exact-lean-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare diagnostics
+        run: mkdir -p harborth_ci/ci-logs
+
+      - name: Record environment
+        shell: bash
+        run: |
+          set -o pipefail
+          {
+            echo "head_sha=${GITHUB_SHA}"
+            echo "ref=${GITHUB_REF}"
+            echo "event=${GITHUB_EVENT_NAME}"
+            echo "runner_os=${RUNNER_OS}"
+            echo "runner_arch=${RUNNER_ARCH}"
+            echo "lean_toolchain=$(cat harborth_ci/lean-toolchain)"
+          } 2>&1 | tee harborth_ci/ci-logs/environment.log
+
+      - name: Reject placeholders and project-owned axioms
+        shell: bash
+        run: |
+          set -o pipefail
+          {
+            ! grep -RInE '(^|[^[:alnum:]_])(sorry|admit)([^[:alnum:]_]|$)' harborth_ci/PlanarContactNumber harborth_ci/PlanarContactNumber.lean
+            ! grep -RInE '^[[:space:]]*(axiom|opaque)[[:space:]]' harborth_ci/PlanarContactNumber harborth_ci/PlanarContactNumber.lean
+            ! grep -RInE '^[[:space:]]*unsafe[[:space:]]+(def|theorem)' harborth_ci/PlanarContactNumber harborth_ci/PlanarContactNumber.lean
+          } 2>&1 | tee harborth_ci/ci-logs/source-audit.log
+
+      - name: Install Elan
+        shell: bash
+        run: |
+          set -o pipefail
+          {
+            curl https://elan.lean-lang.org/elan-init.sh -sSf | sh -s -- -y --default-toolchain none
+            echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+          } 2>&1 | tee harborth_ci/ci-logs/elan-install.log
+
+      - name: Resolve dependencies
+        working-directory: harborth_ci
+        shell: bash
+        run: |
+          set -o pipefail
+          lake update 2>&1 | tee ci-logs/lake-update.log
+
+      - name: Record resolved versions
+        working-directory: harborth_ci
+        shell: bash
+        run: |
+          set -o pipefail
+          {
+            lean --version
+            lake --version
+            sha256sum lake-manifest.json
+            cat lake-manifest.json
+          } 2>&1 | tee ci-logs/resolved-versions.log
+
+      - name: Download mathlib cache
+        working-directory: harborth_ci
+        shell: bash
+        run: |
+          set -o pipefail
+          lake exe cache get 2>&1 | tee ci-logs/mathlib-cache.log
+
+      - name: Build
+        working-directory: harborth_ci
+        shell: bash
+        run: |
+          set -o pipefail
+          lake build 2>&1 | tee ci-logs/lake-build.log
+
+      - name: Print theorem axioms
+        working-directory: harborth_ci
+        shell: bash
+        run: |
+          set -o pipefail
+          lake env lean PlanarContactNumber/AxiomAudit.lean 2>&1 | tee ci-logs/axiom-audit.log
+
+      - name: Upload diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: harborth-exact-lean-${{ github.run_id }}-${{ github.run_attempt }}
+          path: harborth_ci/ci-logs
+          if-no-files-found: warn
+          retention-days: 30
