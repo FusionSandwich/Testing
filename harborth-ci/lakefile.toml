@@ -1,0 +1,11 @@
+name = "harborth-ci"
+version = "0.1.0"
+defaultTargets = ["Harborth"]
+
+[[require]]
+name = "schoenflies-lean"
+git = "https://github.com/alonamaloh/schoenflies-lean.git"
+rev = "05a43d29cde026618777db3d4e4316204ccca237"
+
+[[lean_lib]]
+name = "Harborth"

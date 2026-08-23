@@ -1,0 +1,33 @@
+name: Harborth Lean checker
+
+on:
+  push:
+    branches: ["ci/harborth-lean"]
+    paths:
+      - "harborth-ci/**"
+      - ".github/workflows/harborth-lean-ci.yml"
+  pull_request:
+    branches: ["testing"]
+    paths:
+      - "harborth-ci/**"
+      - ".github/workflows/harborth-lean-ci.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+      - name: Install elan
+        run: |
+          curl -sSf https://elan.lean-lang.org/elan-init.sh | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Resolve dependencies and build
+        working-directory: harborth-ci
+        run: |
+          lake update
+          lake exe cache get
+          lake build
