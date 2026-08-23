@@ -29,11 +29,20 @@ jobs:
           if grep -R --include='*.lean' -nE '^[[:space:]]*(axiom|constant)[[:space:]]' harborth_ci; then
             exit 1
           fi
+      - name: Restore Lean and mathlib cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.elan
+            harborth_ci/.lake/packages
+          key: harborth-lean-v4.29.0-${{ hashFiles('harborth_ci/lakefile.toml', 'harborth_ci/lean-toolchain') }}
       - name: Install Lean and build
         shell: bash
         run: |
           set -euxo pipefail
-          curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain none
+          if [ ! -x "$HOME/.elan/bin/lake" ]; then
+            curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain none
+          fi
           export PATH="$HOME/.elan/bin:$PATH"
           cd harborth_ci
           lake update 2>&1 | tee lake-update.log
