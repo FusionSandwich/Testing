@@ -1,0 +1,44 @@
+name: Harborth Lean scratch compiler
+
+on:
+  push:
+    branches:
+      - agent/harborth-lean-ci-scratch-20260823
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lean:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reject placeholders and project axioms
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -R --include='*.lean' -nE '(^|[^[:alnum:]_])(sorry|admit)([^[:alnum:]_]|$)' harborth_ci; then
+            exit 1
+          fi
+          if grep -R --include='*.lean' -nE '^[[:space:]]*(axiom|constant)[[:space:]]' harborth_ci; then
+            exit 1
+          fi
+      - name: Install Lean and build
+        shell: bash
+        run: |
+          set -euxo pipefail
+          curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain none
+          export PATH="$HOME/.elan/bin:$PATH"
+          cd harborth_ci
+          lake update 2>&1 | tee lake-update.log
+          lake exe cache get 2>&1 | tee cache-get.log
+          lake build 2>&1 | tee lean-build.log
+      - name: Upload diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: harborth-lean-scratch-${{ github.run_id }}
+          path: harborth_ci/*.log
+          if-no-files-found: warn
