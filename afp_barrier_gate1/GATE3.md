@@ -330,8 +330,9 @@ explicit verification boundary.
 | `EqualAngleRateMaximum.lean` | proof that the polar rings maximize the square-family rate |
 | Gate 1/2 modules | general no-go theorem, defect identity, stiffness inequality, reversibility, adjoint conventions |
 
-The axiom audit enumerates every public theorem. The CI rejects `sorry`,
-`admit`, `sorryAx`, and user-declared axioms.
+The historical axiom audit enumerates a selected theorem surface. The R5
+release audit separately enumerates every public theorem/lemma declaration.
+CI rejects `sorry`, `admit`, `sorryAx`, and user-declared axioms.
 
 ## 9. Deterministic global audit
 

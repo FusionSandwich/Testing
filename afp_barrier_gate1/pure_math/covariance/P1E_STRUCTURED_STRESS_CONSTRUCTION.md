@@ -757,10 +757,11 @@ The constructed generator belongs to the class.  Hence
 
 The order is therefore exactly optimal.
 
-## 6. Robustness under node perturbation
+## 6. Rejected-route conditional perturbation calculation — not an active P1E result
 
-The construction has two useful robustness statements.  They deliberately
-distinguish smooth mesh perturbations from arbitrary high-frequency jitter.
+The rejected route contained two conditional perturbation calculations. They
+are retained only to distinguish smooth mesh perturbations from arbitrary
+high-frequency jitter and must not be cited as robustness theorems.
 
 ### 6.1 Exact fixed-node correction
 

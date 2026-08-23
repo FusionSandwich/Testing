@@ -1,8 +1,9 @@
-# AFP Barrier: formally checked angular Fokker--Planck transport research
+# AFP Barrier: angular Fokker--Planck transport research with a Lean-checked finite algebraic core
 
-This project combines Lean 4 proofs with deterministic numerical audits for
-monotone angular Fokker--Planck (AFP) discretizations and their use in particle
-transport.
+This project combines a Lean 4-checked finite algebraic core with ordinary
+mathematical proofs and deterministic numerical audits for monotone angular
+Fokker--Planck (AFP) discretizations. The Lean library does not verify the
+whole manuscript, analytic mesh construction, or physical transport claims.
 
 ## Mathematical gates
 

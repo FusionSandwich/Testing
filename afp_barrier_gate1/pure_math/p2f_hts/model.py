@@ -458,8 +458,8 @@ def build_manifest() -> dict[str, Any]:
     return {
         "schema": "afp-p2f-hts-manifest-v2",
         "stack_provenance": (
-            "bounded coated-conductor verification stack chosen within the HTS irradiation "
-            "roadmap ranges; dimensions are representative, not a manufacturer certificate"
+            "synthetic bounded coated-conductor verification stack; dimensions are test "
+            "inputs, not validated device or manufacturer data"
         ),
         "layers": [
             {"name": layer.name, "material": layer.material, "thickness_um": 1.0e4 * layer.thickness_cm}

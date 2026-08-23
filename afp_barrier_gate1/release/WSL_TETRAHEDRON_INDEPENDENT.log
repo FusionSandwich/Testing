@@ -1,0 +1,4 @@
+numpy 2.2.4
+residual_inf 4.440892098500626e-16
+threshold_pass True
+exact True globally_node_minimal True

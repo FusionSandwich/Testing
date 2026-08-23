@@ -8,7 +8,7 @@ because a tracked source file cannot contain its own commit hash.
 | Theorem family | Claim status target | Ordinary proof | Lean support | Deterministic support |
 |---|---|---|---|---|
 | controlled cosecant expansion and polar remainders | PROVED | `pure_math/barriers/SHARP_PRODUCT_GRAPH_BARRIERS.md` | `AFPBarrier/SharpProductBarriers.lean` finite coefficient transfer | `pure_math/barriers/prompt4_sharp_barrier_audit.py` |
-| asymmetric polar solve and fixed-graph minimax | PROVED | sharp-barrier theorem | `SharpProductBarriers.lean` polar declarations | Prompt-4 exact audit plus retained equal-angle audits |
+| asymmetric polar solve and fixed-graph minimax | PROVED | sharp-barrier theorem | `SharpProductBarriers.lean` supplies the local scalar solve and conditional lower-bound algebra only; graph, reversibility, minimax, and attainment remain ordinary proof obligations | Prompt-4 exact audit plus retained equal-angle audits |
 | universal/quasi-uniform rate transfer | PROVED | sharp-barrier theorem | universal rate declaration | Prompt-4 exact audit |
 | constrained extremal lower bound and minimizer | PROVED | sharp-barrier theorem compactness section | finite lower bound only; compactness is ordinary mathematics | normalization and exclusion checks |
 | feasible-cone projectivization and exact quality identity | PROVED | sharp-barrier theorem anisotropy section | finite projective examples where practical | sliced-LP primal/dual certificate |

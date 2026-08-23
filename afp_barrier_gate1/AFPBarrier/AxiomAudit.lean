@@ -1,6 +1,11 @@
 import AFPBarrier
 
-/-! Print the axiom dependencies of every public theorem in the AFPBarrier library. -/
+/-! Legacy selected-public-theorem axiom audit.
+
+The exhaustive R5 release audit is generated separately and checks every
+public theorem/lemma declaration. This file is retained as the historical
+focused audit surface.
+-/
 
 #print axioms AFPBarrier.jumpGenerator_const
 #print axioms AFPBarrier.jumpGenerator_add_const

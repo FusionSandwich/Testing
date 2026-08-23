@@ -1,0 +1,19 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_______ test_tetrahedron_attains_global_positive_degree_two_lower_bound _______
+
+    def test_tetrahedron_attains_global_positive_degree_two_lower_bound() -> None:
+        rule = regular_tetrahedron_rule()
+        certificate = node_count_certificate(rule, 2)
+        assert harmonic_gram_lower_bound(2) == 4
+        assert certificate.exact
+        assert certificate.globally_node_minimal
+        assert certificate.node_count == certificate.harmonic_gram_lower_bound
+>       assert certificate.residual_inf < 2e-15
+E       AssertionError: assert 2.7902947984069054e-15 < 2e-15
+E        +  where 2.7902947984069054e-15 = NodeCountCertificate(maximum_degree=2, node_count=4, harmonic_gram_lower_bound=4, exact=True, globally_node_minimal=Tr...harmonic-Gram lower bound attained', residual_inf=2.7902947984069054e-15, message='exact positive rule attains N >= 4').residual_inf
+
+math_repo_afp\tests\test_v02_global_graph.py:30: AssertionError
+=========================== short test summary info ===========================
+FAILED math_repo_afp/tests/test_v02_global_graph.py::test_tetrahedron_attains_global_positive_degree_two_lower_bound
+1 failed in 0.79s

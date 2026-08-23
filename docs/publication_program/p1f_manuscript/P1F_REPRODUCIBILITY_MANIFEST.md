@@ -32,40 +32,43 @@ are:
 
 | File | SHA-256 |
 |---|---|
-| `FLAGSHIP_MANUSCRIPT.md` | `453f9e69acad66b201e7e70940d058aaa01a68af2b15a6d143b45a6bbb7315bc` |
+| `FLAGSHIP_MANUSCRIPT.md` | `ea8e3a252155fbd8a199ba83249aac9e763c8c116b19612a5df69525c8facb52` |
 | `priority_sources.bib` | `8a896552a8a03154ba834466bdd80a6af65c39e5f440f53e2afbbc462746ae48` |
-| `proof_dependency_graph.png` | `745d14b2cc65c07c584ccd5d56667aaecb6d59fb9cff264ca6d90b31e0d6eee2` |
-| `output/pdf/FLAGSHIP_MANUSCRIPT.pdf` | `8d09af48519b3df81881be47f4a8e477b38ed6485ed74e82d8d9167c6e7824c4` |
+| `proof_dependency_graph.png` | `dd89357db56a4ee063331eae55ee5d0054a8c2c154669a2c85e4828d2d34dfbb` |
+| `output/pdf/FLAGSHIP_MANUSCRIPT.pdf` | `87b8a77af8c53e2bfa2b24fcc1cf95fef8c798181b7f0828e61d25eaa7267c8d` |
 
-The PDF is 24 US-letter pages, has no encryption or JavaScript, and carries the
+The PDF is 23 US-letter pages, has no encryption or JavaScript, and carries the
 title `A sharp positivity--rate frontier for quadratic fidelity of reversible
 spherical generators` in its document metadata.
 
-## Reference authoring environment
+## R5 authoring environment
 
-The reference artifact was produced with:
+The selected R5 artifact was produced locally with:
 
 ```text
-Python 3.13.5
-matplotlib 3.10.8
-pandoc 3.1.11.1
-XeTeX 3.141592653-2.6-0.999996 (TeX Live 2025/dev/Debian)
-pdftotext 25.06.0
+Python 3.12.10
+matplotlib 3.11.1
+pandoc 3.8.3
+Tectonic 0.17.0
+Poppler 26.05.0
 SOURCE_DATE_EPOCH=1785900000
 ```
 
 Exact PDF bytes can depend on the TeX distribution and installed fonts. The
-present consolidated revision workflow verifies the committed content hash,
-metadata, page-range guard, extracted claim boundary, and absence of raw
-citation or diagram markup. A permanent tagged release should additionally
-run a clean rebuild in the recorded toolchain and compare the committed and
-rebuilt PDF text token streams.
+selected bytes are bound by the hash above. Two consecutive clean-input local
+builds had different PDF container bytes but exactly the same 10,272-word
+extracted token stream, the same 23-page count, and the same dependency-graph
+PNG hash. The release validator therefore checks both the selected artifact
+hash and semantic/structural PDF properties; byte identity is not inferred
+from a rebuild. A permanent publication release should also rebuild with the
+historical XeLaTeX workflow and compare extracted token streams.
 
 ## Build command
 
 From the repository root:
 
-```bash
+```powershell
+$env:AFP_PDF_ENGINE='tectonic' # omit to use the XeLaTeX default
 python docs/publication_program/p1f_manuscript/build_flagship_paper.py
 pdfinfo output/pdf/FLAGSHIP_MANUSCRIPT.pdf
 pdftotext output/pdf/FLAGSHIP_MANUSCRIPT.pdf -

@@ -1,0 +1,3081 @@
+{
+  "classification": "finite project theorem/lemma signatures and axiom dependencies only; not whole-paper formalization",
+  "declaration_count": 512,
+  "declarations": [
+    {
+      "file": "AFPBarrier/AccelerationFixedPoint.lean",
+      "kind": "theorem",
+      "line": 19,
+      "name": "AFPBarrier.residualCorrection_fixedPoint"
+    },
+    {
+      "file": "AFPBarrier/AccelerationFixedPoint.lean",
+      "kind": "theorem",
+      "line": 26,
+      "name": "AFPBarrier.residualCorrection_error"
+    },
+    {
+      "file": "AFPBarrier/AccelerationFixedPoint.lean",
+      "kind": "theorem",
+      "line": 37,
+      "name": "AFPBarrier.residualCorrection_preservesConstraint"
+    },
+    {
+      "file": "AFPBarrier/AccelerationFixedPoint.lean",
+      "kind": "theorem",
+      "line": 46,
+      "name": "AFPBarrier.scalarShell_errorFactor"
+    },
+    {
+      "file": "AFPBarrier/AntipodalFeasibility.lean",
+      "kind": "theorem",
+      "line": 22,
+      "name": "AFPBarrier.antipodalOnlyFeasible_iff_simplex"
+    },
+    {
+      "file": "AFPBarrier/AntipodalFeasibility.lean",
+      "kind": "theorem",
+      "line": 34,
+      "name": "AFPBarrier.antipodalOnlyFeasible_of_positive_simplex"
+    },
+    {
+      "file": "AFPBarrier/AntipodalFeasibility.lean",
+      "kind": "theorem",
+      "line": 45,
+      "name": "AFPBarrier.uniformAntipodalRate_strictly_feasible"
+    },
+    {
+      "file": "AFPBarrier/AntipodalFeasibility.lean",
+      "kind": "theorem",
+      "line": 71,
+      "name": "AFPBarrier.rowRateFromTangentWeight_nonneg"
+    },
+    {
+      "file": "AFPBarrier/AntipodalFeasibility.lean",
+      "kind": "theorem",
+      "line": 79,
+      "name": "AFPBarrier.rowRateFromTangentWeight_pos"
+    },
+    {
+      "file": "AFPBarrier/AntipodalFeasibility.lean",
+      "kind": "theorem",
+      "line": 87,
+      "name": "AFPBarrier.rowRateFromTangentWeight_balance"
+    },
+    {
+      "file": "AFPBarrier/AntipodalFeasibility.lean",
+      "kind": "theorem",
+      "line": 108,
+      "name": "AFPBarrier.rowRateFromTangentWeight_normal"
+    },
+    {
+      "file": "AFPBarrier/AntipodalFeasibility.lean",
+      "kind": "theorem",
+      "line": 124,
+      "name": "AFPBarrier.rowRateFromTangentDependenceWeight"
+    },
+    {
+      "file": "AFPBarrier/AntipodalFeasibility.lean",
+      "kind": "theorem",
+      "line": 133,
+      "name": "AFPBarrier.mixedRow_from_tangentBudget"
+    },
+    {
+      "file": "AFPBarrier/AntipodalFeasibility.lean",
+      "kind": "theorem",
+      "line": 157,
+      "name": "AFPBarrier.mixedRow_to_tangentBudget"
+    },
+    {
+      "file": "AFPBarrier/AntipodalFeasibility.lean",
+      "kind": "theorem",
+      "line": 183,
+      "name": "AFPBarrier.mixedRow_tangentNormalBudget_bounds"
+    },
+    {
+      "file": "AFPBarrier/AntipodalFeasibility.lean",
+      "kind": "theorem",
+      "line": 244,
+      "name": "AFPBarrier.mixedRowFeasible_iff_exists_tangentParameter"
+    },
+    {
+      "file": "AFPBarrier/AntipodalFeasibility.lean",
+      "kind": "theorem",
+      "line": 276,
+      "name": "AFPBarrier.mixedNormalBudgetFeasible_iff_remaining"
+    },
+    {
+      "file": "AFPBarrier/AntipodalFeasibility.lean",
+      "kind": "theorem",
+      "line": 287,
+      "name": "AFPBarrier.scaledAntipodalAllocation_sum"
+    },
+    {
+      "file": "AFPBarrier/AntipodalFeasibility.lean",
+      "kind": "theorem",
+      "line": 294,
+      "name": "AFPBarrier.scaledAntipodalAllocation_nonneg"
+    },
+    {
+      "file": "AFPBarrier/AntipodalFeasibility.lean",
+      "kind": "theorem",
+      "line": 303,
+      "name": "AFPBarrier.scaledAntipodalAllocation_pos"
+    },
+    {
+      "file": "AFPBarrier/AntipodalFeasibility.lean",
+      "kind": "theorem",
+      "line": 312,
+      "name": "AFPBarrier.mixedNormalBudgetFeasible_scaledAntipodalAllocation"
+    },
+    {
+      "file": "AFPBarrier/AntipodalFeasibility.lean",
+      "kind": "theorem",
+      "line": 327,
+      "name": "AFPBarrier.mixedNormalBudgetFeasible_zero_tangent"
+    },
+    {
+      "file": "AFPBarrier/AntipodalFeasibility.lean",
+      "kind": "theorem",
+      "line": 334,
+      "name": "AFPBarrier.mixedNormalBudgetFeasible_zero_tangent_uniform"
+    },
+    {
+      "file": "AFPBarrier/CompleteGraph.lean",
+      "kind": "theorem",
+      "line": 33,
+      "name": "AFPBarrier.completeConductance_symm"
+    },
+    {
+      "file": "AFPBarrier/CompleteGraph.lean",
+      "kind": "theorem",
+      "line": 41,
+      "name": "AFPBarrier.conductanceRate_completeConductance_eq_completeRate"
+    },
+    {
+      "file": "AFPBarrier/CompleteGraph.lean",
+      "kind": "theorem",
+      "line": 52,
+      "name": "AFPBarrier.completeRate_eigen_of_weightedMean_zero"
+    },
+    {
+      "file": "AFPBarrier/CompleteGraph.lean",
+      "kind": "theorem",
+      "line": 93,
+      "name": "AFPBarrier.completeRate_pos"
+    },
+    {
+      "file": "AFPBarrier/CompleteGraph.lean",
+      "kind": "theorem",
+      "line": 104,
+      "name": "AFPBarrier.completeConductance_pos"
+    },
+    {
+      "file": "AFPBarrier/CompleteGraph.lean",
+      "kind": "theorem",
+      "line": 116,
+      "name": "AFPBarrier.completeRate_preserves_centered_coordinates"
+    },
+    {
+      "file": "AFPBarrier/CompleteGraph.lean",
+      "kind": "theorem",
+      "line": 132,
+      "name": "AFPBarrier.reversible_coordinate_exactness_implies_centered"
+    },
+    {
+      "file": "AFPBarrier/ConvexGeneratorDesign.lean",
+      "kind": "theorem",
+      "line": 31,
+      "name": "AFPBarrier.convexDesign_constant_exact"
+    },
+    {
+      "file": "AFPBarrier/ConvexGeneratorDesign.lean",
+      "kind": "theorem",
+      "line": 38,
+      "name": "AFPBarrier.convexDesign_rate_nonneg"
+    },
+    {
+      "file": "AFPBarrier/ConvexGeneratorDesign.lean",
+      "kind": "theorem",
+      "line": 48,
+      "name": "AFPBarrier.convexDesign_detailedBalance"
+    },
+    {
+      "file": "AFPBarrier/ConvexGeneratorDesign.lean",
+      "kind": "theorem",
+      "line": 64,
+      "name": "AFPBarrier.conductanceMix_nonneg"
+    },
+    {
+      "file": "AFPBarrier/ConvexGeneratorDesign.lean",
+      "kind": "theorem",
+      "line": 76,
+      "name": "AFPBarrier.sharedEdgeApply_conductanceMix"
+    },
+    {
+      "file": "AFPBarrier/ConvexGeneratorDesign.lean",
+      "kind": "theorem",
+      "line": 92,
+      "name": "AFPBarrier.sharedEdge_exact_conductanceMix"
+    },
+    {
+      "file": "AFPBarrier/ConvexGeneratorDesign.lean",
+      "kind": "theorem",
+      "line": 107,
+      "name": "AFPBarrier.finiteMatrixApply_conductanceMix_le"
+    },
+    {
+      "file": "AFPBarrier/ConvexGeneratorDesign.lean",
+      "kind": "theorem",
+      "line": 145,
+      "name": "AFPBarrier.affineShellResidual_conductanceMix"
+    },
+    {
+      "file": "AFPBarrier/ConvexGeneratorDesign.lean",
+      "kind": "theorem",
+      "line": 178,
+      "name": "AFPBarrier.sum_incidentLossMass"
+    },
+    {
+      "file": "AFPBarrier/ConvexGeneratorDesign.lean",
+      "kind": "theorem",
+      "line": 200,
+      "name": "AFPBarrier.lossWeightedTotal_fixed_of_radialExact"
+    },
+    {
+      "file": "AFPBarrier/ConvexGeneratorDesign.lean",
+      "kind": "theorem",
+      "line": 223,
+      "name": "AFPBarrier.S2_lossWeightedTotal_one"
+    },
+    {
+      "file": "AFPBarrier/ConvexGeneratorDesign.lean",
+      "kind": "theorem",
+      "line": 236,
+      "name": "AFPBarrier.totalConductance_fixed_of_constantLoss"
+    },
+    {
+      "file": "AFPBarrier/ConvexGeneratorDesign.lean",
+      "kind": "theorem",
+      "line": 261,
+      "name": "AFPBarrier.rateCapped_dualWork_nonneg"
+    },
+    {
+      "file": "AFPBarrier/ConvexGeneratorDesign.lean",
+      "kind": "theorem",
+      "line": 313,
+      "name": "AFPBarrier.rateCapped_negative_dualWork_certifies_infeasible"
+    },
+    {
+      "file": "AFPBarrier/DiffusionProperty.lean",
+      "kind": "theorem",
+      "line": 25,
+      "name": "AFPBarrier.jumpGenerator_chain_rule_defect"
+    },
+    {
+      "file": "AFPBarrier/DiffusionProperty.lean",
+      "kind": "theorem",
+      "line": 44,
+      "name": "AFPBarrier.strict_tangent_chain_rule_forces_generator_zero"
+    },
+    {
+      "file": "AFPBarrier/DiffusionProperty.lean",
+      "kind": "theorem",
+      "line": 92,
+      "name": "AFPBarrier.square_chain_rule_forces_generator_zero"
+    },
+    {
+      "file": "AFPBarrier/DualCertificate.lean",
+      "kind": "theorem",
+      "line": 34,
+      "name": "AFPBarrier.finiteMatrix_bilinear_identity"
+    },
+    {
+      "file": "AFPBarrier/DualCertificate.lean",
+      "kind": "theorem",
+      "line": 65,
+      "name": "AFPBarrier.nonnegative_solution_forces_dualWork_nonneg"
+    },
+    {
+      "file": "AFPBarrier/DualCertificate.lean",
+      "kind": "theorem",
+      "line": 86,
+      "name": "AFPBarrier.negative_dualWork_certifies_infeasible"
+    },
+    {
+      "file": "AFPBarrier/DualCertificate.lean",
+      "kind": "theorem",
+      "line": 103,
+      "name": "AFPBarrier.positiveLP_weak_duality"
+    },
+    {
+      "file": "AFPBarrier/EnergyLossAngularDiffusion.lean",
+      "kind": "theorem",
+      "line": 39,
+      "name": "AFPBarrier.inverseSquareAngularDepth_eq_reciprocal_difference"
+    },
+    {
+      "file": "AFPBarrier/EnergyLossAngularDiffusion.lean",
+      "kind": "theorem",
+      "line": 61,
+      "name": "AFPBarrier.inverseSquareAngularDepth_nonneg"
+    },
+    {
+      "file": "AFPBarrier/EnergyLossAngularDiffusion.lean",
+      "kind": "theorem",
+      "line": 73,
+      "name": "AFPBarrier.twoLayer_energy_order_invariant"
+    },
+    {
+      "file": "AFPBarrier/EnergyLossAngularDiffusion.lean",
+      "kind": "theorem",
+      "line": 98,
+      "name": "AFPBarrier.twoLayerAngularDepth_order_difference"
+    },
+    {
+      "file": "AFPBarrier/EnergyLossAngularDiffusion.lean",
+      "kind": "theorem",
+      "line": 120,
+      "name": "AFPBarrier.twoLayerAngularDepth12_le_21"
+    },
+    {
+      "file": "AFPBarrier/EnergyLossAngularDiffusion.lean",
+      "kind": "theorem",
+      "line": 142,
+      "name": "AFPBarrier.layeredAngularAmplitude_mul"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleAsymptotics.lean",
+      "kind": "theorem",
+      "line": 39,
+      "name": "AFPBarrier.squareRingDefect_between_sin_bounds"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleAsymptotics.lean",
+      "kind": "theorem",
+      "line": 54,
+      "name": "AFPBarrier.squareRingDefect_trig_bounds"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleAsymptotics.lean",
+      "kind": "theorem",
+      "line": 77,
+      "name": "AFPBarrier.equalAngleGrid_jordanScale"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleAsymptotics.lean",
+      "kind": "theorem",
+      "line": 85,
+      "name": "AFPBarrier.squareRingDefect_grid_bounds"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleAsymptotics.lean",
+      "kind": "theorem",
+      "line": 115,
+      "name": "AFPBarrier.squarePolarRate_lower_step"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleAsymptotics.lean",
+      "kind": "theorem",
+      "line": 141,
+      "name": "AFPBarrier.squarePolarRate_upper_jordan"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleAsymptotics.lean",
+      "kind": "theorem",
+      "line": 177,
+      "name": "AFPBarrier.squarePolarRate_grid_bounds"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleConnectivity.lean",
+      "kind": "theorem",
+      "line": 18,
+      "name": "AFPBarrier.equalAngleGridTheta_add_one"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleConnectivity.lean",
+      "kind": "theorem",
+      "line": 27,
+      "name": "AFPBarrier.equalAngleGrid_meridional_shared"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleConnectivity.lean",
+      "kind": "theorem",
+      "line": 40,
+      "name": "AFPBarrier.equalAngleGridTheta_reflect"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleConnectivity.lean",
+      "kind": "theorem",
+      "line": 50,
+      "name": "AFPBarrier.equalAngleGrid_weight_reflect"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleConnectivity.lean",
+      "kind": "theorem",
+      "line": 65,
+      "name": "AFPBarrier.equalAngleGrid_cos_reflect"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleDotProducts.lean",
+      "kind": "theorem",
+      "line": 26,
+      "name": "AFPBarrier.sphericalCoordinateDot_meridional"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleDotProducts.lean",
+      "kind": "theorem",
+      "line": 39,
+      "name": "AFPBarrier.sphericalCoordinateDot_azimuthal"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleDotProducts.lean",
+      "kind": "theorem",
+      "line": 54,
+      "name": "AFPBarrier.meridionalDotLoss_eq_two_sin_sq"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleDotProducts.lean",
+      "kind": "theorem",
+      "line": 66,
+      "name": "AFPBarrier.azimuthalDotLoss_eq_sin_sq_mul"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleDotProducts.lean",
+      "kind": "theorem",
+      "line": 77,
+      "name": "AFPBarrier.equalAngle_actual_peakDefect_formula"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleEdges.lean",
+      "kind": "theorem",
+      "line": 19,
+      "name": "AFPBarrier.equalAngleGrid_meridionalMinus_zero_north"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleEdges.lean",
+      "kind": "theorem",
+      "line": 29,
+      "name": "AFPBarrier.equalAngleGrid_meridionalPlus_zero_south"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleEdges.lean",
+      "kind": "theorem",
+      "line": 45,
+      "name": "AFPBarrier.equalAngleGrid_two_mul_order_mul_halfStep"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleEdges.lean",
+      "kind": "theorem",
+      "line": 52,
+      "name": "AFPBarrier.equalAngleGrid_meridionalMinus_pos"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleEdges.lean",
+      "kind": "theorem",
+      "line": 91,
+      "name": "AFPBarrier.equalAngleGrid_meridionalPlus_pos"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleEdges.lean",
+      "kind": "theorem",
+      "line": 132,
+      "name": "AFPBarrier.equalAngleGrid_azimuthConductance_pos"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleGeometry.lean",
+      "kind": "theorem",
+      "line": 42,
+      "name": "AFPBarrier.equalAngleTrigWeight_pos"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleGeometry.lean",
+      "kind": "theorem",
+      "line": 54,
+      "name": "AFPBarrier.equalAngleMeridionalMinus_pos"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleGeometry.lean",
+      "kind": "theorem",
+      "line": 66,
+      "name": "AFPBarrier.equalAngleMeridionalPlus_pos"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleGeometry.lean",
+      "kind": "theorem",
+      "line": 79,
+      "name": "AFPBarrier.equalAngleTrigAzimuthConductance_pos"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleGeometry.lean",
+      "kind": "theorem",
+      "line": 94,
+      "name": "AFPBarrier.equalAngle_meridional_sum_trig"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleGeometry.lean",
+      "kind": "theorem",
+      "line": 107,
+      "name": "AFPBarrier.equalAngle_axial_balance_trig"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleGeometry.lean",
+      "kind": "theorem",
+      "line": 127,
+      "name": "AFPBarrier.equalAngle_transverse_meridional_balance_trig"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleGeometry.lean",
+      "kind": "theorem",
+      "line": 148,
+      "name": "AFPBarrier.equalAngle_azimuth_cos_balance_trig"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleGeometry.lean",
+      "kind": "theorem",
+      "line": 165,
+      "name": "AFPBarrier.equalAngle_azimuth_sin_balance_trig"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleGeometry.lean",
+      "kind": "theorem",
+      "line": 183,
+      "name": "AFPBarrier.equalAngle_productNodeAction_cos_eq"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleGeometry.lean",
+      "kind": "theorem",
+      "line": 211,
+      "name": "AFPBarrier.equalAngle_productNodeAction_sin_cos_eq"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleGeometry.lean",
+      "kind": "theorem",
+      "line": 283,
+      "name": "AFPBarrier.equalAngle_productNodeAction_sin_sin_eq"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleGrid.lean",
+      "kind": "theorem",
+      "line": 34,
+      "name": "AFPBarrier.equalAngleGridHalfStep_pos"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleGrid.lean",
+      "kind": "theorem",
+      "line": 41,
+      "name": "AFPBarrier.equalAngleGridHalfStep_lt_pi_div_two"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleGrid.lean",
+      "kind": "theorem",
+      "line": 50,
+      "name": "AFPBarrier.equalAngleGridTheta_pos"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleGrid.lean",
+      "kind": "theorem",
+      "line": 57,
+      "name": "AFPBarrier.equalAngleGridTheta_lt_pi"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleGrid.lean",
+      "kind": "theorem",
+      "line": 67,
+      "name": "AFPBarrier.equalAngleGridAzimuthStep_pos"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleGrid.lean",
+      "kind": "theorem",
+      "line": 74,
+      "name": "AFPBarrier.equalAngleGridAzimuthStep_lt_two_pi"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleGrid.lean",
+      "kind": "theorem",
+      "line": 84,
+      "name": "AFPBarrier.one_sub_cos_pos_of_pos_of_lt_two_pi"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleGrid.lean",
+      "kind": "theorem",
+      "line": 99,
+      "name": "AFPBarrier.equalAngleGrid_parameter_facts"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleGrid.lean",
+      "kind": "theorem",
+      "line": 133,
+      "name": "AFPBarrier.equalAngleGrid_weight_pos"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleGrid.lean",
+      "kind": "theorem",
+      "line": 154,
+      "name": "AFPBarrier.equalAngleGrid_coordinate_exact"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleProduct.lean",
+      "kind": "theorem",
+      "line": 36,
+      "name": "AFPBarrier.productNodeAction_const"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleProduct.lean",
+      "kind": "theorem",
+      "line": 43,
+      "name": "AFPBarrier.productNodeAction_eq_of_balance"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleProduct.lean",
+      "kind": "theorem",
+      "line": 57,
+      "name": "AFPBarrier.productNodeAction_axial"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleProduct.lean",
+      "kind": "theorem",
+      "line": 92,
+      "name": "AFPBarrier.equalAngleWeight_pos"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleProduct.lean",
+      "kind": "theorem",
+      "line": 100,
+      "name": "AFPBarrier.equalAngleMeridionalTotal_pos"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleProduct.lean",
+      "kind": "theorem",
+      "line": 108,
+      "name": "AFPBarrier.equalAngleAzimuthConductance_pos"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleProduct.lean",
+      "kind": "theorem",
+      "line": 117,
+      "name": "AFPBarrier.equalAngle_meridional_rate"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleProduct.lean",
+      "kind": "theorem",
+      "line": 128,
+      "name": "AFPBarrier.equalAngle_azimuth_rate"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleProduct.lean",
+      "kind": "theorem",
+      "line": 144,
+      "name": "AFPBarrier.equalAngle_peakDefect_formula"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleProduct.lean",
+      "kind": "theorem",
+      "line": 161,
+      "name": "AFPBarrier.equalAngle_rate_formula"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleProduct.lean",
+      "kind": "theorem",
+      "line": 178,
+      "name": "AFPBarrier.squarePolar_rate_formula"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleProduct.lean",
+      "kind": "theorem",
+      "line": 195,
+      "name": "AFPBarrier.squarePolar_peakDefect_formula"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleProduct.lean",
+      "kind": "theorem",
+      "line": 214,
+      "name": "AFPBarrier.equalAngle_defect_pos"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleQuadrature.lean",
+      "kind": "theorem",
+      "line": 17,
+      "name": "AFPBarrier.sum_range_sub_succ_real"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleQuadrature.lean",
+      "kind": "theorem",
+      "line": 28,
+      "name": "AFPBarrier.equalAngleTrigWeight_eq_cos_difference"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleQuadrature.lean",
+      "kind": "theorem",
+      "line": 37,
+      "name": "AFPBarrier.equalAngleGrid_weight_telescope"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleQuadrature.lean",
+      "kind": "theorem",
+      "line": 54,
+      "name": "AFPBarrier.sum_equalAngleGrid_ringWeights"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleQuadrature.lean",
+      "kind": "theorem",
+      "line": 87,
+      "name": "AFPBarrier.sum_equalAngleGrid_allWeights"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleRateMaximum.lean",
+      "kind": "theorem",
+      "line": 20,
+      "name": "AFPBarrier.sin_halfStep_le_of_mem_symmetric_interval"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleRateMaximum.lean",
+      "kind": "theorem",
+      "line": 35,
+      "name": "AFPBarrier.equalAngleGridTheta_mem_symmetric_interval"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleRateMaximum.lean",
+      "kind": "theorem",
+      "line": 56,
+      "name": "AFPBarrier.equalAngleGrid_sin_halfStep_le_sin_theta"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleRateMaximum.lean",
+      "kind": "theorem",
+      "line": 71,
+      "name": "AFPBarrier.squareRingRate_le_polar_of_sin_sq"
+    },
+    {
+      "file": "AFPBarrier/EqualAngleRateMaximum.lean",
+      "kind": "theorem",
+      "line": 96,
+      "name": "AFPBarrier.equalAngleGrid_squareRingRate_le_polar"
+    },
+    {
+      "file": "AFPBarrier/ExactLocalRows.lean",
+      "kind": "theorem",
+      "line": 35,
+      "name": "AFPBarrier.normalizedAngularScale_pos"
+    },
+    {
+      "file": "AFPBarrier/ExactLocalRows.lean",
+      "kind": "theorem",
+      "line": 59,
+      "name": "AFPBarrier.exactLocalRowRate_nonneg"
+    },
+    {
+      "file": "AFPBarrier/ExactLocalRows.lean",
+      "kind": "theorem",
+      "line": 71,
+      "name": "AFPBarrier.exactLocalRowRate_pos"
+    },
+    {
+      "file": "AFPBarrier/ExactLocalRows.lean",
+      "kind": "theorem",
+      "line": 87,
+      "name": "AFPBarrier.exactLocalRowRate_tangent_balance"
+    },
+    {
+      "file": "AFPBarrier/ExactLocalRows.lean",
+      "kind": "theorem",
+      "line": 104,
+      "name": "AFPBarrier.exactLocalRowRate_normal_balance"
+    },
+    {
+      "file": "AFPBarrier/ExactLocalRows.lean",
+      "kind": "theorem",
+      "line": 123,
+      "name": "AFPBarrier.exactLocalRowRate_sum"
+    },
+    {
+      "file": "AFPBarrier/ExactLocalRows.lean",
+      "kind": "theorem",
+      "line": 136,
+      "name": "AFPBarrier.tangentMass_pos_of_normal_balance"
+    },
+    {
+      "file": "AFPBarrier/ExactLocalRows.lean",
+      "kind": "theorem",
+      "line": 162,
+      "name": "AFPBarrier.normalizedTangentWeight_nonneg"
+    },
+    {
+      "file": "AFPBarrier/ExactLocalRows.lean",
+      "kind": "theorem",
+      "line": 172,
+      "name": "AFPBarrier.normalizedTangentWeight_sum"
+    },
+    {
+      "file": "AFPBarrier/ExactLocalRows.lean",
+      "kind": "theorem",
+      "line": 192,
+      "name": "AFPBarrier.normalizedTangentWeight_balance"
+    },
+    {
+      "file": "AFPBarrier/ExactLocalRows.lean",
+      "kind": "theorem",
+      "line": 212,
+      "name": "AFPBarrier.normalizedAngularScale_normalizedTangentWeight"
+    },
+    {
+      "file": "AFPBarrier/ExactLocalRows.lean",
+      "kind": "theorem",
+      "line": 232,
+      "name": "AFPBarrier.exactLocalRowRate_recover"
+    },
+    {
+      "file": "AFPBarrier/ExplicitEulerTransport.lean",
+      "kind": "theorem",
+      "line": 36,
+      "name": "AFPBarrier.explicitEulerStep_eq_self_weight_add_neighbors"
+    },
+    {
+      "file": "AFPBarrier/ExplicitEulerTransport.lean",
+      "kind": "theorem",
+      "line": 63,
+      "name": "AFPBarrier.explicitEulerStep_eigenmode"
+    },
+    {
+      "file": "AFPBarrier/ExplicitEulerTransport.lean",
+      "kind": "theorem",
+      "line": 72,
+      "name": "AFPBarrier.explicitEulerStep_nonneg"
+    },
+    {
+      "file": "AFPBarrier/ExplicitEulerTransport.lean",
+      "kind": "theorem",
+      "line": 91,
+      "name": "AFPBarrier.unitAt_self"
+    },
+    {
+      "file": "AFPBarrier/ExplicitEulerTransport.lean",
+      "kind": "theorem",
+      "line": 94,
+      "name": "AFPBarrier.unitAt_of_ne"
+    },
+    {
+      "file": "AFPBarrier/ExplicitEulerTransport.lean",
+      "kind": "theorem",
+      "line": 98,
+      "name": "AFPBarrier.explicitEulerStep_unitAt"
+    },
+    {
+      "file": "AFPBarrier/ExplicitEulerTransport.lean",
+      "kind": "theorem",
+      "line": 112,
+      "name": "AFPBarrier.explicitEulerStep_unitAt_neg_of_cfl_violation"
+    },
+    {
+      "file": "AFPBarrier/ExplicitEulerTransport.lean",
+      "kind": "theorem",
+      "line": 120,
+      "name": "AFPBarrier.weighted_sum_explicitEuler_conductanceRate"
+    },
+    {
+      "file": "AFPBarrier/ForwardAdjoint.lean",
+      "kind": "theorem",
+      "line": 26,
+      "name": "AFPBarrier.weightedAdjointRate_nonneg"
+    },
+    {
+      "file": "AFPBarrier/ForwardAdjoint.lean",
+      "kind": "theorem",
+      "line": 40,
+      "name": "AFPBarrier.jumpGenerator_weightedAdjointRate_eq"
+    },
+    {
+      "file": "AFPBarrier/ForwardAdjoint.lean",
+      "kind": "theorem",
+      "line": 83,
+      "name": "AFPBarrier.jumpGenerator_weightedAdjointRate_eigen"
+    },
+    {
+      "file": "AFPBarrier/ForwardAdjoint.lean",
+      "kind": "theorem",
+      "line": 106,
+      "name": "AFPBarrier.no_exact_forward_linear_and_square_at_peak"
+    },
+    {
+      "file": "AFPBarrier/ForwardPeakedHeatKernel.lean",
+      "kind": "theorem",
+      "line": 46,
+      "name": "AFPBarrier.heatKernelScatterMoment_le_one"
+    },
+    {
+      "file": "AFPBarrier/ForwardPeakedHeatKernel.lean",
+      "kind": "theorem",
+      "line": 56,
+      "name": "AFPBarrier.heatKernelScatterMoment_pos"
+    },
+    {
+      "file": "AFPBarrier/ForwardPeakedHeatKernel.lean",
+      "kind": "theorem",
+      "line": 62,
+      "name": "AFPBarrier.one_sub_tau_mul_le_heatKernelScatterMoment"
+    },
+    {
+      "file": "AFPBarrier/ForwardPeakedHeatKernel.lean",
+      "kind": "theorem",
+      "line": 70,
+      "name": "AFPBarrier.heatKernelBoltzmannDecay_nonneg"
+    },
+    {
+      "file": "AFPBarrier/ForwardPeakedHeatKernel.lean",
+      "kind": "theorem",
+      "line": 80,
+      "name": "AFPBarrier.heatKernelBoltzmannDecay_le_fp"
+    },
+    {
+      "file": "AFPBarrier/ForwardPeakedHeatKernel.lean",
+      "kind": "theorem",
+      "line": 90,
+      "name": "AFPBarrier.fp_amplitude_le_heatKernelBoltzmann_amplitude"
+    },
+    {
+      "file": "AFPBarrier/GlobalLossRigidity.lean",
+      "kind": "theorem",
+      "line": 22,
+      "name": "AFPBarrier.rate_eq_of_symmetric_active_loss"
+    },
+    {
+      "file": "AFPBarrier/GlobalLossRigidity.lean",
+      "kind": "theorem",
+      "line": 50,
+      "name": "AFPBarrier.rate_eq_of_active_reflTransGen"
+    },
+    {
+      "file": "AFPBarrier/GlobalLossRigidity.lean",
+      "kind": "theorem",
+      "line": 72,
+      "name": "AFPBarrier.connected_active_loss_rigidity"
+    },
+    {
+      "file": "AFPBarrier/GlobalSharedEdgeDuality.lean",
+      "kind": "theorem",
+      "line": 31,
+      "name": "AFPBarrier.sharedEdgeDualWork_swap"
+    },
+    {
+      "file": "AFPBarrier/GlobalSharedEdgeDuality.lean",
+      "kind": "theorem",
+      "line": 45,
+      "name": "AFPBarrier.sharedEdgeDualWork_constant"
+    },
+    {
+      "file": "AFPBarrier/GlobalSharedEdgeDuality.lean",
+      "kind": "theorem",
+      "line": 56,
+      "name": "AFPBarrier.sharedEdgeDualWork_radial"
+    },
+    {
+      "file": "AFPBarrier/GlobalSharedEdgeDuality.lean",
+      "kind": "theorem",
+      "line": 77,
+      "name": "AFPBarrier.sharedEdgeDualWork_radial_nonneg"
+    },
+    {
+      "file": "AFPBarrier/GlobalSharedEdgeDuality.lean",
+      "kind": "theorem",
+      "line": 95,
+      "name": "AFPBarrier.positiveLPDualSlack_nonneg"
+    },
+    {
+      "file": "AFPBarrier/GlobalSharedEdgeDuality.lean",
+      "kind": "theorem",
+      "line": 103,
+      "name": "AFPBarrier.positiveLP_objectiveGap_eq_slackPairing"
+    },
+    {
+      "file": "AFPBarrier/GlobalSharedEdgeDuality.lean",
+      "kind": "theorem",
+      "line": 128,
+      "name": "AFPBarrier.positiveLP_complementaritySum_eq_zero"
+    },
+    {
+      "file": "AFPBarrier/GlobalSharedEdgeDuality.lean",
+      "kind": "theorem",
+      "line": 141,
+      "name": "AFPBarrier.positiveLP_complementarySlackness"
+    },
+    {
+      "file": "AFPBarrier/GlobalSharedEdgeDuality.lean",
+      "kind": "theorem",
+      "line": 161,
+      "name": "AFPBarrier.positiveLP_active_forces_dualSaturation"
+    },
+    {
+      "file": "AFPBarrier/GlobalSharedEdgeDuality.lean",
+      "kind": "theorem",
+      "line": 178,
+      "name": "AFPBarrier.positiveLP_strictDualSlack_forces_inactive"
+    },
+    {
+      "file": "AFPBarrier/GroupAveraging.lean",
+      "kind": "theorem",
+      "line": 26,
+      "name": "AFPBarrier.finiteAverage_const"
+    },
+    {
+      "file": "AFPBarrier/GroupAveraging.lean",
+      "kind": "theorem",
+      "line": 33,
+      "name": "AFPBarrier.finiteAverage_mul"
+    },
+    {
+      "file": "AFPBarrier/GroupAveraging.lean",
+      "kind": "theorem",
+      "line": 39,
+      "name": "AFPBarrier.sum_finiteAverage"
+    },
+    {
+      "file": "AFPBarrier/GroupAveraging.lean",
+      "kind": "theorem",
+      "line": 46,
+      "name": "AFPBarrier.finiteAverage_nonneg"
+    },
+    {
+      "file": "AFPBarrier/GroupAveraging.lean",
+      "kind": "theorem",
+      "line": 63,
+      "name": "AFPBarrier.coordinateBalance_averagedConductance"
+    },
+    {
+      "file": "AFPBarrier/GroupAveraging.lean",
+      "kind": "theorem",
+      "line": 83,
+      "name": "AFPBarrier.averagedConductance_nonneg"
+    },
+    {
+      "file": "AFPBarrier/GroupAveraging.lean",
+      "kind": "theorem",
+      "line": 89,
+      "name": "AFPBarrier.averagedConductance_symm"
+    },
+    {
+      "file": "AFPBarrier/GroupAveraging.lean",
+      "kind": "theorem",
+      "line": 101,
+      "name": "AFPBarrier.averagedConductance_balance"
+    },
+    {
+      "file": "AFPBarrier/GroupAveraging.lean",
+      "kind": "theorem",
+      "line": 134,
+      "name": "AFPBarrier.groupOrbitAverage_invariant"
+    },
+    {
+      "file": "AFPBarrier/GroupAveraging.lean",
+      "kind": "theorem",
+      "line": 148,
+      "name": "AFPBarrier.groupOrbitAverage_nonneg"
+    },
+    {
+      "file": "AFPBarrier/GroupAveraging.lean",
+      "kind": "theorem",
+      "line": 167,
+      "name": "AFPBarrier.groupOrbitAverage_orientation_of_sameOrbit"
+    },
+    {
+      "file": "AFPBarrier/GroupAveraging.lean",
+      "kind": "theorem",
+      "line": 198,
+      "name": "AFPBarrier.groupOrbitAverage_eq_zero_of_not_relation"
+    },
+    {
+      "file": "AFPBarrier/GroupAveraging.lean",
+      "kind": "theorem",
+      "line": 221,
+      "name": "AFPBarrier.groupOrbitAverage_balance"
+    },
+    {
+      "file": "AFPBarrier/GroupAveraging.lean",
+      "kind": "theorem",
+      "line": 234,
+      "name": "AFPBarrier.groupOrbitAverage_reconciliation"
+    },
+    {
+      "file": "AFPBarrier/GroupAveraging.lean",
+      "kind": "theorem",
+      "line": 257,
+      "name": "AFPBarrier.groupOrbitAverage_reconciliation_of_edgeRepresentative"
+    },
+    {
+      "file": "AFPBarrier/HarmonicDefectTransport.lean",
+      "kind": "theorem",
+      "line": 42,
+      "name": "AFPBarrier.finiteDuhamel_norm_le"
+    },
+    {
+      "file": "AFPBarrier/HarmonicDefectTransport.lean",
+      "kind": "theorem",
+      "line": 55,
+      "name": "AFPBarrier.transientKernel_nonneg"
+    },
+    {
+      "file": "AFPBarrier/HarmonicDefectTransport.lean",
+      "kind": "theorem",
+      "line": 70,
+      "name": "AFPBarrier.resolvent_residual_identity"
+    },
+    {
+      "file": "AFPBarrier/HarmonicDefectTransport.lean",
+      "kind": "theorem",
+      "line": 101,
+      "name": "AFPBarrier.resolvent_residual_norm_le"
+    },
+    {
+      "file": "AFPBarrier/HarmonicDefectTransport.lean",
+      "kind": "theorem",
+      "line": 127,
+      "name": "AFPBarrier.sixError_telescope"
+    },
+    {
+      "file": "AFPBarrier/HarmonicDefectTransport.lean",
+      "kind": "theorem",
+      "line": 139,
+      "name": "AFPBarrier.sixError_norm_le"
+    },
+    {
+      "file": "AFPBarrier/HarmonicDefectTransport.lean",
+      "kind": "theorem",
+      "line": 206,
+      "name": "AFPBarrier.finitePair_transpose_apply"
+    },
+    {
+      "file": "AFPBarrier/HarmonicDefectTransport.lean",
+      "kind": "theorem",
+      "line": 232,
+      "name": "AFPBarrier.adjointWeightedResidual_exact"
+    },
+    {
+      "file": "AFPBarrier/HarmonicDefectTransport.lean",
+      "kind": "theorem",
+      "line": 242,
+      "name": "AFPBarrier.adjointWeightedResidual_approx"
+    },
+    {
+      "file": "AFPBarrier/HarmonicDefectTransport.lean",
+      "kind": "theorem",
+      "line": 261,
+      "name": "AFPBarrier.energyResidual_young"
+    },
+    {
+      "file": "AFPBarrier/HarmonicDefectTransport.lean",
+      "kind": "theorem",
+      "line": 274,
+      "name": "AFPBarrier.coerciveResidual_bound"
+    },
+    {
+      "file": "AFPBarrier/HarmonicDefectTransport.lean",
+      "kind": "theorem",
+      "line": 285,
+      "name": "AFPBarrier.preconditionedIteration_geometric"
+    },
+    {
+      "file": "AFPBarrier/HarmonicDefectTransport.lean",
+      "kind": "theorem",
+      "line": 304,
+      "name": "AFPBarrier.preconditionedGeometricSeries_le"
+    },
+    {
+      "file": "AFPBarrier/ImplementationConvention.lean",
+      "kind": "theorem",
+      "line": 34,
+      "name": "AFPBarrier.matrixAction_conductanceMatrix_eq_jumpGenerator"
+    },
+    {
+      "file": "AFPBarrier/ImplementationConvention.lean",
+      "kind": "theorem",
+      "line": 90,
+      "name": "AFPBarrier.matrixAction_diagonalShift"
+    },
+    {
+      "file": "AFPBarrier/ImplementationConvention.lean",
+      "kind": "theorem",
+      "line": 110,
+      "name": "AFPBarrier.shifted_source_minus_total_shift"
+    },
+    {
+      "file": "AFPBarrier/ImplementationConvention.lean",
+      "kind": "theorem",
+      "line": 120,
+      "name": "AFPBarrier.shifted_conductance_action_recovers_jumpGenerator"
+    },
+    {
+      "file": "AFPBarrier/JumpGenerator.lean",
+      "kind": "theorem",
+      "line": 34,
+      "name": "AFPBarrier.jumpGenerator_const"
+    },
+    {
+      "file": "AFPBarrier/JumpGenerator.lean",
+      "kind": "theorem",
+      "line": 40,
+      "name": "AFPBarrier.jumpGenerator_add_const"
+    },
+    {
+      "file": "AFPBarrier/JumpGenerator.lean",
+      "kind": "theorem",
+      "line": 46,
+      "name": "AFPBarrier.jumpGenerator_sub_const"
+    },
+    {
+      "file": "AFPBarrier/JumpGenerator.lean",
+      "kind": "theorem",
+      "line": 52,
+      "name": "AFPBarrier.jumpGenerator_square_identity"
+    },
+    {
+      "file": "AFPBarrier/JumpGenerator.lean",
+      "kind": "theorem",
+      "line": 66,
+      "name": "AFPBarrier.jumpRate_nonneg"
+    },
+    {
+      "file": "AFPBarrier/JumpGenerator.lean",
+      "kind": "theorem",
+      "line": 76,
+      "name": "AFPBarrier.carreDuChamp_nonneg"
+    },
+    {
+      "file": "AFPBarrier/JumpGenerator.lean",
+      "kind": "theorem",
+      "line": 87,
+      "name": "AFPBarrier.jumpGenerator_sq_le_rate_mul_carre"
+    },
+    {
+      "file": "AFPBarrier/JumpGenerator.lean",
+      "kind": "theorem",
+      "line": 107,
+      "name": "AFPBarrier.zero_carreDuChamp_forces_generator_zero"
+    },
+    {
+      "file": "AFPBarrier/LocalSphericalFeasibility.lean",
+      "kind": "theorem",
+      "line": 43,
+      "name": "AFPBarrier.scaledSphericalRowRate_nonneg"
+    },
+    {
+      "file": "AFPBarrier/LocalSphericalFeasibility.lean",
+      "kind": "theorem",
+      "line": 56,
+      "name": "AFPBarrier.scaledSphericalRowRate_pos"
+    },
+    {
+      "file": "AFPBarrier/LocalSphericalFeasibility.lean",
+      "kind": "theorem",
+      "line": 67,
+      "name": "AFPBarrier.scaledSphericalRowRate_tangent_balance"
+    },
+    {
+      "file": "AFPBarrier/LocalSphericalFeasibility.lean",
+      "kind": "theorem",
+      "line": 101,
+      "name": "AFPBarrier.scaledSphericalRowRate_normal_balance"
+    },
+    {
+      "file": "AFPBarrier/LocalSphericalFeasibility.lean",
+      "kind": "theorem",
+      "line": 133,
+      "name": "AFPBarrier.tangentDependenceWeight_nonneg"
+    },
+    {
+      "file": "AFPBarrier/LocalSphericalFeasibility.lean",
+      "kind": "theorem",
+      "line": 143,
+      "name": "AFPBarrier.tangentDependenceWeight_balance"
+    },
+    {
+      "file": "AFPBarrier/LocalSphericalFeasibility.lean",
+      "kind": "theorem",
+      "line": 155,
+      "name": "AFPBarrier.tangentDependenceWeight_normal_scale"
+    },
+    {
+      "file": "AFPBarrier/LossVariance.lean",
+      "kind": "theorem",
+      "line": 14,
+      "name": "AFPBarrier.lossVarianceAt_nonneg"
+    },
+    {
+      "file": "AFPBarrier/LossVariance.lean",
+      "kind": "theorem",
+      "line": 24,
+      "name": "AFPBarrier.carreDuChamp_centered_loss_identity"
+    },
+    {
+      "file": "AFPBarrier/LossVariance.lean",
+      "kind": "theorem",
+      "line": 40,
+      "name": "AFPBarrier.peakDefect_centered_loss_identity"
+    },
+    {
+      "file": "AFPBarrier/LossVariance.lean",
+      "kind": "theorem",
+      "line": 55,
+      "name": "AFPBarrier.rate_mul_peakDefect_sub_eigenvalue_sq_eq_rate_mul_lossVariance"
+    },
+    {
+      "file": "AFPBarrier/LossVariance.lean",
+      "kind": "theorem",
+      "line": 78,
+      "name": "AFPBarrier.squareRing_rate_mul_defect_sub_four"
+    },
+    {
+      "file": "AFPBarrier/LossVariance.lean",
+      "kind": "theorem",
+      "line": 86,
+      "name": "AFPBarrier.four_le_squareRing_rate_mul_defect"
+    },
+    {
+      "file": "AFPBarrier/LossVarianceSharpness.lean",
+      "kind": "theorem",
+      "line": 22,
+      "name": "AFPBarrier.lossVarianceAt_eq_zero_iff_active_losses_eq"
+    },
+    {
+      "file": "AFPBarrier/LossVarianceSharpness.lean",
+      "kind": "theorem",
+      "line": 57,
+      "name": "AFPBarrier.rate_mul_peakDefect_eq_eigenvalue_sq_iff_active_losses_eq"
+    },
+    {
+      "file": "AFPBarrier/LossVarianceSharpness.lean",
+      "kind": "theorem",
+      "line": 84,
+      "name": "AFPBarrier.rate_mul_peakDefect_eq_eigenvalue_sq_iff_active_losses_eq_mean"
+    },
+    {
+      "file": "AFPBarrier/LossVarianceSharpness.lean",
+      "kind": "theorem",
+      "line": 101,
+      "name": "AFPBarrier.active_weight_mul_loss_deviation_sq_le_variance"
+    },
+    {
+      "file": "AFPBarrier/LossVarianceSharpness.lean",
+      "kind": "theorem",
+      "line": 120,
+      "name": "AFPBarrier.lossVarianceAt_le_gap_div_rate"
+    },
+    {
+      "file": "AFPBarrier/LossVarianceSharpness.lean",
+      "kind": "theorem",
+      "line": 140,
+      "name": "AFPBarrier.minActiveRate_mul_loss_deviation_sq_le_gap_div_rate"
+    },
+    {
+      "file": "AFPBarrier/LossVarianceSharpness.lean",
+      "kind": "theorem",
+      "line": 163,
+      "name": "AFPBarrier.peakDefect_dual_tangent_lower_bound"
+    },
+    {
+      "file": "AFPBarrier/LossVarianceSharpness.lean",
+      "kind": "theorem",
+      "line": 177,
+      "name": "AFPBarrier.peakDefect_ge_eigenvalue_sq_div_rate_via_dual"
+    },
+    {
+      "file": "AFPBarrier/LossVarianceSharpness.lean",
+      "kind": "theorem",
+      "line": 198,
+      "name": "AFPBarrier.S2_rate_lower_of_peakDefect_upper"
+    },
+    {
+      "file": "AFPBarrier/MultigroupTransfer.lean",
+      "kind": "theorem",
+      "line": 39,
+      "name": "AFPBarrier.sum_multigroupTransfer_eq_zero"
+    },
+    {
+      "file": "AFPBarrier/MultigroupTransfer.lean",
+      "kind": "theorem",
+      "line": 66,
+      "name": "AFPBarrier.multigroupEulerStep_eq_positive_form"
+    },
+    {
+      "file": "AFPBarrier/MultigroupTransfer.lean",
+      "kind": "theorem",
+      "line": 75,
+      "name": "AFPBarrier.multigroupEulerStep_nonneg"
+    },
+    {
+      "file": "AFPBarrier/MultigroupTransfer.lean",
+      "kind": "theorem",
+      "line": 91,
+      "name": "AFPBarrier.sum_multigroupEulerStep_eq_sum"
+    },
+    {
+      "file": "AFPBarrier/MultigroupTransfer.lean",
+      "kind": "theorem",
+      "line": 109,
+      "name": "AFPBarrier.multigroupEulerStep_unitAt"
+    },
+    {
+      "file": "AFPBarrier/MultigroupTransfer.lean",
+      "kind": "theorem",
+      "line": 132,
+      "name": "AFPBarrier.multigroupEulerStep_unitAt_neg_of_cfl_violation"
+    },
+    {
+      "file": "AFPBarrier/MultigroupTransfer.lean",
+      "kind": "theorem",
+      "line": 150,
+      "name": "AFPBarrier.weighted_sum_multigroupTransfer_eq_neg_deposition"
+    },
+    {
+      "file": "AFPBarrier/NoGo.lean",
+      "kind": "theorem",
+      "line": 17,
+      "name": "AFPBarrier.no_exact_linear_and_square_at_peak"
+    },
+    {
+      "file": "AFPBarrier/NoGo.lean",
+      "kind": "theorem",
+      "line": 40,
+      "name": "AFPBarrier.no_exact_shifted_quadratic_at_peak"
+    },
+    {
+      "file": "AFPBarrier/NormalizationAudit.lean",
+      "kind": "theorem",
+      "line": 24,
+      "name": "AFPBarrier.conductance_eigen_iff_equilibrium"
+    },
+    {
+      "file": "AFPBarrier/NormalizationAudit.lean",
+      "kind": "theorem",
+      "line": 42,
+      "name": "AFPBarrier.S2_coordinate_eigen_implies_minus_two_balance"
+    },
+    {
+      "file": "AFPBarrier/NormalizationAudit.lean",
+      "kind": "theorem",
+      "line": 53,
+      "name": "AFPBarrier.minus_two_and_minus_four_balance_incompatible"
+    },
+    {
+      "file": "AFPBarrier/OneShellQuadraticRigidity.lean",
+      "kind": "theorem",
+      "line": 47,
+      "name": "AFPBarrier.oneShell_radial_rate"
+    },
+    {
+      "file": "AFPBarrier/OneShellQuadraticRigidity.lean",
+      "kind": "theorem",
+      "line": 125,
+      "name": "AFPBarrier.oneShell_tangent_balance"
+    },
+    {
+      "file": "AFPBarrier/OneShellQuadraticRigidity.lean",
+      "kind": "theorem",
+      "line": 169,
+      "name": "AFPBarrier.oneShell_covariance_expansion"
+    },
+    {
+      "file": "AFPBarrier/OneShellQuadraticRigidity.lean",
+      "kind": "theorem",
+      "line": 213,
+      "name": "AFPBarrier.oneShell_covariance_decomposition"
+    },
+    {
+      "file": "AFPBarrier/OneShellQuadraticRigidity.lean",
+      "kind": "theorem",
+      "line": 252,
+      "name": "AFPBarrier.oneShell_actual_covariance_decomposition"
+    },
+    {
+      "file": "AFPBarrier/OneShellQuadraticRigidity.lean",
+      "kind": "theorem",
+      "line": 276,
+      "name": "AFPBarrier.oneShell_matrixFrobeniusPairing_add_right"
+    },
+    {
+      "file": "AFPBarrier/OneShellQuadraticRigidity.lean",
+      "kind": "theorem",
+      "line": 286,
+      "name": "AFPBarrier.oneShell_matrixFrobeniusPairing_smul_right"
+    },
+    {
+      "file": "AFPBarrier/OneShellQuadraticRigidity.lean",
+      "kind": "theorem",
+      "line": 302,
+      "name": "AFPBarrier.oneShell_matrixFrobeniusPairing_one"
+    },
+    {
+      "file": "AFPBarrier/OneShellQuadraticRigidity.lean",
+      "kind": "theorem",
+      "line": 313,
+      "name": "AFPBarrier.oneShell_matrixFrobeniusPairing_vecMulVec"
+    },
+    {
+      "file": "AFPBarrier/OneShellQuadraticRigidity.lean",
+      "kind": "theorem",
+      "line": 328,
+      "name": "AFPBarrier.oneShell_traceFree_residual_pairing"
+    },
+    {
+      "file": "AFPBarrier/OneShellQuadraticRigidity.lean",
+      "kind": "theorem",
+      "line": 361,
+      "name": "AFPBarrier.oneShell_sphereResidual_row"
+    },
+    {
+      "file": "AFPBarrier/OneShellQuadraticRigidity.lean",
+      "kind": "theorem",
+      "line": 395,
+      "name": "AFPBarrier.oneShell_residual_factorization"
+    },
+    {
+      "file": "AFPBarrier/OneShellQuadraticRigidity.lean",
+      "kind": "theorem",
+      "line": 404,
+      "name": "AFPBarrier.oneShell_residualKernel_eq_samplingKernel"
+    },
+    {
+      "file": "AFPBarrier/OneShellQuadraticRigidity.lean",
+      "kind": "theorem",
+      "line": 426,
+      "name": "AFPBarrier.oneShell_residualRank_eq_samplingRank"
+    },
+    {
+      "file": "AFPBarrier/OneShellQuadraticRigidity.lean",
+      "kind": "theorem",
+      "line": 440,
+      "name": "AFPBarrier.oneShell_sampledExactRange_eq_bot"
+    },
+    {
+      "file": "AFPBarrier/OneShellQuadraticRigidity.lean",
+      "kind": "theorem",
+      "line": 460,
+      "name": "AFPBarrier.oneShell_sphereResidual_factorization"
+    },
+    {
+      "file": "AFPBarrier/OneShellQuadraticRigidity.lean",
+      "kind": "theorem",
+      "line": 480,
+      "name": "AFPBarrier.oneShell_sphereScale_ne_zero"
+    },
+    {
+      "file": "AFPBarrier/OneShellQuadraticRigidity.lean",
+      "kind": "theorem",
+      "line": 491,
+      "name": "AFPBarrier.oneShell_sphereResidualKernel_eq_samplingKernel"
+    },
+    {
+      "file": "AFPBarrier/OneShellQuadraticRigidity.lean",
+      "kind": "theorem",
+      "line": 513,
+      "name": "AFPBarrier.oneShell_sphereResidualRank_eq_samplingRank"
+    },
+    {
+      "file": "AFPBarrier/OneShellQuadraticRigidity.lean",
+      "kind": "theorem",
+      "line": 536,
+      "name": "AFPBarrier.oneShell_sphereSampledExactRange_eq_bot"
+    },
+    {
+      "file": "AFPBarrier/QEqualityCovariance.lean",
+      "kind": "theorem",
+      "line": 24,
+      "name": "AFPBarrier.covarianceTrace_eq_four_of_normLoss"
+    },
+    {
+      "file": "AFPBarrier/QEqualityCovariance.lean",
+      "kind": "theorem",
+      "line": 44,
+      "name": "AFPBarrier.radialCovariance_eq_sphericalEpsilon"
+    },
+    {
+      "file": "AFPBarrier/QEqualityCovariance.lean",
+      "kind": "theorem",
+      "line": 56,
+      "name": "AFPBarrier.sphericalEpsilon_eq_four_mul_Q_div_rate"
+    },
+    {
+      "file": "AFPBarrier/QEqualityCovariance.lean",
+      "kind": "theorem",
+      "line": 79,
+      "name": "AFPBarrier.normalizedTangent_centered_of_barycenter"
+    },
+    {
+      "file": "AFPBarrier/QEqualityCovariance.lean",
+      "kind": "theorem",
+      "line": 121,
+      "name": "AFPBarrier.normalizedTangentSecondMoment_trace_one"
+    },
+    {
+      "file": "AFPBarrier/QEqualityCovariance.lean",
+      "kind": "theorem",
+      "line": 148,
+      "name": "AFPBarrier.weighted_centered_affine_product_sum"
+    },
+    {
+      "file": "AFPBarrier/QEqualityCovariance.lean",
+      "kind": "theorem",
+      "line": 182,
+      "name": "AFPBarrier.qOne_covarianceEntry_decomposition"
+    },
+    {
+      "file": "AFPBarrier/QEqualityCovariance.lean",
+      "kind": "theorem",
+      "line": 222,
+      "name": "AFPBarrier.jumpCovariance_eq_rate_mul_normalized"
+    },
+    {
+      "file": "AFPBarrier/QEqualityCovariance.lean",
+      "kind": "theorem",
+      "line": 238,
+      "name": "AFPBarrier.qOne_jumpCovariance_decomposition"
+    },
+    {
+      "file": "AFPBarrier/QEqualityCovariance.lean",
+      "kind": "theorem",
+      "line": 280,
+      "name": "AFPBarrier.qOne_covariance_axial_iff_tangentHalf"
+    },
+    {
+      "file": "AFPBarrier/QEqualityCovariance.lean",
+      "kind": "theorem",
+      "line": 308,
+      "name": "AFPBarrier.oneShellSecondMoment_eq_rate_mul_normalized"
+    },
+    {
+      "file": "AFPBarrier/QEqualityCovariance.lean",
+      "kind": "theorem",
+      "line": 324,
+      "name": "AFPBarrier.normalizedTangentHalf_iff_d3_oneShellSecondMoment"
+    },
+    {
+      "file": "AFPBarrier/QEqualityCovariance.lean",
+      "kind": "theorem",
+      "line": 357,
+      "name": "AFPBarrier.qOne_residual_entry_algebra"
+    },
+    {
+      "file": "AFPBarrier/QEqualityCovariance.lean",
+      "kind": "theorem",
+      "line": 369,
+      "name": "AFPBarrier.sphereResidualMatrix_entry_of_trace_six"
+    },
+    {
+      "file": "AFPBarrier/QEqualityCovariance.lean",
+      "kind": "theorem",
+      "line": 392,
+      "name": "AFPBarrier.qOne_sphereResidual_entry_decomposition"
+    },
+    {
+      "file": "AFPBarrier/QEqualityCovariance.lean",
+      "kind": "theorem",
+      "line": 474,
+      "name": "AFPBarrier.weightedOctahedron_axis_axial_iff"
+    },
+    {
+      "file": "AFPBarrier/QEqualityCovariance.lean",
+      "kind": "theorem",
+      "line": 490,
+      "name": "AFPBarrier.weightedOctahedron_all_axes_axial_iff"
+    },
+    {
+      "file": "AFPBarrier/QuadraticCovariance.lean",
+      "kind": "theorem",
+      "line": 41,
+      "name": "AFPBarrier.jumpGenerator_sampledQuadratic"
+    },
+    {
+      "file": "AFPBarrier/QuadraticCovariance.lean",
+      "kind": "theorem",
+      "line": 90,
+      "name": "AFPBarrier.sampledQuadratic_arbitraryTarget"
+    },
+    {
+      "file": "AFPBarrier/QuadraticCovariance.lean",
+      "kind": "theorem",
+      "line": 108,
+      "name": "AFPBarrier.sampledQuadratic_eigen_iff"
+    },
+    {
+      "file": "AFPBarrier/QuadraticCovariance.lean",
+      "kind": "theorem",
+      "line": 132,
+      "name": "AFPBarrier.weighted_sum_jumpGenerator_eq_zero_of_detailedBalance"
+    },
+    {
+      "file": "AFPBarrier/QuadraticCovariance.lean",
+      "kind": "theorem",
+      "line": 152,
+      "name": "AFPBarrier.detailedBalance_eigen_implies_weightedMean_zero"
+    },
+    {
+      "file": "AFPBarrier/QuadraticCovariance.lean",
+      "kind": "theorem",
+      "line": 181,
+      "name": "AFPBarrier.sampledQuadratic_center_eq_weightedMean"
+    },
+    {
+      "file": "AFPBarrier/QuadraticCovariance.lean",
+      "kind": "theorem",
+      "line": 225,
+      "name": "AFPBarrier.sampledQuadratic_zeroTarget_center_independent"
+    },
+    {
+      "file": "AFPBarrier/QuadraticEqualityGeometry.lean",
+      "kind": "theorem",
+      "line": 29,
+      "name": "AFPBarrier.increment_radial_tangent_decomposition"
+    },
+    {
+      "file": "AFPBarrier/QuadraticEqualityGeometry.lean",
+      "kind": "theorem",
+      "line": 38,
+      "name": "AFPBarrier.projectedTangentIncrement_orthogonal"
+    },
+    {
+      "file": "AFPBarrier/QuadraticEqualityGeometry.lean",
+      "kind": "theorem",
+      "line": 58,
+      "name": "AFPBarrier.projectedTangentIncrement_normSq"
+    },
+    {
+      "file": "AFPBarrier/QuadraticEqualityGeometry.lean",
+      "kind": "theorem",
+      "line": 88,
+      "name": "AFPBarrier.equalityRemainderEntry_zero_iff_axialCovariance"
+    },
+    {
+      "file": "AFPBarrier/QuadraticEqualityGeometry.lean",
+      "kind": "theorem",
+      "line": 109,
+      "name": "AFPBarrier.oneShell_axialCovariance_iff_tangentSecondMoment"
+    },
+    {
+      "file": "AFPBarrier/QuadraticEqualityGeometry.lean",
+      "kind": "theorem",
+      "line": 144,
+      "name": "AFPBarrier.oneShellSecondMoment_scaled"
+    },
+    {
+      "file": "AFPBarrier/QuadraticEqualityGeometry.lean",
+      "kind": "theorem",
+      "line": 158,
+      "name": "AFPBarrier.normalizedTangentTightFrame_iff_oneShellSecondMoment"
+    },
+    {
+      "file": "AFPBarrier/QuadraticEqualityGeometry.lean",
+      "kind": "theorem",
+      "line": 193,
+      "name": "AFPBarrier.oneShell_normalizedWeights_sum_one"
+    },
+    {
+      "file": "AFPBarrier/QuadraticEqualityGeometry.lean",
+      "kind": "theorem",
+      "line": 210,
+      "name": "AFPBarrier.scaledTangentTightFrame_iff_normalized"
+    },
+    {
+      "file": "AFPBarrier/QuadraticEqualityGeometry.lean",
+      "kind": "theorem",
+      "line": 260,
+      "name": "AFPBarrier.scaledTangentTightFrame_iff_normalized_of_nonantipodal"
+    },
+    {
+      "file": "AFPBarrier/QuadraticEqualityGeometry.lean",
+      "kind": "theorem",
+      "line": 282,
+      "name": "AFPBarrier.quadraticEquality_rate_product"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityConstruction.lean",
+      "kind": "theorem",
+      "line": 34,
+      "name": "AFPBarrier.construction_constant_reproduction"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityConstruction.lean",
+      "kind": "theorem",
+      "line": 41,
+      "name": "AFPBarrier.construction_increment_decomposition"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityConstruction.lean",
+      "kind": "theorem",
+      "line": 53,
+      "name": "AFPBarrier.tangentForce_zero_radialMass_exactForce"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityConstruction.lean",
+      "kind": "theorem",
+      "line": 88,
+      "name": "AFPBarrier.tangentForce_zero_radialMass_hOne"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityConstruction.lean",
+      "kind": "theorem",
+      "line": 105,
+      "name": "AFPBarrier.sharedConductance_detailedBalance_entry"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityConstruction.lean",
+      "kind": "theorem",
+      "line": 118,
+      "name": "AFPBarrier.unnormalizedMoment_div_mass_entry"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityConstruction.lean",
+      "kind": "theorem",
+      "line": 126,
+      "name": "AFPBarrier.unnormalizedMomentSum_div_mass_entry"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityConstruction.lean",
+      "kind": "theorem",
+      "line": 141,
+      "name": "AFPBarrier.constructionCorrection_closes"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityConstruction.lean",
+      "kind": "theorem",
+      "line": 151,
+      "name": "AFPBarrier.constructionCorrection_force_zero"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityConstruction.lean",
+      "kind": "theorem",
+      "line": 167,
+      "name": "AFPBarrier.fourPointConnector_firstMoment"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityConstruction.lean",
+      "kind": "theorem",
+      "line": 185,
+      "name": "AFPBarrier.fourPointConnector_cubicMoment"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityConstruction.lean",
+      "kind": "theorem",
+      "line": 203,
+      "name": "AFPBarrier.fourPointConnector_weight_pos"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityConstruction.lean",
+      "kind": "theorem",
+      "line": 210,
+      "name": "AFPBarrier.chordMass_outgoingConductance_bound"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityConstruction.lean",
+      "kind": "theorem",
+      "line": 231,
+      "name": "AFPBarrier.chordMass_normalizedRate_bound"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityConstruction.lean",
+      "kind": "theorem",
+      "line": 245,
+      "name": "AFPBarrier.regularPolygon_hOne_scalar_recurrence"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityConstruction.lean",
+      "kind": "theorem",
+      "line": 260,
+      "name": "AFPBarrier.regularPolygon_hTwo_scalar_residual"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityConstruction.lean",
+      "kind": "theorem",
+      "line": 281,
+      "name": "AFPBarrier.regularPolygon_hTwo_scalar_eigenvalue"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityFoundation.lean",
+      "kind": "theorem",
+      "line": 49,
+      "name": "AFPBarrier.weightedFrobeniusRowSynthesis_adjoint"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityFoundation.lean",
+      "kind": "theorem",
+      "line": 85,
+      "name": "AFPBarrier.weightedFrobeniusRowGram_pairing"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityFoundation.lean",
+      "kind": "theorem",
+      "line": 96,
+      "name": "AFPBarrier.weightedFrobeniusRowGram_quadratic"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityFoundation.lean",
+      "kind": "theorem",
+      "line": 113,
+      "name": "AFPBarrier.sphereSamplingLinear_eq_frobeniusRowAnalysis"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityFoundation.lean",
+      "kind": "theorem",
+      "line": 139,
+      "name": "AFPBarrier.sphereSamplingWeightedGram_pairing"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityFoundation.lean",
+      "kind": "theorem",
+      "line": 153,
+      "name": "AFPBarrier.sphereSamplingWeightedGram_quadratic"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityFoundation.lean",
+      "kind": "theorem",
+      "line": 170,
+      "name": "AFPBarrier.sphereResidualWeightedGram_pairing"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityFoundation.lean",
+      "kind": "theorem",
+      "line": 187,
+      "name": "AFPBarrier.sphereResidualWeightedGram_quadratic"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityFoundation.lean",
+      "kind": "theorem",
+      "line": 206,
+      "name": "AFPBarrier.frobeniusRowRemainder_pairing"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityFoundation.lean",
+      "kind": "theorem",
+      "line": 225,
+      "name": "AFPBarrier.matrixFrobeniusNormSq_rowRemainder"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityFoundation.lean",
+      "kind": "theorem",
+      "line": 260,
+      "name": "AFPBarrier.quadraticTwoDefectRemainder_orthogonal"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityFoundation.lean",
+      "kind": "theorem",
+      "line": 274,
+      "name": "AFPBarrier.quadraticTwoDefect_pythagorean"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityFoundation.lean",
+      "kind": "theorem",
+      "line": 290,
+      "name": "AFPBarrier.exactLossSecondMoment_decomposition"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityLowerBound.lean",
+      "kind": "theorem",
+      "line": 44,
+      "name": "AFPBarrier.coordinateRowAnalysis_coordinateUnit"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityLowerBound.lean",
+      "kind": "theorem",
+      "line": 53,
+      "name": "AFPBarrier.weightedCoordinateTrace_le_of_energy_domination"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityLowerBound.lean",
+      "kind": "theorem",
+      "line": 75,
+      "name": "AFPBarrier.quadraticDefect_twoDefect_lower_sq"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityLowerBound.lean",
+      "kind": "theorem",
+      "line": 97,
+      "name": "AFPBarrier.quadraticDefect_rate_product_lower"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityLowerBound.lean",
+      "kind": "theorem",
+      "line": 123,
+      "name": "AFPBarrier.sTwo_quadraticDefect_rate_product_lower"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityStability.lean",
+      "kind": "theorem",
+      "line": 24,
+      "name": "AFPBarrier.quadraticStability_slack_identity"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityStability.lean",
+      "kind": "theorem",
+      "line": 30,
+      "name": "AFPBarrier.quadraticStability_total_sq_budget"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityStability.lean",
+      "kind": "theorem",
+      "line": 55,
+      "name": "AFPBarrier.quadraticStability_total_linear_budget"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityStability.lean",
+      "kind": "theorem",
+      "line": 83,
+      "name": "AFPBarrier.quadraticStability_component_sq_budget"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityStability.lean",
+      "kind": "theorem",
+      "line": 116,
+      "name": "AFPBarrier.quadraticStability_pointwise_sq_budget"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityStability.lean",
+      "kind": "theorem",
+      "line": 131,
+      "name": "AFPBarrier.quadraticStability_pointwise_sq_budget_of_wmin"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityStability.lean",
+      "kind": "theorem",
+      "line": 154,
+      "name": "AFPBarrier.quadraticStability_badVertexMass"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityStability.lean",
+      "kind": "theorem",
+      "line": 179,
+      "name": "AFPBarrier.quadraticStability_badVertexMass_sharp"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityStability.lean",
+      "kind": "theorem",
+      "line": 209,
+      "name": "AFPBarrier.quadraticStability_pointwise_full_budget"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityStability.lean",
+      "kind": "theorem",
+      "line": 229,
+      "name": "AFPBarrier.quadraticStability_tensor_budget"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityStability.lean",
+      "kind": "theorem",
+      "line": 261,
+      "name": "AFPBarrier.quadraticStability_tensor_rate_bound"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityStability.lean",
+      "kind": "theorem",
+      "line": 288,
+      "name": "AFPBarrier.quadraticStability_scaledVariance_sq_budget"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityStability.lean",
+      "kind": "theorem",
+      "line": 307,
+      "name": "AFPBarrier.quadraticStability_master_square_consequences"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityStability.lean",
+      "kind": "theorem",
+      "line": 330,
+      "name": "AFPBarrier.quadraticStability_mean_le_delta"
+    },
+    {
+      "file": "AFPBarrier/QuadraticFidelityStability.lean",
+      "kind": "theorem",
+      "line": 347,
+      "name": "AFPBarrier.quadraticStability_weightedMean_le_delta"
+    },
+    {
+      "file": "AFPBarrier/QuadraticSampling.lean",
+      "kind": "theorem",
+      "line": 41,
+      "name": "AFPBarrier.sampledResidual_factorization"
+    },
+    {
+      "file": "AFPBarrier/QuadraticSampling.lean",
+      "kind": "theorem",
+      "line": 47,
+      "name": "AFPBarrier.samplingKernel_subset_formExact"
+    },
+    {
+      "file": "AFPBarrier/QuadraticSampling.lean",
+      "kind": "theorem",
+      "line": 59,
+      "name": "AFPBarrier.sampledExact_iff_range_inter_targetKernel"
+    },
+    {
+      "file": "AFPBarrier/QuadraticSampling.lean",
+      "kind": "theorem",
+      "line": 83,
+      "name": "AFPBarrier.linear_samplingKernel_le_residualKernel"
+    },
+    {
+      "file": "AFPBarrier/QuadraticSampling.lean",
+      "kind": "theorem",
+      "line": 91,
+      "name": "AFPBarrier.linearSampledResidual_finrank_le_sampling"
+    },
+    {
+      "file": "AFPBarrier/QuadraticSampling.lean",
+      "kind": "theorem",
+      "line": 112,
+      "name": "AFPBarrier.linearSampledExactRange_eq_range_inf_targetKernel"
+    },
+    {
+      "file": "AFPBarrier/QuadraticSampling.lean",
+      "kind": "theorem",
+      "line": 126,
+      "name": "AFPBarrier.linearSampledExactRange_finrank_add_samplingKernel"
+    },
+    {
+      "file": "AFPBarrier/QuadraticSampling.lean",
+      "kind": "theorem",
+      "line": 146,
+      "name": "AFPBarrier.linearSampledExactRange_finrank_eq_formExact_sub_samplingKernel"
+    },
+    {
+      "file": "AFPBarrier/QuadraticSampling.lean",
+      "kind": "theorem",
+      "line": 158,
+      "name": "AFPBarrier.linearSampledExactRange_finrank_eq_samplingRank_sub_residualRank"
+    },
+    {
+      "file": "AFPBarrier/QuadraticSphereResidual.lean",
+      "kind": "theorem",
+      "line": 42,
+      "name": "AFPBarrier.matrixFrobeniusPairing_eq_trace_mul_of_isSymm_right"
+    },
+    {
+      "file": "AFPBarrier/QuadraticSphereResidual.lean",
+      "kind": "theorem",
+      "line": 74,
+      "name": "AFPBarrier.matrixFrobeniusPairing_traceFreeProjection"
+    },
+    {
+      "file": "AFPBarrier/QuadraticSphereResidual.lean",
+      "kind": "theorem",
+      "line": 104,
+      "name": "AFPBarrier.trace_sphereResidualMatrix_eq_zero"
+    },
+    {
+      "file": "AFPBarrier/QuadraticSphereResidual.lean",
+      "kind": "theorem",
+      "line": 131,
+      "name": "AFPBarrier.sphereResidualMatrix_isSymm"
+    },
+    {
+      "file": "AFPBarrier/QuadraticSphereResidual.lean",
+      "kind": "theorem",
+      "line": 158,
+      "name": "AFPBarrier.sphereCovarianceAddOuter_isSymm"
+    },
+    {
+      "file": "AFPBarrier/QuadraticSphereResidual.lean",
+      "kind": "theorem",
+      "line": 249,
+      "name": "AFPBarrier.matrixFrobeniusPairing_covariance_add_outer"
+    },
+    {
+      "file": "AFPBarrier/QuadraticSphereResidual.lean",
+      "kind": "theorem",
+      "line": 283,
+      "name": "AFPBarrier.sphereResidual_factorization"
+    },
+    {
+      "file": "AFPBarrier/QuadraticSphereResidual.lean",
+      "kind": "theorem",
+      "line": 306,
+      "name": "AFPBarrier.matrixFrobeniusPairing_sphereResidualMatrix_eq_trace"
+    },
+    {
+      "file": "AFPBarrier/QuadraticSphereResidual.lean",
+      "kind": "theorem",
+      "line": 322,
+      "name": "AFPBarrier.sphereResidual_factorization_trace"
+    },
+    {
+      "file": "AFPBarrier/QuadraticSphereResidual.lean",
+      "kind": "theorem",
+      "line": 376,
+      "name": "AFPBarrier.sphereFormExact_eq_residualOrthogonal"
+    },
+    {
+      "file": "AFPBarrier/QuadraticSphereResidual.lean",
+      "kind": "theorem",
+      "line": 398,
+      "name": "AFPBarrier.sphereSamplingKernel_le_formExact"
+    },
+    {
+      "file": "AFPBarrier/QuadraticSphereResidual.lean",
+      "kind": "theorem",
+      "line": 407,
+      "name": "AFPBarrier.sphereSampledExact_eq_range_inf_targetKernel"
+    },
+    {
+      "file": "AFPBarrier/QuadraticSphereResidual.lean",
+      "kind": "theorem",
+      "line": 420,
+      "name": "AFPBarrier.sphereSampledExact_finrank_eq_form_sub_alias"
+    },
+    {
+      "file": "AFPBarrier/QuadraticSphereResidual.lean",
+      "kind": "theorem",
+      "line": 432,
+      "name": "AFPBarrier.sphereSampledExact_finrank_eq_samplingRank_sub_residualRank"
+    },
+    {
+      "file": "AFPBarrier/Quantitative.lean",
+      "kind": "theorem",
+      "line": 19,
+      "name": "AFPBarrier.peakDefect_eq_carreDuChamp"
+    },
+    {
+      "file": "AFPBarrier/Quantitative.lean",
+      "kind": "theorem",
+      "line": 33,
+      "name": "AFPBarrier.peakDefect_nonneg"
+    },
+    {
+      "file": "AFPBarrier/Quantitative.lean",
+      "kind": "theorem",
+      "line": 45,
+      "name": "AFPBarrier.eigenvalue_sq_le_rate_mul_peakDefect"
+    },
+    {
+      "file": "AFPBarrier/Quantitative.lean",
+      "kind": "theorem",
+      "line": 62,
+      "name": "AFPBarrier.peakDefect_pos"
+    },
+    {
+      "file": "AFPBarrier/Quantitative.lean",
+      "kind": "theorem",
+      "line": 82,
+      "name": "AFPBarrier.peakDefect_lower_bound"
+    },
+    {
+      "file": "AFPBarrier/QuantitativeExactLocal.lean",
+      "kind": "theorem",
+      "line": 24,
+      "name": "AFPBarrier.uniformDependenceMixture_sum"
+    },
+    {
+      "file": "AFPBarrier/QuantitativeExactLocal.lean",
+      "kind": "theorem",
+      "line": 40,
+      "name": "AFPBarrier.uniformDependenceMixture_lower"
+    },
+    {
+      "file": "AFPBarrier/QuantitativeExactLocal.lean",
+      "kind": "theorem",
+      "line": 52,
+      "name": "AFPBarrier.normalizedWeightedSum_bounds"
+    },
+    {
+      "file": "AFPBarrier/QuantitativeExactLocal.lean",
+      "kind": "theorem",
+      "line": 79,
+      "name": "AFPBarrier.normalizedAngularScale_bounds"
+    },
+    {
+      "file": "AFPBarrier/QuantitativeExactLocal.lean",
+      "kind": "theorem",
+      "line": 92,
+      "name": "AFPBarrier.exactLocalRowRate_sum_bounds"
+    },
+    {
+      "file": "AFPBarrier/QuantitativeExactLocal.lean",
+      "kind": "theorem",
+      "line": 124,
+      "name": "AFPBarrier.exactLocalRowRate_twoFactor_bounds"
+    },
+    {
+      "file": "AFPBarrier/QuantitativeGlobalNearRigidity.lean",
+      "kind": "theorem",
+      "line": 28,
+      "name": "AFPBarrier.abs_sub_one_le_of_sq_le_delta_sq"
+    },
+    {
+      "file": "AFPBarrier/QuantitativeGlobalNearRigidity.lean",
+      "kind": "theorem",
+      "line": 39,
+      "name": "AFPBarrier.pointwise_delta_bound"
+    },
+    {
+      "file": "AFPBarrier/QuantitativeGlobalNearRigidity.lean",
+      "kind": "theorem",
+      "line": 61,
+      "name": "AFPBarrier.sphericalQ_pointwise_delta_bound"
+    },
+    {
+      "file": "AFPBarrier/QuantitativeGlobalNearRigidity.lean",
+      "kind": "theorem",
+      "line": 107,
+      "name": "AFPBarrier.normalized_scale_interval_of_abs"
+    },
+    {
+      "file": "AFPBarrier/QuantitativeGlobalNearRigidity.lean",
+      "kind": "theorem",
+      "line": 115,
+      "name": "AFPBarrier.one_le_qDelta"
+    },
+    {
+      "file": "AFPBarrier/QuantitativeGlobalNearRigidity.lean",
+      "kind": "theorem",
+      "line": 125,
+      "name": "AFPBarrier.normalized_scale_qDelta_cross_bounds"
+    },
+    {
+      "file": "AFPBarrier/QuantitativeGlobalNearRigidity.lean",
+      "kind": "theorem",
+      "line": 167,
+      "name": "AFPBarrier.adjacent_rate_cross_bounds"
+    },
+    {
+      "file": "AFPBarrier/QuantitativeGlobalNearRigidity.lean",
+      "kind": "theorem",
+      "line": 192,
+      "name": "AFPBarrier.adjacent_rate_ratio_bounds"
+    },
+    {
+      "file": "AFPBarrier/QuantitativeGlobalNearRigidity.lean",
+      "kind": "theorem",
+      "line": 215,
+      "name": "AFPBarrier.adjacent_rate_relative_error_bound"
+    },
+    {
+      "file": "AFPBarrier/QuantitativeGlobalNearRigidity.lean",
+      "kind": "theorem",
+      "line": 253,
+      "name": "AFPBarrier.adjacent_rate_qDelta_cross_bounds"
+    },
+    {
+      "file": "AFPBarrier/QuantitativeGlobalNearRigidity.lean",
+      "kind": "theorem",
+      "line": 288,
+      "name": "AFPBarrier.incident_loss_cross_bounds"
+    },
+    {
+      "file": "AFPBarrier/QuantitativeGlobalNearRigidity.lean",
+      "kind": "theorem",
+      "line": 336,
+      "name": "AFPBarrier.incident_loss_ratio_bounds"
+    },
+    {
+      "file": "AFPBarrier/QuantitativeGlobalNearRigidity.lean",
+      "kind": "theorem",
+      "line": 391,
+      "name": "AFPBarrier.path_rate_cross_bounds"
+    },
+    {
+      "file": "AFPBarrier/QuantitativeGlobalNearRigidity.lean",
+      "kind": "theorem",
+      "line": 424,
+      "name": "AFPBarrier.path_rate_ratio_bounds"
+    },
+    {
+      "file": "AFPBarrier/QuantitativeGlobalNearRigidity.lean",
+      "kind": "theorem",
+      "line": 447,
+      "name": "AFPBarrier.path_loss_ratio_bounds"
+    },
+    {
+      "file": "AFPBarrier/QuantitativeGlobalNearRigidity.lean",
+      "kind": "theorem",
+      "line": 519,
+      "name": "AFPBarrier.abs_log_rate_sub_le_of_cross_bounds"
+    },
+    {
+      "file": "AFPBarrier/QuantitativeGlobalNearRigidity.lean",
+      "kind": "theorem",
+      "line": 537,
+      "name": "AFPBarrier.adjacent_log_rate_bound"
+    },
+    {
+      "file": "AFPBarrier/QuantitativeGlobalNearRigidity.lean",
+      "kind": "theorem",
+      "line": 555,
+      "name": "AFPBarrier.path_log_rate_bound"
+    },
+    {
+      "file": "AFPBarrier/QuantitativeGlobalNearRigidity.lean",
+      "kind": "theorem",
+      "line": 582,
+      "name": "AFPBarrier.abs_log_normalized_scale_le_hDelta"
+    },
+    {
+      "file": "AFPBarrier/QuantitativeGlobalNearRigidity.lean",
+      "kind": "theorem",
+      "line": 614,
+      "name": "AFPBarrier.reference_loss_log_bound"
+    },
+    {
+      "file": "AFPBarrier/QuantitativeGlobalNearRigidity.lean",
+      "kind": "theorem",
+      "line": 662,
+      "name": "AFPBarrier.diameter_log_rate_bound"
+    },
+    {
+      "file": "AFPBarrier/QuantitativeGlobalNearRigidity.lean",
+      "kind": "theorem",
+      "line": 681,
+      "name": "AFPBarrier.pow_le_pow_of_one_le_of_nat_le"
+    },
+    {
+      "file": "AFPBarrier/QuantitativeGlobalNearRigidity.lean",
+      "kind": "theorem",
+      "line": 692,
+      "name": "AFPBarrier.diameter_rate_ratio_bounds"
+    },
+    {
+      "file": "AFPBarrier/QuantitativeGlobalNearRigidity.lean",
+      "kind": "theorem",
+      "line": 726,
+      "name": "AFPBarrier.radial_covariance_error_bounds"
+    },
+    {
+      "file": "AFPBarrier/QuantitativeSphericalFeasibility.lean",
+      "kind": "theorem",
+      "line": 24,
+      "name": "AFPBarrier.sphericalOutgoingRate_nonneg"
+    },
+    {
+      "file": "AFPBarrier/QuantitativeSphericalFeasibility.lean",
+      "kind": "theorem",
+      "line": 32,
+      "name": "AFPBarrier.normalBalance_lossUpper_crossBound"
+    },
+    {
+      "file": "AFPBarrier/QuantitativeSphericalFeasibility.lean",
+      "kind": "theorem",
+      "line": 57,
+      "name": "AFPBarrier.normalBalance_lossLower_crossBound"
+    },
+    {
+      "file": "AFPBarrier/QuantitativeSphericalFeasibility.lean",
+      "kind": "theorem",
+      "line": 81,
+      "name": "AFPBarrier.normalBalance_outgoingRate_lower"
+    },
+    {
+      "file": "AFPBarrier/QuantitativeSphericalFeasibility.lean",
+      "kind": "theorem",
+      "line": 94,
+      "name": "AFPBarrier.normalBalance_outgoingRate_upper"
+    },
+    {
+      "file": "AFPBarrier/QuasiUniformLossBounds.lean",
+      "kind": "theorem",
+      "line": 30,
+      "name": "AFPBarrier.lossMoment_eq_eigenvalue"
+    },
+    {
+      "file": "AFPBarrier/QuasiUniformLossBounds.lean",
+      "kind": "theorem",
+      "line": 45,
+      "name": "AFPBarrier.lossMin_mul_rate_le_eigenvalue"
+    },
+    {
+      "file": "AFPBarrier/QuasiUniformLossBounds.lean",
+      "kind": "theorem",
+      "line": 62,
+      "name": "AFPBarrier.eigenvalue_le_lossMax_mul_rate"
+    },
+    {
+      "file": "AFPBarrier/QuasiUniformLossBounds.lean",
+      "kind": "theorem",
+      "line": 79,
+      "name": "AFPBarrier.lossMin_mul_eigenvalue_le_peakDefect"
+    },
+    {
+      "file": "AFPBarrier/QuasiUniformLossBounds.lean",
+      "kind": "theorem",
+      "line": 104,
+      "name": "AFPBarrier.peakDefect_le_lossMax_mul_eigenvalue"
+    },
+    {
+      "file": "AFPBarrier/QuasiUniformLossBounds.lean",
+      "kind": "theorem",
+      "line": 130,
+      "name": "AFPBarrier.quasiUniform_loss_rate_defect_bounds"
+    },
+    {
+      "file": "AFPBarrier/QuasiUniformLossBounds.lean",
+      "kind": "theorem",
+      "line": 151,
+      "name": "AFPBarrier.eigenvalue_div_lossMax_le_rate"
+    },
+    {
+      "file": "AFPBarrier/QuasiUniformLossBounds.lean",
+      "kind": "theorem",
+      "line": 163,
+      "name": "AFPBarrier.rate_le_eigenvalue_div_lossMin"
+    },
+    {
+      "file": "AFPBarrier/QuasiUniformLossBounds.lean",
+      "kind": "theorem",
+      "line": 177,
+      "name": "AFPBarrier.quadraticLoss_rate_defect_bounds"
+    },
+    {
+      "file": "AFPBarrier/ReversibleConductance.lean",
+      "kind": "theorem",
+      "line": 29,
+      "name": "AFPBarrier.conductanceRate_nonneg"
+    },
+    {
+      "file": "AFPBarrier/ReversibleConductance.lean",
+      "kind": "theorem",
+      "line": 38,
+      "name": "AFPBarrier.conductanceRate_detailedBalance"
+    },
+    {
+      "file": "AFPBarrier/ReversibleConductance.lean",
+      "kind": "theorem",
+      "line": 53,
+      "name": "AFPBarrier.weightedAdjointRate_conductanceRate_eq"
+    },
+    {
+      "file": "AFPBarrier/ReversibleConductance.lean",
+      "kind": "theorem",
+      "line": 68,
+      "name": "AFPBarrier.weight_mul_jumpGenerator_conductanceRate"
+    },
+    {
+      "file": "AFPBarrier/ReversibleConductance.lean",
+      "kind": "theorem",
+      "line": 93,
+      "name": "AFPBarrier.weighted_sum_jumpGenerator_conductanceRate_eq_zero"
+    },
+    {
+      "file": "AFPBarrier/ReversibleConductance.lean",
+      "kind": "theorem",
+      "line": 140,
+      "name": "AFPBarrier.conductance_eigen_implies_weightedMean_zero"
+    },
+    {
+      "file": "AFPBarrier/ReversibleConductance.lean",
+      "kind": "theorem",
+      "line": 171,
+      "name": "AFPBarrier.no_exact_conductance_linear_and_square_at_peak"
+    },
+    {
+      "file": "AFPBarrier/ScalingCompatibility.lean",
+      "kind": "theorem",
+      "line": 22,
+      "name": "AFPBarrier.conductanceRate_common_scale"
+    },
+    {
+      "file": "AFPBarrier/ScalingCompatibility.lean",
+      "kind": "theorem",
+      "line": 32,
+      "name": "AFPBarrier.jumpGenerator_conductance_common_scale"
+    },
+    {
+      "file": "AFPBarrier/ScalingCompatibility.lean",
+      "kind": "theorem",
+      "line": 45,
+      "name": "AFPBarrier.equilibrium_common_scale"
+    },
+    {
+      "file": "AFPBarrier/ScalingCompatibility.lean",
+      "kind": "theorem",
+      "line": 67,
+      "name": "AFPBarrier.geometric_pair_transfers_to_scaled_quadrature"
+    },
+    {
+      "file": "AFPBarrier/SharedEdgeEquilibrium.lean",
+      "kind": "theorem",
+      "line": 35,
+      "name": "AFPBarrier.sharedEdgeColumn_swap"
+    },
+    {
+      "file": "AFPBarrier/SharedEdgeEquilibrium.lean",
+      "kind": "theorem",
+      "line": 45,
+      "name": "AFPBarrier.sharedEdgeColumn_nodeSum_zero"
+    },
+    {
+      "file": "AFPBarrier/SharedEdgeEquilibrium.lean",
+      "kind": "theorem",
+      "line": 61,
+      "name": "AFPBarrier.sharedEdgeApply_nodeSum_zero"
+    },
+    {
+      "file": "AFPBarrier/SharedEdgeEquilibrium.lean",
+      "kind": "theorem",
+      "line": 73,
+      "name": "AFPBarrier.sharedEdge_equilibrium_implies_rhs_nodeSum_zero"
+    },
+    {
+      "file": "AFPBarrier/SharedEdgeEquilibrium.lean",
+      "kind": "theorem",
+      "line": 89,
+      "name": "AFPBarrier.sharedEdge_equilibrium_implies_weightedCentering"
+    },
+    {
+      "file": "AFPBarrier/SharedEdgeEquilibrium.lean",
+      "kind": "theorem",
+      "line": 125,
+      "name": "AFPBarrier.squareLocalRate_nonneg"
+    },
+    {
+      "file": "AFPBarrier/SharedEdgeEquilibrium.lean",
+      "kind": "theorem",
+      "line": 131,
+      "name": "AFPBarrier.squareLocalRate_permitted_pos"
+    },
+    {
+      "file": "AFPBarrier/SharedEdgeEquilibrium.lean",
+      "kind": "theorem",
+      "line": 142,
+      "name": "AFPBarrier.squareLocalRate_coordinate_exact"
+    },
+    {
+      "file": "AFPBarrier/SharedEdgeEquilibrium.lean",
+      "kind": "theorem",
+      "line": 149,
+      "name": "AFPBarrier.squareWeight_pos"
+    },
+    {
+      "file": "AFPBarrier/SharedEdgeEquilibrium.lean",
+      "kind": "theorem",
+      "line": 152,
+      "name": "AFPBarrier.square_weighted_centering"
+    },
+    {
+      "file": "AFPBarrier/SharedEdgeEquilibrium.lean",
+      "kind": "theorem",
+      "line": 168,
+      "name": "AFPBarrier.squareBalanceMatrix_columnSum_zero"
+    },
+    {
+      "file": "AFPBarrier/SharedEdgeEquilibrium.lean",
+      "kind": "theorem",
+      "line": 181,
+      "name": "AFPBarrier.squareDual_transpose_zero"
+    },
+    {
+      "file": "AFPBarrier/SharedEdgeEquilibrium.lean",
+      "kind": "theorem",
+      "line": 188,
+      "name": "AFPBarrier.squareDual_work"
+    },
+    {
+      "file": "AFPBarrier/SharedEdgeEquilibrium.lean",
+      "kind": "theorem",
+      "line": 194,
+      "name": "AFPBarrier.square_sharedEdge_infeasible"
+    },
+    {
+      "file": "AFPBarrier/SharpProductBarriers.lean",
+      "kind": "theorem",
+      "line": 35,
+      "name": "AFPBarrier.squarePolarQualityFromStep_formula"
+    },
+    {
+      "file": "AFPBarrier/SharpProductBarriers.lean",
+      "kind": "theorem",
+      "line": 49,
+      "name": "AFPBarrier.squarePolar_rates_forced"
+    },
+    {
+      "file": "AFPBarrier/SharpProductBarriers.lean",
+      "kind": "theorem",
+      "line": 76,
+      "name": "AFPBarrier.squarePolar_totalRate_forced"
+    },
+    {
+      "file": "AFPBarrier/SharpProductBarriers.lean",
+      "kind": "theorem",
+      "line": 96,
+      "name": "AFPBarrier.squarePolar_forced_quartic_lower"
+    },
+    {
+      "file": "AFPBarrier/SharpProductBarriers.lean",
+      "kind": "theorem",
+      "line": 113,
+      "name": "AFPBarrier.cscSquaredTruncation_rate_identity"
+    },
+    {
+      "file": "AFPBarrier/SharpProductBarriers.lean",
+      "kind": "theorem",
+      "line": 124,
+      "name": "AFPBarrier.squarePolarRateMainStep_grid"
+    },
+    {
+      "file": "AFPBarrier/SharpProductBarriers.lean",
+      "kind": "theorem",
+      "line": 139,
+      "name": "AFPBarrier.squarePolarQualityMainStep_grid"
+    },
+    {
+      "file": "AFPBarrier/SharpProductBarriers.lean",
+      "kind": "theorem",
+      "line": 149,
+      "name": "AFPBarrier.universal_rate_lower_of_defect_upper"
+    },
+    {
+      "file": "AFPBarrier/SharpProductBarriers.lean",
+      "kind": "theorem",
+      "line": 164,
+      "name": "AFPBarrier.finiteExtremal_defect_lower"
+    },
+    {
+      "file": "AFPBarrier/SharpProductBarriers.lean",
+      "kind": "theorem",
+      "line": 181,
+      "name": "AFPBarrier.projectiveQuality_from_fixedMoment"
+    },
+    {
+      "file": "AFPBarrier/SharpProductBarriers.lean",
+      "kind": "theorem",
+      "line": 192,
+      "name": "AFPBarrier.twoLossWeightedQuality_sub_one"
+    },
+    {
+      "file": "AFPBarrier/SharpProductBarriers.lean",
+      "kind": "theorem",
+      "line": 204,
+      "name": "AFPBarrier.twoLossQuality_sub_one"
+    },
+    {
+      "file": "AFPBarrier/SharpProductBarriers.lean",
+      "kind": "theorem",
+      "line": 213,
+      "name": "AFPBarrier.biregular_interRing_incidence"
+    },
+    {
+      "file": "AFPBarrier/SharpProductBarriers.lean",
+      "kind": "theorem",
+      "line": 221,
+      "name": "AFPBarrier.perfectMatching_ringCounts_eq"
+    },
+    {
+      "file": "AFPBarrier/SpatialUpwindTransport.lean",
+      "kind": "theorem",
+      "line": 37,
+      "name": "AFPBarrier.spatialUpwindEulerCell_eq_positive_form"
+    },
+    {
+      "file": "AFPBarrier/SpatialUpwindTransport.lean",
+      "kind": "theorem",
+      "line": 73,
+      "name": "AFPBarrier.spatialUpwindEulerCell_nonneg"
+    },
+    {
+      "file": "AFPBarrier/SpatialUpwindTransport.lean",
+      "kind": "theorem",
+      "line": 104,
+      "name": "AFPBarrier.spatialUpwindEulerCell_unitAt"
+    },
+    {
+      "file": "AFPBarrier/SpatialUpwindTransport.lean",
+      "kind": "theorem",
+      "line": 120,
+      "name": "AFPBarrier.spatialUpwindEulerCell_unitAt_neg_of_cfl_violation"
+    },
+    {
+      "file": "AFPBarrier/SpectralProductAlgebra.lean",
+      "kind": "theorem",
+      "line": 26,
+      "name": "AFPBarrier.jumpGenerator_finset_sum"
+    },
+    {
+      "file": "AFPBarrier/SpectralProductAlgebra.lean",
+      "kind": "theorem",
+      "line": 46,
+      "name": "AFPBarrier.jumpGenerator_const_mul"
+    },
+    {
+      "file": "AFPBarrier/SpectralProductAlgebra.lean",
+      "kind": "theorem",
+      "line": 61,
+      "name": "AFPBarrier.jumpGenerator_product_identity"
+    },
+    {
+      "file": "AFPBarrier/SpectralProductAlgebra.lean",
+      "kind": "theorem",
+      "line": 85,
+      "name": "AFPBarrier.spectralProduct_arbitraryTarget"
+    },
+    {
+      "file": "AFPBarrier/SpectralProductAlgebra.lean",
+      "kind": "theorem",
+      "line": 101,
+      "name": "AFPBarrier.spectralProduct_resonance_iff"
+    },
+    {
+      "file": "AFPBarrier/SpectralProductAlgebra.lean",
+      "kind": "theorem",
+      "line": 123,
+      "name": "AFPBarrier.two_mixedCarreDuChamp_self"
+    },
+    {
+      "file": "AFPBarrier/SpectralProductAlgebra.lean",
+      "kind": "theorem",
+      "line": 140,
+      "name": "AFPBarrier.spectralSquare_resonance_iff"
+    },
+    {
+      "file": "AFPBarrier/SpectralSamplingObstruction.lean",
+      "kind": "theorem",
+      "line": 27,
+      "name": "AFPBarrier.spectralSampledSpaces_iSupIndep"
+    },
+    {
+      "file": "AFPBarrier/SpectralSamplingObstruction.lean",
+      "kind": "theorem",
+      "line": 35,
+      "name": "AFPBarrier.spectralSampledSpaces_pairwise_disjoint"
+    },
+    {
+      "file": "AFPBarrier/SpectralSamplingObstruction.lean",
+      "kind": "theorem",
+      "line": 43,
+      "name": "AFPBarrier.spectralSampledSpaces_finrank_sum_le"
+    },
+    {
+      "file": "AFPBarrier/SpectralSamplingObstruction.lean",
+      "kind": "theorem",
+      "line": 59,
+      "name": "AFPBarrier.spectralSampledFunctions_finrank_sum_le"
+    },
+    {
+      "file": "AFPBarrier/SpectralSamplingObstruction.lean",
+      "kind": "theorem",
+      "line": 75,
+      "name": "AFPBarrier.sphericalEigenvalue_injective"
+    },
+    {
+      "file": "AFPBarrier/SpectralSamplingObstruction.lean",
+      "kind": "theorem",
+      "line": 110,
+      "name": "AFPBarrier.harmonicSampledSpaces_iSupIndep"
+    },
+    {
+      "file": "AFPBarrier/SpectralSamplingObstruction.lean",
+      "kind": "theorem",
+      "line": 127,
+      "name": "AFPBarrier.sphericalEigenvalue_dimension_one_collision"
+    },
+    {
+      "file": "AFPBarrier/SpectralSamplingObstruction.lean",
+      "kind": "theorem",
+      "line": 131,
+      "name": "AFPBarrier.sphericalEigenvalue_dimension_one_not_injective"
+    },
+    {
+      "file": "AFPBarrier/SpectralSamplingObstruction.lean",
+      "kind": "theorem",
+      "line": 153,
+      "name": "AFPBarrier.internalScalarOperator_apply_of_mem"
+    },
+    {
+      "file": "AFPBarrier/SpectralSamplingObstruction.lean",
+      "kind": "theorem",
+      "line": 193,
+      "name": "AFPBarrier.internalScalarOperator_eq_zero_of_mem_zeroSummand"
+    },
+    {
+      "file": "AFPBarrier/SpectralSamplingObstruction.lean",
+      "kind": "theorem",
+      "line": 204,
+      "name": "AFPBarrier.internalScalarOperator_constants_eq_zero"
+    },
+    {
+      "file": "AFPBarrier/SphereSpecialization.lean",
+      "kind": "theorem",
+      "line": 18,
+      "name": "AFPBarrier.no_exact_S2_degree_two_at_peak"
+    },
+    {
+      "file": "AFPBarrier/SphereSpecialization.lean",
+      "kind": "theorem",
+      "line": 34,
+      "name": "AFPBarrier.S2_four_le_rate_mul_defect"
+    },
+    {
+      "file": "AFPBarrier/SphericalFeasibilityAlgebra.lean",
+      "kind": "theorem",
+      "line": 28,
+      "name": "AFPBarrier.tangentNormalScale_pos"
+    },
+    {
+      "file": "AFPBarrier/SphericalFeasibilityAlgebra.lean",
+      "kind": "theorem",
+      "line": 47,
+      "name": "AFPBarrier.commonScale_eq_two_div"
+    },
+    {
+      "file": "AFPBarrier/SphericalFeasibilityAlgebra.lean",
+      "kind": "theorem",
+      "line": 54,
+      "name": "AFPBarrier.commonScale_pos"
+    },
+    {
+      "file": "AFPBarrier/SphericalFeasibilityAlgebra.lean",
+      "kind": "theorem",
+      "line": 62,
+      "name": "AFPBarrier.scaledSphericalRowRate_eq_commonScale"
+    },
+    {
+      "file": "AFPBarrier/SphericalFeasibilityAlgebra.lean",
+      "kind": "theorem",
+      "line": 78,
+      "name": "AFPBarrier.mixedNormalBudget_identity"
+    },
+    {
+      "file": "AFPBarrier/SphericalFeasibilityAlgebra.lean",
+      "kind": "theorem",
+      "line": 84,
+      "name": "AFPBarrier.antipodalTotalRate_eq_of_mixedNormalBudget"
+    },
+    {
+      "file": "AFPBarrier/SphericalFeasibilityAlgebra.lean",
+      "kind": "theorem",
+      "line": 92,
+      "name": "AFPBarrier.antipodalTotalRate_nonneg_iff"
+    },
+    {
+      "file": "AFPBarrier/SphericalFeasibilityAlgebra.lean",
+      "kind": "theorem",
+      "line": 99,
+      "name": "AFPBarrier.antipodalTotalRate_pos_iff"
+    },
+    {
+      "file": "AFPBarrier/SphericalFeasibilityAlgebra.lean",
+      "kind": "theorem",
+      "line": 106,
+      "name": "AFPBarrier.antipodalOnly_normalBalance_iff"
+    },
+    {
+      "file": "AFPBarrier/SphericalNetScaling.lean",
+      "kind": "theorem",
+      "line": 37,
+      "name": "AFPBarrier.sphericalLoss_eq_two_sin_sq_half"
+    },
+    {
+      "file": "AFPBarrier/SphericalNetScaling.lean",
+      "kind": "theorem",
+      "line": 47,
+      "name": "AFPBarrier.sphericalLoss_lower_quadratic"
+    },
+    {
+      "file": "AFPBarrier/SphericalNetScaling.lean",
+      "kind": "theorem",
+      "line": 68,
+      "name": "AFPBarrier.sphericalLoss_two_mul_upper"
+    },
+    {
+      "file": "AFPBarrier/SphericalNetScaling.lean",
+      "kind": "theorem",
+      "line": 76,
+      "name": "AFPBarrier.sphericalLoss_between_of_angle_window"
+    },
+    {
+      "file": "AFPBarrier/SphericalNetScaling.lean",
+      "kind": "theorem",
+      "line": 99,
+      "name": "AFPBarrier.sphericalNet_peak_rate_defect_bounds"
+    },
+    {
+      "file": "AFPBarrier/SphericalNetScaling.lean",
+      "kind": "theorem",
+      "line": 130,
+      "name": "AFPBarrier.sphericalNet_peak_rate_defect_bounds_mul"
+    },
+    {
+      "file": "AFPBarrier/SphericalQEqualityRigidity.lean",
+      "kind": "theorem",
+      "line": 35,
+      "name": "AFPBarrier.sphericalChordLoss_symmetric"
+    },
+    {
+      "file": "AFPBarrier/SphericalQEqualityRigidity.lean",
+      "kind": "theorem",
+      "line": 48,
+      "name": "AFPBarrier.jumpGenerator_sphericalPairing"
+    },
+    {
+      "file": "AFPBarrier/SphericalQEqualityRigidity.lean",
+      "kind": "theorem",
+      "line": 78,
+      "name": "AFPBarrier.coordinateEigenmap_lossMoment_two"
+    },
+    {
+      "file": "AFPBarrier/SphericalQEqualityRigidity.lean",
+      "kind": "theorem",
+      "line": 97,
+      "name": "AFPBarrier.normalizedOmega_barycenter_of_coordinateEigenmap"
+    },
+    {
+      "file": "AFPBarrier/SphericalQEqualityRigidity.lean",
+      "kind": "theorem",
+      "line": 163,
+      "name": "AFPBarrier.jumpRate_pos_of_lossMoment_two"
+    },
+    {
+      "file": "AFPBarrier/SphericalQEqualityRigidity.lean",
+      "kind": "theorem",
+      "line": 188,
+      "name": "AFPBarrier.normalizedEdgeWeight_sum_one"
+    },
+    {
+      "file": "AFPBarrier/SphericalQEqualityRigidity.lean",
+      "kind": "theorem",
+      "line": 197,
+      "name": "AFPBarrier.normalizedLossScale_mean_one"
+    },
+    {
+      "file": "AFPBarrier/SphericalQEqualityRigidity.lean",
+      "kind": "theorem",
+      "line": 217,
+      "name": "AFPBarrier.normalizedLossScale_secondMoment"
+    },
+    {
+      "file": "AFPBarrier/SphericalQEqualityRigidity.lean",
+      "kind": "theorem",
+      "line": 243,
+      "name": "AFPBarrier.weightedSecondMoment_sub_one_eq_variance"
+    },
+    {
+      "file": "AFPBarrier/SphericalQEqualityRigidity.lean",
+      "kind": "theorem",
+      "line": 265,
+      "name": "AFPBarrier.sphericalQ_sub_one_eq_normalizedLossVariance"
+    },
+    {
+      "file": "AFPBarrier/SphericalQEqualityRigidity.lean",
+      "kind": "theorem",
+      "line": 286,
+      "name": "AFPBarrier.one_le_sphericalQAt"
+    },
+    {
+      "file": "AFPBarrier/SphericalQEqualityRigidity.lean",
+      "kind": "theorem",
+      "line": 305,
+      "name": "AFPBarrier.sphericalQ_eq_one_active_loss"
+    },
+    {
+      "file": "AFPBarrier/SphericalQEqualityRigidity.lean",
+      "kind": "theorem",
+      "line": 343,
+      "name": "AFPBarrier.active_symmetric_of_shared_conductance"
+    },
+    {
+      "file": "AFPBarrier/SphericalQEqualityRigidity.lean",
+      "kind": "theorem",
+      "line": 361,
+      "name": "AFPBarrier.connected_spherical_active_loss_rigidity"
+    },
+    {
+      "file": "AFPBarrier/SphericalQEqualityRigidity.lean",
+      "kind": "theorem",
+      "line": 382,
+      "name": "AFPBarrier.finite_spherical_qOne_global_rigidity"
+    }
+  ],
+  "generated_lean": "AFPBarrier/ReleaseAxiomAudit.lean",
+  "module_count": 58,
+  "schema": "afp-r5-lean-declaration-index-v1"
+}

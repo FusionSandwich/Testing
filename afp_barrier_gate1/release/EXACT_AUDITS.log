@@ -1,0 +1,144 @@
+=== p1a_quadratic_fidelity_audit.py ===
+simplex-d2: d=2 N=3 rank(S/R)=2/2 dim(K/form/sample)=0/0/0 epsilon0=3/2 D2=3
+cross-polytope-d2: d=2 N=4 rank(S/R)=1/1 dim(K/form/sample)=1/1/0 epsilon0=1 D2=2
+hypercube-d2: d=2 N=4 rank(S/R)=1/1 dim(K/form/sample)=1/1/0 epsilon0=1 D2=2
+simplex-d3: d=3 N=4 rank(S/R)=3/3 dim(K/form/sample)=2/2/0 epsilon0=8/3 D2=4
+cross-polytope-d3: d=3 N=6 rank(S/R)=2/2 dim(K/form/sample)=3/3/0 epsilon0=2 D2=3
+hypercube-d3: d=3 N=8 rank(S/R)=3/3 dim(K/form/sample)=2/2/0 epsilon0=4/3 D2=2
+simplex-d4: d=4 N=5 rank(S/R)=4/4 dim(K/form/sample)=5/5/0 epsilon0=15/4 D2=5
+cross-polytope-d4: d=4 N=8 rank(S/R)=3/3 dim(K/form/sample)=6/6/0 epsilon0=3 D2=4
+hypercube-d4: d=4 N=16 rank(S/R)=6/6 dim(K/form/sample)=3/3/0 epsilon0=3/2 D2=2
+platonic-tetrahedron: d=3 N=4 rank(S/R)=3/3 dim(K/form/sample)=2/2/0 epsilon0=8/3 D2=4
+platonic-octahedron: d=3 N=6 rank(S/R)=2/2 dim(K/form/sample)=3/3/0 epsilon0=2 D2=3
+platonic-cube: d=3 N=8 rank(S/R)=3/3 dim(K/form/sample)=2/2/0 epsilon0=4/3 D2=2
+platonic-icosahedron: d=3 N=12 rank(S/R)=5/5 dim(K/form/sample)=0/0/0 epsilon0=2 - 2*sqrt(5)/5 D2=3*sqrt(30 - 10*sqrt(5))/5
+platonic-dodecahedron: d=3 N=20 rank(S/R)=5/5 dim(K/form/sample)=0/0/0 epsilon0=2 - 2*sqrt(5)/3 D2=sqrt(14 - 6*sqrt(5))
+aliased-antipodal-pair: d=2 N=2 rank(S/R)=1/1 dim(K/form/sample)=1/1/0 epsilon0=2 D2=4
+weighted-repeated-alias: d=2 N=5 rank(S/R)=1/1 dim(K/form/sample)=1/1/0 epsilon0=4/3 D2=2*sqrt(22)/3
+exact-spherical-hexagonal-prism: d=3 N=12 rank(S/R)=5/3 dim(K/form/sample)=0/2/2 epsilon0=4/5 D2=6
+positive-cube-both-defects: d=3 N=8 rank(S/R)=3/3 dim(K/form/sample)=2/2/0 epsilon0=5/3 D2=8/3
+degenerate-equatorial-hexagon: d=3 N=6 rank(S/R)=3/1 dim(K/form/sample)=2/4/2 epsilon0=1 D2=6
+fixtures=19
+weighted-adjoint mutation: REJECTED
+generator-sign mutation: REJECTED
+non-invariant-compression mutation: REJECTED
+sampling-quotient conflation mutation: REJECTED
+P1A exact quadratic-fidelity audit: PASS
+=== p1b_sharp_quadratic_defect_audit.py ===
+simplex-d2: d=2 N=3 rank(S/R)=2/2 D2=3 rmax=2/3 product-gap=0 trace-gap=0 equality=True
+cross-polytope-d2: d=2 N=4 rank(S/R)=1/1 D2=2 rmax=1 product-gap=0 trace-gap=0 equality=True
+hypercube-d2: d=2 N=4 rank(S/R)=1/1 D2=2 rmax=1 product-gap=0 trace-gap=0 equality=True
+simplex-d3: d=3 N=4 rank(S/R)=3/3 D2=4 rmax=3/2 product-gap=0 trace-gap=0 equality=True
+cross-polytope-d3: d=3 N=6 rank(S/R)=2/2 D2=3 rmax=2 product-gap=0 trace-gap=0 equality=True
+hypercube-d3: d=3 N=8 rank(S/R)=3/3 D2=2 rmax=3 product-gap=0 trace-gap=0 equality=True
+simplex-d4: d=4 N=5 rank(S/R)=4/4 D2=5 rmax=12/5 product-gap=0 trace-gap=0 equality=True
+cross-polytope-d4: d=4 N=8 rank(S/R)=3/3 D2=4 rmax=3 product-gap=0 trace-gap=0 equality=True
+hypercube-d4: d=4 N=16 rank(S/R)=6/6 D2=2 rmax=6 product-gap=0 trace-gap=0 equality=True
+platonic-tetrahedron: d=3 N=4 rank(S/R)=3/3 D2=4 rmax=3/2 product-gap=0 trace-gap=0 equality=True
+platonic-octahedron: d=3 N=6 rank(S/R)=2/2 D2=3 rmax=2 product-gap=0 trace-gap=0 equality=True
+platonic-cube: d=3 N=8 rank(S/R)=3/3 D2=2 rmax=3 product-gap=0 trace-gap=0 equality=True
+platonic-icosahedron: d=3 N=12 rank(S/R)=5/5 D2=3*sqrt(30 - 10*sqrt(5))/5 rmax=sqrt(5)/2 + 5/2 product-gap=0 trace-gap=0 equality=True
+platonic-dodecahedron: d=3 N=20 rank(S/R)=5/5 D2=sqrt(14 - 6*sqrt(5)) rmax=3*sqrt(5)/2 + 9/2 product-gap=0 trace-gap=0 equality=True
+aliased-antipodal-pair: d=2 N=2 rank(S/R)=1/1 D2=4 rmax=1/2 product-gap=0 trace-gap=0 equality=True
+weighted-repeated-alias: d=2 N=5 rank(S/R)=1/1 D2=2*sqrt(22)/3 rmax=11/12 product-gap=-2 + 11*sqrt(22)/18 trace-gap=0 equality=False
+exact-spherical-hexagonal-prism: d=3 N=12 rank(S/R)=5/3 D2=6 rmax=5 product-gap=24 trace-gap=816/25 equality=False
+positive-cube-both-defects: d=3 N=8 rank(S/R)=3/3 D2=8/3 rmax=8/3 product-gap=10/9 trace-gap=91/108 equality=False
+degenerate-equatorial-hexagon: d=3 N=6 rank(S/R)=3/1 D2=6 rmax=4 product-gap=18 trace-gap=27 equality=False
+disconnected-antipodal-equality: d=2 N=4 rank(S/R)=1/1 D2=4 rmax=1/2 product-gap=0 trace-gap=0 equality=True
+nearly-singular-antipodal-pairs-n2: d=2 N=4 rank(S/R)=2/2 D2=4 rmax=3/4 product-gap=1 trace-gap=112/25 equality=False
+nearly-singular-antipodal-pairs-n10: d=2 N=4 rank(S/R)=2/2 D2=4 rmax=3/4 product-gap=1 trace-gap=2800/10201 equality=False
+nearly-singular-antipodal-pairs-n100: d=2 N=4 rank(S/R)=2/2 D2=4 rmax=3/4 product-gap=1 trace-gap=280000/100020001 equality=False
+nearly-singular-antipodal-pairs-n1000: d=2 N=4 rank(S/R)=2/2 D2=4 rmax=3/4 product-gap=1 trace-gap=28000000/1000002000001 equality=False
+fixtures=24
+equality-fixtures=16
+zero-sampling-rank under stated hypotheses: IMPOSSIBLE
+strong two-defect coefficient audit: EXACT
+weighted-normalization mutation: REJECTED
+near-singular quotient audit: PASS
+P1B sharp quadratic-defect audit: PASS
+=== p1c_equality_geometry_audit.py ===
+simplex-d2: d=2 N=3 w=1/3 gamma=1/9 a=1/3 r=2/3 ell=3/2 epsilon=3/2 M/Z=D2=3 rankS=2 dimK=0 e2=0 D2*r=2
+cross-polytope-d2: d=2 N=4 w=1/4 gamma=1/8 a=1/2 r=1 ell=1 epsilon=1 M/Z=D2=2 rankS=1 dimK=1 e2=0 D2*r=2
+hypercube-d2: d=2 N=4 w=1/4 gamma=1/8 a=1/2 r=1 ell=1 epsilon=1 M/Z=D2=2 rankS=1 dimK=1 e2=0 D2*r=2
+simplex-d3: d=3 N=4 w=1/4 gamma=1/8 a=1/2 r=3/2 ell=4/3 epsilon=8/3 M/Z=D2=4 rankS=3 dimK=2 e2=0 D2*r=6
+cross-polytope-d3: d=3 N=6 w=1/6 gamma=1/12 a=1/2 r=2 ell=1 epsilon=2 M/Z=D2=3 rankS=2 dimK=3 e2=0 D2*r=6
+hypercube-d3: d=3 N=8 w=1/8 gamma=1/8 a=1 r=3 ell=2/3 epsilon=4/3 M/Z=D2=2 rankS=3 dimK=2 e2=0 D2*r=6
+simplex-d4: d=4 N=5 w=1/5 gamma=3/25 a=3/5 r=12/5 ell=5/4 epsilon=15/4 M/Z=D2=5 rankS=4 dimK=5 e2=0 D2*r=12
+cross-polytope-d4: d=4 N=8 w=1/8 gamma=1/16 a=1/2 r=3 ell=1 epsilon=3 M/Z=D2=4 rankS=3 dimK=6 e2=0 D2*r=12
+hypercube-d4: d=4 N=16 w=1/16 gamma=3/32 a=3/2 r=6 ell=1/2 epsilon=3/2 M/Z=D2=2 rankS=6 dimK=3 e2=0 D2*r=12
+simplex-d5: d=5 N=6 w=1/6 gamma=1/9 a=2/3 r=10/3 ell=6/5 epsilon=24/5 M/Z=D2=6 rankS=5 dimK=9 e2=0 D2*r=20
+cross-polytope-d5: d=5 N=10 w=1/10 gamma=1/20 a=1/2 r=4 ell=1 epsilon=4 M/Z=D2=5 rankS=4 dimK=10 e2=0 D2*r=20
+hypercube-d5: d=5 N=32 w=1/32 gamma=1/16 a=2 r=10 ell=2/5 epsilon=8/5 M/Z=D2=2 rankS=10 dimK=4 e2=0 D2*r=20
+platonic-tetrahedron: d=3 N=4 w=1/4 gamma=1/8 a=1/2 r=3/2 ell=4/3 epsilon=8/3 M/Z=D2=4 rankS=3 dimK=2 e2=0 D2*r=6
+platonic-octahedron: d=3 N=6 w=1/6 gamma=1/12 a=1/2 r=2 ell=1 epsilon=2 M/Z=D2=3 rankS=2 dimK=3 e2=0 D2*r=6
+platonic-cube: d=3 N=8 w=1/8 gamma=1/8 a=1 r=3 ell=2/3 epsilon=4/3 M/Z=D2=2 rankS=3 dimK=2 e2=0 D2*r=6
+platonic-icosahedron: d=3 N=12 w=1/12 gamma=sqrt(5)/120 + 1/24 a=sqrt(5)/10 + 1/2 r=sqrt(5)/2 + 5/2 ell=1 - sqrt(5)/5 epsilon=2 - 2*sqrt(5)/5 M/Z=D2=3 - 3*sqrt(5)/5 rankS=5 dimK=0 e2=0 D2*r=6
+platonic-dodecahedron: d=3 N=20 w=1/20 gamma=sqrt(5)/40 + 3/40 a=sqrt(5)/2 + 3/2 r=3*sqrt(5)/2 + 9/2 ell=1 - sqrt(5)/3 epsilon=2 - 2*sqrt(5)/3 M/Z=D2=3 - sqrt(5) rankS=5 dimK=0 e2=0 D2*r=6
+antipodal-equality-d3: d=3 N=2 w=1/2 gamma=1/2 a=1 r=1 ell=2 epsilon=4 M/Z=D2=6 rankS=1 dimK=4 e2=0 D2*r=6
+connected-twofold-tetrahedron-blowup: d=3 N=8 w=1/8 gamma=1/32 a=1/4 r=3/2 ell=4/3 epsilon=8/3 M/Z=D2=4 rankS=3 dimK=2 e2=0 D2*r=6
+icosahedron-long-chord-shell: d=3 N=12 w=1/12 gamma=1/24 - sqrt(5)/120 a=1/2 - sqrt(5)/10 r=5/2 - sqrt(5)/2 ell=sqrt(5)/5 + 1 epsilon=2*sqrt(5)/5 + 2 M/Z=D2=3*sqrt(5)/5 + 3 rankS=5 dimK=0 e2=0 D2*r=6
+equality-fixtures=20
+all-dimensional family identities: EXACT_SYMBOLIC
+local radial-tangent block theorem: PASS
+nonantipodal weighted tight-frame equivalence: PASS
+antipodal zero-frame exception: PASS
+Platonic algebraic rank and alias certificates: PASS
+connected blowup classification adversary: PASS
+sampling aliases are not sampled H2 modes: PASS
+P1C exact equality-geometry audit: PASS
+=== p1d_quantitative_stability_audit.py ===
+fixtures=30
+master-fixtures=5
+small-w-fixtures=3
+alias-fixtures=2
+kappa-compass-fixtures=4
+paths-fixtures=3
+singular-frame-fixtures=4
+sampling-gap-fixtures=4
+interval-fixtures=5
+exact master constants and requested bounds: PASS
+small-w cube and tetrahedral alias adversaries: PASS
+kappa conductance and diameter/gap propagation scaling: PASS
+singular tangent-frame and sampling-gap amplification: PASS
+outward-rounded interval stress over extreme scales: PASS
+P1D quantitative stability audit: PASS
+=== p1e_short_gap_symbolic_matrix_audit.py ===
+short-gap literal symbolic matrix-to-limit audit: PASS
+=== p1e_short_gap_cauchy_guard_audit.py ===
+short-gap rational Cauchy all-orders guard: PASS
+entrywise |A-A0|/x <= 20000000000
+entrywise |b-b0|/x <= 200000000000
+=== p1e_short_gap_cauchy_hostile_audit.py ===
+short-gap hostile Cauchy/first-row audit: ACCEPT
+=== p1e_short_gap_polar_guard_audit.py ===
+short-gap first-polar-row Cauchy guard: PASS
+=== p1e_short_gap_proof_audit.py ===
+short-gap exact algebra audit: PASS (remainder is certified by the Cauchy guard audit)
+=== p1e_no_guard_ring_independent_audit.py ===
+no-guard ring independent audit: exact regressions PASS
+=== p1e_short_gap_family_audit.py ===
+short-gap full-family row-class regression
+M0 J rings nodes min-coeff H1 mixed isotropy unique-edge-ratio sep fill edge-window degree r*h2 D2/h2
+32 1 8 834 3.4317e-02 1.721e-13 1.001e-13 4.716e-13 1.000e+00 2.586e-01 1.333e+00 [3.020e-01,3.193e+00] 32 2.020e+01 2.652e+00
+32 3 32 12802 1.7768e-02 3.188e-12 5.640e-12 6.923e-11 1.000e+00 2.612e-01 1.333e+00 [2.612e-01,4.000e+00] 32 2.424e+01 2.666e+00
+64 1 16 3330 3.7858e-02 7.484e-13 6.217e-13 3.291e-12 1.000e+00 1.305e-01 1.333e+00 [2.899e-01,3.904e+00] 64 2.144e+01 2.663e+00
+64 2 32 12930 3.5758e-02 3.054e-12 5.571e-12 7.068e-11 1.000e+00 1.308e-01 1.333e+00 [2.622e-01,4.036e+00] 64 2.417e+01 2.666e+00
+hostile transition and q/h-guard mutations: deterministic failure PASS
+=== p1e_short_gap_referee_audit.py ===
+short-gap hostile referee audit: rejected-mutation regressions PASS
+=== p1e_asymptotic_family_audit.py ===
+fixtures=25
+shared-correction-fixtures=3
+crystal-compiler-fixtures=3
+polygon-fixtures=6
+blocker-fixtures=6
+interval-fixtures=7
+exact weighted minimum-energy shared correction: PASS
+exact H0/H1, reversibility, moment rows, rate and quotient checks: PASS
+noninjective antipodal sampling quotient: PASS
+positive crystal connector first/cubic moments and optical gap: PASS
+closed-form all-level polygon identities: PASS
+21/4, Delaunay-star, cubed-seam, alternating-gap, filter and raw-K_N blockers: PASS
+outward-rounded extreme-scale interval tests: PASS
+P1E asymptotic-family deterministic audit: PASS
+AFP_R5_EXACT_AUDITS_PASS count=13

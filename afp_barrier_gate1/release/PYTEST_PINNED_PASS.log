@@ -1,0 +1,11 @@
+........................................................................ [ 40%]
+........................................................................ [ 80%]
+....................................                                     [100%]
+============================== warnings summary ===============================
+pure_math/tests/test_p2a_convex_design.py::test_all_seven_formulations_and_duals_clarabel
+pure_math/tests/test_p2a_convex_design.py::test_pruning_remaps_edge_groups
+  D:\math_lean_1\Testing-afp-major-revision-r5-20260822\afp_barrier_gate1\release\tmp\cvxpy-site\cvxpy\problems\problem.py:1539: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+180 passed, 1 deselected, 2 warnings in 49.41s

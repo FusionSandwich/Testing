@@ -1358,9 +1358,11 @@ lemmas.
    class. A future comparison should specify a common rate or cost constraint
    before drawing conclusions about the benefit of leaving the positive cone.
 
-8. The `d=3` perturbation proposition fixes ring counts, phases, masks, horizontal
-   jumps, pole/equator data, and reflection. It does not cover arbitrary node
-   motion or independent longitude perturbations.
+8. The candidate `d=3` support-preserving perturbation route fixes ring counts,
+   phases, masks, horizontal jumps, pole/equator data, and reflection. It
+   remains an open certification problem, supplies no theorem, perturbation
+   radius, or constants, and does not cover arbitrary node motion or
+   independent longitude perturbations.
 
 The immediate construction question is now higher-dimensional: whether a
 different local compiler can produce the matching order for `d>3` with shared

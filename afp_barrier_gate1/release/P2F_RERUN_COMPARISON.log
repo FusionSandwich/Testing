@@ -1,0 +1,10 @@
+P2F_RERUN_CLASSIFICATION_MATCH
+nonfloat_field_differences=2
+nonfloat_difference=root.cases[1].comparisons.charged_escape.observed_direction_matches_H2_prediction: True != False
+nonfloat_difference=root.cases[1].comparisons.charged_escape.optimized_improves: True != False
+differing_float_fields=10
+max_absolute_difference=4.0562549998937589e-16
+max_relative_difference=5.3385286960048735e-06
+max_difference_path=root.cases[2].medium_angular_reference.charged.maximum_balance_residual
+selected_scientific_sha256=3b0d8f53350d61e95d993c0eece613664c0fda367916d01116fef9d435e9884b
+rerun_scientific_sha256=3d80f8d01dcb28c56505ed29009a0fd797ef037bb3dfbcb51ac4298f7901d009

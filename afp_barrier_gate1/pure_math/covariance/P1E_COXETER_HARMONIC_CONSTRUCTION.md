@@ -1078,7 +1078,7 @@ P1B and (6.4) give, for the declared class \({\cal G}_h(R_d)\),
 
 The lower constant is \(c_d=dq_0^2/(2\pi^2)\).
 
-## 7. Robustness
+## 7. Conditional robustness calculation under the missing compiler premise — not a theorem
 
 The proof is stable in the norm actually used by the inverse.  First perturb
 the compiled reference map, midpoint coefficients, and chart nodes

@@ -34,8 +34,9 @@ claim.  The former `BOUNDED_NEGATIVE` label is withdrawn.
 | Substrate | Hastelloy C-276 surrogate | 50.0 µm |
 | Back stabilizer | Cu | 20.0 µm |
 
-Total thickness is 93.2 µm.  These values are representative verification
-inputs and do not certify a particular commercial tape.
+Total thickness is 93.2 µm. These values are synthetic bounded verification
+inputs, not validated device or manufacturer data, and do not certify a
+particular commercial tape.
 
 The frozen incidence cases are 0° normal, 60° oblique, and 84° grazing-
 sensitive incidence.  The grazing case includes a bounded 4 mm lateral-escape

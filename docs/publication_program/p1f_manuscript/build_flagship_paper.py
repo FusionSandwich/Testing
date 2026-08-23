@@ -123,6 +123,7 @@ def build_pdf() -> None:
 
     env = dict(os.environ)
     env.setdefault("SOURCE_DATE_EPOCH", "1785900000")
+    pdf_engine = os.environ.get("AFP_PDF_ENGINE", "xelatex")
     command = [
         "pandoc",
         str(prepared),
@@ -133,7 +134,7 @@ def build_pdf() -> None:
         f"--bibliography={BIBLIOGRAPHY}",
         f"--lua-filter={FILTER}",
         f"--include-in-header={HEADER}",
-        "--pdf-engine=xelatex",
+        f"--pdf-engine={pdf_engine}",
         f"--resource-path={HERE}",
         f"--metadata=title:{title}",
         "--metadata=date:",

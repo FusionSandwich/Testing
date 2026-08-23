@@ -83,7 +83,7 @@ The implementation has been refactored into `gate6/core/`:
 
 - `angular.py`: shared-edge angular operators, sparse generator application,
   exact semigroup evolution, and reference quadrature builders;
-- `materials.py`: validated material and layer definitions;
+- `materials.py`: schema-validated synthetic material and layer records;
 - `slab.py`: first-order upwind finite-volume streaming, inflow/vacuum
   boundaries, absorption, angular diffusion, Euler and SSPRK2 stepping, and
   exact discrete balance diagnostics;
@@ -181,12 +181,12 @@ and region-resolved deposition.
 At the level-2 matched comparison, the fully explicit product-grid case uses
 696 steps versus 124 for the quasi-uniform operator. Exact angular-collision
 Strang splitting reduces the counts to 120 and 122, respectively, while the
-predicted transmitted energy and heating remain close. This demonstrates two
-separate benefits:
+computed dimensionless surrogate tallies remain close. This demonstrates two
+solver-level properties:
 
 1. the quasi-uniform operator reduces the fully explicit angular stiffness;
 2. an exact collision substep can remove that stiffness for either angular
-   family without changing the conservative multigroup physics.
+   family without changing the declared discrete conservation equations.
 
 ## 10. Multigroup formalization and tests
 

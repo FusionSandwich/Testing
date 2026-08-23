@@ -69,7 +69,7 @@ def audit_results(payload: dict[str, Any]) -> dict[str, Any]:
     layers = manifest["layers"]
     checks["layer_inventory"] = {row["name"] for row in layers} == EXPECTED_LAYERS
     thickness = {row["name"]: float(row["thickness_um"]) for row in layers}
-    checks["realistic_bounded_dimensions"] = (
+    checks["declared_bounded_dimensions"] = (
         10.0 <= thickness["Cu_front"] <= 50.0
         and 0.5 <= thickness["Ag_cap"] <= 5.0
         and 0.5 <= thickness["REBCO"] <= 3.0
@@ -296,7 +296,7 @@ def audit_results(payload: dict[str, Any]) -> dict[str, Any]:
 
     integrity_keys = [
         "scientific_hash", "schema", "manifest_schema", "layer_inventory",
-        "realistic_bounded_dimensions", "incidence_inventory", "grazing_case",
+        "declared_bounded_dimensions", "incidence_inventory", "grazing_case",
         "reference_manifest", "physics_firewall", "case_inventory",
         "same_discretization", "neutral_not_replaced", "positivity_gate", "balance_gate",
         "response_inventory", "reference_uncertainty_separated", "layer_outputs",

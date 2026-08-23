@@ -573,7 +573,14 @@ All constants in (6.7)--(6.11) are displayed algebraic combinations of the
 finite atlas bounds, `R`, the cone margin, and the geometric series in
 (5.4).  They do not depend on `N`.
 
-## 7. Robustness
+## 7. Rejected historical robustness claim
+
+**FALSIFIED AT THE STATED SCOPE.** The following condition is retained for
+provenance only. Fixed `O(eps)` moment-breaking coefficient perturbations
+produce `O(eps)`, not `O(h^2)`, residuals. A possible repair must either
+reimpose the exact tensor identity or require the moment-breaking component to
+be `O(h^2)`, together with `W` symmetry or a proved full gauge/modulation
+argument. The formulas below are not an active P1E theorem.
 
 Perturb the uncorrected nodes in chart coordinates by at most `eps h^3` in
 discrete `C^{2,alpha}` and perturb the coefficient functions by at most
@@ -583,10 +590,10 @@ discrete `C^{2,alpha}` and perturb the coefficient functions by at most
  eps\le\min\{rho_*/4,\ c_0/(8C_F),\ q_*/(8C_u)\}, \tag{7.1}
 \]
 
-the same edge list, local cone margin, inverse, Newton ball, mesh bounds,
-and estimates (6.7)--(6.10) remain valid with every upper constant doubled
-and every lower constant halved.  This is the strict local/global feasibility
-margin required by the construction.
+the old route asserted that the same edge list, local cone margin, inverse,
+Newton ball, mesh bounds, and estimates (6.7)--(6.10) remain valid with every
+upper constant doubled and every lower constant halved. The hostile audit
+rejects that implication for the displayed perturbation class.
 
 ## 8. Audit conclusion
 

@@ -1,0 +1,15 @@
+*.bib text eol=lf
+*.json text eol=lf
+*.lean text eol=lf
+*.log text eol=lf
+*.lua text eol=lf
+*.md text eol=lf
+*.py text eol=lf
+*.sha256 text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+/.gitignore text eol=lf
+
+*.h5 binary
+*.pdf binary
+*.png binary

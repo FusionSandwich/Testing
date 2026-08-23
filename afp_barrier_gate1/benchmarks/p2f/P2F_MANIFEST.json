@@ -104,5 +104,5 @@
   "record_zero_threshold": 1e-18,
   "reference_convergence_relative_span_limit": 0.05,
   "schema": "afp-p2f-hts-manifest-v2",
-  "stack_provenance": "bounded coated-conductor verification stack chosen within the HTS irradiation roadmap ranges; dimensions are representative, not a manufacturer certificate"
+  "stack_provenance": "synthetic bounded coated-conductor verification stack; dimensions are test inputs, not validated device or manufacturer data"
 }
