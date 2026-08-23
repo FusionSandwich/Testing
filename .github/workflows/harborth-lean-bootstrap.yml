@@ -56,39 +56,105 @@ jobs:
           set -euxo pipefail
           lake build
 
-      - name: Package Lean toolchain
+      - name: Package and split Lean toolchain
         working-directory: lean-bootstrap
         shell: bash
         run: |
           set -euxo pipefail
           toolchain_root="$(dirname "$(dirname "$(elan which lean)")")"
           tar -I 'zstd -7 -T0' -cf lean-4.32.2-linux.tar.zst -C "$(dirname "$toolchain_root")" "$(basename "$toolchain_root")"
-          sha256sum lean-4.32.2-linux.tar.zst
-          du -h lean-4.32.2-linux.tar.zst
+          sha256sum lean-4.32.2-linux.tar.zst | tee lean-toolchain.sha256
+          split -b 400M -d -a 2 lean-4.32.2-linux.tar.zst lean-toolchain.part.
+          ls -lh lean-toolchain.part.*
 
-      - name: Package dependency tree
+      - name: Package and split dependency tree
         working-directory: lean-bootstrap
         shell: bash
         run: |
           set -euxo pipefail
           tar -I 'zstd -5 -T0' -cf harborth-lake-deps.tar.zst .lake lake-manifest.json lakefile.toml lean-toolchain
-          sha256sum harborth-lake-deps.tar.zst
-          du -h harborth-lake-deps.tar.zst
+          sha256sum harborth-lake-deps.tar.zst | tee lake-deps.sha256
+          split -b 400M -d -a 2 harborth-lake-deps.tar.zst lake-deps.part.
+          ls -lh lake-deps.part.*
 
-      - name: Upload Lean toolchain
+      - name: Upload toolchain chunk 00
         uses: actions/upload-artifact@v4
         with:
-          name: lean-4.32.2-linux
-          path: lean-bootstrap/lean-4.32.2-linux.tar.zst
+          name: lean-toolchain-part-00
+          path: lean-bootstrap/lean-toolchain.part.00
           if-no-files-found: error
           compression-level: 0
           retention-days: 7
 
-      - name: Upload dependency tree
+      - name: Upload toolchain chunk 01
         uses: actions/upload-artifact@v4
         with:
-          name: harborth-lake-deps
-          path: lean-bootstrap/harborth-lake-deps.tar.zst
+          name: lean-toolchain-part-01
+          path: lean-bootstrap/lean-toolchain.part.01
           if-no-files-found: error
           compression-level: 0
+          retention-days: 7
+
+      - name: Upload dependency chunk 00
+        uses: actions/upload-artifact@v4
+        with:
+          name: lake-deps-part-00
+          path: lean-bootstrap/lake-deps.part.00
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+
+      - name: Upload dependency chunk 01
+        uses: actions/upload-artifact@v4
+        with:
+          name: lake-deps-part-01
+          path: lean-bootstrap/lake-deps.part.01
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+
+      - name: Upload dependency chunk 02
+        uses: actions/upload-artifact@v4
+        with:
+          name: lake-deps-part-02
+          path: lean-bootstrap/lake-deps.part.02
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+
+      - name: Upload dependency chunk 03
+        uses: actions/upload-artifact@v4
+        with:
+          name: lake-deps-part-03
+          path: lean-bootstrap/lake-deps.part.03
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+
+      - name: Upload dependency chunk 04
+        uses: actions/upload-artifact@v4
+        with:
+          name: lake-deps-part-04
+          path: lean-bootstrap/lake-deps.part.04
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+
+      - name: Upload dependency chunk 05
+        uses: actions/upload-artifact@v4
+        with:
+          name: lake-deps-part-05
+          path: lean-bootstrap/lake-deps.part.05
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+
+      - name: Upload checksums
+        uses: actions/upload-artifact@v4
+        with:
+          name: lean-bootstrap-checksums
+          path: |
+            lean-bootstrap/lean-toolchain.sha256
+            lean-bootstrap/lake-deps.sha256
+          if-no-files-found: error
           retention-days: 7
