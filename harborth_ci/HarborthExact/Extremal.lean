@@ -10,6 +10,7 @@ theorem contactCount_le_choose {ι : Type*} [Fintype ι] (x : ι → Point2) :
 
 /-- An attained universal upper bound is the value selected by `f₂`. -/
 theorem f₂_eq_of_isMaximum {n m : ℕ} (h : IsMaximumContactNumber n m) : f₂ n = m := by
+  classical
   rcases h with ⟨⟨x, hxSep, hxCount⟩, hUpper⟩
   have hmBound : m ≤ n.choose 2 := by
     rw [← hxCount]
