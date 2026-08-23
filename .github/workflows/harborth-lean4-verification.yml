@@ -43,8 +43,8 @@ jobs:
         run: |
           set -o pipefail
           curl https://elan.lean-lang.org/elan-init.sh -sSf | sh -s -- -y --default-toolchain none 2>&1 | tee harborth_ci/ci-logs/elan-bootstrap.log
-          "$HOME/.elan/bin/lake" --version 2>&1 | tee harborth_ci/ci-logs/lake-version.log
           cd harborth_ci
+          "$HOME/.elan/bin/lake" --version 2>&1 | tee ci-logs/lake-version.log
           "$HOME/.elan/bin/lake" update 2>&1 | tee ci-logs/lake-update.log
           sha256sum lake-manifest.json | tee ci-logs/lake-manifest.sha256
 
