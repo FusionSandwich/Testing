@@ -78,7 +78,7 @@ theorem axialQ_eq_one_iff (p : Axial) :
         nlinarith [sq_nonneg a]
       have ha_cases : a = -1 ∨ a = 0 := by omega
       rcases ha_cases with rfl | rfl <;> simp
-  · rintro (rfl | rfl | rfl | rfl | rfl | rfl) <;> norm_num [axialQ]
+  · rintro (h | h | h | h | h | h) <;> rw [h] <;> norm_num [axialQ]
 
 /-- Exact squared-distance formula for the triangular-lattice embedding. -/
 theorem axialPoint_dist_sq (p q : Axial) :
