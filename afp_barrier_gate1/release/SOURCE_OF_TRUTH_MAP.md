@@ -25,7 +25,7 @@ archive names are provenance labels only; the SHA is controlling. Every
 | P2F integration | `agent/afp-consolidated-p2e-p2f-e60f5c7` | `b8912c282a22420e8077c75929b16c7a33d189b2` | ancestor; 7 commits behind R4 | `INCONCLUSIVE_ARCHIVE_ONLY` |
 | hostile audit | `agent/afp-audit-major-revisions-b8912c2` | `d56db0ba8c24b63e56ec107e2f044449c726ce20` | ancestor; 3 commits behind R4 | `CANONICAL_AUDIT_DEPENDENCY` |
 | R4 | `agent/afp-r4-formalization-release-20260819` | `f0ec4a8e539ebf72f5324f92439b56545ea8d2c5` | exact base | `AUTHORITATIVE_BASE` |
-| R5 | `codex/afp-major-revision-r5-20260822` | resolved at release handoff | direct R4 descendant | `CORRECTED_INTERNAL_RELEASE` |
+| R5 scientific content | `codex/afp-major-revision-r5-20260822` | `9783a69e8f079d61c100bc87ea653ec9c981c2fe` | direct R4 descendant | `CORRECTED_INTERNAL_RELEASE` |
 
 ## Divergent and noncanonical lines
 

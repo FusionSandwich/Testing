@@ -102,9 +102,9 @@
       "sha256": "30bd6bdd51da5b81b760ef245c71db168963ba5b6d0ad842a495c58d2f1c7da1"
     },
     {
-      "bytes": 7627,
+      "bytes": 7636,
       "path": "afp_barrier_gate1/release/FINAL_REPORT.md",
-      "sha256": "fc2af833e60e7dd47dbaed7f71858e028db98f22fa359cf5ee6d35a68b59637b"
+      "sha256": "bd59662be21620d983e99753bde02a10b1709c9d78fdfea957972c707234c400"
     },
     {
       "bytes": 2134,
@@ -207,9 +207,9 @@
       "sha256": "d901a08b981962d83cb618f2bd71dae795615b2828594b2531ebf074f4c34823"
     },
     {
-      "bytes": 4726,
+      "bytes": 4760,
       "path": "afp_barrier_gate1/release/SOURCE_OF_TRUTH_MAP.md",
-      "sha256": "4e15727fade5d7c4679ce1803dbbca09bda3c87b0ea2bb8de185ad5064aed1fa"
+      "sha256": "8fbd6404952685104ad70937f0542e590122d7a7530cd5613465fe66360b81af"
     },
     {
       "bytes": 4174,

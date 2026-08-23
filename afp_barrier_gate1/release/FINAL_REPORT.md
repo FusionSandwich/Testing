@@ -6,7 +6,7 @@
 - Remote: `https://github.com/FusionSandwich/Testing.git`
 - Selected base: `f0ec4a8e539ebf72f5324f92439b56545ea8d2c5`
 - Branch: `codex/afp-major-revision-r5-20260822`
-- Selected scientific-content commit: `PENDING_AFTER_CONTENT_MILESTONE`
+- Selected scientific-content commit: `9783a69e8f079d61c100bc87ea653ec9c981c2fe`
 - Terminal classification:
   `AFP_PURE_THEOREM_INTERNAL_RELEASE_CANDIDATE_MAJOR_REVISION_CLOSED`
 
