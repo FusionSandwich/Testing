@@ -3,3 +3,4 @@ import PlanarContactNumber.HarborthArithmetic
 import PlanarContactNumber.ShellDecomposition
 import PlanarContactNumber.UpperArithmetic
 import PlanarContactNumber.Optimization
+import PlanarContactNumber.TriangularLattice
