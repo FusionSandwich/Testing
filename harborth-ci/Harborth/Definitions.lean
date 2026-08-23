@@ -39,8 +39,9 @@ def Realizable (n m : ℕ) : Prop :=
 /-- The exact maximum contact number. The search bound `n*n` is deliberately
 loose; `contactCount_le_square` later proves that every realizable value lies
 below it. -/
-noncomputable def f₂ (n : ℕ) : ℕ :=
-  Nat.findGreatest (Realizable n) (n * n)
+noncomputable def f₂ (n : ℕ) : ℕ := by
+  classical
+  exact Nat.findGreatest (Realizable n) (n * n)
 
 /-- The real quantity occurring under the floor in Harborth's formula. -/
 noncomputable def harborthValue (n : ℕ) : ℝ :=
