@@ -22,15 +22,20 @@ jobs:
         run: |
           set -euxo pipefail
           curl --fail --location --silent --show-error https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -o /tmp/elan-init.sh
-          sh /tmp/elan-init.sh -y --default-toolchain leanprover/lean4:v4.30.0
+          sh /tmp/elan-init.sh -y --default-toolchain none
+          "$HOME/.elan/bin/elan" toolchain install leanprover/lean4:v4.30.0
+          "$HOME/.elan/bin/elan" default leanprover/lean4:v4.30.0
+          "$HOME/.elan/bin/lean" --version
           echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
       - name: Package toolchain
         run: |
           set -euxo pipefail
-          TOOLCHAIN="$HOME/.elan/toolchains/leanprover--lean4---v4.30.0"
+          LEAN_BIN="$($HOME/.elan/bin/elan which lean)"
+          TOOLCHAIN="$(dirname "$(dirname "$LEAN_BIN")")"
+          TOOLCHAIN_NAME="$(basename "$TOOLCHAIN")"
           test -x "$TOOLCHAIN/bin/lean"
           "$TOOLCHAIN/bin/lean" --version
-          tar --use-compress-program='zstd -3 -T0' -cf /tmp/lean-4.30.0-linux-toolchain.tar.zst -C "$HOME/.elan/toolchains" leanprover--lean4---v4.30.0
+          tar --use-compress-program='zstd -3 -T0' -cf /tmp/lean-4.30.0-linux-toolchain.tar.zst -C "$(dirname "$TOOLCHAIN")" "$TOOLCHAIN_NAME"
           sha256sum /tmp/lean-4.30.0-linux-toolchain.tar.zst > /tmp/lean-4.30.0-linux-toolchain.tar.zst.sha256
           ls -lh /tmp/lean-4.30.0-linux-toolchain.tar.zst
       - uses: actions/upload-artifact@v4
