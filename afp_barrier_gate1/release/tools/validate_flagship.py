@@ -60,7 +60,7 @@ def main() -> None:
     require(b"/JavaScript" not in pdf, "PDF JavaScript")
     require(b"/Encrypt" not in pdf, "PDF encryption")
 
-    print("AFP_R5_FLAGSHIP_SOURCE_PASS")
+    print("AFP_R6_FLAGSHIP_SOURCE_PASS")
     print(f"citations={len(cited)}")
     print(f"source_sha256={sha256(SOURCE)}")
     print(f"figure_sha256={sha256(FIGURE)}")

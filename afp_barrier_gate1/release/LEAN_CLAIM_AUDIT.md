@@ -1,4 +1,4 @@
-# Lean claim and signature audit
+# R6 Lean claim and signature audit
 
 ## Exact release result
 
@@ -14,7 +14,7 @@
   axiom dependency.
 
 The historical six audit files covered 430/512 declarations in aggregate;
-`AxiomAudit.lean` alone covered 189 while claiming completeness. R5 preserves
+`AxiomAudit.lean` alone covered 189 while claiming completeness. R6 preserves
 it as a legacy focused audit and adds the generated exhaustive
 `AFPBarrier/ReleaseAxiomAudit.lean`. Generation stops if the reviewed count
 changes from 512.
@@ -27,7 +27,7 @@ changes from 512.
 | sharp product lower-bound algebra | `FULLY_CHECKED_FINITE_ALGEBRA` | finite trace/rate implications; manuscript assembles definitions and sharpness family |
 | equality and stability budgets | `FULLY_CHECKED_FINITE_ALGEBRA` | local scalar/tensor identities and weighted consequences; not unrestricted global embedding classification |
 | construction identities | `EXPLICIT_EXTERNAL_HYPOTHESES` | shared conductance, force/moment, rate conversion, connectors, and polygon recurrences after inputs are supplied |
-| adaptive-ring `d=3` schedule | `MANUSCRIPT_PROSE_NOT_FORMALIZED` | analytic Cauchy guards, recurrence, positivity at all levels, and mesh constants are ordinary proof obligations |
+| adaptive-ring `d=3` schedule | `COMPUTER_ASSISTED_NOT_LEAN_CHECKED` | ordinary analytic reduction plus independently verified exact-rational certificate; no complete schedule Lean declaration |
 | convex design | `FULLY_CHECKED_FINITE_ALGEBRA` | affine mixing, loss/rate, and certificate soundness; full conic strong duality/facial reduction is external finite mathematics |
 | transport error algebra | `FULLY_CHECKED_FINITE_ALGEBRA` | finite Duhamel/resolvent/telescope/adjoint/energy identities; PDE generation, trace theory, and Bochner integration are not formalized |
 | P2E/P2F | `NUMERICAL_EVIDENCE` | no physical or performance conclusion is Lean-checked |
@@ -43,8 +43,12 @@ changes from 512.
 - The local feasibility declarations assume supplied dependence/equilibrium
   data. They do not formalize convex-hull relative-interior equivalences or the
   full Farkas alternative.
-- No Lean theorem formalizes a P1E perturbation radius, an all-level adaptive
+- No Lean theorem formalizes a P1E perturbation radius, a complete adaptive
   ring proof, a transport-improvement result, or a physical HTS model.
+- Theorem 6.1 and Corollary 6.2 map to the exact declarations listed in the
+  manuscript. The former Corollary 6.3 is non-theorem discussion in R6; Lean
+  path and scalar lemmas are not promoted to one global geometric-stability
+  signature.
 
 Controlling artifacts: `LEAN_DECLARATION_INDEX.json`,
 `AFPBarrier/ReleaseAxiomAudit.lean`, and `LEAN_RELEASE_AUDIT.log`.

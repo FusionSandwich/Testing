@@ -2,9 +2,13 @@
 
 ## Classification
 
-`PROVED` by ordinary finite mathematics, with a `PROVED` Lean-checked finite
-algebraic core. The complete paper is not formalized. The release is an
-internal candidate awaiting independent specialist review.
+The frontier, equality equations, and defect budget are proved by ordinary
+finite mathematics, with the stated finite algebraic components Lean-checked.
+Theorem 7.2 is a computer-assisted exact-rational theorem: its analytic
+reduction is ordinary mathematics and its remaining finite rational closure is
+packaged with an independent verifier. The complete paper is not formalized.
+This is an internal repair candidate awaiting renewed independent specialist
+review; it does not claim external acceptance.
 
 ## Sharp positive-reversible generator frontier
 
@@ -43,19 +47,23 @@ rate, loss-variance, and anisotropy budgets stated in Theorem 5.1 of the
 flagship manuscript. In the nonantipodal one-shell branch this yields centered
 weighted unit-norm tight frames in each tangent space. Reversibility adds
 global shared-edge compatibility; local frames alone do not classify a global
-embedding. The quantitative stability theorem is weighted and retains every
-mass floor, active-edge probability, connectivity, spectral-gap, sampling,
-and tangent-frame conditioning parameter needed for pointwise or global
-conclusions.
+embedding. The strongest unconditional near-extremizer statements are the
+exact weighted defect budget and exceptional-mass consequence in Theorem 6.1
+and Corollary 6.2. The former Corollary 6.3 has been demoted to non-theorem
+discussion: no pointwise, graphwise, quotient, frame-repair, or global
+embedding-stability theorem is asserted without complete additional
+hypotheses and constants.
 
 ## Sharpness and constructions
 
 - `PROVED`: regular-simplex, cross-polytope, and hypercube exact extremizers in
   every dimension under the stated sampling conventions.
 - `PROVED`: regular-polygon matching family for ambient `d=2`.
-- `PROVED`: fixed unperturbed reflected adaptive-ring matching family for
-  ambient `d=3`, with `r_max <= 64 pi^2 h^-2` and
-  `D_2 <= 75 h^2 / 2`.
+- `COMPUTER_ASSISTED_EXACT_RATIONAL`: fixed unperturbed reflected adaptive-ring
+  matching family for ambient `d=3`, along the explicit discrete sequence
+  `h_J = pi/(2 S_J)`, `J>=1`, with `r_max <= 64 pi^2 h_J^-2` and
+  `D_2 <= 75 h_J^2 / 2`. The immutable certificate and standalone verifier
+  are in `release/certificates/theorem_7_2/`.
 - `OPEN`: support-preserving perturbation robustness. No radius or constants
   are release claims.
 - `OPEN`: a matching positive local family for `d > 3`.

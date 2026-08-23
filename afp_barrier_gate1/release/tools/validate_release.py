@@ -1,10 +1,12 @@
-"""Fail-closed structural validation for the AFP R5 release."""
+"""Fail-closed structural validation for the AFP R6 release."""
 
 from __future__ import annotations
 
 import json
 import hashlib
 import re
+import subprocess
+import sys
 from pathlib import Path
 
 
@@ -92,6 +94,39 @@ def main() -> None:
     ).read_text(encoding="utf-8")
     require("The `d=3` perturbation proposition" not in flagship, "stale Prop 7.3")
     require("Open problem 7.3" in flagship, "missing open robustness status")
+    require("Corollary 6.3" not in flagship, "unauditable Corollary 6.3 survived")
+    require(
+        "Conditional transfers from the defect budget (discussion)" in flagship,
+        "missing demoted stability-transfer discussion",
+    )
+    require(
+        "computer-assisted exact-rational theorem" in flagship,
+        "Theorem 7.2 certificate boundary is not explicit",
+    )
+    require(
+        "For every integer $J\\ge1$" in flagship,
+        "Theorem 7.2 discrete sequence is not explicit",
+    )
+
+    certificate_dir = RELEASE / "certificates" / "theorem_7_2"
+    certificate = load_json(certificate_dir / "certificate.json")
+    require(
+        certificate["classification"] == "COMPUTER_ASSISTED_EXACT_RATIONAL",
+        "Theorem 7.2 certificate classification",
+    )
+    verifier = certificate_dir / "verify_certificate.py"
+    verified = subprocess.run(
+        [sys.executable, str(verifier), str(certificate_dir / "certificate.json")],
+        cwd=REPOSITORY,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    require(verified.returncode == 0, f"Theorem 7.2 verifier failed: {verified.stderr}")
+    require(
+        "Theorem 7.2 exact-rational certificate: PASS" in verified.stdout,
+        "Theorem 7.2 verifier pass marker",
+    )
 
     p1f_manifest = (
         REPOSITORY
@@ -140,10 +175,11 @@ def main() -> None:
     )
     require(not missing_release_files, f"missing release files: {missing_release_files}")
 
-    print("AFP_R5_RELEASE_STRUCTURE_PASS")
+    print("AFP_R6_RELEASE_STRUCTURE_PASS")
     print(f"lean_declarations={len(names)}")
     print(f"lean_axioms={','.join(sorted(observed))}")
     print(f"p2f={p2f['scientific_outcome']}")
+    print("theorem_7_2=COMPUTER_ASSISTED_EXACT_RATIONAL")
 
 
 if __name__ == "__main__":

@@ -1,5 +1,63 @@
 # Acquisition-gate summary
 
+## R6 pre-build gate, 2026-08-23 EDT
+
+This gate was completed before any R6 build or dependency staging command.
+The host has 34,260,418,560 bytes of RAM (33,457,440 KiB visible),
+13,817,220 KiB free physical memory at inspection, and 20 logical processors.
+The system volume `C:` has 10,671,575,040 bytes free of 999,032,877,056;
+the target/data volume `D:` has 915,216,756,736 bytes free of
+2,000,397,791,232. R6 remains entirely under the fixed target
+`D:\math_lean_1\Testing-afp-major-revision-r6-20260823`.
+
+The largest observed working sets were WSL (`vmmemWSL`, about 3.99 GB), Codex
+processes (about 1.31 GB each at the top), Windows memory compression (about
+0.74 GB), Defender (about 0.55 GB), Explorer, VS Code, and Docker. No separate
+CPU-intensive scientific job was launched. The available RAM and `D:`
+headroom are adequate for the previously measured local builds.
+
+Existing executable/runtime inventory:
+
+- Git 2.55.0.windows.3;
+- Python launcher environments 3.12.10, 3.11, and 3.9; no Conda executable or
+  Conda environments; no repository `pyvenv.cfg` was found outside ignored
+  dependency trees;
+- Elan 4.2.3 with Lean toolchains 4.30.0, 4.32.0, 4.32.2, and 4.33.1; the
+  project pins 4.30.0 even though the ambient default is 4.33.1;
+- Lake 5.0.0, Pandoc 3.8.3, bundled Tectonic 0.17.0, bundled Poppler 26.05.0,
+  bundled Python 3.12.13, and bundled Node 24.19.0;
+- system Python already has Matplotlib 3.11.1, NumPy 2.5.1, and pytest 8.4.2;
+  the R5 disposable exact-audit target already contains the pinned SymPy and
+  numerical stack and will be read, not modified.
+
+Existing caches and local sources were measured before staging: pip cache
+1,572,587,537 bytes; Elan/toolchains 12,584,471,820 bytes; dirty original
+checkout `.lake` 7,071,020,685 bytes; verified R5 worktree `.lake`
+141,513,742 bytes; R5 Tectonic cache 46,334,016 bytes; R5 disposable Python
+target 363,126,888 bytes; and the shared pinned Lean package checkout
+7,006,245,609 bytes. Local Git worktrees were enumerated for the dirty
+original checkout, verified R5 branch, and isolated R6 branch. The original
+dirty checkout status was recorded before work and is not a staging target.
+
+Existing local capabilities are sufficient. **Authorized network acquisition:
+0 bytes.** No install, upgrade, package resolution, or remote build is
+planned. The only dependency-environment modification is a local private R6
+staging copy of the measured R5 project build/config (141,513,742 bytes) and
+Tectonic cache (46,334,016 bytes), total at most **187,847,758 local bytes**,
+plus a junction to the already-local pinned Lean package checkout. Target:
+the R6 worktree's ignored `.lake` and `tmp/pdfs/tectonic-cache` directories.
+If any tool attempts a network fetch, validation stops. Rollback removes only
+the resolved R6 `.lake` and `tmp/pdfs` staging directories after verifying
+that both paths remain beneath the named R6 worktree; it never touches the
+dirty original checkout, R5 tracked files, shared source checkout, or user
+toolchains.
+
+The observations above close the R6 acquisition gate for the bounded local
+build/test/render plan. A materially different dependency or target requires
+a new gate.
+
+## R5 retained record
+
 The complete timestamped pre-acquisition record is retained at
 `D:\math_lean_1\AFP_R5_ACQUISITION_GATE_20260822.md`.
 

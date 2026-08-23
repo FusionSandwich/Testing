@@ -1,22 +1,7 @@
-Fontconfig error: Cannot load default config file: No such file: (null)
-warning: accessing absolute path `D:/openc-hts-dpa-data/tmp/media-8fd43a405fe0d677/proof_dependency_graph.png`; build may not be reproducible in other environments
-warning: texput.tex:1400: Overfull \hbox (1.82965pt too wide) in paragraph at lines 1400--1400
-warning: texput.tex:1429: Overfull \hbox (1.68965pt too wide) in paragraph at lines 1429--1429
-warning: texput.tex:1434: Overfull \hbox (0.71965pt too wide) in paragraph at lines 1434--1434
-warning: texput.tex:1437: Overfull \hbox (28.07965pt too wide) in paragraph at lines 1436--1437
-warning: texput.tex:1450: Overfull \hbox (10.56966pt too wide) in paragraph at lines 1449--1450
-warning: texput.tex:1698: Overfull \hbox (12.3798pt too wide) in paragraph at lines 1697--1698
-warning: texput.tex:1400: Overfull \hbox (1.82965pt too wide) in paragraph at lines 1400--1400
-warning: texput.tex:1429: Overfull \hbox (1.68965pt too wide) in paragraph at lines 1429--1429
-warning: texput.tex:1434: Overfull \hbox (0.71965pt too wide) in paragraph at lines 1434--1434
-warning: texput.tex:1437: Overfull \hbox (28.07965pt too wide) in paragraph at lines 1436--1437
-warning: texput.tex:1450: Overfull \hbox (10.56966pt too wide) in paragraph at lines 1449--1450
-warning: texput.tex:1698: Overfull \hbox (12.3798pt too wide) in paragraph at lines 1697--1698
-warning: texput.tex:1400: Overfull \hbox (1.82965pt too wide) in paragraph at lines 1400--1400
-warning: texput.tex:1429: Overfull \hbox (1.68965pt too wide) in paragraph at lines 1429--1429
-warning: texput.tex:1434: Overfull \hbox (0.71965pt too wide) in paragraph at lines 1434--1434
-warning: texput.tex:1437: Overfull \hbox (28.07965pt too wide) in paragraph at lines 1436--1437
-warning: texput.tex:1450: Overfull \hbox (10.56966pt too wide) in paragraph at lines 1449--1450
-warning: texput.tex:1698: Overfull \hbox (12.3798pt too wide) in paragraph at lines 1697--1698
-warning: warnings were issued by the TeX engine; use --print and/or --keep-logs for details.
-D:\math_lean_1\Testing-afp-major-revision-r5-20260822\output\pdf\FLAGSHIP_MANUSCRIPT.pdf
+AFP R6 flagship PDF build, 2026-08-23 EDT
+Engine: Tectonic 0.17.0 through Pandoc 3.8.3
+Result: PASS
+Fontconfig warning: no default config file was available.
+Pandoc/Tectonic warned that the generated dependency graph was accessed through an absolute temporary media path.
+No TeX underfull or overfull box warning was emitted by the final build.
+Output: output/pdf/FLAGSHIP_MANUSCRIPT.pdf

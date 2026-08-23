@@ -1,3 +1,7 @@
+AFP R6 release axiom audit, regenerated index/source and re-elaborated 2026-08-23 EDT.
+Coverage: 58 modules, 512 public theorem/lemma declarations.
+The declaration signatures are unchanged from R5; the complete 512-entry output follows.
+
 AFPBarrier.residualCorrection_fixedPoint.{u_1} {V : Type u_1} [AddCommGroup V] [Module ℝ V] (A B : V →ₗ[ℝ] V) (b x : V)
   (omega : ℝ) (hfixed : A x = b) : x + omega • B (b - A x) = x
 'AFPBarrier.residualCorrection_fixedPoint' depends on axioms: [propext, Classical.choice, Quot.sound]

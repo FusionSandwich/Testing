@@ -1,4 +1,4 @@
-"""Generate deterministic SHA-256 manifests for the AFP R5 release."""
+"""Generate deterministic SHA-256 manifests for the AFP R6 release."""
 
 from __future__ import annotations
 
@@ -36,6 +36,7 @@ OUTSIDE_RELEASE = [
     PROJECT / "benchmarks" / "p2f" / "P2F_AUDIT.json",
     PROJECT / "benchmarks" / "p2f" / "P2F_RECORDS.sha256",
     REPOSITORY / "docs" / "publication_program" / "THEOREM_REGISTRY.md",
+    REPOSITORY / "docs" / "publication_program" / "P1E_SHORT_GAP_S2_CONSTRUCTION.md",
     REPOSITORY / "docs" / "publication_program" / "P2F_HTS_LAYERED_CASE.md",
     REPOSITORY
     / "docs"
@@ -119,7 +120,7 @@ def main() -> None:
     JSON_MANIFEST.write_text(
         json.dumps(
             {
-                "schema": "afp-r5-release-manifest-v1",
+                "schema": "afp-r6-release-manifest-v1",
                 "self_excluded": [TEXT_MANIFEST.name, JSON_MANIFEST.name],
                 "file_count": len(records),
                 "files": records,

@@ -13,6 +13,16 @@ function Table(table)
     return table
   end
   local selected = widths[#table.colspecs]
+  if #table.colspecs == 5 and
+     pandoc.utils.stringify(table.head):match("Numbered result") then
+    selected = {0.14, 0.33, 0.10, 0.15, 0.28}
+  elseif #table.colspecs == 5 and
+         pandoc.utils.stringify(table.head):match("Manuscript result") then
+    selected = {0.18, 0.205, 0.19, 0.185, 0.24}
+  elseif #table.colspecs == 5 and
+         pandoc.utils.stringify(table.head):match("Source and variables") then
+    selected = {0.19, 0.22, 0.21, 0.12, 0.26}
+  end
   if selected then
     for index, width in ipairs(selected) do
       table.colspecs[index][2] = width
@@ -23,7 +33,8 @@ end
 
 function Code(code)
   if FORMAT:match("latex") and
-     (code.text:match("/") or code.text:match("%.[A-Za-z0-9]+$")) then
+     (code.text:match("/") or code.text:match("_") or
+      code.text:match("%.[A-Za-z0-9]+$")) then
     return pandoc.RawInline("latex", "\\nolinkurl{" .. code.text .. "}")
   end
   return code

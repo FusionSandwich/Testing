@@ -1,0 +1,100 @@
+{
+  "schema": "afp-theorem-7.2-exact-rational-certificate-v1",
+  "theorem": "FLAGSHIP_MANUSCRIPT Theorem 7.2",
+  "classification": "COMPUTER_ASSISTED_EXACT_RATIONAL",
+  "scope": "Finite rational closure of the transition, cone, polar-row, recurrence, and published-constant inequalities after the analytic reductions printed in Section 7.2 and P1E_SHORT_GAP_S2_CONSTRUCTION.md.",
+  "family": {
+    "ambient_dimension": 3,
+    "levels": "J >= 1",
+    "M0": "1208925819614629174706176",
+    "scale_sequence": "h_J = pi / (2 S_J), with S_J defined by (7.5); this is a discrete explicit sequence, not every sufficiently small h",
+    "sqrt_radicand": 58
+  },
+  "source_bindings": {
+    "docs/publication_program/P1E_SHORT_GAP_S2_CONSTRUCTION.md": "02762da03d47828624313ba05703a0a8635e1118eb74a84a5e481e2cde2bff79",
+    "afp_barrier_gate1/pure_math/covariance/p1e_short_gap_symbolic_matrix_audit.py": "991855509a730e380b09bdeb3613f6bc5d203ab9d9cfa2f6d8c365a71babc8d6",
+    "afp_barrier_gate1/pure_math/covariance/p1e_short_gap_cauchy_guard_audit.py": "3cdd5b04652cbb84f07067d46accb706930c8008fc98e4d2723faf59dcd427e9",
+    "afp_barrier_gate1/pure_math/covariance/p1e_short_gap_cauchy_hostile_audit.py": "4bc3ea71b9bfdab878b58338116f77223c6d8d17172d66fae1020141193def2d",
+    "afp_barrier_gate1/pure_math/covariance/p1e_short_gap_polar_guard_audit.py": "4d85e2e56b1f5bfefd4be24f73d7a95a03ec58d86e60c51aad5544d366a078d0",
+    "afp_barrier_gate1/pure_math/covariance/p1e_short_gap_proof_audit.py": "6dac7349e697839a798c3e2b18fae439a0ee27acc8a24e19ab0601a6d52105bc"
+  },
+  "transition_guard": {
+    "disk_radius": "1/10000",
+    "x_actual": "1/1208925819614629174706176",
+    "pi_lower": "3",
+    "pi_upper": "22/7",
+    "a_lower": "249/1000",
+    "a_upper": "251/1000",
+    "cos_theta_lower": "6/7",
+    "matrix_disk_bound": "1000000",
+    "rhs_disk_bound": "10000000",
+    "matrix_derivative_bound": "1000000000000",
+    "rhs_derivative_bound": "1000000000000",
+    "neumann_entry_bound": "1000000000000/1208925819614629174706176",
+    "neumann_contraction_upper": "1/34359738368",
+    "solution_displacement_upper": "1/1000",
+    "limiting_cone_lower": "1/500"
+  },
+  "limiting_system": {
+    "basis": "a + b*sqrt(58); every entry is [a,b]",
+    "matrix": [
+      [["-29/8", "0"], ["0", "1/8"], ["0", "8"], ["0", "0"], ["0", "0"], ["0", "0"]],
+      [["-29/8", "0"], ["0", "1/32"], ["0", "128"], ["0", "0"], ["0", "0"], ["0", "0"]],
+      [["0", "0"], ["0", "1/8"], ["0", "8"], ["0", "0"], ["0", "0"], ["0", "0"]],
+      [["29/8", "0"], ["0", "0"], ["0", "0"], ["0", "-1"], ["0", "1/16"], ["0", "4"]],
+      [["29/8", "0"], ["0", "0"], ["0", "0"], ["0", "-1"], ["0", "1/256"], ["0", "16"]],
+      [["0", "0"], ["0", "0"], ["0", "0"], ["0", "0"], ["0", "1/16"], ["0", "4"]]
+    ],
+    "determinant": ["0", "96799941/512"],
+    "inverse_infinity_norm_upper": "3",
+    "phase_box": ["-7/6", "7/6"],
+    "rhs_affine": [
+      {"constant": ["-3/16", "0"], "y": ["0", "0"]},
+      {"constant": ["63/512", "0"], "y": ["0", "3/32"]},
+      {"constant": ["13/8", "1/4"], "y": ["0", "0"]},
+      {"constant": ["-3/16", "0"], "y": ["0", "0"]},
+      {"constant": ["-285/512", "0"], "y": ["0", "-3/32"]},
+      {"constant": ["13/8", "1/4"], "y": ["0", "0"]}
+    ],
+    "solution_affine": [
+      {"constant": ["29/58", "4/58"], "y": ["0", "0"]},
+      {"constant": ["37120/19488", "4107/19488"], "y": ["-928/19488", "0"]},
+      {"constant": ["1856/1247232", "261/1247232"], "y": ["928/1247232", "0"]},
+      {"constant": ["232/464", "29/464"], "y": ["0", "0"]},
+      {"constant": ["7424/2436", "895/2436"], "y": ["928/2436", "0"]},
+      {"constant": ["2320/155904", "197/155904"], "y": ["-928/155904", "0"]}
+    ],
+    "solution_component_lower": "1/500",
+    "solution_component_upper": "10"
+  },
+  "polar_guard": {
+    "a": "4/3",
+    "u_interval": ["1/20", "1/10"],
+    "v_interval": ["1/2", "2/3"],
+    "disk_radius": "1/100",
+    "actual_h_upper": "44/8462480737302404222943232",
+    "determinant_lower": "704/6075",
+    "inverse_infinity_norm_upper": "20000",
+    "matrix_derivative_bound": "22000",
+    "rhs_derivative_bound": "1600",
+    "limiting_solution_upper": "64",
+    "finite_displacement_upper": "1/1000000"
+  },
+  "ordinary_rows_and_recurrence": {
+    "z_upper": "1/16",
+    "telescoping_error_coefficient_upper": "22",
+    "horizontal_solution_lower_ratio": "1/100",
+    "horizontal_solution_upper_ratio": "100",
+    "shared_stress_lower_exponent": -20,
+    "shared_stress_upper_exponent": 20
+  },
+  "published_constants": {
+    "active_angle_lower_multiple": "1/8",
+    "active_angle_upper_multiple": "5",
+    "rate_constant": "64",
+    "rate_pi_power": 2,
+    "residual_constant": "75/2",
+    "frontier_lower_constant_without_pi": "3/32",
+    "degree_bound": "1208925819614629174706176"
+  }
+}

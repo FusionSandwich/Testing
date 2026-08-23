@@ -25,7 +25,7 @@ P2A optimizes shared conductances on a fixed `(X,w,E)`. Positivity,
 reversibility, constants, the coordinate target, each deflated sampled shell,
 and the rate cap are explicit constraints. Sampling kernels are removed from
 the domain but full output leakage is retained. Solver termination is not a
-certificate: every accepted finite result must be checked on the original
+certificate: every retained finite result must be checked on the original
 scale by a primal residual plus a dual/complementarity or Farkas witness.
 
 ## 2. Error interpretation

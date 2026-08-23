@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run the accepted P1A--P1E exact/symbolic audit surface fail-closed."""
+"""Run the P1A--P1E exact/symbolic and packaged certificate surface."""
 
 from __future__ import annotations
 
@@ -45,7 +45,21 @@ def main() -> None:
         print(completed.stdout, end="" if completed.stdout.endswith("\n") else "\n")
         if completed.returncode != 0 or marker not in completed.stdout.splitlines():
             raise SystemExit(f"AUDIT_FAILED {filename} exit={completed.returncode}")
-    print(f"AFP_R5_EXACT_AUDITS_PASS count={len(AUDITS)}")
+    verifier = PROJECT / "release" / "certificates" / "theorem_7_2" / "verify_certificate.py"
+    completed = subprocess.run(
+        [sys.executable, str(verifier)],
+        cwd=PROJECT.parent,
+        env=environment,
+        check=False,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+    )
+    print("=== theorem_7_2/verify_certificate.py ===")
+    print(completed.stdout, end="" if completed.stdout.endswith("\n") else "\n")
+    if completed.returncode != 0 or "Theorem 7.2 exact-rational certificate: PASS" not in completed.stdout.splitlines():
+        raise SystemExit(f"AUDIT_FAILED theorem_7_2 certificate exit={completed.returncode}")
+    print(f"AFP_R6_EXACT_AUDITS_PASS count={len(AUDITS) + 1}")
 
 
 if __name__ == "__main__":

@@ -620,7 +620,7 @@ Since \(\sum_j\gamma_{ij}\ell_{ij}=2\mu_i\),
  r_i={2\sum_j\gamma_{ij}\over\sum_j\gamma_{ij}\ell_{ij}}
  \le {2\over\ell_{\min}}\le64\pi^2h^{-2}.             \tag{9.10}
 \]
-Thus take \(R_3=64\pi^2\).  The accepted P1B lower bound yields the matching
+Thus take \(R_3=64\pi^2\).  The proved P1B lower bound yields the matching
 order statement
 \[
  {3\over32\pi^2}h^2
@@ -636,7 +636,15 @@ silently imported into the P1B application.
 ## 10. Certification manifest and open robustness problem
 
 Sections 1--9 prove the unperturbed adaptive-ring construction.  The
-certification suite for that theorem consists of the following checks:
+computer-assisted boundary is explicit: the analytic reduction in this
+document is ordinary mathematics, while the remaining finite rational
+closure is packaged in
+`afp_barrier_gate1/release/certificates/theorem_7_2/certificate.json`.
+Its standalone `verify_certificate.py` verifier imports only the Python
+standard library, binds the sources by SHA-256, and checks the limiting system
+in `Q(sqrt(58))`, the guard inequalities, recurrence closure, and published
+constants without floating point. The certification suite for that theorem
+consists of the following checks:
 
 1. `p1e_short_gap_symbolic_matrix_audit.py` constructs (4.5) and derives
    (5.1)--(5.2) exactly;
@@ -649,7 +657,18 @@ certification suite for that theorem consists of the following checks:
    transition endpoints, equator, mesh/rate/window/quotient constants, and
    deterministic failed mutations; and
 5. `p1e_short_gap_proof_audit.py` checks the exact phase cone, recurrence,
-   constants, and Neumann arithmetic.
+   constants, and Neumann arithmetic; and
+6. the packaged independent verifier rechecks the finite rational closure
+   without importing any of the preceding derivation or audit modules.
+
+The trusted computing base for the packaged certificate is its JSON and
+verifier bytes, CPython arbitrary-precision integer/Fraction arithmetic,
+SHA-256, and the analytic estimates stated in Sections 1--9. SymPy remains a
+derivation aid for the original symbolic audits but is not required by the
+independent verifier. Lean does not check the adaptive schedule or Cauchy
+argument. The family exists only along the explicit integer levels `J>=1`
+and their scales `h_J`; no every-sufficiently-small-`h` or perturbative claim
+is made.
 
 These checks support the fixed, unperturbed family only.  The proposed
 support-preserving latitude-perturbation extension is **open**.  In

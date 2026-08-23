@@ -30,12 +30,12 @@ rate-floor-plus-variance identity, and an orthogonal anisotropy component;
 we characterize equality by common rate and angular loss, with centered
 tight-frame conditions in every tangent space in the nonantipodal branch,
 a separate antipodal branch, and global reversible compatibility. We give
-regular-simplex, cross-polytope, and hypercube extremizers. We also prove a
-quantitative stability theorem: small relative
-slack in the sharp product controls a normalized weighted sum of precisely the
-two equality defects. Pointwise, edgewise, graphwise, quotient, and frame
-consequences are stated with the mass, conductance, connectivity, sampling, and
-conditioning parameters they require. The result is an operator frontier, not
+regular-simplex, cross-polytope, and hypercube extremizers. We also derive an
+exact weighted decomposition of the frontier excess into radial and
+anisotropy defects, together with an explicit weighted concentration
+consequence. Stronger pointwise or global geometric conclusions require
+additional graph and nondegeneracy hypotheses and are not asserted as
+theorems here. The result is an operator frontier, not
 a quadrature-design statement or a generic obstruction to signed high-order
 discretizations. The order is attained by local positive families in dimensions
 two and three. Regular polygons give the exact product in $d=2$. In $d=3$, an
@@ -112,9 +112,10 @@ The paper makes the following mathematical contributions.
 5. It exhibits three exact extremal families in every dimension and resolves
    their sampling kernels explicitly.
 
-6. It proves a normalized near-extremizer budget. Stronger local and global
-   conclusions are derived only under explicit mass, edge-probability,
-   connectivity, sampling-frame, and tangent-frame margins.
+6. It proves a normalized near-extremizer defect budget and a weighted
+   exceptional-mass consequence. Stronger local and global transfers are
+   discussed only as conditional directions requiring explicit mass,
+   edge-probability, connectivity, sampling-frame, and tangent-frame margins.
 
 7. It constructs matching-order local positive families in `d=2,3`. The
    circle family is an exact regular-polygon calculation. The spherical
@@ -145,21 +146,23 @@ degree-two operator residual; a sharp universal positivity--rate product; its
 full equality geometry subject to global detailed balance; and a quantitative
 stability budget with all transfer parameters exposed. The matching
 three-dimensional construction additionally derives one globally shared
-positive stress on an explicit all-level ring family; it is not inferred from
+positive stress on an explicit ring family along the discrete levels
+$J=1,2,\ldots$; it is not inferred from
 local positive-stencil feasibility, spherical quadrature, or a Delaunay
 transfer. A source-by-source
 hypothesis comparison and hostile-referee audit is supplied in
-`PRIORITY_AND_HOSTILE_REFEREE_AUDIT.md`. The priority claim is limited to the
-focused corpus reviewed there; it is not based on project-specific
-terminology. Appendix G gives the in-paper variables/hypotheses/conclusions
-matrix for every compared theorem.
+`PRIORITY_AND_HOSTILE_REFEREE_AUDIT.md`. Within that focused corpus, we did not
+find the same joint package of frontier, equality characterization, exact
+defect identity, and local positive constructions. This is a positioning
+statement, not an exhaustive novelty or priority claim. Appendix G gives the
+in-paper variables/hypotheses/conclusions matrix for every compared theorem.
 
 ### 1.3 Organization
 
 Section 2 fixes conventions and the sampled quotient. Section 3 proves the
 exact covariance and two-defect identities. Section 4 proves the sharp
 frontier. Section 5 characterizes equality and global assembly. Section 6
-gives quantitative stability. Section 7 proves matching constructions in
+gives the exact defect budget and concentration consequence. Section 7 proves matching constructions in
 dimensions two and three. Section 8 gives exact extremizers and alias examples. Section 9 records
 false or overbroad statements ruled out by the theory. The appendices collect
 the dependency graph, provenance map, falsification protocol, formalization
@@ -169,13 +172,37 @@ scope, reproducibility record, and limitations.
 
 | Level | Mathematical role | Principal statement | Status |
 |---:|---|---|---|
-| 1 | Positive reversible generators and sampled harmonic quotients | Proposition 2.1 | accepted P1A |
-| 2 | Exact covariance and two-defect decomposition | Theorem 3.1 and Proposition 3.2 | accepted P1A |
-| 3 | Sharp positivity--rate--quadratic-fidelity frontier | Theorem 4.1 | accepted P1B |
-| 4 | Equality geometry and exact extremizers | Theorems 5.1--5.3, Proposition 5.4, Corollaries 5.5--5.6, Section 8 | accepted P1B--P1C |
-| 5 | Quantitative near-extremizer stability | Theorem 6.1 and Corollaries 6.2--6.3 | accepted P1D |
-| 6 | Matching-order local positive construction | Theorems 7.1--7.2 | accepted P1E for `d=2,3` |
+| 1 | Positive reversible generators and sampled harmonic quotients | Proposition 2.1 | ordinary proof; finite Gram identities Lean-checked |
+| 2 | Exact covariance and two-defect decomposition | Theorem 3.1 and Proposition 3.2 | ordinary assembly; finite identities Lean-checked |
+| 3 | Sharp positivity--rate--quadratic-fidelity frontier | Theorem 4.1 | ordinary proof; lower-bound algebra Lean-checked |
+| 4 | Equality geometry and exact extremizers | Theorems 5.1--5.3, Proposition 5.4, Corollaries 5.5--5.6, Section 8 | ordinary proof; selected local algebra Lean-checked; Corollary 5.5 uses a classical external theorem |
+| 5 | Quantitative near-extremizer control | Theorem 6.1 and Corollary 6.2 | ordinary proof; stated scalar/tensor consequences Lean-checked |
+| 6 | Matching-order local positive construction | Theorems 7.1--7.2 | Theorem 7.1 ordinary/finite Lean algebra; Theorem 7.2 computer-assisted exact-rational proof for `d=3` |
 | 7 | Generator-lift or negativity consequences | Section 10 | deliberately not claimed |
+
+### 1.5 Formalization and external-input map
+
+There is no claim that the complete article is formalized. The exact Lean
+declarations below are the checked finite components used by the ordinary
+proof; an entry reading "none end-to-end" means precisely that no single Lean
+theorem has the full manuscript signature.
+
+| Numbered result | Exact Lean declaration(s) used | Ordinary proof | Exact certificate | External or open boundary |
+|---|---|:---:|:---:|---|
+| Proposition 2.1 | `sphereSamplingWeightedGram_quadratic`; `sphereResidualWeightedGram_quadratic` | yes | no | quotient/eigenvalue interpretation assembled in the article |
+| Theorem 3.1 | `quadraticTwoDefect_pythagorean`; `exactLossSecondMoment_decomposition` | yes | no | none |
+| Proposition 3.2 | `weightedFrobeniusRowGram_pairing`; `sphereResidualWeightedGram_pairing` | yes | no | none |
+| Theorem 4.1 | `quadraticDefect_rate_product_lower`; `sTwo_quadraticDefect_rate_product_lower` | yes | no | sharpness families are ordinary mathematics |
+| Theorem 5.1 | `quadraticEquality_rate_product`; `equalityRemainderEntry_zero_iff_axialCovariance` | yes | no | no end-to-end equality-classification declaration |
+| Theorem 5.2 | `normalizedTangentTightFrame_iff_oneShellSecondMoment`; `scaledTangentTightFrame_iff_normalized_of_nonantipodal` | yes | no | no global embedding uniqueness is asserted |
+| Theorem 5.3 | none end-to-end; local moment identities only | yes | no | Gram completion and Kolmogorov assembly are ordinary mathematics |
+| Proposition 5.4 | `antipodalOnlyFeasible_iff_simplex` is a local component | yes | no | connected two-position classification is not one Lean theorem |
+| Corollary 5.5 | `normalizedTangentTightFrame_iff_oneShellSecondMoment` is a local component | yes | no | convex regular-polyhedron classification is external [@Coxeter1973RegularPolytopes] |
+| Corollary 5.6 | `detailedBalance_eigen_implies_weightedMean_zero`; covariance components | yes | no | no end-to-end declaration |
+| Theorem 6.1 | `quadraticStability_master_square_consequences`; `quadraticStability_tensor_rate_bound`; `quadraticStability_weightedMean_le_delta` | yes | no | only the printed budget is claimed |
+| Corollary 6.2 | `quadraticStability_badVertexMass_sharp`; `quadraticStability_pointwise_full_budget` | yes | no | retains the individual mass dependence |
+| Theorem 7.1 | `regularPolygon_hOne_scalar_recurrence`; `regularPolygon_hTwo_scalar_residual` | yes | no | exact trigonometric assembly is ordinary mathematics |
+| Theorem 7.2 | construction identities only; no complete schedule Lean declaration | yes | `certificate.json` plus standalone verifier | computer-assisted analytic/Cauchy and recurrence boundary; perturbations open |
 
 ## 2. Positive reversible spherical generators and sampled harmonic quotients
 
@@ -587,13 +614,18 @@ configuration is the ambient regular simplex.
 For $d=3$, assume additionally that $0<\ell_*<2$, the nodes are the
 distinct vertices of a strictly convex inscribed polyhedron, the active graph
 is exactly its one-skeleton, all active directed rates have one common value,
-and the common vertex degree $q$ satisfies $3\le q\le5$. Then the
-configuration is tetrahedral, octahedral, cubical, icosahedral, or
-dodecahedral. No unrestricted Platonic classification is asserted.
+and the common vertex degree $q$ satisfies $3\le q\le5$. Then the local
+equations force a regular vertex figure and the elementary face/Euler
+reduction gives one of the five pairs $(p,q)$. The classical classification
+theorem for convex regular polyhedra then implies that the configuration is
+tetrahedral, octahedral, cubical, icosahedral, or dodecahedral
+[@Coxeter1973RegularPolytopes]. This last classification input is external to
+Lean. No corresponding classification is asserted for general weighted
+equality configurations.
 
 ### Corollary 5.6 (global moment consequence)
 
-Every connected nonantipodal equality generator satisfies
+Every nonantipodal equality generator satisfies
 $$
 \sum_iw_i\Omega_i=0,
 \qquad
@@ -704,10 +736,16 @@ $$
 Thus a uniform pointwise conclusion requires an explicit lower bound on the
 stationary masses.
 
-### Corollary 6.3 (conditional geometric transfers)
+### Conditional transfers from the defect budget (discussion)
 
-The master budget admits the following further consequences, each under the
-named quantitative hypotheses.
+Theorem 6.1 gives weighted mean-square control of radial nonuniformity and
+local anisotropy. Pointwise, edgewise, graphwise, quotient, and frame
+conclusions require additional assumptions, such as lower bounds on node or
+edge weights, a quantitative spectral gap or diameter bound, and
+nondegeneracy of reference tangent frames. No unconditional global
+embedding-stability theorem is asserted here. The following list records what
+a separately stated transfer theorem would have to retain; the list is not a
+numbered corollary and is not itself a theorem.
 
 - The global shell loss has an explicit second-moment bound in the symmetric
   directed conductance measure. To control every active edge, one assumes
@@ -726,7 +764,7 @@ named quantitative hypotheses.
   relative to its stated target and its eigenvalue splitting. Eigenvector
   control further requires a spectral gap.
 
-- Let $W_X=K_X^{\perp_F}$,
+- For example, let $W_X=K_X^{\perp_F}$,
   $E=\operatorname{im}S_2$, and
   $$
   \alpha_X
@@ -751,16 +789,16 @@ named quantitative hypotheses.
   probability, and a feature-surjectivity bound.
 
 No parameter-free pointwise, edgewise, graphwise, quotient, or frame-repair
-statement is inferred from (6.3).
+statement is inferred from (6.3), and no claim in this discussion may be
+cited as a proved geometric-stability theorem.
 
 ### Proof architecture
 
 Insert the near-frontier assumption into the trace inequality (4.1), normalize
 by $a_0$, and use $x_i=1+q_i$. This gives (6.3) exactly. The global
-consequences follow by positivity and elementary moment inequalities. Each
-stronger transfer in Corollary 6.3 is proved separately using the stated lower
-margin; the counterexamples in Section 9 show why those margins cannot simply
-be omitted.
+consequences follow by positivity and elementary moment inequalities. The
+subsequent discussion is deliberately non-theorem scope; the counterexamples
+in Section 9 show why its additional margins cannot simply be omitted.
 
 ## 7. Matching-order positive constructions in dimensions two and three
 
@@ -956,8 +994,63 @@ $$
 \|b-b_0\|_\infty\le\frac{10^{12}}M.
 \tag{7.12}
 $$
-The polar inverse has norm below $20{,}000$ and its finite solution differs
-from its positive limiting solution by less than $10^{-6}$. For ordinary
+Here is the load-bearing transition certificate explicitly. After the row
+scalings specified by (7.10)--(7.11), write $x=M^{-1}$,
+$y=\eta/(\pi c)\in[-7/6,7/6]$, and $\sigma=\sqrt{58}$. The removable system
+$A(x)z=b(x)$ has
+$$
+A_0=
+\begin{pmatrix}
+-29/8&\sigma/8&8\sigma&0&0&0\\
+-29/8&\sigma/32&128\sigma&0&0&0\\
+0&\sigma/8&8\sigma&0&0&0\\
+29/8&0&0&-\sigma&\sigma/16&4\sigma\\
+29/8&0&0&-\sigma&\sigma/256&16\sigma\\
+0&0&0&0&\sigma/16&4\sigma
+\end{pmatrix},
+\tag{7.12a}
+$$
+$$
+b_0(y)=
+\begin{pmatrix}
+-3/16\\
+63/512+3\sigma y/32\\
+13/8+\sigma/4\\
+-3/16\\
+-285/512-3\sigma y/32\\
+13/8+\sigma/4
+\end{pmatrix}.
+\tag{7.12b}
+$$
+Exact arithmetic in $\mathbb Q(\sqrt{58})$ gives
+$$
+\det A_0=\frac{96799941}{512}\sqrt{58},
+\qquad \|A_0^{-1}\|_\infty<3,
+\qquad \frac1{500}<(A_0^{-1}b_0(y))_k<10.
+\tag{7.12c}
+$$
+The Cauchy disk is $|x|\le10^{-4}$, with the rational guards
+$a>1/5$, $c>6/7$, and $\cos(\pi x)>9/10$. On that disk every normalized
+matrix entry is below $10^6$ and every right-hand entry is below $10^7$.
+Cauchy's estimate yields the deliberately weaker bounds (7.12). Since
+$$
+18\frac{10^{12}}{2^{80}}<2^{-35},
+\qquad
+244\frac{10^{12}}{2^{80}}<\frac1{1000}<\frac1{500},
+\tag{7.12d}
+$$
+the Neumann series preserves strict positivity throughout the correlated
+transition box. These are exact rational comparisons, not sampled or
+floating-point estimates.
+
+For the separate first polar row, $a=4/3$,
+$u\in(1/20,1/10)$ and $v\in(1/2,2/3)$. Its normalized limiting determinant is
+$4a^3uv(a-1)(2a+1)(u-v)$, whose absolute value is at least $704/6075$.
+The polar inverse has norm below $20{,}000$; the rational derivative bounds
+$\|\partial_hA_{\rm pol}\|_{\max}\le22{,}000$ and
+$\|\partial_hb_{\rm pol}\|_\infty\le1{,}600$, with
+$h\le44/(7\cdot2^{80})$, make its finite solution differ from its positive
+limiting solution by less than $10^{-6}$. For ordinary
 rows, (7.9) gives the uniform bracket
 $$
 \frac1{16}<x_-<\frac13,
@@ -967,7 +1060,22 @@ $$
 \frac1{100}U_-<H_-,H_+<100U_-.
 \tag{7.13}
 $$
-The exact telescoping radial recurrence, including all count changes, yields
+For completeness, if $z=\tan(h/2)\cot\theta$, the exact shared-edge
+recurrence on an ordinary row is
+$$
+\frac{U_+}{U_-}
+=\frac{(1-z)(1+2z)}{(1+z)(1-2z)},
+\qquad
+0\le E(z)\le\frac{16z^3}{1-4z^2},
+\tag{7.13a}
+$$
+where
+$\log(U_+/U_-)=\log\{\sin(\theta+h/2)/\sin(\theta-h/2)\}+E(z)$.
+The sine quotient telescopes. The cap error sums to less than $12$, the
+dyadic-band errors sum to less than $1$, and the $m$th count change has
+$|\varepsilon_m|<256/M_m$; hence its cumulative product lies between
+$e^{-512/M_0}$ and $e^{512/M_0}$. The exact telescoping recurrence, including
+all count changes, therefore yields
 the level-independent shared-stress margins
 $$
 \Gamma_-=M_0^{-20}\le\Gamma_{ij}\le M_0^{20}=\Gamma_+.
@@ -976,10 +1084,26 @@ $$
 Thus positivity is certified before any normalization; it is not inferred
 from the finite generator.
 
+**Computer-assisted proof boundary.** The analytic reduction, literal
+systems, recurrence, and geometric normalization are printed here and in the
+mathematical supplement `P1E_SHORT_GAP_S2_CONSTRUCTION.md`. The remaining
+finite rational inequalities are recorded in the immutable artifact
+`afp_barrier_gate1/release/certificates/theorem_7_2/certificate.json` and
+checked by the standalone standard-library program `verify_certificate.py`.
+The verifier recomputes the determinant, inverse and affine solution in
+$\mathbb Q(\sqrt{58})$, all Cauchy/Neumann and polar-row inequalities, source
+hashes, recurrence closure, and the published constants without floating
+point or third-party imports. The trusted computing base is the certificate
+and verifier bytes, CPython arbitrary-precision integer/Fraction arithmetic,
+SHA-256, and the stated analytic estimates. The adaptive-ring schedule and
+Cauchy argument are not Lean-checked. Theorem 7.2 is therefore explicitly a
+computer-assisted exact-rational theorem.
+
 ### Theorem 7.2 (matching order on $\mathbb S^2$)
 
-For the all-level family (7.4)--(7.14), there are positive weights and a
-local reversible generator with
+For every integer $J\ge1$, let $h_J=\pi/(2S_J)$ be the discrete scale defined
+by (7.4)--(7.5). For this explicit sequence, the family (7.4)--(7.14) has
+positive weights and a local reversible generator with
 $$
 L_h\mathbf1=0,
 \qquad
@@ -1022,7 +1146,7 @@ $$
 \qquad C_3=\frac{75}{2},
 \qquad c_3=\frac{3}{32\pi^2},
 $$
-one therefore has, for every level,
+one therefore has, for every $J\ge1$ at the corresponding scale $h_J$,
 $$
 \frac{3}{32\pi^2}h^2
 \le
@@ -1196,34 +1320,29 @@ regression evidence but is not a substitute for proof.
 
 | Manuscript result | Proof source | Test or audit source | Claim-registry entry | Status in this draft |
 |---|---|---|---|---|
-| Proposition 2.1, sampled quotient, Gram pencil, sampled exact-space dimension | `afp_barrier_gate1/pure_math/covariance/P1A_QUADRATIC_FIDELITY_FOUNDATION.md`, Sections 4--6 | `afp_barrier_gate1/pure_math/covariance/p1a_quadratic_fidelity_audit.py` | P1A-QUOT; P1A-GRAM | accepted |
-| Theorem 3.1, exact covariance and two-defect identities | same P1A source, Sections 2--3 | same P1A audit | P1A-2DEF | accepted |
-| Proposition 3.2, weighted adjoints and traces | same P1A source, Sections 4--6 | same P1A audit | P1A-GRAM | accepted |
-| Theorem 4.1, trace inequality and sharp product | `afp_barrier_gate1/pure_math/covariance/P1B_SHARP_QUADRATIC_DEFECT_BOUND.md`, Sections 3--13 | `afp_barrier_gate1/pure_math/covariance/p1b_sharp_quadratic_defect_audit.py` | P1B-TRACE; P1B-SHARP | accepted |
-| Theorem 5.1, equality characterization | same P1B source, Section 11; P1C source for geometric equivalences | P1B and P1C audits | P1B-EQUALITY; P1C-GLOBAL | accepted |
-| Theorem 5.2, tangent block and tight-frame equivalence | `afp_barrier_gate1/pure_math/covariance/P1C_EQUALITY_GEOMETRY.md` | `afp_barrier_gate1/pure_math/covariance/p1c_equality_geometry_audit.py` | P1C-LOCAL | accepted |
-| Theorem 5.3, global reversible assembly | same P1C source | same P1C audit | P1C-GLOBAL | accepted |
-| Proposition 5.4 and Corollaries 5.5--5.6, antipodal, scoped classification, and global-moment consequences | same P1C source | same P1C audit | P1C-GLOBAL; P1C-CLASS; P1C-PLATONIC | accepted under stated hypotheses |
-| Theorem 6.1, normalized stability budget | `afp_barrier_gate1/pure_math/covariance/P1D_QUANTITATIVE_STABILITY.md`, Sections 1--3 | `afp_barrier_gate1/pure_math/covariance/p1d_quantitative_stability_audit.py` | P1D-MASTER | accepted |
-| Corollary 6.2, exceptional mass and pointwise transfer | same P1D source, Sections 4--5 | same P1D audit | P1D-VERTEX | accepted |
-| Corollary 6.3, conductance-shell and edgewise transfer | same P1D source, Section 6 | same P1D audit | P1D-EDGE | accepted only with the named probability margin |
-| Corollary 6.3, graphwise propagation | same P1D source, Section 7 | same P1D audit | P1D-GRAPH | accepted only with the named mass and connectivity parameters |
-| Corollary 6.3, covariance splitting | same P1D source, Sections 5 and 8 | same P1D audit | P1D-COV | accepted; eigenvector transfer requires a spectral gap |
-| Corollary 6.3, sampled-quotient scalarity | same P1D source, Section 8 | same P1D audit | P1D-QUOTIENT | accepted only with $\alpha_X$ |
-| Corollary 6.3, tangent-frame stability and repair | same P1D source, Sections 9--10 | same P1D audit | P1D-FRAME | accepted only with the named frame and repair margins |
-| Section 8, all-dimensional and Platonic exact families and aliases | P1C source | P1C audit | P1C-FAMILIES; P1C-PLATONIC; P1C-ALIAS | accepted |
+| Proposition 2.1, sampled quotient, Gram pencil, sampled exact-space dimension | `afp_barrier_gate1/pure_math/covariance/P1A_QUADRATIC_FIDELITY_FOUNDATION.md`, Sections 4--6 | `afp_barrier_gate1/pure_math/covariance/p1a_quadratic_fidelity_audit.py` | P1A-QUOT; P1A-GRAM | ordinary proof with Lean-checked finite identities |
+| Theorem 3.1, exact covariance and two-defect identities | same P1A source, Sections 2--3 | same P1A audit | P1A-2DEF | ordinary proof with Lean-checked finite identities |
+| Proposition 3.2, weighted adjoints and traces | same P1A source, Sections 4--6 | same P1A audit | P1A-GRAM | ordinary proof with Lean-checked finite identities |
+| Theorem 4.1, trace inequality and sharp product | `afp_barrier_gate1/pure_math/covariance/P1B_SHARP_QUADRATIC_DEFECT_BOUND.md`, Sections 3--13 | `afp_barrier_gate1/pure_math/covariance/p1b_sharp_quadratic_defect_audit.py` | P1B-TRACE; P1B-SHARP | ordinary proof with Lean-checked lower-bound algebra |
+| Theorem 5.1, equality characterization | same P1B source, Section 11; P1C source for geometric equivalences | P1B and P1C audits | P1B-EQUALITY; P1C-GLOBAL | ordinary proof; selected local algebra Lean-checked |
+| Theorem 5.2, tangent block and tight-frame equivalence | `afp_barrier_gate1/pure_math/covariance/P1C_EQUALITY_GEOMETRY.md` | `afp_barrier_gate1/pure_math/covariance/p1c_equality_geometry_audit.py` | P1C-LOCAL | ordinary proof; selected equivalences Lean-checked |
+| Theorem 5.3, global reversible assembly | same P1C source | same P1C audit | P1C-GLOBAL | ordinary mathematics; no end-to-end Lean theorem |
+| Proposition 5.4 and Corollaries 5.5--5.6, antipodal, scoped classification, and global-moment consequences | same P1C source | same P1C audit | P1C-GLOBAL; P1C-CLASS; P1C-PLATONIC | ordinary mathematics; Corollary 5.5 uses the cited classical classification |
+| Theorem 6.1, normalized stability budget | `afp_barrier_gate1/pure_math/covariance/P1D_QUANTITATIVE_STABILITY.md`, Sections 1--3 | `afp_barrier_gate1/pure_math/covariance/p1d_quantitative_stability_audit.py` | P1D-MASTER | ordinary proof with the printed finite consequences Lean-checked |
+| Corollary 6.2, exceptional mass and pointwise transfer | same P1D source, Sections 4--5 | same P1D audit | P1D-VERTEX | ordinary proof with matching Lean inequalities |
+| Conditional transfers discussion after Corollary 6.2 | same P1D source, Sections 6--10 | same P1D audit | P1D-EDGE; P1D-GRAPH; P1D-COV; P1D-QUOTIENT; P1D-FRAME | not a numbered theorem; no global embedding-stability claim |
+| Section 8, all-dimensional and Platonic exact families and aliases | P1C source | P1C audit | P1C-FAMILIES; P1C-PLATONIC; P1C-ALIAS | ordinary exact mathematics |
 | Section 9, unrestricted-classification rejection | P1C and P1D counterexample sections | P1C and P1D audits | P1C-UNRESTRICTED and caveats attached to P1D entries | rejected claims retained |
-| Theorem 7.1, regular-polygon matching family | Section 7.1, direct Fourier proof | `p1e_asymptotic_family_audit.py`; `QuadraticFidelityConstruction.lean` | P1E-POLYGON | accepted for `d=2` |
-| Theorem 7.2, adaptive-ring mesh, positivity and exact `H_0,H_1` | `docs/publication_program/P1E_SHORT_GAP_S2_CONSTRUCTION.md`, Sections 1--8 | symbolic, Cauchy, polar, family, proof, referee and independent audits listed below | P1E-RING | accepted for `d=3` |
-| Theorem 7.2, sampled quotient multiplier and matching constants | same P1E source, Section 9 | `p1e_short_gap_proof_audit.py`; `p1e_short_gap_cauchy_hostile_audit.py` | P1E-ROW; F-CONSTRUCT | accepted for `d=3` |
+| Theorem 7.1, regular-polygon matching family | Section 7.1, direct Fourier proof | `p1e_asymptotic_family_audit.py`; `QuadraticFidelityConstruction.lean` | P1E-POLYGON | ordinary proof for `d=2`; finite recurrences Lean-checked |
+| Theorem 7.2, adaptive-ring mesh, positivity and exact `H_0,H_1` | `docs/publication_program/P1E_SHORT_GAP_S2_CONSTRUCTION.md`, Sections 1--8 | exact-rational certificate and standalone verifier; derivation audits listed below | P1E-RING | computer-assisted exact-rational proof for `d=3` |
+| Theorem 7.2, sampled quotient multiplier and matching constants | P1E proof source, Section 9 | certificate verifier; proof audit; hostile Cauchy audit | P1E-ROW; F-CONSTRUCT | computer-assisted exact-rational proof for `d=3` |
 | Open problem 7.3, support-preserving perturbations | P1E source, Section 10, and retained diagnostic calculations | `p1e_no_guard_ring_independent_audit.py` | P1E-ROBUST | open; no perturbation radius or robustness constants are claimed |
 
-The controlling registry is
-`docs/publication_program/THEOREM_REGISTRY.md`. Any change in theorem
+The claim registry is `THEOREM_REGISTRY.md`. Any change in theorem
 strength must first be reconciled with the proof source and then recorded in
 that registry; a passing test alone cannot promote a claim.
 
-## Appendix C. Numerical and falsification protocol
+## Appendix C. Falsification protocol
 
 The computational appendices serve four limited purposes:
 
@@ -1379,9 +1498,9 @@ locations, is `PRIORITY_AND_HOSTILE_REFEREE_AUDIT.md`.
 | Source and variables | External hypotheses | External conclusion used | Overlap | New distinction and transfer guard |
 |---|---|---|---|---|
 | Babecki--Thomas: graph eigenspaces, node subsets, quadrature weights | connected regular unweighted graph; normalized-adjacency ordering | graphical designs correspond through Gale duality to eigenpolytope faces, with support consequences | finite eigenspaces and positive weights | their weights average a fixed graph; $w_i$ and $\gamma_{ij}$ here define the operator. No spherical eigenmap, rate cap, or quadratic frontier transfers |
-| Babecki--Shiroma: positive edge-weighted graphs and eigenpolytopes | connected graph; symmetric combinatorial Laplacian in uniform Euclidean metric | broad eigenspace/eigenpolytope universality for positive weighted graphs | prescribed eigenspaces with positive edges | universality need not preserve unit spherical geometry, locality, degree, nonuniform mass, target eigenvalue, or $H_2$ residual; flip the positive-semidefinite sign and retain the mass matrix |
+| Babecki--Shiroma: positive edge-weighted graphs and eigenpolytopes | connected graph; symmetric combinatorial Laplacian in uniform Euclidean metric | broad eigenspace and eigenpolytope universality for positive weighted graphs | prescribed eigenspaces with positive edges | universality need not preserve unit spherical geometry, locality, degree, nonuniform mass, target eigenvalue, or $H_2$ residual; flip the positive-semidefinite sign and retain the mass matrix |
 | Steinerberger [@Steinerberger2021SpectralLimitations]: manifold eigenfunctions, $n$ quadrature nodes | compact boundaryless manifold; nonnegative quadrature exact on an initial spectral segment | asymptotic cardinality limitation for positive quadrature | positivity and continuous harmonic modes | integration is not a graph-operator identity. Keep manifold dimension $d-1$, multiplicity, volume measure, and the asymptotic $o(n)$ term; no finite frontier follows |
-| Izmestiev--Lam: geodesic spherical triangulation, $c_{ij},d_i$ | nondegenerate closed triangulation; local Delaunay for $c_{ij}\ge0$ | their normalized spherical Laplacian is reversible and satisfies $\Delta_sp=-2p$ | local positive reversible coordinate-exact operators on $\mathbb S^2$ | this paper does not claim to introduce that object. Their theorem supplies neither the sampled quotient/frontier nor the adaptive-ring $H_2$ and mesh constants; conversion requires $w_i=d_i/\sum d$, $\gamma_{ij}=c_{ij}/\sum d$ |
+| Izmestiev--Lam: geodesic spherical triangulation, $c_{ij},d_i$ | closed triangulation; nonnegative Delaunay edge coefficients | their normalized spherical Laplacian is reversible and satisfies $\Delta_sp=-2p$ | local positive reversible coordinate-exact operators on $\mathbb S^2$ | this paper does not claim to introduce that object. Their theorem supplies neither the sampled quotient/frontier nor the adaptive-ring $H_2$ and mesh constants; conversion requires $w_i=d_i/\sum d$, $\gamma_{ij}=c_{ij}/\sum d$ |
 | Seibold: Euclidean point cloud and row stencil coefficients | polynomial moment equations; local geometric cone conditions | sparse positive Poisson stencils and feasibility criteria | positive local moment cones | a rowwise stencil is generally nonsymmetric and gives no shared $\gamma_{ij}$ or stationary masses. Curvature, global reconciliation, and a strict margin must be proved separately |
 | Babecki--Steinerberger--Thomas: base graph and first $k$ eigenpairs | connected positive weighted graph; candidate is a reweighted spanning subgraph | eigenpair-preserving Laplacians form a polyhedral/spectrahedral slice | positive eigenpair preservation | here the geometric coordinate module is prescribed, aliases are quotiented, and the next continuous shell is measured under $r_{\max}$. With nonuniform $w$, the comparison is a generalized eigenproblem |
 | García Trillos--Gerlach--Hein--Slepčev: random manifold sample and kernel bandwidth | i.i.d. density bounds, compact manifold geometry, kernel and bandwidth conditions | high-probability eigenvalue/eigenvector convergence to a weighted Laplace--Beltrami operator | local positive graph Laplacians approaching a continuum operator | probabilistic spectral convergence does not give finite exact $H_1$, bounded degree, shared correction, or the deterministic $O(h^2)$ quotient bound. Their bandwidth is not silently identified with this fill parameter |
