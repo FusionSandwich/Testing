@@ -1,0 +1,26 @@
+name: Harborth Lean checker
+
+on:
+  push:
+    branches: ["ci/harborth-lean"]
+    paths:
+      - "harborth-ci/**"
+      - ".github/workflows/harborth-lean-ci.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+      - uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596
+        with:
+          lake-package-directory: harborth-ci
+          build: true
+          test: false
+          lint: false
+          use-mathlib-cache: true
+          use-github-cache: true
