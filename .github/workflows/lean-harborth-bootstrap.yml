@@ -1,0 +1,44 @@
+name: Lean Harborth bootstrap
+
+on:
+  push:
+    branches: [codex/lean-toolchain-download-manifest-20260823]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runner diagnostic
+        run: |
+          set -euxo pipefail
+          uname -a
+          echo runner-ok
+      - name: Install Elan and Lean 4.30.0
+        run: |
+          set -euxo pipefail
+          curl --fail --location --silent --show-error https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -o /tmp/elan-init.sh
+          sh /tmp/elan-init.sh -y --default-toolchain leanprover/lean4:v4.30.0
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Package toolchain
+        run: |
+          set -euxo pipefail
+          TOOLCHAIN="$HOME/.elan/toolchains/leanprover--lean4---v4.30.0"
+          test -x "$TOOLCHAIN/bin/lean"
+          "$TOOLCHAIN/bin/lean" --version
+          tar --use-compress-program='zstd -3 -T0' -cf /tmp/lean-4.30.0-linux-toolchain.tar.zst -C "$HOME/.elan/toolchains" leanprover--lean4---v4.30.0
+          sha256sum /tmp/lean-4.30.0-linux-toolchain.tar.zst > /tmp/lean-4.30.0-linux-toolchain.tar.zst.sha256
+          ls -lh /tmp/lean-4.30.0-linux-toolchain.tar.zst
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lean-4.30.0-linux-toolchain
+          path: |
+            /tmp/lean-4.30.0-linux-toolchain.tar.zst
+            /tmp/lean-4.30.0-linux-toolchain.tar.zst.sha256
+          compression-level: 0
+          retention-days: 1
+          if-no-files-found: error
