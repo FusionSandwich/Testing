@@ -128,7 +128,7 @@ theorem interior_induction_closure {n e m : ℝ}
   have hy_sq : 12 * m - 3 ≤ (y - 6) ^ 2 := by
     nlinarith
   have htarget_sq : 12 * n - 3 ≤ y ^ 2 := by
-    dsimp [y] at hdegree
+    dsimp [y]
     nlinarith
   have hy0 : 0 ≤ y := by nlinarith
   have hsqrt_le : Real.sqrt (12 * n - 3) ≤ y := by
