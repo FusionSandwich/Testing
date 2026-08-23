@@ -37,7 +37,9 @@ theorem self_lt_shellN (s : ℕ) : s < shellN s := by
 theorem shellIndex_spec (n : ℕ) (hn : 1 ≤ n) :
     shellN (shellIndex n) ≤ n := by
   unfold shellIndex
-  exact Nat.findGreatest_spec (Nat.zero_le n) (by simpa [shellN] using hn)
+  exact Nat.findGreatest_spec
+    (P := fun s => shellN s ≤ n) (m := 0) (n := n)
+    (Nat.zero_le n) (by simpa [shellN] using hn)
 
 /-- The selected shell radius is strictly below every positive `n`. -/
 theorem shellIndex_lt (n : ℕ) (hn : 1 ≤ n) : shellIndex n < n :=
@@ -60,7 +62,7 @@ theorem n_lt_next_shell (n : ℕ) (hn : 1 ≤ n) :
 theorem shell_base_add_remainder (n : ℕ) (hn : 1 ≤ n) :
     shellN (shellIndex n) + shellRemainder n = n := by
   unfold shellRemainder
-  omega
+  exact Nat.add_sub_of_le (shellIndex_spec n hn)
 
 /-- Fewer than six complete sides of the next shell remain beyond the base shell. -/
 theorem shellRemainder_lt (n : ℕ) (hn : 1 ≤ n) :
@@ -72,9 +74,11 @@ theorem shellRemainder_lt (n : ℕ) (hn : 1 ≤ n) :
 
 /-- The quotient coordinate is one of the six side indices `0,...,5`. -/
 theorem shellSide_le_five (n : ℕ) (hn : 1 ≤ n) : shellSide n ≤ 5 := by
-  unfold shellSide
   have hrem := shellRemainder_lt n hn
   have hden : 0 < shellIndex n + 1 := by omega
+  have hlt : shellSide n < 6 := by
+    unfold shellSide
+    exact (Nat.div_lt_iff_lt_mul hden).2 hrem
   omega
 
 /-- The offset coordinate lies on a side of length `shellIndex n + 1`. -/
@@ -135,9 +139,16 @@ theorem floor_harborthReal_eq_shellCandidateZ (n : ℕ) (hn : 1 ≤ n) :
     ⌊harborthReal n⌋ = shellCandidateZ n := by
   unfold shellCandidateZ
   split_ifs with hshell
-  · rw [hshell]
+  · have harg : harborthReal n = harborthReal (shellN (shellIndex n)) :=
+      congrArg harborthReal hshell
+    rw [harg]
     exact floor_harborthReal_shellN (shellIndex n)
-  · rw [← partialN_shell_coordinates n hn]
+  · have hcoords := partialN_shell_coordinates n hn
+    have harg :
+        harborthReal n =
+          harborthReal (partialN (shellIndex n) (shellSide n) (shellOffset n)) :=
+      congrArg harborthReal hcoords.symm
+    rw [harg]
     exact floor_harborthReal_partial
       (shellIndex n) (shellSide n) (shellOffset n)
       (shellSide_le_five n hn) (shellOffset_le_index n)
