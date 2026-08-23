@@ -19,15 +19,25 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      LEAN_NUM_THREADS: "2"
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
-      - uses: leanprover/lean-action@6835ef47e8423fa9e9eacfcbb8fdf83fae42c820
-        with:
-          lake-package-directory: harborth-ci
-          build: true
-          test: false
-          use-mathlib-cache: true
-          nanoda: false
+      - name: Install pinned Elan
+        run: |
+          curl --fail --location --silent --show-error \
+            https://raw.githubusercontent.com/leanprover/elan/464c9d28395000a2a0128e07081e4956d50eced2/elan-init.sh \
+            --output /tmp/elan-init.sh
+          sh /tmp/elan-init.sh -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Resolve dependencies and fetch Mathlib cache
+        working-directory: harborth-ci
+        run: |
+          lake update
+          lake exe cache get
+      - name: Build
+        working-directory: harborth-ci
+        run: lake build
       - name: Reject proof escapes
         run: |
           if grep -RInE --include='*.lean' '\b(sorry|admit|axiom|unsafe)\b' harborth-ci; then
