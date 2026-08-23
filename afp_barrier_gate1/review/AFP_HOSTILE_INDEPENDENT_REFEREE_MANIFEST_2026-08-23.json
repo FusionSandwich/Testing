@@ -1,0 +1,109 @@
+{
+  "schema": "afp-hostile-independent-referee-manifest-v1",
+  "generated_date": "2026-08-23",
+  "review_classification": "INDEPENDENT_NONHUMAN_MATHEMATICAL_AND_FORMAL_METHODS_AUDIT",
+  "human_peer_review_certified": false,
+  "journal_review_certified": false,
+  "repository": "FusionSandwich/Testing",
+  "source_release_branch": "codex/afp-major-revision-r5-20260822",
+  "source_final_commit": "653d8945a5e91515f7a382ed42a8f4f51c0f0094",
+  "scientific_content_commit": "9783a69e8f079d61c100bc87ea653ec9c981c2fe",
+  "review_branch": "review/afp-hostile-external-20260823",
+  "source_files_modified": false,
+  "review_artifacts_only": true,
+  "recommendation": "MAJOR_REVISION",
+  "report": {
+    "path": "afp_barrier_gate1/review/AFP_HOSTILE_INDEPENDENT_REFEREE_REPORT_2026-08-23.md",
+    "git_blob_sha": "645b81c329e5208709b7936d7853d57640bde866",
+    "creation_commit": "cbf33c6b6b0b57ed9b3200004c4ce8b9e8970c1c"
+  },
+  "pinned_manuscript": {
+    "path": "output/pdf/FLAGSHIP_MANUSCRIPT.pdf",
+    "pages": 23,
+    "bytes": 337798,
+    "sha256": "87b8a77af8c53e2bfa2b24fcc1cf95fef8c798181b7f0828e61d25eaa7267c8d"
+  },
+  "pinned_manuscript_source": {
+    "path": "docs/publication_program/p1f_manuscript/FLAGSHIP_MANUSCRIPT.md",
+    "sha256": "ea8e3a252155fbd8a199ba83249aac9e763c8c116b19612a5df69525c8facb52"
+  },
+  "blocking_findings": [
+    {
+      "id": "B1",
+      "location": "Corollary 6.3 and related abstract/introduction claims",
+      "classification": "NOT_AUDITABLE_AS_PRINTED",
+      "finding": "Conditional transfer bullets omit theorem-grade definitions, constants, metrics, or complete hypotheses.",
+      "required_action": "State separate complete propositions or demote to unnumbered discussion and narrow summary claims."
+    },
+    {
+      "id": "B2",
+      "location": "Theorem 7.2 and Appendices B-E",
+      "classification": "CONDITIONALLY_VERIFIED",
+      "finding": "The all-level d=3 construction depends materially on archived exact symbolic and rational certificates whose role is under-disclosed in the article.",
+      "required_action": "Publish a complete permanent certificate supplement or label the result explicitly computer-assisted with a trusted-computing-base statement."
+    }
+  ],
+  "theorem_dispositions": {
+    "Proposition 2.1": "VERIFIED",
+    "Theorem 3.1": "VERIFIED",
+    "Proposition 3.2": "VERIFIED",
+    "Theorem 4.1": "VERIFIED",
+    "Theorem 5.1": "VERIFIED",
+    "Theorem 5.2": "VERIFIED",
+    "Theorem 5.3": "VERIFIED",
+    "Proposition 5.4": "VERIFIED",
+    "Corollary 5.5": "PARTLY_VERIFIED_EXTERNAL_INPUT_REQUIRED",
+    "Corollary 5.6": "VERIFIED_WITH_POSSIBLY_REDUNDANT_CONNECTEDNESS",
+    "Theorem 6.1": "VERIFIED",
+    "Corollary 6.2": "VERIFIED",
+    "Corollary 6.3": "NOT_AUDITABLE_AS_PRINTED",
+    "Theorem 7.1": "VERIFIED",
+    "Theorem 7.2": "CONDITIONALLY_VERIFIED_ON_EXACT_SYMBOLIC_RATIONAL_CERTIFICATE",
+    "Open Problem 7.3": "CORRECTLY_OPEN"
+  },
+  "formal_boundary": {
+    "lean_checked": [
+      "finite sampled quotient and covariance algebra",
+      "finite trace and sharp-product scalar implications under explicit hypotheses",
+      "selected local equality and tangent-normalization identities",
+      "selected weighted master-budget consequences"
+    ],
+    "not_end_to_end_lean_checked": [
+      "global spherical embedding and Gram/Kolmogorov interpretation",
+      "restricted Platonic classification",
+      "all-level adaptive-ring construction",
+      "P1E perturbative robustness",
+      "transport, P2F, or physical conclusions"
+    ],
+    "reported_project_local_axioms_or_holes": "NONE",
+    "reported_standard_dependencies": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ]
+  },
+  "p2f_disposition": "COMPUTATIONAL_INCONCLUSIVE_REFERENCE_NOT_CONVERGED_NO_PHYSICAL_CONCLUSION",
+  "physical_claim_disposition": "NO_TRANSPORT_MATERIAL_HTS_OR_DEVICE_CONCLUSION_SUPPORTED",
+  "priority_claim_disposition": "TARGETED_DISTINCTION_ONLY_NOT_EXHAUSTIVE_PRIORITY_CERTIFICATION",
+  "minimum_revision_gate": [
+    "Rewrite or demote Corollary 6.3 and conform abstract/conclusion language.",
+    "Make Theorem 7.2 independently checkable or explicitly computer-assisted.",
+    "Add a theorem-by-theorem Lean/ordinary/computer-assisted/external-input map.",
+    "State and cite the classical convex-polyhedral input used in Corollary 5.5.",
+    "Replace internal release-authority and exhaustive-priority wording.",
+    "Preserve P2F, physical, robustness, and publication firewalls."
+  ],
+  "principal_evidence_paths": [
+    "docs/publication_program/p1f_manuscript/FLAGSHIP_MANUSCRIPT.md",
+    "afp_barrier_gate1/pure_math/covariance/P1A_QUADRATIC_FIDELITY_FOUNDATION.md",
+    "afp_barrier_gate1/pure_math/covariance/P1B_SHARP_QUADRATIC_DEFECT_BOUND.md",
+    "afp_barrier_gate1/pure_math/covariance/P1C_EQUALITY_GEOMETRY.md",
+    "afp_barrier_gate1/pure_math/covariance/P1D_QUANTITATIVE_STABILITY.md",
+    "docs/publication_program/P1E_SHORT_GAP_S2_CONSTRUCTION.md",
+    "afp_barrier_gate1/AFPBarrier/ReleaseAxiomAudit.lean",
+    "afp_barrier_gate1/release/LEAN_CLAIM_AUDIT.md",
+    "afp_barrier_gate1/release/P2F_INCONCLUSIVE_ARCHIVE.md",
+    "afp_barrier_gate1/release/PRIOR_ART_AND_NOVELTY.md",
+    "afp_barrier_gate1/release/REVIEWER_BUNDLE.md"
+  ]
+}
