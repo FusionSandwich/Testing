@@ -1,0 +1,64 @@
+name: Harborth Lean CI
+
+on:
+  push:
+    branches: [codex/harborth-lean-ci-20260823]
+  pull_request:
+    branches: [testing]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: harborth-lean-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cache Lean and Lake packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.elan
+            harborth-ci/.lake/packages
+          key: ${{ runner.os }}-lean-4.30.0-${{ hashFiles('harborth-ci/lean-toolchain', 'harborth-ci/lakefile.toml') }}
+      - name: Install Lean 4.30.0
+        run: |
+          if [ ! -x "$HOME/.elan/bin/lean" ]; then
+            curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain leanprover/lean4:v4.30.0
+          fi
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+          "$HOME/.elan/bin/lean" --version
+          "$HOME/.elan/bin/lake" --version
+      - name: Resolve mathlib and download cache
+        working-directory: harborth-ci
+        run: |
+          "$HOME/.elan/bin/lake" update
+          "$HOME/.elan/bin/lake" exe cache get
+      - name: Build formalization
+        working-directory: harborth-ci
+        run: "$HOME/.elan/bin/lake build"
+      - name: Audit axioms
+        working-directory: harborth-ci
+        run: "$HOME/.elan/bin/lake env lean PlanarContactNumber/AxiomAudit.lean"
+      - name: Reject proof escapes
+        working-directory: harborth-ci
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re, sys
+          bad = []
+          for p in Path('.').rglob('*.lean'):
+              text = p.read_text()
+              text = re.sub(r'/-.*?-/', '', text, flags=re.S)
+              text = re.sub(r'--.*', '', text)
+              if re.search(r'\b(?:sorry|admit)\b|(?m)^\s*axiom\b', text):
+                  bad.append(str(p))
+          if bad:
+              print('proof escapes:', *bad, sep='\n')
+              sys.exit(1)
+          PY
