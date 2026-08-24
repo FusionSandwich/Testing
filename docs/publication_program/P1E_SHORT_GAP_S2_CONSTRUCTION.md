@@ -431,18 +431,19 @@ Indeed (6.4) and (5.4) give \(|A_f|<7\), while
 \(a>1/5\) give \(0<\rho\le1\) and
 \(1-\rho<(g+1)\pi/(M_ma)<32/M_m\).  Therefore
 \(|(2U_{+,f})\rho-1|<256/M_m\), proving (7.7) rather than assuming it.
-Put \(a_m=256/M_m\) and \(a_*=a_0=256/M_0\).  For
-\(|x|\le a_*<1\), the power series (or its integral remainder) gives the
+Put \(\alpha_m=256/M_m\) and \(\alpha_*=256/M_0\).  Here \(a_0=4/3\)
+continues to denote only the polar latitude.  For
+\(|x|\le \alpha_*<1\), the power series (or its integral remainder) gives the
 signed second-order estimate
 \[
- \log(1+x)\ge x-{x^2\over2(1-a_*)},
+ \log(1+x)\ge x-{x^2\over2(1-\alpha_*)},
  \qquad \log(1+x)\le x.                               \tag{7.7a}
 \]
 Consequently, for every finite level \(J\),
 \[
- \sum_{m<J}a_m<{512\over M_0},\qquad
- \sum_{m<J}a_m^2<{262144\over3M_0^2},
- \qquad {1\over2(1-a_*)}\sum_{m<J}a_m^2<{1\over M_0}. \tag{7.7b}
+ \sum_{m<J}\alpha_m<{512\over M_0},\qquad
+ \sum_{m<J}\alpha_m^2<{262144\over3M_0^2},
+ \qquad {1\over2(1-\alpha_*)}\sum_{m<J}\alpha_m^2<{1\over M_0}. \tag{7.7b}
 \]
 The last comparison is exact because
 \(262144<6(M_0-256)\).  Applying (7.7a) term by term to (7.7) therefore gives
@@ -586,9 +587,11 @@ may take
  q_*={1\over4M_0},\qquad \Lambda=5,qquad D=M_0,
  \qquad C_{\rm fill}=2.                               \tag{9.1}
 \]
-Separation follows from distinct latitudes or the ring spacing; fill follows
+Here \(q_*\) is the full pairwise-separation constant.  Write
+\(q_{\rm pack}^*=q_*/2=1/(8M_0)\) for the half-separation radius used in
+packing.  Separation follows from distinct latitudes or the ring spacing; fill follows
 by moving meridionally to the nearest ring and then at most half a ring cell.
-Disjoint geodesic balls of radius \(q_*h/2\), together with
+Disjoint geodesic balls of radius \(q_{\rm pack}^*h=q_*h/2\), together with
 \(2\pi(1-\cos r)\ge4r^2/\pi\) for \(r\le1\), give
 \[
  N_h\le4\pi^2q_*^{-2}h^{-2}.                          \tag{9.2}
@@ -669,8 +672,10 @@ closure is packaged in
 `afp_barrier_gate1/release/certificates/theorem_7_2/certificate.json`.
 Its standalone `verify_certificate.py` verifier imports only the Python
 standard library, binds the sources by SHA-256, and checks the limiting system
-in `Q(sqrt(58))`, the guard inequalities, recurrence closure, and published
-constants without floating point. The certification suite for that theorem
+in `Q(sqrt(58))`, the guard inequalities, finite rational recurrence budgets,
+and published constants without floating point.  The exact shared-edge
+recurrence and telescoping identity are ordinary proofs above, not objects
+proved by the verifier. The certification suite for that theorem
 consists of the following checks:
 
 1. `p1e_short_gap_symbolic_matrix_audit.py` constructs (4.5) and derives

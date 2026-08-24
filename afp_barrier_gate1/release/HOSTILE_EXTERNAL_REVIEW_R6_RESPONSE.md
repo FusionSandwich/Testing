@@ -48,7 +48,9 @@ The new `release/certificates/theorem_7_2/certificate.json` SHA-256 binds the
 ordinary proof source and every load-bearing derivation audit. The independent
 `verify_certificate.py` imports only Python's standard library and verifies
 source hashes, the limiting system and cone in `Q(sqrt(58))`, rational
-Cauchy/Neumann and polar budgets, recurrence closure, and published constants.
+Cauchy/Neumann and polar budgets, finite rational recurrence budgets, and
+published constants. The ordinary recurrence and telescoping identity remain
+outside the verifier.
 It performs no floating-point computation and imports none of the original
 construction/audit modules.
 

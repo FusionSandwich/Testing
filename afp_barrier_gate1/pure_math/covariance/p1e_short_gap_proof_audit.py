@@ -111,18 +111,19 @@ def ordinary_recurrence() -> None:
     assert F(16, 1) / (1 - 4 * F(1, 16)) < 22
 
     # Signed second-order cumulative transition budget.  For
-    # |eps_m| <= a_m and a_star=a_0,
-    # log(1+eps_m) >= eps_m-eps_m^2/(2(1-a_star)).
-    a_star = F(256, M0)
+    # |eps_m| <= alpha_m and alpha_star=256/M0.  This notation is disjoint
+    # from the polar-latitude constant a_0=4/3 in the proof source.
+    # log(1+eps_m) >= eps_m-eps_m^2/(2(1-alpha_star)).
+    alpha_star = F(256, M0)
     linear_sum = F(512, M0)
     square_sum = F(262144, 3 * M0**2)
-    remainder = square_sum / (2 * (1 - a_star))
-    assert a_star < 1
+    remainder = square_sum / (2 * (1 - alpha_star))
+    assert alpha_star < 1
     assert remainder < F(1, M0)
     assert linear_sum + remainder < F(513, M0)
 
     # The old exponent 512 is genuinely unsafe.  With J=80 and every
-    # eps_m=-a_m, log(1-a_m) <= -a_m-a_m^2/2, and the exact rational lower
+    # eps_m=-alpha_m, log(1-alpha_m) <= -alpha_m-alpha_m^2/2, and the exact rational lower
     # bound on the accumulated magnitude already exceeds 512/M0.
     j = 80
     finite_linear = sum((F(256, M0 * 2**m) for m in range(j)), F(0))

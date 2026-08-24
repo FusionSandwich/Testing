@@ -1,6 +1,10 @@
-# AFP R7 source-of-truth and ancestry map
+# AFP R8 source-of-truth and ancestry map
 
-R7 parent: `da137c157dbc92774cbf7e378efb5bf360be6ceb`, the final R6 head on
+R8 parent: `e5d023e50ead92f9d87c7e625860225b4e6aa89b`, the exact clean R7
+head on `codex/afp-major-revision-r7-20260824`. Its scientific snapshot is
+`d77295e8de3da230626818698b20ffea6584be3b`.
+
+R7 in turn had parent `da137c157dbc92774cbf7e378efb5bf360be6ceb`, the final R6 head on
 `codex/afp-major-revision-r6-20260823`. The R6 scientific snapshot is
 `648691e9225359d0983d71fa332408fc7bdbadd9`.
 
@@ -37,6 +41,8 @@ archive names are provenance labels only; the SHA is controlling. Every
 | R6 scientific content | `codex/afp-major-revision-r6-20260823` | `648691e9225359d0983d71fa332408fc7bdbadd9` | direct R5-final descendant | `SUPERSEDED_AFTER_INTERNAL_AI_MAJOR_REVISION` |
 | R6 final head / R7 base | `codex/afp-major-revision-r6-20260823` | `da137c157dbc92774cbf7e378efb5bf360be6ceb` | descendant of R6 scientific content | `AUTHORITATIVE_R7_BASE` |
 | R7 scientific content | `codex/afp-major-revision-r7-20260824` | `d77295e8de3da230626818698b20ffea6584be3b` | direct R6-final descendant | `INTERNAL_REPAIR_CANDIDATE_AWAITING_INDEPENDENT_HOSTILE_REVIEW` |
+| R7 final head / R8 base | `codex/afp-major-revision-r7-20260824` | `e5d023e50ead92f9d87c7e625860225b4e6aa89b` | descendant of R7 scientific content | `INDEPENDENT_AI_REVIEWED_MINOR_REVISION` |
+| R8 scientific content | `codex/afp-major-revision-r8-20260824` | recorded in final packaging commit | direct R7-final descendant | `INTERNAL_REPAIR_CANDIDATE_AWAITING_LATER_REVIEW` |
 
 ## Divergent and noncanonical lines
 
@@ -48,7 +54,7 @@ archive names are provenance labels only; the SHA is controlling. Every
 | `agent/afp-publication-p2e-benchmark-development-b34c29b1` | `44e77e5b703255c66ecd1c9e9d5b68341bad050b` | three unique commits after `b34c29b1`; not ancestor | `DIVERGENT_DEVELOPMENT`; superseded by preregistered/held-out line |
 | P2E preregistration | `df6f0e285cb176f183930815967e43c36166928a` | ancestor; archive pointer identical | `FROZEN_INPUT_DEPENDENCY`, not outcome evidence by itself |
 
-## R6 and R7 hostile-review correction lineage
+## R6--R8 adversarial-review correction lineage
 
 Commit `d13e795a2cd09594b20812c88312278227bb5513` first removed the
 unsupported uniform robustness claim, narrowed the whole-paper Lean language,
@@ -75,3 +81,12 @@ cumulative-product exponent, the overbroad certificate claim, the missing
 repairs those four blockers. Both reviews are treated as internal AI
 adversarial reviews, not identifiable external human peer review. Neither
 repair record claims acceptance.
+
+An independent Math-project review of exact R7 head
+`e5d023e50ead92f9d87c7e625860225b4e6aa89b` then returned **MINOR
+REVISION** for three remaining issues: collision of the transition envelope
+with polar `a_0`, conflation of full separation with half-separation packing
+radius, and ambiguous `z_upper`/recurrence-closure certificate language. R8
+repairs exactly those findings. The review remains an internal AI adversarial
+review, not identifiable external human peer review, and does not claim
+acceptance.

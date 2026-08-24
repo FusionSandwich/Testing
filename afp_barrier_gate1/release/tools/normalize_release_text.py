@@ -51,7 +51,7 @@ def main() -> None:
     ]
     if remaining:
         raise SystemExit(f"CR bytes remain: {remaining}")
-    print(f"AFP_R7_TEXT_LF_NORMALIZED changed={changed} files={len(paths)}")
+    print(f"AFP_R8_TEXT_LF_NORMALIZED changed={changed} files={len(paths)}")
 
 
 if __name__ == "__main__":

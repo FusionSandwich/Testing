@@ -1,7 +1,7 @@
-AFP R7 flagship PDF build, 2026-08-24 EDT
-Engine: bundled Tectonic 0.17.0 through bundled Pandoc
+AFP R8 fresh flagship PDF build, 2026-08-24 EDT
+Engine: bundled Tectonic 0.17.0 through Pandoc 3.8.3
 Result: PASS
 Fontconfig warning: no default config file was available.
-Pandoc/Tectonic warned that the generated dependency graph was accessed through an absolute temporary media path.
+Pandoc/Tectonic warned that the generated dependency graph used an absolute temporary media path.
 No TeX underfull or overfull box warning was emitted by the final build.
 Output: output/pdf/FLAGSHIP_MANUSCRIPT.pdf

@@ -1,4 +1,4 @@
-"""Generate deterministic SHA-256 manifests for the AFP R7 release."""
+"""Generate deterministic SHA-256 manifests for the AFP R8 release."""
 
 from __future__ import annotations
 
@@ -120,7 +120,7 @@ def main() -> None:
     JSON_MANIFEST.write_text(
         json.dumps(
             {
-                "schema": "afp-r7-release-manifest-v1",
+                "schema": "afp-r8-release-manifest-v1",
                 "self_excluded": [TEXT_MANIFEST.name, JSON_MANIFEST.name],
                 "file_count": len(records),
                 "files": records,

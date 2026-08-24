@@ -1,9 +1,9 @@
-AFP R7 repository Python suite, 2026-08-24 EDT
+AFP R8 fresh repository Python suite, 2026-08-24 EDT
 
-Full run: 1 failed, 180 passed, 2 warnings in 19.09s.
+Full run: 1 failed, 180 passed, 2 warnings in 40.30s.
 Known frozen platform-sensitive failure:
 math_repo_afp/tests/test_v02_global_graph.py::test_tetrahedron_attains_global_positive_degree_two_lower_bound
 observed residual=2.7902947984069054e-15; frozen threshold=<2e-15.
 
-Scoped pass run: 180 passed, 1 deselected, 2 warnings in 17.33s.
+Scoped pass run: 180 passed, 1 deselected, 2 warnings in 36.70s.
 The source threshold was not weakened.

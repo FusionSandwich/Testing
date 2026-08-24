@@ -8,8 +8,9 @@ finite mathematics, with the stated finite algebraic components Lean-checked.
 Theorem 7.2 is a computer-assisted exact-rational theorem: its analytic
 reduction is ordinary mathematics and its remaining finite rational closure is
 packaged with an independent verifier. The complete paper is not formalized.
-This is an internal repair candidate after an internal AI adversarial review
-returned **MAJOR REVISION**. It awaits a later independent human specialist
+This is an internal repair candidate after the independent Math-project AI
+review of exact R7 head `e5d023e50ead92f9d87c7e625860225b4e6aa89b`
+returned **MINOR REVISION**. It awaits a later independent human specialist
 review and does not claim human peer review or acceptance.
 
 ## Sharp positive-reversible generator frontier
@@ -65,8 +66,11 @@ hypotheses and constants.
 - `COMPUTER_ASSISTED_EXACT_RATIONAL`: fixed unperturbed reflected adaptive-ring
   matching family for ambient `d=3`, along the explicit discrete sequence
   `h_J = pi/(2 S_J)`, `J>=1`, with `r_max <= 64 pi^2 h_J^-2` and
-  `D_2 <= 75 h_J^2 / 2`. The v2 exact-rational closure certificate and standalone verifier
-  are in `release/certificates/theorem_7_2/`.
+  `D_2 <= 75 h_J^2 / 2`, full pairwise separation `h_J/(4M_0)`, and
+  packing-ball radius `h_J/(8M_0)`. The v3 exact-rational closure certificate
+  and standalone verifier are in `release/certificates/theorem_7_2/`; they
+  check finite rational recurrence budgets, not the ordinary recurrence and
+  telescoping proof.
 - `OPEN`: support-preserving perturbation robustness. No radius or constants
   are release claims.
 - `OPEN`: a matching positive local family for `d > 3`.

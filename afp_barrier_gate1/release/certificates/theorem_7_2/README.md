@@ -20,17 +20,21 @@ all listed rational guard inequalities, the limiting determinant and inverse
 bound, the affine solution identity and strict cone margin in
 `Q(sqrt(58))`, the Neumann and polar-row budgets, the arbitrary-`J` transition
 geometric sums, the corrected signed second-order product budget, the
+ordinary-row square/denominator and error-coefficient budgets,
 positivity and normalization coefficient arithmetic, propagation of the
 geometry-bound coefficients supplied by the ordinary proof, hostile
 mutations, and the constants printed in Theorem 7.2. It performs no floating-point
 calculation and does not import the construction or its original audit code.
+In particular, the certificate distinguishes the full pairwise-separation
+constant `1/(4 M0)` from the packing-ball radius constant `1/(8 M0)`.
 
 Trusted computing base: the bytes of `certificate.json` and
 `verify_certificate.py`, CPython's arbitrary-precision integer and
 `fractions.Fraction` implementation, SHA-256, and the ordinary mathematical
 use of the ordinary analytic lemmas explicitly proved in the article and proof
 source. The verifier does not machine-prove the transcendental schedule,
-literal row-equation derivation, Cauchy estimates, geometry, or sampled
+literal row-equation derivation, ordinary shared-edge recurrence or
+telescoping identity, Cauchy estimates, geometry, or sampled
 quotient argument. SymPy is used by the original derivation audits but is not required by
 this independent verifier. Lean does not check the adaptive-ring schedule or
 the analytic Cauchy argument.

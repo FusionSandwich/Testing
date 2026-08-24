@@ -1,5 +1,61 @@
 # Acquisition-gate summary
 
+## R8 pre-build gate, 2026-08-24 EDT
+
+This gate was completed in the new isolated R8 worktree before any build,
+render, cache staging, or dependency-environment operation. The controlling
+target is
+`D:\math_lean_1\Testing-afp-major-revision-r8-20260824`, created clean on
+branch `codex/afp-major-revision-r8-20260824` from exact R7 head
+`e5d023e50ead92f9d87c7e625860225b4e6aa89b`. The R7 worktree was separately
+confirmed clean at that SHA and is not an edit, cleanup, reset, rebase, cache,
+or build target.
+
+The host runs Windows 11 Home 10.0.26200 with 31.91 GiB RAM and 10.47 GiB
+free at inspection. The system volume `C:` has 16.21 GiB free of 930.42 GiB;
+the target/data volume `D:` has 847.68 GiB free of 1,863.02 GiB. Largest
+working sets were ChatGPT (1.54 GiB), memory compression (1.53 GiB), Codex
+(1.23 GiB), Chrome (up to 0.66 GiB), WSL (0.63 GiB), Defender (0.50 GiB),
+and Explorer (0.36 GiB). Separate pre-existing CPU-heavy Python replay jobs
+and a bounded Alliance evidence transfer were observed outside this worktree;
+R8 neither owns nor modifies them and launches no remote work.
+
+Existing executable/runtime inventory is Git 2.55.0.windows.3, system Python
+3.12.10, Elan 4.2.3, ambient Lean 4.33.1/Lake 5.0.0, project-pinned and already
+installed Lean 4.30.0, Pandoc 3.8.3, bundled Node 24.19.0, bundled Python
+3.12.13 with pdfplumber 0.11.9 and pypdf 6.14.2, bundled Tectonic 0.17.0, and
+bundled Poppler 26.05.0. The Python launcher exposes 3.12, 3.11, and 3.9;
+Conda is absent. No `pyvenv.cfg` was found inside the AFP checkout family; an
+unrelated active replay environment under another project was recorded but is
+not used. The R5 disposable exact-audit target remains the already-local
+read-only source of SymPy and numerical packages.
+
+Current relevant caches and build trees were measured before staging: pip
+index cache 1,623.4 MB; clean R7 `.lake` build/config 141,513,742 bytes in 478
+files; clean R7 Tectonic cache 46,334,016 bytes in 355 files; and the R5
+disposable Python target 363,126,888 bytes in 10,716 files. The R7 Lean package
+path is a junction to the already-local pinned package tree at
+`C:\Users\joshu\Documents\PhD papers\lean\afp_barrier_lean_project\.lake\packages`.
+Local Git inventory contains the original `Testing` checkout (two dirty
+entries, excluded from staging) plus clean isolated R5, R6, R7, and R8
+worktrees at their recorded branch heads.
+
+Existing local capabilities are sufficient. **Authorized network acquisition:
+0 bytes.** No install, upgrade, dependency resolution, new package download,
+remote execution, or remote spending is planned. The only planned
+dependency-environment modification is local staging into the R8 ignored
+paths: copy the R7 `.lake` build/config bytes and recreate its junction, and
+copy the R7 Tectonic cache, at most **187,847,758 existing local bytes** total.
+Targets are
+`D:\math_lean_1\Testing-afp-major-revision-r8-20260824\afp_barrier_gate1\.lake`
+and
+`D:\math_lean_1\Testing-afp-major-revision-r8-20260824\tmp\pdfs\tectonic-cache`.
+Build outputs and renders remain under the R8 worktree. Rollback removes only
+those verified R8-local ignored paths; it never touches the R7 worktree,
+shared package junction target, user caches/toolchains, or dirty original
+checkout. Any materially different dependency, target, or network attempt
+requires a new gate.
+
 ## R7 pre-build gate, 2026-08-24 EDT
 
 This gate was completed before the R7 worktree, build, render, or dependency

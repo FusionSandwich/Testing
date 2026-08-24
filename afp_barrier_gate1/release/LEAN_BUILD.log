@@ -1,5 +1,8 @@
-AFP R7 pinned Lean build, 2026-08-24 EDT
+AFP R8 pinned Lean build, 2026-08-24 EDT
 Lean toolchain: v4.30.0
 Result: PASS
-Build completed successfully (3118 jobs).
+Fresh build completed successfully (3118 jobs).
 Only existing linter warnings were emitted; no error or sorry was reported.
+Fresh ReleaseAxiomAudit execution: 512 signatures, 512 axiom reports,
+axioms Classical.choice/propext/Quot.sound, no sorryAx, no error.
+The separate LEAN_RELEASE_AUDIT.log is inherited R7 captured output.

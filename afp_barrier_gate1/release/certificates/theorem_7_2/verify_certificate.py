@@ -234,9 +234,14 @@ def verify_polar_guard(data: dict[str, Any]) -> None:
     assert displacement < q(data["finite_displacement_upper"])
 
 
-def verify_ordinary_and_constants(ordinary: dict[str, Any], published: dict[str, Any]) -> None:
-    z = q(ordinary["z_upper"])
-    assert F(16) / (1 - 4 * z) < q(ordinary["telescoping_error_coefficient_upper"])
+def verify_ordinary_finite_rational_budgets(
+    ordinary: dict[str, Any], published: dict[str, Any]
+) -> None:
+    z_squared_guard = q(ordinary["z_squared_denominator_guard_upper"])
+    assert z_squared_guard == F(1, 16)
+    assert F(16) / (1 - 4 * z_squared_guard) < q(
+        ordinary["telescoping_error_coefficient_upper"]
+    )
     assert q(ordinary["horizontal_solution_lower_ratio"]) == F(1, 100)
     assert q(ordinary["horizontal_solution_upper_ratio"]) == F(100)
     assert ordinary["shared_stress_lower_exponent"] == -20
@@ -256,17 +261,18 @@ def verify_theorem_scale_transition(data: dict[str, Any], m0: int) -> None:
     numerator = q(data["transition_error_numerator"])
     assert ratio == 2 and numerator == 256
 
-    a_star = numerator / m0
+    alpha_star = numerator / m0
     linear_sum = (numerator / m0) / (1 - 1 / ratio)
     square_sum = (numerator / m0) ** 2 / (1 - 1 / ratio**2)
-    assert a_star == q(data["max_transition_error"])
+    assert alpha_star == q(data["max_transition_error"])
     assert linear_sum == q(data["linear_sum_upper"])
     assert square_sum == q(data["square_sum_upper"])
-    assert a_star < 1
+    assert alpha_star < 1
 
-    # For |x|<=a_star, the ordinary analytic lemma used by the manuscript is
-    # log(1+x) >= x-x^2/(2(1-a_star)) and log(1+x) <= x.
-    remainder = square_sum / (2 * (1 - a_star))
+    # For |x|<=alpha_star, the ordinary analytic lemma used by the manuscript
+    # is log(1+x) >= x-x^2/(2(1-alpha_star)) and log(1+x) <= x.  The alpha
+    # notation is intentionally disjoint from polar latitude a_0=4/3.
+    remainder = square_sum / (2 * (1 - alpha_star))
     assert remainder < q(data["quadratic_remainder_upper"])
     assert linear_sum + remainder < q(data["log_lower_magnitude_upper"])
     assert linear_sum == q(data["log_upper_magnitude_upper"])
@@ -283,7 +289,7 @@ def verify_theorem_scale_transition(data: dict[str, Any], m0: int) -> None:
         negative_product = F(1)
         positive_product = F(1)
         for error in errors:
-            assert error <= a_star < 1
+            assert error <= alpha_star < 1
             negative_product *= 1 - error
             positive_product *= 1 + error
         assert 0 < negative_product < 1 < positive_product
@@ -323,25 +329,29 @@ def verify_positivity_geometry_normalization(
     )
     assert data["preliminary_stress_exponents"] == [-20, 20]
 
-    q_star = q(data["separation_constant"])
-    assert q_star == F(1, 8 * m0)
+    q_pairwise = q(data["pairwise_separation_constant"])
+    q_packing = q(data["packing_radius_constant"])
+    assert q_pairwise == F(1, 4 * m0)
+    assert q_packing == F(1, 8 * m0) == q_pairwise / 2
     assert q(data["degree_bound"]) == m0 == q(published["degree_bound"])
     assert q(data["active_angle_lower_multiple"]) == F(1, 8)
     assert q(data["active_angle_upper_multiple"]) == 5
-    assert q(data["node_count_rational_coefficient"]) == 4
+    assert q(data["node_count_pairwise_separation_coefficient"]) == 4
+    assert q(data["node_count_packing_radius_coefficient"]) == 1
 
     # Symbolic coefficient/exponent audit of the mass and normalization chain:
     # mu_min=Gamma_- h^2/(64 pi^2),
     # mu_max=25 D Gamma_+ h^2/4,
-    # N<=4 pi^2 q_*^-2 h^-2,
-    # W<=25 pi^2 D Gamma_+ q_*^-2, and hence
-    # w_i>=Gamma_- q_*^2 h^2/(1600 pi^4 D Gamma_+).
+    # N<=4 pi^2 q_pairwise^-2 h^-2
+    #   =pi^2 q_packing^-2 h^-2,
+    # W<=25 pi^2 D Gamma_+ q_pairwise^-2, and hence
+    # w_i>=Gamma_- q_pairwise^2 h^2/(1600 pi^4 D Gamma_+).
     assert q(data["mu_lower_rational_denominator"]) == 64
     assert q(data["mu_lower_pi_power"]) == 2
     assert q(data["mu_upper_rational_coefficient"]) == F(25, 4)
     assert q(data["weight_floor_rational_denominator"]) == 64 * 25
     assert q(data["weight_floor_pi_power"]) == 4
-    assert q(data["weight_floor_q_star_power"]) == 2
+    assert q(data["weight_floor_pairwise_separation_power"]) == 2
     assert data["normalized_conductance_relation"] == "gamma_ij = Gamma_ij / W"
     assert data["directed_rate_relation"] == "a_ij = gamma_ij / w_i = Gamma_ij / mu_i"
 
@@ -371,7 +381,7 @@ def verify_hostile_mutations(cert: dict[str, Any], m0: int) -> None:
             mutated,
             cert["transition_guard"],
             cert["polar_guard"],
-            cert["ordinary_rows_and_recurrence"],
+            cert["ordinary_rows_finite_rational_budgets"],
             cert["published_constants"],
             m0,
         ),
@@ -385,7 +395,7 @@ def verify_hostile_mutations(cert: dict[str, Any], m0: int) -> None:
             cert["positivity_geometry_normalization"],
             cert["transition_guard"],
             cert["polar_guard"],
-            cert["ordinary_rows_and_recurrence"],
+            cert["ordinary_rows_finite_rational_budgets"],
             mutated_published,
             m0,
         ),
@@ -399,11 +409,27 @@ def verify_hostile_mutations(cert: dict[str, Any], m0: int) -> None:
         "R6 cumulative lower exponent",
     )
 
+    mutated_geometry = deepcopy(cert["positivity_geometry_normalization"])
+    mutated_geometry["pairwise_separation_constant"] = mutated_geometry[
+        "packing_radius_constant"
+    ]
+    expect_failure(
+        lambda: verify_positivity_geometry_normalization(
+            mutated_geometry,
+            cert["transition_guard"],
+            cert["polar_guard"],
+            cert["ordinary_rows_finite_rational_budgets"],
+            cert["published_constants"],
+            m0,
+        ),
+        "pairwise/packing separation conflation",
+    )
+
 
 def main() -> int:
     path = Path(sys.argv[1]).resolve() if len(sys.argv) == 2 else Path(__file__).with_name("certificate.json")
     cert = json.loads(path.read_text(encoding="utf-8"))
-    assert cert["schema"] == "afp-theorem-7.2-exact-rational-certificate-v2"
+    assert cert["schema"] == "afp-theorem-7.2-exact-rational-certificate-v3"
     assert cert["classification"] == "COMPUTER_ASSISTED_EXACT_RATIONAL"
     assert cert["claim_boundary"]["whole_theorem_machine_verified"] is False
     assert cert["claim_boundary"]["source_hashes_are_proofs"] is False
@@ -417,13 +443,16 @@ def main() -> int:
     verify_transition_guard(cert["transition_guard"])
     verify_limiting_system(cert["limiting_system"])
     verify_polar_guard(cert["polar_guard"])
-    verify_ordinary_and_constants(cert["ordinary_rows_and_recurrence"], cert["published_constants"])
+    assert "ordinary_rows_and_recurrence" not in cert
+    verify_ordinary_finite_rational_budgets(
+        cert["ordinary_rows_finite_rational_budgets"], cert["published_constants"]
+    )
     verify_theorem_scale_transition(cert["theorem_scale_transition"], m0)
     verify_positivity_geometry_normalization(
         cert["positivity_geometry_normalization"],
         cert["transition_guard"],
         cert["polar_guard"],
-        cert["ordinary_rows_and_recurrence"],
+        cert["ordinary_rows_finite_rational_budgets"],
         cert["published_constants"],
         m0,
     )
@@ -431,7 +460,7 @@ def main() -> int:
     print("Theorem 7.2 exact-rational certificate: PASS")
     print(f"certificate_sha256={hashlib.sha256(path.read_bytes()).hexdigest()}")
     print("arithmetic=Q and Q(sqrt(58)); floating_point=none; third_party_imports=none")
-    print("theorem_scale_levels=1,2,8,32,80,257; hostile_mutations=3/3 rejected")
+    print("theorem_scale_levels=1,2,8,32,80,257; hostile_mutations=4/4 rejected")
     return 0
 
 

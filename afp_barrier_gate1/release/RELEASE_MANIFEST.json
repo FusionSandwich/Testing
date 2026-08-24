@@ -1,5 +1,5 @@
 {
-  "file_count": 71,
+  "file_count": 72,
   "files": [
     {
       "bytes": 11454,
@@ -9,7 +9,7 @@
     {
       "bytes": 82498,
       "path": "afp_barrier_gate1/AFPBarrier/ReleaseAxiomAudit.lean",
-      "sha256": "73eef719da894a2057eecb9d91a526b047d0008b64493b43561c527fe5027077"
+      "sha256": "6d0ec5de2b7726afcc1ab135f045692d4700bbecbffdb36568f799fa3537eaa6"
     },
     {
       "bytes": 10011,
@@ -82,14 +82,14 @@
       "sha256": "421b1741423599a9f717956777f71bb3cbc62f20a0e020631bf1735bd161f591"
     },
     {
-      "bytes": 7945,
+      "bytes": 11296,
       "path": "afp_barrier_gate1/release/ACQUISITION_GATE.md",
-      "sha256": "348a283e44cf6c7ac48a7792e16f2400ee69fbe54fd3fde7572cc552100f0b4a"
+      "sha256": "81c9f59ec3bfb9d5aa651788add610709f653760eaa745410511429002d4b6e2"
     },
     {
-      "bytes": 3569,
+      "bytes": 3747,
       "path": "afp_barrier_gate1/release/CLAIM_EVIDENCE_MATRIX.md",
-      "sha256": "f5981d593f5f3de7751ebb1555b49a197a180975b0cf5e00e93e26012f1fa265"
+      "sha256": "1fb5b24971cacf6c6c99a3e559cd7c710c726c7f860d9ad6418629cb1fee705b"
     },
     {
       "bytes": 2713,
@@ -97,39 +97,39 @@
       "sha256": "e1f674fd2f4d8eda19c2b83db48b02d408bb8de0aab9f0aeef957d586a2c77da"
     },
     {
-      "bytes": 946,
+      "bytes": 952,
       "path": "afp_barrier_gate1/release/EXACT_AUDITS.log",
-      "sha256": "daaf41a34c5b667160920218c4618d78c9496cc0dfc053c9026d9af8e9a82356"
+      "sha256": "791a53480d78e7e74c07aecd1209e61a5f11212c8c31465b6c5bf7c22d82548b"
     },
     {
-      "bytes": 4152,
+      "bytes": 3052,
       "path": "afp_barrier_gate1/release/FINAL_REPORT.md",
-      "sha256": "706a2120e406970ff2078ca2acf333eb6d804e3b412eeac64af94bd988bf8a87"
+      "sha256": "fd9ad9771b6a654557a97e9ca19aaffa649a88f1aa2337b156273fb414dd43d6"
     },
     {
-      "bytes": 398,
+      "bytes": 386,
       "path": "afp_barrier_gate1/release/FLAGSHIP_BUILD.log",
-      "sha256": "903af0ae6e9f698a1e1f7e07b2a19fa15a11f45b85fde4688c111ebb70283e75"
+      "sha256": "9868da0a8d60573a0274f45aea871e8885eedbee8f296191aa87895fef99ea50"
     },
     {
       "bytes": 448,
       "path": "afp_barrier_gate1/release/FLAGSHIP_PDFINFO.log",
-      "sha256": "d126e556a352d37f3a9a2ec563098506ccceab4feb2410e24623f7f1454fd075"
+      "sha256": "86971982114495a012ee2dd14224f26635cdbe5901684f6e96459a5742036812"
     },
     {
       "bytes": 275,
       "path": "afp_barrier_gate1/release/FLAGSHIP_VALIDATION.log",
-      "sha256": "aa871f16809351540bf20a41c04fa2687cb93bcaef9575dc3c90339d630c1718"
+      "sha256": "02dd251f8824d642612a23dcefc49637597000379ced0a5a651e90de1692a044"
     },
     {
-      "bytes": 6632,
+      "bytes": 6766,
       "path": "afp_barrier_gate1/release/HOSTILE_AI_REVIEW_R7_RESPONSE.md",
-      "sha256": "b7bc30a727711153907e47c131aadb5841fe55e90b2ac9a76d4113c9cee941cb"
+      "sha256": "ccde8e05977872ba72e4d125ed1fa873daa655e2e5499a4310884dfd11c162a6"
     },
     {
-      "bytes": 4267,
+      "bytes": 4361,
       "path": "afp_barrier_gate1/release/HOSTILE_EXTERNAL_REVIEW_R6_RESPONSE.md",
-      "sha256": "aeeae2882bc3973421fddc292f6e054c9021c5daa6cd6d51ee0330f476682a07"
+      "sha256": "02fc2f830250d5e6352719d4e0e682fa7a7b67e254a3780ea8990d1767f08f8b"
     },
     {
       "bytes": 2557,
@@ -137,24 +137,29 @@
       "sha256": "436543b2df35eec24b1154f4fdaa437c53fd405ec133241718b24964d79f0e3f"
     },
     {
+      "bytes": 3552,
+      "path": "afp_barrier_gate1/release/INDEPENDENT_AI_REVIEW_R8_RESPONSE.md",
+      "sha256": "a00f4cb38bea02d63fc0e519990c6094bcaef62c98c16d4be63e304dd20c3ea1"
+    },
+    {
       "bytes": 42,
       "path": "afp_barrier_gate1/release/LEAN_ACCELERATION_BUILD.log",
       "sha256": "38d3990e068abaaf3932938771ad7d85eaf51fd24cbe94746718d8605311d43d"
     },
     {
-      "bytes": 196,
+      "bytes": 407,
       "path": "afp_barrier_gate1/release/LEAN_BUILD.log",
-      "sha256": "96a35080a81855a2b15323cf117bae0fa97682dbbc7cca95c0fbe8cb3d49a4c5"
+      "sha256": "27c99e67525d3706ce5b04f9bf1dfada6c3bf2fff10a85764d2dd8dfb03ad0fd"
     },
     {
-      "bytes": 3535,
+      "bytes": 3720,
       "path": "afp_barrier_gate1/release/LEAN_CLAIM_AUDIT.md",
-      "sha256": "042ecbf7e27a687cd1d846ef134bb0e7fed47e50128522b23c44a0f683f03b58"
+      "sha256": "f49d6071a4864bb9207b29be7f03c74e92837945bce6a0e0793c6a36b241f7d3"
     },
     {
       "bytes": 88878,
       "path": "afp_barrier_gate1/release/LEAN_DECLARATION_INDEX.json",
-      "sha256": "55cbda6aeb88d066d824f5998de89d7775588ee3d795f14c0f338a3409bfbc4c"
+      "sha256": "dacb255bb045ffae64bfdcc2dd47b5fa8c4fd1bcfd75a2fa8e9414aa3c3b34c8"
     },
     {
       "bytes": 226831,
@@ -197,39 +202,39 @@
       "sha256": "645f762f474b263181297783530628a5d72c20a45de87c266832c1e823b53aa0"
     },
     {
-      "bytes": 3686,
+      "bytes": 3932,
       "path": "afp_barrier_gate1/release/PURE_THEOREM_RELEASE.md",
-      "sha256": "e752251f599bafc5053a7276987a14852e6216bde863cf8920810b95e2a72815"
+      "sha256": "1dd83b12ea9f5890fdb6683c752eb314ba9fd44ae466b26f97acc006b15853a4"
     },
     {
-      "bytes": 425,
+      "bytes": 431,
       "path": "afp_barrier_gate1/release/PYTEST_PINNED_PASS.log",
-      "sha256": "66404277bb29f9290902d8c8f798b8bdfb3527c9a1973a3d40f4a21d810cd9e0"
+      "sha256": "d3aec0a494e0dabaffcb5e39926faa20e5ea928ea2261997bcdbf51868b007e6"
     },
     {
-      "bytes": 2582,
+      "bytes": 2425,
       "path": "afp_barrier_gate1/release/README.md",
-      "sha256": "a7b34d23766749fb9e5cf0d8123e1e07ce90c80542e063f14aee25813665b667"
+      "sha256": "6855061596857b3563001f7484c0d55bbf5c43198fbeccbd1c68ec38ef42b570"
     },
     {
-      "bytes": 4258,
+      "bytes": 3733,
       "path": "afp_barrier_gate1/release/REPRODUCIBILITY.md",
-      "sha256": "506efb80e4f769be852e7d516dff90f9e1fc97b097ecd3a1e7f2cfdf27acfa0b"
+      "sha256": "299ed23f4f7d2439572298beb6963038ec5bf645fec012558233c86873948ea5"
     },
     {
-      "bytes": 5397,
+      "bytes": 6043,
       "path": "afp_barrier_gate1/release/REVIEWER_BUNDLE.md",
-      "sha256": "3738be3a372837047f59db074ed96ace697fe3f658547686950884bf6c05c898"
+      "sha256": "a3a61a69dddf4e7942cd64beedd2b9789a364bbdb95f768696b8fc431ad98711"
     },
     {
-      "bytes": 7004,
+      "bytes": 8099,
       "path": "afp_barrier_gate1/release/SOURCE_OF_TRUTH_MAP.md",
-      "sha256": "95171b9c4c3a5e4e3d9764cc45b306d868d2f429f0cf996fe718719ba6ca1b90"
+      "sha256": "a844b39fee490ae537dac3f88da42371a88bd81e7388d18e539e7ca151012f33"
     },
     {
-      "bytes": 2532,
+      "bytes": 2504,
       "path": "afp_barrier_gate1/release/VALIDATION_REPORT.md",
-      "sha256": "7c0646a0ec418c17e87aa78f38d76c2ed9bd74c5c0814dd4b6641f968aee70ff"
+      "sha256": "4d74565168bc5d9eb83d7d2df50a8c3576a4ad94bcf1c7602e48279063263030"
     },
     {
       "bytes": 1317,
@@ -242,19 +247,19 @@
       "sha256": "5076fd987ae994f997a3e69396a41baf09f5dce19fe6136e1421196f3dbcbeba"
     },
     {
-      "bytes": 2317,
+      "bytes": 2581,
       "path": "afp_barrier_gate1/release/certificates/theorem_7_2/README.md",
-      "sha256": "6d2c4ac97ea221843cf8d19098f28a6926b51762090c4faa8e53e1981a63def8"
+      "sha256": "21d222003af97475fddb0c8201191bb9295e0b6647790c922046a8213c300395"
     },
     {
-      "bytes": 7288,
+      "bytes": 7526,
       "path": "afp_barrier_gate1/release/certificates/theorem_7_2/certificate.json",
-      "sha256": "ff8f1b13a64d8a4f0ca281853d689f5aaf86f22db74cb0c3e4f0c9fe118484cc"
+      "sha256": "ededef85140b4415e1c48249d77ea7fe42345bbb7a0d36d1f150ef3caee747a6"
     },
     {
-      "bytes": 17470,
+      "bytes": 18632,
       "path": "afp_barrier_gate1/release/certificates/theorem_7_2/verify_certificate.py",
-      "sha256": "82312039833840a11bbf83dc662e471f2e7ac7e83c112d32974a8d97cc55427a"
+      "sha256": "22965257284a9e038843eebd34beb133742ab185d5268a2a04f4b097f8a8b250"
     },
     {
       "bytes": 2912,
@@ -264,7 +269,7 @@
     {
       "bytes": 4183,
       "path": "afp_barrier_gate1/release/tools/generate_lean_release_audit.py",
-      "sha256": "72d942a4cf0eef07b71773f60b61a729a558849e2dd0d710a273ec5fbdab108b"
+      "sha256": "d703d797450b99f379d102a459d23caa47572eea11c20e25e9d73dc965fe81b1"
     },
     {
       "bytes": 1131,
@@ -274,27 +279,27 @@
     {
       "bytes": 4092,
       "path": "afp_barrier_gate1/release/tools/generate_release_manifest.py",
-      "sha256": "ec08776dcd41820418fa8f8db7684598babeda01aa24effc124b13c4b37a22fc"
+      "sha256": "f497fd97647a242e6e1cbaa664d80be0366e26b6e2aa39f762e9b1ca03828619"
     },
     {
       "bytes": 1410,
       "path": "afp_barrier_gate1/release/tools/normalize_release_text.py",
-      "sha256": "db9f0452769b61ab54407c71ad986396a03351b148c3975fa0b376976b7b9d73"
+      "sha256": "eeb6f75d4784b37c8ff990518eebf4237426a2456d3997ac86f5dc8cc6cda897"
     },
     {
       "bytes": 3075,
       "path": "afp_barrier_gate1/release/tools/run_exact_audits.py",
-      "sha256": "48cc3dc7f17cb136f23495e7288936905177f921ae2c19e52b422f501363018b"
+      "sha256": "f76903d90e8118419b6f1c1022e354ae6eba9c99634ff6649748556ac7f5b6d1"
     },
     {
-      "bytes": 2692,
+      "bytes": 2952,
       "path": "afp_barrier_gate1/release/tools/validate_flagship.py",
-      "sha256": "85f0225a003cd73ba172ea4b1d757349a323d7524b52319446bbc70d0a68a81d"
+      "sha256": "df41a213a72199851f91f48243bae4b3cd97286ed5bc5b68024e55c53533e79c"
     },
     {
-      "bytes": 8700,
+      "bytes": 9963,
       "path": "afp_barrier_gate1/release/tools/validate_release.py",
-      "sha256": "73a698bb38cdcc2eb9ea212911573b4369f58f2cc06841ffdc73625d19a1f751"
+      "sha256": "3652bbaf71cd47136a15ced7e7f9df8610d223386df76c5d64f71b3ab53aaec7"
     },
     {
       "bytes": 538,
@@ -307,9 +312,9 @@
       "sha256": "356625807903177801d1582fedce04f2400da5839aa6e4ac9c6af0a97de4f135"
     },
     {
-      "bytes": 27899,
+      "bytes": 28297,
       "path": "docs/publication_program/P1E_SHORT_GAP_S2_CONSTRUCTION.md",
-      "sha256": "8f3591900cdda4095bcf6f93bad15b78188c3619e11ef89bbd4cd914ac4311dd"
+      "sha256": "564a6ae1a1ba5d55169b4df32d82f61cc744d4ce71f6580459f6257ce60dfff0"
     },
     {
       "bytes": 7073,
@@ -317,19 +322,19 @@
       "sha256": "f5ae94dce3df2cdd7dd61353a13da1b3ed5d3b74746e44862d45e8ba3af01672"
     },
     {
-      "bytes": 36780,
+      "bytes": 36957,
       "path": "docs/publication_program/THEOREM_REGISTRY.md",
-      "sha256": "2f9e5962d1689b114dc23ba6544efa4ad9f0afc6ace224aed454e212a0be9875"
+      "sha256": "4f8d221ee68192142501240770a2c00a817ce1a8e508482e54084e8297cf6c2a"
     },
     {
-      "bytes": 66809,
+      "bytes": 67124,
       "path": "docs/publication_program/p1f_manuscript/FLAGSHIP_MANUSCRIPT.md",
-      "sha256": "6bc2423c8e043de990ec1123cf099649e0b86faa67cbffa863f6d15c182a9446"
+      "sha256": "b33b643423a76de15bd4f056a3767dab9c686398e9a3af80396cfaf645da6520"
     },
     {
-      "bytes": 4172,
+      "bytes": 4329,
       "path": "docs/publication_program/p1f_manuscript/P1F_REPRODUCIBILITY_MANIFEST.md",
-      "sha256": "36b9a6aae327a10739a15df21b75d46a29b7519c8c3b9709630e5864892f7222"
+      "sha256": "7509ed0552bafc6b556db2c1efd5ae472e5de14be80e819baa4c10727695b4d3"
     },
     {
       "bytes": 5072,
@@ -352,12 +357,12 @@
       "sha256": "3c334cee355454cabd276cc877013cb479e6760e4779f326325ab228716da53a"
     },
     {
-      "bytes": 352024,
+      "bytes": 352550,
       "path": "output/pdf/FLAGSHIP_MANUSCRIPT.pdf",
-      "sha256": "c65756010a9b1c778db693389aaa2e8e96379be501f2f30fcf9326679302050f"
+      "sha256": "dcd740a44b83263857f8f3663d1236398888d949f8ce6a3a9c76eded9340948f"
     }
   ],
-  "schema": "afp-r7-release-manifest-v1",
+  "schema": "afp-r8-release-manifest-v1",
   "self_excluded": [
     "RELEASE_MANIFEST.sha256",
     "RELEASE_MANIFEST.json"

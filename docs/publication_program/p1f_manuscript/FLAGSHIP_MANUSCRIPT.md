@@ -1073,20 +1073,21 @@ where
 $\log(U_+/U_-)=\log\{\sin(\theta+h/2)/\sin(\theta-h/2)\}+E(z)$.
 The sine quotient telescopes. The cap error sums to less than $12$, the
 dyadic-band errors sum to less than $1$, and the $m$th count change has
-$|\varepsilon_m|<256/M_m$. Put $a_m=256/M_m$ and
-$a_*=256/M_0$. For $|x|\le a_*<1$,
+$|\varepsilon_m|<256/M_m$. Put $\alpha_m=256/M_m$ and
+$\alpha_*=256/M_0$. Here $a_0=4/3$ remains reserved for the polar latitude.
+For $|x|\le \alpha_*<1$,
 $$
-\log(1+x)\ge x-\frac{x^2}{2(1-a_*)},
+\log(1+x)\ge x-\frac{x^2}{2(1-\alpha_*)},
 \qquad \log(1+x)\le x.
 \tag{7.13b}
 $$
 Since
 $$
-\sum_{m<J}a_m<\frac{512}{M_0},
+\sum_{m<J}\alpha_m<\frac{512}{M_0},
 \qquad
-\sum_{m<J}a_m^2<\frac{262144}{3M_0^2},
+\sum_{m<J}\alpha_m^2<\frac{262144}{3M_0^2},
 \qquad
-\frac1{2(1-a_*)}\sum_{m<J}a_m^2<\frac1{M_0},
+\frac1{2(1-\alpha_*)}\sum_{m<J}\alpha_m^2<\frac1{M_0},
 $$
 the cumulative transition product satisfies the signed second-order bound
 $$
@@ -1141,11 +1142,14 @@ The metrics defined above satisfy
 $$
 h_{\rm fill}(X_h)\le2h,
 \qquad
-q_{\rm sep}(X_h)\ge q_*h,
+q_{\rm sep}(X_h)\ge q_{\rm sep}^*h,
 \qquad
-\rho_{X_h}\le\frac2{q_*},
-\qquad q_*=(8M_0)^{-1}.
+\rho_{X_h}\le\frac2{q_{\rm sep}^*},
+\qquad q_{\rm sep}^*=(4M_0)^{-1},
+\qquad q_{\rm pack}^*=\frac12q_{\rm sep}^*=(8M_0)^{-1}.
 $$
+Thus $q_{\rm sep}^*h$ is the full pairwise-separation lower bound and
+$q_{\rm pack}^*h$ is the radius of the disjoint packing balls.
 Every active edge lies in the angular window
 $h/8\le d_{\mathbb S}(\Omega_i,\Omega_j)\le5h$, and the degree is at most
 $D=M_0$. For every

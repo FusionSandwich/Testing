@@ -1,87 +1,88 @@
-# Flagship-paper R7 reproducibility manifest
+# Flagship-paper R8 reproducibility manifest
 
 ## Mathematical and review lineage
 
-R7 is a targeted repair based on the exact R6 head
-`da137c157dbc92774cbf7e378efb5bf360be6ceb` and R6 scientific snapshot
-`648691e9225359d0983d71fa332408fc7bdbadd9`. The renewed ChatGPT Pro task
-`Review Math Revision Branch` returned **MAJOR REVISION**. This was an internal
-AI adversarial review, not identifiable external human peer review. R7 does
-not relabel R6 as passed or claim human review.
+R8 is a targeted repair based on exact clean R7 head
+`e5d023e50ead92f9d87c7e625860225b4e6aa89b` and R7 scientific snapshot
+`d77295e8de3da230626818698b20ffea6584be3b`. The independent Math-project
+review of that exact head returned **MINOR REVISION**. This was an independent
+internal AI adversarial review, not identifiable external human peer review.
+R8 does not change theorem scope or claim acceptance.
 
-The former Corollary 6.3 is now non-theorem discussion. Theorem 7.2 is stated
-only for the discrete sequence `h_J`, `J>=1`, and is classified as a
-computer-assisted exact-rational theorem rather than an end-to-end Lean
-theorem. Its certificate and independent verifier are release artifacts.
+Theorem 7.2 remains stated only for the discrete sequence `h_J`, `J>=1`, and
+is classified as a computer-assisted exact-rational theorem rather than an
+end-to-end Lean theorem. R8 reserves `a_0=4/3` for the polar latitude, uses
+`alpha_m` for the transition envelope, distinguishes full pairwise separation
+`1/(4M_0)` from packing radius `1/(8M_0)`, and narrows the certificate's
+ordinary-row claim to finite rational recurrence budgets.
 
 | Record | Exact value |
 |---|---|
 | repository | `FusionSandwich/Testing` |
-| R7 branch | `codex/afp-major-revision-r7-20260824` |
-| exact R7 base | `da137c157dbc92774cbf7e378efb5bf360be6ceb` |
+| R8 branch | `codex/afp-major-revision-r8-20260824` |
+| exact R8 base | `e5d023e50ead92f9d87c7e625860225b4e6aa89b` |
+| R8 scientific-content commit | recorded in final packaging commit |
 | R7 scientific-content commit | `d77295e8de3da230626818698b20ffea6584be3b` |
-| R6 scientific-content commit | `648691e9225359d0983d71fa332408fc7bdbadd9` |
 | P1E source commit | `4e461c10f069cd7eb4614e7d52b886637dff134b` |
 | P1E source tree | `2474126498a50b0315d0a6e5ab703f0717c00a79` |
-| R5 candidate tag | `afp-r5-internal-rc-20260822` |
-| renewed internal AI review disposition | `MAJOR REVISION` |
+| latest independent internal AI review disposition | `MINOR REVISION` |
 | human peer review or acceptance | not claimed; later independent review required |
 
 ## Publication inputs and outputs
 
 | File | SHA-256 |
 |---|---|
-| `FLAGSHIP_MANUSCRIPT.md` | `6bc2423c8e043de990ec1123cf099649e0b86faa67cbffa863f6d15c182a9446` |
+| `FLAGSHIP_MANUSCRIPT.md` | `b33b643423a76de15bd4f056a3767dab9c686398e9a3af80396cfaf645da6520` |
 | `priority_sources.bib` | `03778dd79c59bf24d26b1ea1224a5880612c7d9babced3994d602533cea83267` |
 | `proof_dependency_graph.png` | `dd89357db56a4ee063331eae55ee5d0054a8c2c154669a2c85e4828d2d34dfbb` |
-| `output/pdf/FLAGSHIP_MANUSCRIPT.pdf` | `c65756010a9b1c778db693389aaa2e8e96379be501f2f30fcf9326679302050f` |
-| `release/certificates/theorem_7_2/certificate.json` | `ff8f1b13a64d8a4f0ca281853d689f5aaf86f22db74cb0c3e4f0c9fe118484cc` |
-| `release/certificates/theorem_7_2/verify_certificate.py` | `82312039833840a11bbf83dc662e471f2e7ac7e83c112d32974a8d97cc55427a` |
+| `output/pdf/FLAGSHIP_MANUSCRIPT.pdf` | `dcd740a44b83263857f8f3663d1236398888d949f8ce6a3a9c76eded9340948f` |
+| `release/certificates/theorem_7_2/certificate.json` | `ededef85140b4415e1c48249d77ea7fe42345bbb7a0d36d1f150ef3caee747a6` |
+| `release/certificates/theorem_7_2/verify_certificate.py` | `22965257284a9e038843eebd34beb133742ab185d5268a2a04f4b097f8a8b250` |
 
-The selected PDF has 26 US-letter pages, no form, encryption, or JavaScript,
-and the expected title metadata. Extraction with the bundled PDF runtime gave
-10,834 whitespace-delimited words. All 26 pages were rendered with Poppler
-26.05 and visually inspected; the final build had no TeX box-overflow
-warnings. PDF container bytes may vary across TeX/font environments, so the
-selected artifact is bound by the digest above.
+The selected PDF has 26 US-letter pages, 352,550 bytes, no form, encryption,
+or JavaScript, and the expected title metadata. Extraction with the bundled
+PDF runtime gave 10,860 whitespace-delimited words. All 26 pages were rendered
+with Poppler 26.05 and visually inspected; changed pages 14--16 were also
+inspected at full resolution. The final build had no TeX box-overflow warning.
+PDF container bytes may vary across TeX/font environments, so the selected
+artifact is bound by the digest above.
 
-## R7 authoring environment
+## R8 authoring environment
 
 ```text
 Python 3.12.10 (system); 3.12.13 (bundled PDF runtime)
-matplotlib 3.11.1
 pandoc 3.8.3
 Tectonic 0.17.0
 Poppler 26.05.0
 SOURCE_DATE_EPOCH=1785900000
 ```
 
-The acquisition gate records the full machine preflight. R7 downloaded no
-software and used only already-local tools, the copied R6 Lean build/config
-state, a junction to an already-local Mathlib package tree, and an already-
-local Tectonic cache.
+The acquisition gate records the full machine preflight. R8 downloaded no
+software and used only already-local tools, R7 Lean build/config state, a
+junction to the already-local pinned Mathlib tree, the read-only R5 numerical
+package target, and the copied R7 Tectonic cache.
 
 ## Build and verification commands
 
 From the repository root:
 
 ```powershell
-$env:AFP_PDF_ENGINE='C:\Users\joshu\.codex\dependencies\workspace-tools\tectonic\tectonic.exe'
-$env:TECTONIC_CACHE_DIR="$PWD\tmp\tectonic-cache"
-python docs\publication_program\p1f_manuscript\build_flagship_paper.py
-python afp_barrier_gate1\release\certificates\theorem_7_2\verify_certificate.py
-python afp_barrier_gate1\release\tools\validate_flagship.py
+$env:AFP_PDF_ENGINE='C:\Users\joshu\.codex\plugins\cache\openai-bundled\latex\0.2.6\bin\tectonic.exe'
+$env:TECTONIC_CACHE_DIR="$PWD\tmp\pdfs\tectonic-cache"
+py -3.12 docs\publication_program\p1f_manuscript\build_flagship_paper.py
+py -3.12 afp_barrier_gate1\release\certificates\theorem_7_2\verify_certificate.py
+py -3.12 afp_barrier_gate1\release\tools\validate_flagship.py
 ```
 
 The verifier uses only the Python standard library, rational arithmetic, and
 an exact implementation of `Q(sqrt(58))`; it neither imports the construction
-audits nor uses floating point. The trusted computing base and residual
-analytic boundary are stated in the certificate README and manuscript.
+audits nor uses floating point. The ordinary recurrence and telescoping proof
+remain outside it.
 
 ## Release-gate boundary
 
 The historical P1F workflow remains provenance only and does not certify the
-R7 delta. The consolidated R7 validator binds the revised manuscript, exact
-certificate, independent verifier, Lean declaration/axiom audit, exact audit
-suite, P2F inconclusive records, and release manifests. A passing internal
-gate is not human peer review or publication acceptance.
+R8 delta. The consolidated R8 validator binds the revised manuscript,
+certificate v3, independent verifier, Lean declaration/axiom audit, exact
+audit suite, P2F inconclusive records, and release manifests. A passing
+internal gate is not human peer review or publication acceptance.

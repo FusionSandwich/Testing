@@ -65,7 +65,10 @@ def main() -> None:
     require(b"/JavaScript" not in pdf, "PDF JavaScript")
     require(b"/Encrypt" not in pdf, "PDF encryption")
 
-    print("AFP_R7_FLAGSHIP_SOURCE_PASS")
+    require("$\\alpha_*=256/M_0$" in source, "transition-envelope notation")
+    require("q_{\\rm sep}^*=(4M_0)^{-1}" in source, "full separation constant")
+    require("q_{\\rm pack}^*=\\frac12q_{\\rm sep}^*=(8M_0)^{-1}" in source, "packing radius constant")
+    print("AFP_R8_FLAGSHIP_SOURCE_PASS")
     print(f"citations={len(cited)}")
     print(f"source_sha256={sha256(SOURCE)}")
     print(f"figure_sha256={sha256(FIGURE)}")

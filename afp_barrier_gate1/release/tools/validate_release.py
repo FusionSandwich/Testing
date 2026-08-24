@@ -1,4 +1,4 @@
-"""Fail-closed structural validation for the AFP R7 release."""
+"""Fail-closed structural validation for the AFP R8 release."""
 
 from __future__ import annotations
 
@@ -108,6 +108,9 @@ def main() -> None:
         "Theorem 7.2 discrete sequence is not explicit",
     )
     require("e^{-513/M_0}" in flagship, "corrected transition-product lower bound")
+    require("$\\alpha_*=256/M_0$" in flagship, "transition-envelope notation")
+    require("q_{\\rm sep}^*=(4M_0)^{-1}" in flagship, "full separation constant")
+    require("q_{\\rm pack}^*=\\frac12q_{\\rm sep}^*=(8M_0)^{-1}" in flagship, "packing radius constant")
     require(
         "exact weighted decomposition of the frontier excess" not in flagship.lower(),
         "false frontier-excess decomposition wording",
@@ -118,6 +121,9 @@ def main() -> None:
     ).read_text(encoding="utf-8")
     require("\\gamma_{ij}={\\Gamma_{ij}\\over W}" in supplement, "P1E Gamma/W normalization")
     require("e^{-513/M_0}" in supplement, "P1E corrected transition-product bound")
+    require("\\(\\alpha_m=256/M_m\\)" in supplement, "P1E transition-envelope notation")
+    require("q_{\\rm pack}^*=q_*/2=1/(8M_0)" in supplement, "P1E packing radius distinction")
+    require("recurrence closure" not in supplement.lower(), "P1E recurrence-scope overclaim")
 
     certificate_dir = RELEASE / "certificates" / "theorem_7_2"
     certificate = load_json(certificate_dir / "certificate.json")
@@ -126,12 +132,29 @@ def main() -> None:
         "Theorem 7.2 certificate classification",
     )
     require(
-        certificate["schema"] == "afp-theorem-7.2-exact-rational-certificate-v2",
+        certificate["schema"] == "afp-theorem-7.2-exact-rational-certificate-v3",
         "Theorem 7.2 certificate schema",
     )
     require(
         certificate["claim_boundary"]["whole_theorem_machine_verified"] is False,
         "whole-theorem certificate overclaim",
+    )
+    ordinary_budget = certificate["ordinary_rows_finite_rational_budgets"]
+    require(
+        ordinary_budget["z_squared_denominator_guard_upper"] == "1/16",
+        "ordinary z-squared denominator guard",
+    )
+    require("z_upper" not in ordinary_budget, "ambiguous z_upper alias")
+    geometry = certificate["positivity_geometry_normalization"]
+    require(
+        geometry["pairwise_separation_constant"]
+        == "1/4835703278458516698824704",
+        "full pairwise separation constant",
+    )
+    require(
+        geometry["packing_radius_constant"]
+        == "1/9671406556917033397649408",
+        "half-separation packing constant",
     )
     verifier = certificate_dir / "verify_certificate.py"
     verified = subprocess.run(
@@ -147,7 +170,7 @@ def main() -> None:
         "Theorem 7.2 verifier pass marker",
     )
     require(
-        "hostile_mutations=3/3 rejected" in verified.stdout,
+        "hostile_mutations=4/4 rejected" in verified.stdout,
         "Theorem 7.2 mutation-test marker",
     )
 
@@ -193,18 +216,19 @@ def main() -> None:
         "COUNTEREXAMPLE_LEDGER.md",
         "SOURCE_OF_TRUTH_MAP.md",
         "HOSTILE_AI_REVIEW_R7_RESPONSE.md",
+        "INDEPENDENT_AI_REVIEW_R8_RESPONSE.md",
     }
     missing_release_files = sorted(
         name for name in required_release_files if not (RELEASE / name).is_file()
     )
     require(not missing_release_files, f"missing release files: {missing_release_files}")
 
-    response = (RELEASE / "HOSTILE_AI_REVIEW_R7_RESPONSE.md").read_text(encoding="utf-8")
-    require("internal AI adversarial review" in response, "review identity boundary")
+    response = (RELEASE / "INDEPENDENT_AI_REVIEW_R8_RESPONSE.md").read_text(encoding="utf-8")
+    require("independent internal AI adversarial review" in response, "review identity boundary")
     require("not identifiable external human peer review" in response, "human-review firewall")
-    require("Blocker 1" in response and "Blocker 4" in response, "four-blocker response")
+    require("Finding 1" in response and "Finding 3" in response, "three-finding response")
 
-    print("AFP_R7_RELEASE_STRUCTURE_PASS")
+    print("AFP_R8_RELEASE_STRUCTURE_PASS")
     print(f"lean_declarations={len(names)}")
     print(f"lean_axioms={','.join(sorted(observed))}")
     print(f"p2f={p2f['scientific_outcome']}")

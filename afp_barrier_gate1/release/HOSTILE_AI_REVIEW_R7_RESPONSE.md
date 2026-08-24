@@ -18,14 +18,16 @@ The bound `|epsilon_m|<256/M_m` did not imply
 
 ### R7 mathematical repair
 
-Set `a_m=256/M_m` and `a_*=256/M0`. For `|x|<=a_*<1`, R7 uses
+In the corrected R8 notation, set `alpha_m=256/M_m` and
+`alpha_*=256/M0`. The symbol `a_0=4/3` is reserved for the polar latitude.
+For `|x|<=alpha_*<1`, the estimate used in R7 is
 
-`log(1+x) >= x-x^2/[2(1-a_*)]` and `log(1+x)<=x`.
+`log(1+x) >= x-x^2/[2(1-alpha_*)]` and `log(1+x)<=x`.
 
 The exact geometric sums are
 
-`sum_{m<J} a_m < 512/M0` and
-`sum_{m<J} a_m^2 < 262144/(3 M0^2)`.
+`sum_{m<J} alpha_m < 512/M0` and
+`sum_{m<J} alpha_m^2 < 262144/(3 M0^2)`.
 
 Because `262144<6(M0-256)`, the second-order remainder is less than
 `1/M0`. Therefore every finite theorem level satisfies
@@ -33,7 +35,7 @@ Because `262144<6(M0-256)`, the second-order remainder is less than
 `exp(-513/M0) < prod_{m<J}(1+epsilon_m) < exp(512/M0)`.
 
 The v2 verifier also rejects the old lower exponent constructively. At level
-`J=80`, take every `epsilon_m=-a_m`. The exact inequality
+`J=80`, take every `epsilon_m=-alpha_m`. The exact inequality
 `log(1-a)<=-a-a^2/2` and rational summation show that the accumulated log
 magnitude is already greater than `512/M0`.
 

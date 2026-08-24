@@ -1,24 +1,35 @@
-# R7 hostile-review repair bundle
+# R8 independent-review repair bundle
 
 Status: `PREPARED_FOR_LATER_INDEPENDENT_REVIEW`; no acceptance is certified.
 
-The renewed ChatGPT Pro task `Review Math Revision Branch` in project `Math`
-returned **MAJOR REVISION**. This was an internal AI adversarial review, not
-identifiable external human peer review. R7 answers its four blockers without
-relabeling R6 as passed. The line-by-line response is
-`HOSTILE_AI_REVIEW_R7_RESPONSE.md`.
+The independent Math-project review examined exact clean R7 head
+`e5d023e50ead92f9d87c7e625860225b4e6aa89b` and returned **MINOR REVISION**.
+This was an independent internal AI adversarial review, not identifiable
+external human peer review. R8 answers exactly its three findings. The
+line-by-line response is `INDEPENDENT_AI_REVIEW_R8_RESPONSE.md`.
 
-## R7 blocker repairs prepared for review
+## R8 minor-revision repairs prepared for review
+
+1. The polar latitude keeps the exclusive notation `a_0=4/3`; the transition
+   envelope is `alpha_m=256/M_m`, `alpha_*=256/M_0` throughout.
+2. Theorem, supplement, certificate, and verifier distinguish the full
+   pairwise-separation constant `1/(4M_0)` from the packing-ball radius
+   `1/(8M_0)` and preserve their factor-two relation.
+3. Certificate v3 calls `1/16` the `z^2` denominator guard and describes the
+   verifier's scope as finite rational recurrence budgets. The ordinary
+   recurrence and telescoping identity remain outside the verifier.
+
+## Earlier R7 blocker repairs retained
 
 1. Theorem 7.2 uses the correct signed second-order transition estimate,
-   giving lower exponent `-513/M0`; the v2 checker rejects the old `-512/M0`
+   giving lower exponent `-513/M0`; the v3 checker rejects the old `-512/M0`
    bound with an all-negative level-80 mutation.
 2. Theorem 7.2 remains explicitly classified as
    `COMPUTER_ASSISTED_EXACT_RATIONAL`. The article prints the transition
    matrix, phase box, determinant/inverse/cone margins, Cauchy and Neumann
    guards, polar determinant/derivative bounds, recurrence, discrete scale
    sequence, and trusted computing base.
-3. The v2 certificate explicitly narrows its claim boundary and checks the
+3. The certificate explicitly narrows its claim boundary and checks the
    arbitrary-`J` rational transition budget, positivity/geometry/normalization
    coefficient chains, final constants, and hostile mutations. Source hashes
    bind provenance only. The schedule, row equations, analytic Cauchy bounds,
@@ -99,6 +110,6 @@ the release to `BLOCKED_BY_SPECIFIC_MATHEMATICAL_GAP`. A numerical or physical
 failure does not invalidate the pure frontier unless it falsifies a stated
 finite construction premise; it does block the corresponding numerical claim.
 
-Passing internal checks does not clear the internal AI **MAJOR REVISION**
-disposition and cannot create a human peer-review claim. A later independent
+Passing internal checks does not itself clear the latest internal AI **MINOR
+REVISION** disposition and cannot create a human peer-review claim. A later independent
 human specialist report is required for that classification.

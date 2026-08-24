@@ -1,4 +1,4 @@
-# R7 Lean claim and signature audit
+# R8 Lean claim and signature audit
 
 ## Exact release result
 
@@ -14,7 +14,7 @@
   axiom dependency.
 
 The historical six audit files covered 430/512 declarations in aggregate;
-`AxiomAudit.lean` alone covered 189 while claiming completeness. R7 preserves
+`AxiomAudit.lean` alone covered 189 while claiming completeness. R8 preserves
 it as a legacy focused audit and adds the generated exhaustive
 `AFPBarrier/ReleaseAxiomAudit.lean`. Generation stops if the reviewed count
 changes from 512.
@@ -46,9 +46,12 @@ changes from 512.
 - No Lean theorem formalizes a P1E perturbation radius, a complete adaptive
   ring proof, a transport-improvement result, or a physical HTS model.
 - Theorem 6.1 and Corollary 6.2 map to the exact declarations listed in the
-  manuscript. The former Corollary 6.3 is non-theorem discussion in R7; Lean
+  manuscript. The former Corollary 6.3 is non-theorem discussion in R8; Lean
   path and scalar lemmas are not promoted to one global geometric-stability
   signature.
 
-Controlling artifacts: `LEAN_DECLARATION_INDEX.json`,
-`AFPBarrier/ReleaseAxiomAudit.lean`, and `LEAN_RELEASE_AUDIT.log`.
+Controlling artifacts: `LEAN_DECLARATION_INDEX.json` and
+`AFPBarrier/ReleaseAxiomAudit.lean`. The checked-in `LEAN_RELEASE_AUDIT.log`
+is the inherited R7 output; R8 freshly reruns the same generated 512-signature
+and axiom command and records its independently reproduced summary in the
+validation report.
