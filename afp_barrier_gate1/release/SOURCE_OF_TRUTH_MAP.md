@@ -42,7 +42,7 @@ archive names are provenance labels only; the SHA is controlling. Every
 | R6 final head / R7 base | `codex/afp-major-revision-r6-20260823` | `da137c157dbc92774cbf7e378efb5bf360be6ceb` | descendant of R6 scientific content | `AUTHORITATIVE_R7_BASE` |
 | R7 scientific content | `codex/afp-major-revision-r7-20260824` | `d77295e8de3da230626818698b20ffea6584be3b` | direct R6-final descendant | `INTERNAL_REPAIR_CANDIDATE_AWAITING_INDEPENDENT_HOSTILE_REVIEW` |
 | R7 final head / R8 base | `codex/afp-major-revision-r7-20260824` | `e5d023e50ead92f9d87c7e625860225b4e6aa89b` | descendant of R7 scientific content | `INDEPENDENT_AI_REVIEWED_MINOR_REVISION` |
-| R8 scientific content | `codex/afp-major-revision-r8-20260824` | recorded in final packaging commit | direct R7-final descendant | `INTERNAL_REPAIR_CANDIDATE_AWAITING_LATER_REVIEW` |
+| R8 scientific content | `codex/afp-major-revision-r8-20260824` | `9d89b91dd0882146dc4d77cfe05bd954f855791c` | direct R7-final descendant | `INTERNAL_REPAIR_CANDIDATE_AWAITING_LATER_REVIEW` |
 
 ## Divergent and noncanonical lines
 

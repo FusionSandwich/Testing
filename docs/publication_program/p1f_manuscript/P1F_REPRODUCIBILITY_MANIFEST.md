@@ -21,7 +21,7 @@ ordinary-row claim to finite rational recurrence budgets.
 | repository | `FusionSandwich/Testing` |
 | R8 branch | `codex/afp-major-revision-r8-20260824` |
 | exact R8 base | `e5d023e50ead92f9d87c7e625860225b4e6aa89b` |
-| R8 scientific-content commit | recorded in final packaging commit |
+| R8 scientific-content commit | `9d89b91dd0882146dc4d77cfe05bd954f855791c` |
 | R7 scientific-content commit | `d77295e8de3da230626818698b20ffea6584be3b` |
 | P1E source commit | `4e461c10f069cd7eb4614e7d52b886637dff134b` |
 | P1E source tree | `2474126498a50b0315d0a6e5ab703f0717c00a79` |
