@@ -6,7 +6,7 @@
 - Branch: `codex/afp-major-revision-r7-20260824`
 - Exact R6 parent: `da137c157dbc92774cbf7e378efb5bf360be6ceb`
 - R6 scientific snapshot: `648691e9225359d0983d71fa332408fc7bdbadd9`
-- R7 scientific-content commit: recorded in the final packaging commit
+- R7 scientific-content commit: `d77295e8de3da230626818698b20ffea6584be3b`
 - Renewed ChatGPT Pro review `Review Math Revision Branch` in project `Math`:
   **MAJOR REVISION**
 - Review identity: internal AI adversarial review, not identifiable external

@@ -102,9 +102,9 @@
       "sha256": "daaf41a34c5b667160920218c4618d78c9496cc0dfc053c9026d9af8e9a82356"
     },
     {
-      "bytes": 4148,
+      "bytes": 4152,
       "path": "afp_barrier_gate1/release/FINAL_REPORT.md",
-      "sha256": "ab02d2d04337d7a7ad57aa643b1f34a7a218de023a5b1a6c2299206025587498"
+      "sha256": "706a2120e406970ff2078ca2acf333eb6d804e3b412eeac64af94bd988bf8a87"
     },
     {
       "bytes": 398,
@@ -222,9 +222,9 @@
       "sha256": "3738be3a372837047f59db074ed96ace697fe3f658547686950884bf6c05c898"
     },
     {
-      "bytes": 6996,
+      "bytes": 7004,
       "path": "afp_barrier_gate1/release/SOURCE_OF_TRUTH_MAP.md",
-      "sha256": "9ec2e6f1faac9d3e8b284fcbb6b3ded164353619c52d787528e57b83328c0183"
+      "sha256": "95171b9c4c3a5e4e3d9764cc45b306d868d2f429f0cf996fe718719ba6ca1b90"
     },
     {
       "bytes": 2532,
@@ -327,9 +327,9 @@
       "sha256": "6bc2423c8e043de990ec1123cf099649e0b86faa67cbffa863f6d15c182a9446"
     },
     {
-      "bytes": 4094,
+      "bytes": 4172,
       "path": "docs/publication_program/p1f_manuscript/P1F_REPRODUCIBILITY_MANIFEST.md",
-      "sha256": "d2a1cb3ecd302463970413a34de1dd32d965040e83c24b66481166d61c990baa"
+      "sha256": "36b9a6aae327a10739a15df21b75d46a29b7519c8c3b9709630e5864892f7222"
     },
     {
       "bytes": 5072,
