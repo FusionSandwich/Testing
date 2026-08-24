@@ -1,0 +1,28 @@
+name: Harborth Lean CI sandbox
+
+on:
+  push:
+    branches:
+      - agent/harborth-ci-sandbox-20260824
+  pull_request:
+    branches:
+      - testing
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: harborth_ci
+          build: true
+          test: false
+          lint: false
+          use-github-cache: true
+          use-mathlib-cache: true
