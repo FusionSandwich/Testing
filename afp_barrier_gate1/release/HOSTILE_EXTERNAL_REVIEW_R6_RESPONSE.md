@@ -1,7 +1,8 @@
-# R6 response to the hostile external review
+# Historical R6 response to the first internal AI adversarial review
 
-External disposition being answered: **MAJOR REVISION**. R6 does not claim
-that the reviewer has accepted this response.
+The legacy filename is retained for provenance. The review was a ChatGPT Pro
+adversarial review, not identifiable external human peer review. Its recorded
+disposition was **MAJOR REVISION**. R6 did not clear that disposition.
 
 ## Publication blocker B1: former Corollary 6.3
 
@@ -17,9 +18,10 @@ hierarchy, Appendix B map, pure-release statement, claim matrix, and structural
 validator now identify only Theorem 6.1 and Corollary 6.2 as unconditional
 stability results. The validator fails if the phrase `Corollary 6.3` returns.
 
-**Resulting claim.** The manuscript proves an exact weighted decomposition of
-frontier excess into radial and anisotropy defects and an explicit weighted
-concentration consequence. It does not assert unconditional pointwise or
+**R7 correction to this historical response.** The manuscript proves an exact
+weighted defect decomposition relative to the trace lower bound, plus an
+explicit weighted concentration consequence. It does not identify that budget
+with the full frontier excess and does not assert unconditional pointwise or
 global embedding stability.
 
 ## Publication blocker B2: Theorem 7.2 certificate boundary
@@ -79,4 +81,4 @@ model-validation, physical-prediction, or HTS-performance claim from P2F.
 
 The requested next step is renewed independent review of the repaired
 manuscript and certificate. The repository records no claim of external
-acceptance, journal readiness, submission, or publication.
+human peer-review acceptance, journal readiness, submission, or publication.

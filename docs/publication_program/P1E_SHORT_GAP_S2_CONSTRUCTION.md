@@ -431,8 +431,28 @@ Indeed (6.4) and (5.4) give \(|A_f|<7\), while
 \(a>1/5\) give \(0<\rho\le1\) and
 \(1-\rho<(g+1)\pi/(M_ma)<32/M_m\).  Therefore
 \(|(2U_{+,f})\rho-1|<256/M_m\), proving (7.7) rather than assuming it.
-Thus \(\prod_m(1+\varepsilon_m)\) is between
-\(e^{-512/M_0}\) and \(e^{512/M_0}\).  Equations
+Put \(a_m=256/M_m\) and \(a_*=a_0=256/M_0\).  For
+\(|x|\le a_*<1\), the power series (or its integral remainder) gives the
+signed second-order estimate
+\[
+ \log(1+x)\ge x-{x^2\over2(1-a_*)},
+ \qquad \log(1+x)\le x.                               \tag{7.7a}
+\]
+Consequently, for every finite level \(J\),
+\[
+ \sum_{m<J}a_m<{512\over M_0},\qquad
+ \sum_{m<J}a_m^2<{262144\over3M_0^2},
+ \qquad {1\over2(1-a_*)}\sum_{m<J}a_m^2<{1\over M_0}. \tag{7.7b}
+\]
+The last comparison is exact because
+\(262144<6(M_0-256)\).  Applying (7.7a) term by term to (7.7) therefore gives
+the correct two-sided cumulative estimate
+\[
+ e^{-513/M_0}<\prod_{m<J}(1+\varepsilon_m)<e^{512/M_0}. \tag{7.7c}
+\]
+In particular every factor is positive.  The previous lower exponent
+\(-512/M_0\) is not used: it would require the false inequality
+\(\log(1+x)\ge-|x|\) for negative \(x\).  Equations
 (7.4)--(7.7), rather than a per-row bound iterated through \(J\), give global
 shared-conductance bounds.  Including mask entries and horizontal solutions,
 one may take the intentionally huge level-independent constants
@@ -576,11 +596,18 @@ Disjoint geodesic balls of radius \(q_*h/2\), together with
 This includes the two polar caps; no separate unproved cap-packing constant
 is used.
 
-Set
+Write \(\Gamma_{ij}=\Gamma_{ji}>0\) for the preliminary stresses constructed
+in Sections 2--8 and set
 \[
- \mu_i={1\over2}\sum_j\gamma_{ij}\ell_{ij},\qquad
- W=\sum_i\mu_i,\qquad w_i={\mu_i\over W}.             \tag{9.3}
+ \mu_i={1\over2}\sum_j\Gamma_{ij}\ell_{ij},\qquad
+ W=\sum_i\mu_i,\qquad w_i={\mu_i\over W},\qquad
+ \gamma_{ij}={\Gamma_{ij}\over W}.                   \tag{9.3}
 \]
+Thus \(\gamma\), not \(\Gamma\), is the normalized conductance used in the
+main manuscript.  The directed generator rates are
+\(a_{ij}=\gamma_{ij}/w_i=\Gamma_{ij}/\mu_i\); the common factor \(W^{-1}\)
+cancels and detailed balance is
+\(w_i a_{ij}=\gamma_{ij}=w_j a_{ji}\).
 The active-edge lower bound \(h/8\), the window \(5h\), (7.8), and the
 degree bound give
 \[
@@ -591,13 +618,13 @@ Together with (9.2), this yields the explicit normalized weight floor
 \[
  w_i\ge {\gamma_-q_*^2\over1600\pi^4D\gamma_+}h^2.  \tag{9.5}
 \]
-The exact row equations give
+The exact row equations for the preliminary stresses give
 \[
- \sum_j\gamma_{ij}(\Omega_j-\Omega_i)=-2\mu_i\Omega_i, \tag{9.6}
+ \sum_j\Gamma_{ij}(\Omega_j-\Omega_i)=-2\mu_i\Omega_i, \tag{9.6}
 \]
-so the normalized generator is reversible and satisfies
+so the generator with \(a_{ij}=\gamma_{ij}/w_i\) is reversible and satisfies
 \(L1=0,L\Omega=-2\Omega\) exactly.  If
-\(R_i=\sum_j\gamma_{ij}\ell_{ij}^2\), loss-force and tangent isotropy give
+\(R_i=\sum_j\Gamma_{ij}\ell_{ij}^2\), loss-force and tangent isotropy give
 \[
  M_i=\operatorname{diag}(R_i/\mu_i,-R_i/(2\mu_i),-R_i/(2\mu_i))
  ={3R_i\over2\mu_i}Z_i.                              \tag{9.7}
@@ -615,9 +642,9 @@ This diagonal multiplier descends to the quotient because
 Every active edge has chord length at least \(h/8\): the worst case is the
 fine transition jump one; the adaptive lower jump, first-ring jumps,
 transition radial edges, and equator jump two have larger fixed margins.
-Since \(\sum_j\gamma_{ij}\ell_{ij}=2\mu_i\),
+Since \(\sum_j\Gamma_{ij}\ell_{ij}=2\mu_i\),
 \[
- r_i={2\sum_j\gamma_{ij}\over\sum_j\gamma_{ij}\ell_{ij}}
+ r_i={2\sum_j\Gamma_{ij}\over\sum_j\Gamma_{ij}\ell_{ij}}
  \le {2\over\ell_{\min}}\le64\pi^2h^{-2}.             \tag{9.10}
 \]
 Thus take \(R_3=64\pi^2\).  The proved P1B lower bound yields the matching

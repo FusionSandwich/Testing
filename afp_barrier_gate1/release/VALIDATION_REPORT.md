@@ -1,31 +1,28 @@
-# R6 internal validation report
+# R7 internal validation report
 
-Date: 2026-08-23 EDT
+Date: 2026-08-24 EDT
 
-Status: `INTERNAL_R6_REPAIR_CANDIDATE_AWAITING_EXTERNAL_REVIEW`
+Status: `INTERNAL_R7_REPAIR_CANDIDATE_AWAITING_INDEPENDENT_HOSTILE_REVIEW`
 
-## Review findings independently reproduced
+The triggering ChatGPT Pro review `Review Math Revision Branch` in project
+`Math` ended **MAJOR REVISION**. It is an internal AI adversarial review, not
+identifiable external human peer review, and R7 does not relabel R6 as passed.
 
-- The R5 item labeled Corollary 6.3 was a list of qualitative transfers, not an
-  auditable theorem with a single complete hypothesis/constant surface.
-- The R5 Theorem 7.2 derivation programs existed, but the article did not print
-  enough exact certificate data or disclose a small independently checkable
-  trusted boundary.
-- No counterexample was found to the core finite-dimensional frontier,
-  equality characterization, or exact weighted defect budget.
+## Repairs verified
 
-## R6 repairs
-
-- Former Corollary 6.3 is explicitly non-theorem discussion. It states the
-  additional hypotheses each possible transfer would require and forbids
-  theorem citation or unconditional global embedding-stability inference.
-- Theorem 7.2 now prints the limiting system, determinant/inverse/positivity
-  margins, rational Cauchy/Neumann guards, polar-row guards, recurrence, and
-  discrete scale `h_J`, `J>=1`.
-- `release/certificates/theorem_7_2` contains an exact JSON certificate, a
-  standard-library independent verifier, and its trusted-computing-base note.
-- The manuscript carries a row for every numbered result, naming exact Lean
-  declarations, ordinary proof, certificate, external input, and open boundary.
+- Theorem 7.2 uses a valid signed, second-order logarithmic estimate. The exact
+  lower exponent is `513/M_0`; an exact `J=80` hostile instance rejects the old
+  `512/M_0` lower exponent.
+- The version-2 certificate verifier derives theorem-scale schedule sums,
+  transition errors, cumulative-product bounds, positivity margins, geometry,
+  `gamma=Gamma/W` normalization, rate floors, and final constants. It rejects
+  three mutations and narrows its own trusted boundary.
+- The P1E supplement and manuscript consistently distinguish preliminary and
+  normalized conductances.
+- The core frontier, equality chain, and weighted defect budget were
+  independently rederived. The manuscript now describes an exact defect
+  decomposition relative to the trace lower bound, not the full frontier
+  excess.
 
 ## Checks
 
@@ -34,20 +31,22 @@ Status: `INTERNAL_R6_REPAIR_CANDIDATE_AWAITING_EXTERNAL_REVIEW`
   axiom reports; only `propext`, `Classical.choice`, and `Quot.sound`; no
   `sorryAx`.
 - Exact/symbolic/hostile/certificate aggregate: `PASS`, 14 checks.
-- Independent Theorem 7.2 verifier: `PASS`; no floating point or third-party
-  imports; certificate SHA-256
-  `093acef16582ec6ca0039b4a7408fc265871bdc849eef383905bd92b591b86cd`.
-- Repository-owned Python suites: one known platform-sensitive threshold
-  failure in the full run; `180 passed, 1 deselected` in the scoped pass run.
+- Independent Theorem 7.2 verifier: `PASS`; exact `Q` and `Q(sqrt(58))`
+  arithmetic, no floating point or third-party imports, and 3/3 hostile
+  mutations rejected. Certificate SHA-256:
+  `ff8f1b13a64d8a4f0ca281853d689f5aaf86f22db74cb0c3e4f0c9fe118484cc`.
+- Repository-owned Python suites: the full run produced the one frozen
+  platform-sensitive failure; the scoped run produced `180 passed, 1
+  deselected, 2 warnings` in 17.33 seconds.
 - P2F integrity: `PASS`; scientific outcome remains
   `INCONCLUSIVE_REFERENCE_NOT_CONVERGED`.
-- The fixed 14-file P2F checksum list was regenerated because R5 bound CRLF
-  worktree bytes while R6 checks the same tracked text out as LF; no P2F
-  scientific payload or classification changed.
 - Manuscript source/citations: `PASS`, 13 cited records with exact BibTeX set
   equality.
-- PDF: 25 letter pages, 349,813 bytes, no form, JavaScript, or encryption;
-  final build had no box-overflow warnings; all 25 pages visually inspected.
+- PDF: 26 letter pages, 352,024 bytes, no form, JavaScript, or encryption; no
+  box-overflow warning; all 26 pages inspected in contact sheets and the
+  changed load-bearing pages inspected at full resolution.
+- Release structural validation: `PASS` with R7 markers and certificate-v2
+  boundary checks.
 
-The external R5 **MAJOR REVISION** decision is not self-cleared by these
-checks. R6 requires renewed independent review.
+These internal checks do not clear the **MAJOR REVISION** decision. R7 requires
+a new independent, non-concurrent hostile review.

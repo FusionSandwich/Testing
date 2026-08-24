@@ -52,6 +52,11 @@ def main() -> None:
     require("Open problem 7.3" in source, "robustness problem not open")
     require("The `d=3` perturbation proposition" not in source, "stale proposition wording")
     require("P1E_SHORT_GAP_S2_CANDIDATE_THEOREM" not in source, "candidate leak")
+    require("e^{-513/M_0}" in source, "corrected transition-product lower bound")
+    require(
+        "exact weighted decomposition of the frontier excess" not in source.lower(),
+        "false frontier-excess wording",
+    )
     for path in (SOURCE, BIBLIOGRAPHY, FIGURE, PDF):
         require(sha256(path) in record, f"unbound artifact: {path.name}")
     pdf = PDF.read_bytes()
@@ -60,7 +65,7 @@ def main() -> None:
     require(b"/JavaScript" not in pdf, "PDF JavaScript")
     require(b"/Encrypt" not in pdf, "PDF encryption")
 
-    print("AFP_R6_FLAGSHIP_SOURCE_PASS")
+    print("AFP_R7_FLAGSHIP_SOURCE_PASS")
     print(f"citations={len(cited)}")
     print(f"source_sha256={sha256(SOURCE)}")
     print(f"figure_sha256={sha256(FIGURE)}")

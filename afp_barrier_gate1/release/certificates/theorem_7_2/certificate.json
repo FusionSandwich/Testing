@@ -1,8 +1,14 @@
 {
-  "schema": "afp-theorem-7.2-exact-rational-certificate-v1",
+  "schema": "afp-theorem-7.2-exact-rational-certificate-v2",
   "theorem": "FLAGSHIP_MANUSCRIPT Theorem 7.2",
   "classification": "COMPUTER_ASSISTED_EXACT_RATIONAL",
-  "scope": "Finite rational closure of the transition, cone, polar-row, recurrence, and published-constant inequalities after the analytic reductions printed in Section 7.2 and P1E_SHORT_GAP_S2_CONSTRUCTION.md.",
+  "scope": "Finite exact-rational closure after the ordinary analytic reductions printed in Section 7.2 and P1E_SHORT_GAP_S2_CONSTRUCTION.md. The verifier derives the transition geometric sums for arbitrary finite J, the corrected signed second-order cumulative product budget, positivity and normalization coefficient chains, and the final rate/residual/frontier constants. It does not machine-prove the transcendental schedule, row-equation derivation, Cauchy estimates, geometry, or quotient argument.",
+  "claim_boundary": {
+    "whole_theorem_machine_verified": false,
+    "source_hashes_are_proofs": false,
+    "machine_checked_components": ["Q(sqrt(58)) limiting system", "finite rational Cauchy and Neumann budgets", "polar rational budget", "arbitrary-J transition geometric sums", "signed second-order cumulative product budget", "positivity and normalization coefficient chain", "published final constants", "hostile mutations"],
+    "ordinary_proof_components": ["schedule", "literal row equations", "analytic Cauchy estimates", "ordinary-row telescoping identity", "geometry", "normalization semantics", "sampled quotient argument"]
+  },
   "family": {
     "ambient_dimension": 3,
     "levels": "J >= 1",
@@ -11,12 +17,12 @@
     "sqrt_radicand": 58
   },
   "source_bindings": {
-    "docs/publication_program/P1E_SHORT_GAP_S2_CONSTRUCTION.md": "02762da03d47828624313ba05703a0a8635e1118eb74a84a5e481e2cde2bff79",
+    "docs/publication_program/P1E_SHORT_GAP_S2_CONSTRUCTION.md": "8f3591900cdda4095bcf6f93bad15b78188c3619e11ef89bbd4cd914ac4311dd",
     "afp_barrier_gate1/pure_math/covariance/p1e_short_gap_symbolic_matrix_audit.py": "991855509a730e380b09bdeb3613f6bc5d203ab9d9cfa2f6d8c365a71babc8d6",
     "afp_barrier_gate1/pure_math/covariance/p1e_short_gap_cauchy_guard_audit.py": "3cdd5b04652cbb84f07067d46accb706930c8008fc98e4d2723faf59dcd427e9",
     "afp_barrier_gate1/pure_math/covariance/p1e_short_gap_cauchy_hostile_audit.py": "4bc3ea71b9bfdab878b58338116f77223c6d8d17172d66fae1020141193def2d",
     "afp_barrier_gate1/pure_math/covariance/p1e_short_gap_polar_guard_audit.py": "4d85e2e56b1f5bfefd4be24f73d7a95a03ec58d86e60c51aad5544d366a078d0",
-    "afp_barrier_gate1/pure_math/covariance/p1e_short_gap_proof_audit.py": "6dac7349e697839a798c3e2b18fae439a0ee27acc8a24e19ab0601a6d52105bc"
+    "afp_barrier_gate1/pure_math/covariance/p1e_short_gap_proof_audit.py": "ce527e2973b0a484304573c7d956105736dccde8d65d5332bb6ba14ebfcbecb6"
   },
   "transition_guard": {
     "disk_radius": "1/10000",
@@ -87,6 +93,40 @@
     "horizontal_solution_upper_ratio": "100",
     "shared_stress_lower_exponent": -20,
     "shared_stress_upper_exponent": 20
+  },
+  "theorem_scale_transition": {
+    "count_ratio": "2",
+    "transition_error_numerator": "256",
+    "max_transition_error": "1/4722366482869645213696",
+    "linear_sum_upper": "1/2361183241434822606848",
+    "square_sum_upper": "1/16725558898897967356151788704486271129485312",
+    "quadratic_remainder_upper": "1/1208925819614629174706176",
+    "log_lower_magnitude_upper": "513/1208925819614629174706176",
+    "log_upper_magnitude_upper": "512/1208925819614629174706176",
+    "sample_levels": [1, 2, 8, 32, 80, 257],
+    "old_lower_bound_counterexample_level": "80",
+    "rejected_log_lower_magnitude": "512/1208925819614629174706176"
+  },
+  "positivity_geometry_normalization": {
+    "mask_entry_lower": "1/64",
+    "transition_solution_lower": "1/1000",
+    "polar_solution_lower": "1/100",
+    "ordinary_horizontal_lower_ratio": "1/100",
+    "ordinary_horizontal_upper_ratio": "100",
+    "preliminary_stress_exponents": [-20, 20],
+    "separation_constant": "1/9671406556917033397649408",
+    "degree_bound": "1208925819614629174706176",
+    "active_angle_lower_multiple": "1/8",
+    "active_angle_upper_multiple": "5",
+    "node_count_rational_coefficient": "4",
+    "mu_lower_rational_denominator": "64",
+    "mu_lower_pi_power": "2",
+    "mu_upper_rational_coefficient": "25/4",
+    "weight_floor_rational_denominator": "1600",
+    "weight_floor_pi_power": "4",
+    "weight_floor_q_star_power": "2",
+    "normalized_conductance_relation": "gamma_ij = Gamma_ij / W",
+    "directed_rate_relation": "a_ij = gamma_ij / w_i = Gamma_ij / mu_i"
   },
   "published_constants": {
     "active_angle_lower_multiple": "1/8",

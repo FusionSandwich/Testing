@@ -1,4 +1,4 @@
-"""Fail-closed structural validation for the AFP R6 release."""
+"""Fail-closed structural validation for the AFP R7 release."""
 
 from __future__ import annotations
 
@@ -107,12 +107,31 @@ def main() -> None:
         "For every integer $J\\ge1$" in flagship,
         "Theorem 7.2 discrete sequence is not explicit",
     )
+    require("e^{-513/M_0}" in flagship, "corrected transition-product lower bound")
+    require(
+        "exact weighted decomposition of the frontier excess" not in flagship.lower(),
+        "false frontier-excess decomposition wording",
+    )
+
+    supplement = (
+        REPOSITORY / "docs" / "publication_program" / "P1E_SHORT_GAP_S2_CONSTRUCTION.md"
+    ).read_text(encoding="utf-8")
+    require("\\gamma_{ij}={\\Gamma_{ij}\\over W}" in supplement, "P1E Gamma/W normalization")
+    require("e^{-513/M_0}" in supplement, "P1E corrected transition-product bound")
 
     certificate_dir = RELEASE / "certificates" / "theorem_7_2"
     certificate = load_json(certificate_dir / "certificate.json")
     require(
         certificate["classification"] == "COMPUTER_ASSISTED_EXACT_RATIONAL",
         "Theorem 7.2 certificate classification",
+    )
+    require(
+        certificate["schema"] == "afp-theorem-7.2-exact-rational-certificate-v2",
+        "Theorem 7.2 certificate schema",
+    )
+    require(
+        certificate["claim_boundary"]["whole_theorem_machine_verified"] is False,
+        "whole-theorem certificate overclaim",
     )
     verifier = certificate_dir / "verify_certificate.py"
     verified = subprocess.run(
@@ -126,6 +145,10 @@ def main() -> None:
     require(
         "Theorem 7.2 exact-rational certificate: PASS" in verified.stdout,
         "Theorem 7.2 verifier pass marker",
+    )
+    require(
+        "hostile_mutations=3/3 rejected" in verified.stdout,
+        "Theorem 7.2 mutation-test marker",
     )
 
     p1f_manifest = (
@@ -169,13 +192,19 @@ def main() -> None:
         "CLAIM_EVIDENCE_MATRIX.md",
         "COUNTEREXAMPLE_LEDGER.md",
         "SOURCE_OF_TRUTH_MAP.md",
+        "HOSTILE_AI_REVIEW_R7_RESPONSE.md",
     }
     missing_release_files = sorted(
         name for name in required_release_files if not (RELEASE / name).is_file()
     )
     require(not missing_release_files, f"missing release files: {missing_release_files}")
 
-    print("AFP_R6_RELEASE_STRUCTURE_PASS")
+    response = (RELEASE / "HOSTILE_AI_REVIEW_R7_RESPONSE.md").read_text(encoding="utf-8")
+    require("internal AI adversarial review" in response, "review identity boundary")
+    require("not identifiable external human peer review" in response, "human-review firewall")
+    require("Blocker 1" in response and "Blocker 4" in response, "four-blocker response")
+
+    print("AFP_R7_RELEASE_STRUCTURE_PASS")
     print(f"lean_declarations={len(names)}")
     print(f"lean_axioms={','.join(sorted(observed))}")
     print(f"p2f={p2f['scientific_outcome']}")

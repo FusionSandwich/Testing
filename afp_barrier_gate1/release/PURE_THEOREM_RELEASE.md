@@ -2,13 +2,15 @@
 
 ## Classification
 
-The frontier, equality equations, and defect budget are proved by ordinary
+The frontier, equality equations, and defect budget relative to the trace
+lower bound are proved by ordinary
 finite mathematics, with the stated finite algebraic components Lean-checked.
 Theorem 7.2 is a computer-assisted exact-rational theorem: its analytic
 reduction is ordinary mathematics and its remaining finite rational closure is
 packaged with an independent verifier. The complete paper is not formalized.
-This is an internal repair candidate awaiting renewed independent specialist
-review; it does not claim external acceptance.
+This is an internal repair candidate after an internal AI adversarial review
+returned **MAJOR REVISION**. It awaits a later independent human specialist
+review and does not claim human peer review or acceptance.
 
 ## Sharp positive-reversible generator frontier
 
@@ -48,7 +50,8 @@ flagship manuscript. In the nonantipodal one-shell branch this yields centered
 weighted unit-norm tight frames in each tangent space. Reversibility adds
 global shared-edge compatibility; local frames alone do not classify a global
 embedding. The strongest unconditional near-extremizer statements are the
-exact weighted defect budget and exceptional-mass consequence in Theorem 6.1
+exact weighted defect budget relative to the trace lower bound and the
+exceptional-mass consequence in Theorem 6.1
 and Corollary 6.2. The former Corollary 6.3 has been demoted to non-theorem
 discussion: no pointwise, graphwise, quotient, frame-repair, or global
 embedding-stability theorem is asserted without complete additional
@@ -62,7 +65,7 @@ hypotheses and constants.
 - `COMPUTER_ASSISTED_EXACT_RATIONAL`: fixed unperturbed reflected adaptive-ring
   matching family for ambient `d=3`, along the explicit discrete sequence
   `h_J = pi/(2 S_J)`, `J>=1`, with `r_max <= 64 pi^2 h_J^-2` and
-  `D_2 <= 75 h_J^2 / 2`. The immutable certificate and standalone verifier
+  `D_2 <= 75 h_J^2 / 2`. The v2 exact-rational closure certificate and standalone verifier
   are in `release/certificates/theorem_7_2/`.
 - `OPEN`: support-preserving perturbation robustness. No radius or constants
   are release claims.

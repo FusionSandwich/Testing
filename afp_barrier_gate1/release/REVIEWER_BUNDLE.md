@@ -1,36 +1,36 @@
-# R6 hostile-review repair bundle
+# R7 hostile-review repair bundle
 
-Status: `PREPARED_FOR_RENEWED_EXTERNAL_REVIEW`; no R6 acceptance is certified.
+Status: `PREPARED_FOR_LATER_INDEPENDENT_REVIEW`; no acceptance is certified.
 
-The completed hostile external review of R5 returned **MAJOR REVISION**. It
-found no counterexample to the finite-dimensional frontier, equality, or
-defect-budget theorems, but identified two publication blockers: former
-Corollary 6.3 was not auditable as a theorem, and Theorem 7.2 did not expose an
-independently checkable exact-rational certificate. R6 repairs those defects;
-the response is internal until the external reviewer evaluates it.
+The renewed ChatGPT Pro task `Review Math Revision Branch` in project `Math`
+returned **MAJOR REVISION**. This was an internal AI adversarial review, not
+identifiable external human peer review. R7 answers its four blockers without
+relabeling R6 as passed. The line-by-line response is
+`HOSTILE_AI_REVIEW_R7_RESPONSE.md`.
 
-## R6 blocker repairs submitted for review
+## R7 blocker repairs prepared for review
 
-1. Former Corollary 6.3 is demoted to an explicitly non-theorem discussion.
-   The abstract now claims only the exact weighted defect decomposition and
-   concentration consequence. The theorem hierarchy, source map, claim
-   matrix, and validator reject any surviving `Corollary 6.3` label.
-2. Theorem 7.2 is explicitly classified as
+1. Theorem 7.2 uses the correct signed second-order transition estimate,
+   giving lower exponent `-513/M0`; the v2 checker rejects the old `-512/M0`
+   bound with an all-negative level-80 mutation.
+2. Theorem 7.2 remains explicitly classified as
    `COMPUTER_ASSISTED_EXACT_RATIONAL`. The article prints the transition
    matrix, phase box, determinant/inverse/cone margins, Cauchy and Neumann
    guards, polar determinant/derivative bounds, recurrence, discrete scale
    sequence, and trusted computing base.
-3. `release/certificates/theorem_7_2/certificate.json` binds the load-bearing
-   sources and exact constants. `verify_certificate.py` independently checks
-   the closure in `Q` and `Q(sqrt(58))` using only the Python standard library.
-4. A main-text theorem-by-theorem map names exact Lean declarations and marks
-   ordinary proof, computer-assisted certificate, external classical input,
-   and open components. No whole-paper Lean claim is made.
-5. Corollary 5.5 now cites the external convex regular-polyhedron
-   classification. Novelty language is explicitly a focused-corpus
-   positioning statement, not an exhaustive priority claim.
-6. Every summary of Theorem 7.2 identifies the discrete sequence `h_J`; no
-   every-sufficiently-small-`h` or between-scale robustness claim is made.
+3. The v2 certificate explicitly narrows its claim boundary and checks the
+   arbitrary-`J` rational transition budget, positivity/geometry/normalization
+   coefficient chains, final constants, and hostile mutations. Source hashes
+   bind provenance only. The schedule, row equations, analytic Cauchy bounds,
+   geometry, and quotient argument remain ordinary proofs.
+4. The P1E supplement now defines preliminary stresses `Gamma`, masses `mu`,
+   `W`, normalized weights `w=mu/W`, and generator conductances
+   `gamma=Gamma/W`, with `a=gamma/w=Gamma/mu`.
+5. Every release occurrence now describes Theorem 6.1 as an exact defect
+   decomposition relative to the trace lower bound, not an exact
+   decomposition of the full frontier excess.
+6. The former Corollary 6.3 remains non-theorem discussion; the discrete
+   sequence and perturbation firewalls from R6 are retained.
 
 ## Earlier internal repairs retained
 
@@ -99,5 +99,6 @@ the release to `BLOCKED_BY_SPECIFIC_MATHEMATICAL_GAP`. A numerical or physical
 failure does not invalidate the pure frontier unless it falsifies a stated
 finite construction premise; it does block the corresponding numerical claim.
 
-Passing internal checks does not clear the R5 hostile review. Only a renewed
-external report can change the external **MAJOR REVISION** disposition.
+Passing internal checks does not clear the internal AI **MAJOR REVISION**
+disposition and cannot create a human peer-review claim. A later independent
+human specialist report is required for that classification.

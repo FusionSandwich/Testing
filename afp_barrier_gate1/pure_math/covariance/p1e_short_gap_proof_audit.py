@@ -110,6 +110,25 @@ def ordinary_recurrence() -> None:
     # 16 z^3/(1-4z^2) guard.
     assert F(16, 1) / (1 - 4 * F(1, 16)) < 22
 
+    # Signed second-order cumulative transition budget.  For
+    # |eps_m| <= a_m and a_star=a_0,
+    # log(1+eps_m) >= eps_m-eps_m^2/(2(1-a_star)).
+    a_star = F(256, M0)
+    linear_sum = F(512, M0)
+    square_sum = F(262144, 3 * M0**2)
+    remainder = square_sum / (2 * (1 - a_star))
+    assert a_star < 1
+    assert remainder < F(1, M0)
+    assert linear_sum + remainder < F(513, M0)
+
+    # The old exponent 512 is genuinely unsafe.  With J=80 and every
+    # eps_m=-a_m, log(1-a_m) <= -a_m-a_m^2/2, and the exact rational lower
+    # bound on the accumulated magnitude already exceeds 512/M0.
+    j = 80
+    finite_linear = sum((F(256, M0 * 2**m) for m in range(j)), F(0))
+    finite_square = sum((F(256, M0 * 2**m) ** 2 for m in range(j)), F(0))
+    assert finite_linear + finite_square / 2 > F(512, M0)
+
 
 def reachable_horizontal_margin() -> None:
     assert F(499, 251) > F(19, 10)

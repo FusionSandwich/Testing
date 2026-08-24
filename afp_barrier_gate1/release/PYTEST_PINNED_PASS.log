@@ -1,10 +1,9 @@
-........................................................................ [ 40%]
-........................................................................ [ 80%]
-....................................                                     [100%]
-============================== warnings summary ===============================
-pure_math/tests/test_p2a_convex_design.py::test_all_seven_formulations_and_duals_clarabel
-pure_math/tests/test_p2a_convex_design.py::test_pruning_remaps_edge_groups
-  UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+AFP R7 repository Python suite, 2026-08-24 EDT
 
--- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-180 passed, 1 deselected, 2 warnings in 14.89s
+Full run: 1 failed, 180 passed, 2 warnings in 19.09s.
+Known frozen platform-sensitive failure:
+math_repo_afp/tests/test_v02_global_graph.py::test_tetrahedron_attains_global_positive_degree_two_lower_bound
+observed residual=2.7902947984069054e-15; frozen threshold=<2e-15.
+
+Scoped pass run: 180 passed, 1 deselected, 2 warnings in 17.33s.
+The source threshold was not weakened.

@@ -1,6 +1,53 @@
 # Acquisition-gate summary
 
-## R6 pre-build gate, 2026-08-23 EDT
+## R7 pre-build gate, 2026-08-24 EDT
+
+This gate was completed before the R7 worktree, build, render, or dependency
+operation. The host `VENGEANCE` runs Windows 11 and has 31.91 GiB RAM, with
+9.73 GiB free at inspection. The system volume `C:` has 23.02 GiB free of
+930.42 GiB; the target/data volume `D:` has 851.71 GiB free of 1,863.02 GiB.
+The fixed target is
+`D:\math_lean_1\Testing-afp-major-revision-r7-20260824`.
+
+The largest working sets were memory compression (1.58 GiB), Codex (0.91
+GiB), ChatGPT (0.84 GiB), several Chrome processes (0.4--0.8 GiB), WSL (0.59
+GiB), Defender (0.56 GiB), and Explorer (0.50 GiB). No scientific compute job
+was running or launched.
+
+Existing tools are Git 2.55.0, Lean 4.33.1, Lake 5.0.0, Elan 4.2.3, system
+Python 3.12.10, and Python launcher environments 3.12, 3.11, and 3.9. Conda
+and `uv` are absent. The already-installed Codex primary runtime (1.30 GiB)
+provides Node 24.19.0 and Python 3.12.13; the local LaTeX/PDF workflow uses the
+already-bundled runtime and cache rather than a system TeX installation.
+
+Measured existing caches include pip 1.47 GiB and Elan/toolchains 11.72 GiB.
+The local checkout inventory includes the original `Testing` checkout and the
+isolated R5, R6, and R7 worktrees. The original checkout is dirty and is not a
+staging target. The R6 base was clean and both its local and origin branch refs
+resolved exactly to `da137c157dbc92774cbf7e378efb5bf360be6ceb`; the requested
+scientific commit `648691e9225359d0983d71fa332408fc7bdbadd9` also resolved.
+
+Existing local capabilities are sufficient. **Authorized network acquisition:
+0 bytes.** No install, upgrade, package resolution, dependency-environment
+build, or remote execution is planned. The R7 worktree initially lacks
+`.lake`; the smallest local staging operation copies the clean R6 `build` and
+`config` state, exactly 141,513,742 bytes in 478 files, and recreates its
+package junction to the already-local pinned package tree. Target:
+`D:\math_lean_1\Testing-afp-major-revision-r7-20260824\afp_barrier_gate1\.lake`.
+Build outputs and temporary PDF renders are confined to the R7 worktree and
+its ignored temporary directories. Rollback removes only that verified R7
+`.lake` path and R7-local generated/temporary paths; it does not touch user
+toolchains, caches, the junction target, the dirty original checkout, or prior worktrees.
+A separate manuscript staging operation copies the clean R6 Tectonic resource
+cache, exactly 46,334,016 bytes in 355 files, into the fixed ignored target
+`D:\math_lean_1\Testing-afp-major-revision-r7-20260824\tmp\pdfs\tectonic-cache`.
+It reuses bundled Tectonic 0.17.0 and Poppler 26.05.0. Rollback removes only
+that verified R7-local cache/render tree; no system or shared cache is changed.
+A materially different dependency or target requires a new gate.
+
+## Historical R6 gate
+
+### R6 pre-build gate, 2026-08-23 EDT
 
 This gate was completed before any R6 build or dependency staging command.
 The host has 34,260,418,560 bytes of RAM (33,457,440 KiB visible),

@@ -1,4 +1,4 @@
-AFP R6 aggregate exact-audit record, 2026-08-23 EDT
+AFP R7 aggregate exact-audit record, 2026-08-24 EDT
 
 p1a_quadratic_fidelity_audit.py: PASS
 p1b_sharp_quadratic_defect_audit.py: PASS
@@ -16,6 +16,7 @@ p1e_asymptotic_family_audit.py: PASS
 release/certificates/theorem_7_2/verify_certificate.py: PASS
 
 Theorem 7.2 exact-rational certificate: PASS
-certificate_sha256=093acef16582ec6ca0039b4a7408fc265871bdc849eef383905bd92b591b86cd
+certificate_sha256=ff8f1b13a64d8a4f0ca281853d689f5aaf86f22db74cb0c3e4f0c9fe118484cc
 arithmetic=Q and Q(sqrt(58)); floating_point=none; third_party_imports=none
-AFP_R6_EXACT_AUDITS_PASS count=14
+theorem_scale_levels=1,2,8,32,80,257; hostile_mutations=3/3 rejected
+AFP_R7_EXACT_AUDITS_PASS count=14

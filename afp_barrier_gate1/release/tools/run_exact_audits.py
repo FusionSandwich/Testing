@@ -59,7 +59,7 @@ def main() -> None:
     print(completed.stdout, end="" if completed.stdout.endswith("\n") else "\n")
     if completed.returncode != 0 or "Theorem 7.2 exact-rational certificate: PASS" not in completed.stdout.splitlines():
         raise SystemExit(f"AUDIT_FAILED theorem_7_2 certificate exit={completed.returncode}")
-    print(f"AFP_R6_EXACT_AUDITS_PASS count={len(AUDITS) + 1}")
+    print(f"AFP_R7_EXACT_AUDITS_PASS count={len(AUDITS) + 1}")
 
 
 if __name__ == "__main__":

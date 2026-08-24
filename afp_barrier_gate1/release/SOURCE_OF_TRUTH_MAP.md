@@ -1,13 +1,16 @@
-# AFP R6 source-of-truth and ancestry map
+# AFP R7 source-of-truth and ancestry map
 
-R6 parent: `653d8945a5e91515f7a382ed42a8f4f51c0f0094`, the final R5 head on
+R7 parent: `da137c157dbc92774cbf7e378efb5bf360be6ceb`, the final R6 head on
+`codex/afp-major-revision-r6-20260823`. The R6 scientific snapshot is
+`648691e9225359d0983d71fa332408fc7bdbadd9`.
+
+R6 in turn was created from `653d8945a5e91515f7a382ed42a8f4f51c0f0094`, the final R5 head on
 `codex/afp-major-revision-r5-20260822`. Its scientific snapshot is
 `9783a69e8f079d61c100bc87ea653ec9c981c2fe` and its candidate tag is
 `afp-r5-internal-rc-20260822`.
 
 The historical R5 worktree was created from the R4 audit base
-`f0ec4a8e539ebf72f5324f92439b56545ea8d2c5`. R6 was created directly from the
-final R5 head. Branch and
+`f0ec4a8e539ebf72f5324f92439b56545ea8d2c5`. Branch and
 archive names are provenance labels only; the SHA is controlling. Every
 `archive/*` pointer below is an ordinary mutable branch, not a tag or release.
 
@@ -31,7 +34,9 @@ archive names are provenance labels only; the SHA is controlling. Every
 | R4 | `agent/afp-r4-formalization-release-20260819` | `f0ec4a8e539ebf72f5324f92439b56545ea8d2c5` | exact base | `AUTHORITATIVE_BASE` |
 | R5 scientific content | `codex/afp-major-revision-r5-20260822` | `9783a69e8f079d61c100bc87ea653ec9c981c2fe` | direct R4 descendant | `CORRECTED_INTERNAL_RELEASE` |
 | R5 final head | `codex/afp-major-revision-r5-20260822` | `653d8945a5e91515f7a382ed42a8f4f51c0f0094` | descendant of R5 scientific content | `HOSTILE_REVIEWED_MAJOR_REVISION` |
-| R6 scientific content | `codex/afp-major-revision-r6-20260823` | `648691e9225359d0983d71fa332408fc7bdbadd9` | direct R5-final descendant | `INTERNAL_REPAIR_CANDIDATE_AWAITING_EXTERNAL_REVIEW` |
+| R6 scientific content | `codex/afp-major-revision-r6-20260823` | `648691e9225359d0983d71fa332408fc7bdbadd9` | direct R5-final descendant | `SUPERSEDED_AFTER_INTERNAL_AI_MAJOR_REVISION` |
+| R6 final head / R7 base | `codex/afp-major-revision-r6-20260823` | `da137c157dbc92774cbf7e378efb5bf360be6ceb` | descendant of R6 scientific content | `AUTHORITATIVE_R7_BASE` |
+| R7 scientific content | `codex/afp-major-revision-r7-20260824` | recorded in final packaging commit | direct R6-final descendant | `INTERNAL_REPAIR_CANDIDATE_AWAITING_INDEPENDENT_HOSTILE_REVIEW` |
 
 ## Divergent and noncanonical lines
 
@@ -43,7 +48,7 @@ archive names are provenance labels only; the SHA is controlling. Every
 | `agent/afp-publication-p2e-benchmark-development-b34c29b1` | `44e77e5b703255c66ecd1c9e9d5b68341bad050b` | three unique commits after `b34c29b1`; not ancestor | `DIVERGENT_DEVELOPMENT`; superseded by preregistered/held-out line |
 | P2E preregistration | `df6f0e285cb176f183930815967e43c36166928a` | ancestor; archive pointer identical | `FROZEN_INPUT_DEPENDENCY`, not outcome evidence by itself |
 
-## R6 hostile-review correction lineage
+## R6 and R7 hostile-review correction lineage
 
 Commit `d13e795a2cd09594b20812c88312278227bb5513` first removed the
 unsupported uniform robustness claim, narrowed the whole-paper Lean language,
@@ -52,10 +57,10 @@ and changed P2F from `BOUNDED_NEGATIVE` to
 route leaks, makes the 512-declaration formal audit exhaustive, separates the
 two-paper architecture, and archives P2F outside both papers.
 
-The complete hostile external review of R5 reported no counterexample to the
-core finite-dimensional frontier, equality, or defect-budget results, but
-issued **MAJOR REVISION** for two publication blockers. R6 independently
-reproduces those findings and responds as follows:
+The earlier adversarial review of R5 reported no counterexample to the core
+finite-dimensional frontier, equality, or defect-budget results, but issued
+**MAJOR REVISION** for two publication blockers. R6 reproduced those findings
+and responded as follows:
 
 1. former Corollary 6.3 is demoted to clearly non-theorem discussion;
 2. Theorem 7.2 is restricted to the proved discrete sequence and supplied with
@@ -63,5 +68,10 @@ reproduces those findings and responds as follows:
    verifier, and explicit non-Lean trusted boundary; and
 3. P2F remains `INCONCLUSIVE_REFERENCE_NOT_CONVERGED`.
 
-The response is an internal repair record. It does not alter the external R5
-decision or claim publication acceptance.
+The renewed ChatGPT Pro review `Review Math Revision Branch` in project `Math`
+then issued **MAJOR REVISION** for four further blockers: the false lower
+cumulative-product exponent, the overbroad certificate claim, the missing
+`gamma=Gamma/W` normalization, and the false frontier-excess wording. R7
+repairs those four blockers. Both reviews are treated as internal AI
+adversarial reviews, not identifiable external human peer review. Neither
+repair record claims acceptance.

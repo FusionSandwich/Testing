@@ -31,8 +31,8 @@ we characterize equality by common rate and angular loss, with centered
 tight-frame conditions in every tangent space in the nonantipodal branch,
 a separate antipodal branch, and global reversible compatibility. We give
 regular-simplex, cross-polytope, and hypercube extremizers. We also derive an
-exact weighted decomposition of the frontier excess into radial and
-anisotropy defects, together with an explicit weighted concentration
+exact defect decomposition relative to the trace lower bound into radial and
+anisotropy terms, together with an explicit weighted concentration
 consequence. Stronger pointwise or global geometric conclusions require
 additional graph and nondegeneracy hypotheses and are not asserted as
 theorems here. The result is an operator frontier, not
@@ -1073,8 +1073,28 @@ where
 $\log(U_+/U_-)=\log\{\sin(\theta+h/2)/\sin(\theta-h/2)\}+E(z)$.
 The sine quotient telescopes. The cap error sums to less than $12$, the
 dyadic-band errors sum to less than $1$, and the $m$th count change has
-$|\varepsilon_m|<256/M_m$; hence its cumulative product lies between
-$e^{-512/M_0}$ and $e^{512/M_0}$. The exact telescoping recurrence, including
+$|\varepsilon_m|<256/M_m$. Put $a_m=256/M_m$ and
+$a_*=256/M_0$. For $|x|\le a_*<1$,
+$$
+\log(1+x)\ge x-\frac{x^2}{2(1-a_*)},
+\qquad \log(1+x)\le x.
+\tag{7.13b}
+$$
+Since
+$$
+\sum_{m<J}a_m<\frac{512}{M_0},
+\qquad
+\sum_{m<J}a_m^2<\frac{262144}{3M_0^2},
+\qquad
+\frac1{2(1-a_*)}\sum_{m<J}a_m^2<\frac1{M_0},
+$$
+the cumulative transition product satisfies the signed second-order bound
+$$
+e^{-513/M_0}<\prod_{m<J}(1+\varepsilon_m)<e^{512/M_0}.
+\tag{7.13c}
+$$
+The lower estimate does not use the false inequality
+$\log(1+x)\ge-|x|$ for negative $x$. The exact telescoping recurrence, including
 all count changes, therefore yields
 the level-independent shared-stress margins
 $$
@@ -1091,13 +1111,18 @@ finite rational inequalities are recorded in the immutable artifact
 `afp_barrier_gate1/release/certificates/theorem_7_2/certificate.json` and
 checked by the standalone standard-library program `verify_certificate.py`.
 The verifier recomputes the determinant, inverse and affine solution in
-$\mathbb Q(\sqrt{58})$, all Cauchy/Neumann and polar-row inequalities, source
-hashes, recurrence closure, and the published constants without floating
-point or third-party imports. The trusted computing base is the certificate
-and verifier bytes, CPython arbitrary-precision integer/Fraction arithmetic,
-SHA-256, and the stated analytic estimates. The adaptive-ring schedule and
-Cauchy argument are not Lean-checked. Theorem 7.2 is therefore explicitly a
-computer-assisted exact-rational theorem.
+$\mathbb Q(\sqrt{58})$, the finite rational Cauchy/Neumann and polar-row
+budgets, the universal geometric-series and signed second-order transition
+budget for arbitrary $J$, the positivity and normalization arithmetic, and
+the published constants without floating point or third-party imports. Source
+hashes bind provenance; they are not proofs of the hashed source text. The
+ordinary proofs in this section and the supplement establish the schedule,
+row equations, analytic Cauchy estimates, geometry, telescoping identity, and
+quotient argument. The trusted computing base is the certificate and verifier
+bytes, CPython arbitrary-precision integer/Fraction arithmetic, SHA-256, and
+those explicitly stated analytic lemmas. The adaptive-ring schedule and Cauchy
+argument are not Lean-checked. Theorem 7.2 is therefore explicitly a
+computer-assisted exact-rational theorem, not a wholly machine-verified one.
 
 ### Theorem 7.2 (matching order on $\mathbb S^2$)
 

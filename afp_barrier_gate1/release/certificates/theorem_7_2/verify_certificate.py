@@ -11,6 +11,7 @@ from __future__ import annotations
 import hashlib
 import json
 import sys
+from copy import deepcopy
 from dataclasses import dataclass
 from fractions import Fraction as F
 from pathlib import Path
@@ -250,13 +251,166 @@ def verify_ordinary_and_constants(ordinary: dict[str, Any], published: dict[str,
     assert q(published["degree_bound"]) == 2**80
 
 
+def verify_theorem_scale_transition(data: dict[str, Any], m0: int) -> None:
+    ratio = q(data["count_ratio"])
+    numerator = q(data["transition_error_numerator"])
+    assert ratio == 2 and numerator == 256
+
+    a_star = numerator / m0
+    linear_sum = (numerator / m0) / (1 - 1 / ratio)
+    square_sum = (numerator / m0) ** 2 / (1 - 1 / ratio**2)
+    assert a_star == q(data["max_transition_error"])
+    assert linear_sum == q(data["linear_sum_upper"])
+    assert square_sum == q(data["square_sum_upper"])
+    assert a_star < 1
+
+    # For |x|<=a_star, the ordinary analytic lemma used by the manuscript is
+    # log(1+x) >= x-x^2/(2(1-a_star)) and log(1+x) <= x.
+    remainder = square_sum / (2 * (1 - a_star))
+    assert remainder < q(data["quadratic_remainder_upper"])
+    assert linear_sum + remainder < q(data["log_lower_magnitude_upper"])
+    assert linear_sum == q(data["log_upper_magnitude_upper"])
+
+    # Exercise finite theorem levels without enumerating their astronomical
+    # ring counts.  These are exact recurrence-budget objects for each J.
+    sample_levels = data["sample_levels"]
+    assert sample_levels == [1, 2, 8, 32, 80, 257]
+    for level in sample_levels:
+        assert isinstance(level, int) and level >= 1
+        errors = [numerator / (m0 * ratio**m) for m in range(level)]
+        finite_linear = sum(errors, F(0))
+        finite_square = sum((x * x for x in errors), F(0))
+        negative_product = F(1)
+        positive_product = F(1)
+        for error in errors:
+            assert error <= a_star < 1
+            negative_product *= 1 - error
+            positive_product *= 1 + error
+        assert 0 < negative_product < 1 < positive_product
+        assert finite_linear < linear_sum and finite_square < square_sum
+
+    # Hostile mutation: the R6 exponent 512 is false for the all-negative
+    # level-80 sequence.  log(1-a)<=-a-a^2/2 makes this an exact rational
+    # rejection, with no numerical evaluation of exp.
+    hostile_level = q(data["old_lower_bound_counterexample_level"])
+    assert hostile_level.denominator == 1 and hostile_level == 80
+    errors = [numerator / (m0 * ratio**m) for m in range(int(hostile_level))]
+    magnitude_lower = sum(errors, F(0)) + sum((x * x for x in errors), F(0)) / 2
+    assert magnitude_lower > q(data["rejected_log_lower_magnitude"])
+
+
+def verify_positivity_geometry_normalization(
+    data: dict[str, Any],
+    transition: dict[str, Any],
+    polar: dict[str, Any],
+    ordinary: dict[str, Any],
+    published: dict[str, Any],
+    m0: int,
+) -> None:
+    assert q(data["mask_entry_lower"]) == F(1, 64)
+    transition_lower = q(transition["limiting_cone_lower"]) - q(
+        transition["solution_displacement_upper"]
+    )
+    assert transition_lower == q(data["transition_solution_lower"])
+    assert q(data["polar_solution_lower"]) < F(1, 20) - q(
+        polar["finite_displacement_upper"]
+    )
+    assert q(data["ordinary_horizontal_lower_ratio"]) == q(
+        ordinary["horizontal_solution_lower_ratio"]
+    )
+    assert q(data["ordinary_horizontal_upper_ratio"]) == q(
+        ordinary["horizontal_solution_upper_ratio"]
+    )
+    assert data["preliminary_stress_exponents"] == [-20, 20]
+
+    q_star = q(data["separation_constant"])
+    assert q_star == F(1, 8 * m0)
+    assert q(data["degree_bound"]) == m0 == q(published["degree_bound"])
+    assert q(data["active_angle_lower_multiple"]) == F(1, 8)
+    assert q(data["active_angle_upper_multiple"]) == 5
+    assert q(data["node_count_rational_coefficient"]) == 4
+
+    # Symbolic coefficient/exponent audit of the mass and normalization chain:
+    # mu_min=Gamma_- h^2/(64 pi^2),
+    # mu_max=25 D Gamma_+ h^2/4,
+    # N<=4 pi^2 q_*^-2 h^-2,
+    # W<=25 pi^2 D Gamma_+ q_*^-2, and hence
+    # w_i>=Gamma_- q_*^2 h^2/(1600 pi^4 D Gamma_+).
+    assert q(data["mu_lower_rational_denominator"]) == 64
+    assert q(data["mu_lower_pi_power"]) == 2
+    assert q(data["mu_upper_rational_coefficient"]) == F(25, 4)
+    assert q(data["weight_floor_rational_denominator"]) == 64 * 25
+    assert q(data["weight_floor_pi_power"]) == 4
+    assert q(data["weight_floor_q_star_power"]) == 2
+    assert data["normalized_conductance_relation"] == "gamma_ij = Gamma_ij / W"
+    assert data["directed_rate_relation"] == "a_ij = gamma_ij / w_i = Gamma_ij / mu_i"
+
+    # Final rate, residual, and frontier constants are derived, not accepted as
+    # disconnected literals.
+    ell_min_denominator = 8**2 // 2  # 1-cos(x)>=2x^2/pi^2 at x=h/8
+    assert ell_min_denominator == 32
+    assert q(published["rate_constant"]) == 2 * ell_min_denominator
+    ell_max_coefficient = F(5**2, 2)
+    assert q(published["residual_constant"]) == 3 * ell_max_coefficient
+    assert q(published["frontier_lower_constant_without_pi"]) == F(6, 64)
+
+
+def expect_failure(action: Any, label: str) -> None:
+    try:
+        action()
+    except AssertionError:
+        return
+    raise AssertionError(f"hostile mutation was not rejected: {label}")
+
+
+def verify_hostile_mutations(cert: dict[str, Any], m0: int) -> None:
+    mutated = deepcopy(cert["positivity_geometry_normalization"])
+    mutated["normalized_conductance_relation"] = "gamma_ij = Gamma_ij"
+    expect_failure(
+        lambda: verify_positivity_geometry_normalization(
+            mutated,
+            cert["transition_guard"],
+            cert["polar_guard"],
+            cert["ordinary_rows_and_recurrence"],
+            cert["published_constants"],
+            m0,
+        ),
+        "missing Gamma/W normalization",
+    )
+
+    mutated_published = deepcopy(cert["published_constants"])
+    mutated_published["rate_constant"] = "63"
+    expect_failure(
+        lambda: verify_positivity_geometry_normalization(
+            cert["positivity_geometry_normalization"],
+            cert["transition_guard"],
+            cert["polar_guard"],
+            cert["ordinary_rows_and_recurrence"],
+            mutated_published,
+            m0,
+        ),
+        "rate constant",
+    )
+
+    mutated_transition = deepcopy(cert["theorem_scale_transition"])
+    mutated_transition["log_lower_magnitude_upper"] = "512/1208925819614629174706176"
+    expect_failure(
+        lambda: verify_theorem_scale_transition(mutated_transition, m0),
+        "R6 cumulative lower exponent",
+    )
+
+
 def main() -> int:
     path = Path(sys.argv[1]).resolve() if len(sys.argv) == 2 else Path(__file__).with_name("certificate.json")
     cert = json.loads(path.read_text(encoding="utf-8"))
-    assert cert["schema"] == "afp-theorem-7.2-exact-rational-certificate-v1"
+    assert cert["schema"] == "afp-theorem-7.2-exact-rational-certificate-v2"
     assert cert["classification"] == "COMPUTER_ASSISTED_EXACT_RATIONAL"
+    assert cert["claim_boundary"]["whole_theorem_machine_verified"] is False
+    assert cert["claim_boundary"]["source_hashes_are_proofs"] is False
+    assert "schedule" in cert["claim_boundary"]["ordinary_proof_components"]
     assert cert["family"]["ambient_dimension"] == 3
-    assert q(cert["family"]["M0"]) == 2**80
+    m0 = int(q(cert["family"]["M0"]))
+    assert m0 == 2**80
     assert cert["family"]["sqrt_radicand"] == RADICAND
     repo_root = Path(__file__).resolve().parents[4]
     verify_source_bindings(cert, repo_root)
@@ -264,9 +418,20 @@ def main() -> int:
     verify_limiting_system(cert["limiting_system"])
     verify_polar_guard(cert["polar_guard"])
     verify_ordinary_and_constants(cert["ordinary_rows_and_recurrence"], cert["published_constants"])
+    verify_theorem_scale_transition(cert["theorem_scale_transition"], m0)
+    verify_positivity_geometry_normalization(
+        cert["positivity_geometry_normalization"],
+        cert["transition_guard"],
+        cert["polar_guard"],
+        cert["ordinary_rows_and_recurrence"],
+        cert["published_constants"],
+        m0,
+    )
+    verify_hostile_mutations(cert, m0)
     print("Theorem 7.2 exact-rational certificate: PASS")
     print(f"certificate_sha256={hashlib.sha256(path.read_bytes()).hexdigest()}")
     print("arithmetic=Q and Q(sqrt(58)); floating_point=none; third_party_imports=none")
+    print("theorem_scale_levels=1,2,8,32,80,257; hostile_mutations=3/3 rejected")
     return 0
 
 
