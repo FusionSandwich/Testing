@@ -22,7 +22,7 @@ theorem map_ball_inter_neighbors_rotate (s : ℕ) (p : Axial) :
     · have hball : a ∈ axialBall s := by simpa using hballFin
       have hrot : axialRotate a ∈ axialBall s :=
         (mem_axialBall_rotate_iff s a).2 hball
-      simpa using hrot
+      simpa [axialRotateEquiv] using hrot
     · rw [mem_axialNeighborFinset_iff] at hneigh ⊢
       exact (axialAdjacent_rotate_iff a p).2 hneigh
   · intro hq
