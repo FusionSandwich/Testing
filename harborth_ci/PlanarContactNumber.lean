@@ -4,3 +4,4 @@ import PlanarContactNumber.ShellDecomposition
 import PlanarContactNumber.UpperArithmetic
 import PlanarContactNumber.Optimization
 import PlanarContactNumber.TriangularLattice
+import PlanarContactNumber.LatticeRealization
