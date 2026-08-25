@@ -24,7 +24,7 @@ private theorem mem_of_mem_take {α : Type*} {x : α} {l : List α} {q : ℕ}
           exact h.elim Or.inl (fun hx => Or.inr (ih hx))
 
 private theorem axialBall_disjoint_shellTake (s q : ℕ) :
-    Disjoint (axialBall s) ((axialShell (s + 1)).take q) := by
+    List.Disjoint (axialBall s) ((axialShell (s + 1)).take q) := by
   rw [List.disjoint_iff_ne]
   intro p hp q' hq' hpq
   exact (List.disjoint_iff_ne.mp (axialBall_disjoint_nextShell s))
