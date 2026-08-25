@@ -14,10 +14,10 @@ ball contains exactly the two inward neighbours. -/
 theorem ball_inter_neighbors_block0_of_lt (s : ℕ) (i : Fin (s + 1))
     (hi : i.1 < s) :
     (axialBall s).toFinset ∩ axialNeighborFinset (axialShellBlock0At (s + 1) i) =
-      {(axialShellBlock0At (s + 1) i).1 - 1,
-          (axialShellBlock0At (s + 1) i).2,
-        (axialShellBlock0At (s + 1) i).1,
-          (axialShellBlock0At (s + 1) i).2 - 1} := by
+      {((axialShellBlock0At (s + 1) i).1 - 1,
+          (axialShellBlock0At (s + 1) i).2),
+        ((axialShellBlock0At (s + 1) i).1,
+          (axialShellBlock0At (s + 1) i).2 - 1)} := by
   classical
   have hiZ : (i.1 : ℤ) < (s : ℤ) := by exact_mod_cast hi
   ext q
