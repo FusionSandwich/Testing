@@ -33,3 +33,7 @@ import PlanarContactNumber
 #print axioms PlanarContactNumber.axialBall_disjoint_nextShell
 #print axioms PlanarContactNumber.axialBall_nodup
 #print axioms PlanarContactNumber.axialBall_length
+#print axioms PlanarContactNumber.axialPartial_nodup
+#print axioms PlanarContactNumber.axialPartial_length
+#print axioms PlanarContactNumber.axialPartialN_length
+#print axioms PlanarContactNumber.realizedContactNumber_axialPartial
