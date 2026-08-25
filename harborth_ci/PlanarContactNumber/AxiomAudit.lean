@@ -20,8 +20,6 @@ import PlanarContactNumber
 #print axioms PlanarContactNumber.axialContactPairs_eq_biUnion_fibers
 #print axioms PlanarContactNumber.axialContactNumber_eq_sum_fibers
 #print axioms PlanarContactNumber.axialContactNumber_snoc
-#print axioms PlanarContactNumber.get_append_singleton_eq_snoc
-#print axioms PlanarContactNumber.axialContactNumber_get_append_singleton
 #print axioms PlanarContactNumber.axialShell_length
 #print axioms PlanarContactNumber.axialShellBlock0_nodup
 #print axioms PlanarContactNumber.axialShellBlock1_nodup
