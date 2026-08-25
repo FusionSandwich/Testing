@@ -23,3 +23,4 @@ import PlanarContactNumber
 #print axioms PlanarContactNumber.axialShellBlock3_nodup
 #print axioms PlanarContactNumber.axialShellBlock4_nodup
 #print axioms PlanarContactNumber.axialShellBlock5_nodup
+#print axioms PlanarContactNumber.axialShell_nodup
