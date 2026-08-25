@@ -48,7 +48,7 @@ theorem axialContactPairs_eq_biUnion_fibers {n : ℕ} (a : Fin n → Axial) :
     have hp_eq : p = (i, j) := by
       simpa [pairWithSecond] using hip.symm
     subst p
-    simpa [axialContactPairs] using hi'
+    simpa [axialContactPairs, pairWithSecond] using hi'
 
 private theorem pairwiseDisjoint_axialContactFiber {n : ℕ} (a : Fin n → Axial) :
     ∀ j ∈ (Finset.univ : Finset (Fin n)),
