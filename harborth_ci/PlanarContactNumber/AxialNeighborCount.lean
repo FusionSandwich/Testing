@@ -23,10 +23,13 @@ private theorem image_newAxialNeighbors_get (l : List Axial) (p : Axial) :
     have hmemFin : q ∈ l.toFinset := (Finset.mem_filter.mp h).1
     have hmem : q ∈ l := by simpa using hmemFin
     obtain ⟨i, hiq⟩ := List.mem_iff_get.mp hmem
+    have hadj : AxialAdjacent q p := (Finset.mem_filter.mp h).2
+    have hadj_i : AxialAdjacent (l.get i) p := by
+      rw [hiq]
+      exact hadj
     apply Finset.mem_image.mpr
     refine ⟨i, ?_, hiq⟩
-    have hadj : AxialAdjacent q p := (Finset.mem_filter.mp h).2
-    simpa [newAxialNeighbors, hiq] using hadj
+    simpa [newAxialNeighbors] using hadj_i
 
 /-- For a duplicate-free list, counting adjacent old labels agrees with
 counting adjacent old lattice sites. -/
