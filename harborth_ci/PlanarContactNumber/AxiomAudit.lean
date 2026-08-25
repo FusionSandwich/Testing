@@ -13,3 +13,6 @@ import PlanarContactNumber
 #print axioms PlanarContactNumber.triangularPoint_dist_eq_one_iff_neighbor
 #print axioms PlanarContactNumber.one_le_dist_triangularPoint_of_ne
 #print axioms PlanarContactNumber.oneSeparated_triangularPoint_comp
+#print axioms PlanarContactNumber.contactPairs_triangularPoint_comp
+#print axioms PlanarContactNumber.contactNumber_triangularPoint_comp
+#print axioms PlanarContactNumber.realizedContactNumber_of_axialEnumeration
