@@ -16,6 +16,10 @@ on:
       - '.github/workflows/harborth-lean4-verification.yml'
   workflow_dispatch:
 
+concurrency:
+  group: harborth-lean4-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
