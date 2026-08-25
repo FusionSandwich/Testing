@@ -12,4 +12,5 @@ import PlanarContactNumber.AxialShell
 import PlanarContactNumber.AxialShellNodup
 import PlanarContactNumber.AxialBall
 import PlanarContactNumber.AxialBallMembership
+import PlanarContactNumber.AxialNeighbors
 import PlanarContactNumber.AxialPartial
