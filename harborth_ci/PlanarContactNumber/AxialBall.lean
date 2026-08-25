@@ -143,7 +143,7 @@ theorem axialHexRadius_le_of_mem_ball {s : ℕ} {p : Axial}
 
 /-- A new shell shares no point with the smaller centered hexagon. -/
 theorem axialBall_disjoint_nextShell (s : ℕ) :
-    Disjoint (axialBall s) (axialShell (s + 1)) := by
+    List.Disjoint (axialBall s) (axialShell (s + 1)) := by
   rw [List.disjoint_iff_ne]
   intro p hp q hq
   intro hpq
