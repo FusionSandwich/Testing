@@ -2,10 +2,15 @@ import PlanarContactNumber.ContactFiberCount
 
 namespace PlanarContactNumber
 
-/-- Number of old labels adjacent to a proposed new axial point. -/
-noncomputable def newAxialNeighborCount {n : ℕ} (a : Fin n → Axial) (p : Axial) : ℕ := by
+/-- Old labels adjacent to a proposed new axial point. -/
+noncomputable def newAxialNeighbors {n : ℕ} (a : Fin n → Axial) (p : Axial) :
+    Finset (Fin n) := by
   classical
-  exact (Finset.univ.filter fun i => AxialAdjacent (a i) p).card
+  exact Finset.univ.filter fun i => AxialAdjacent (a i) p
+
+/-- Number of old labels adjacent to a proposed new axial point. -/
+noncomputable def newAxialNeighborCount {n : ℕ} (a : Fin n → Axial) (p : Axial) : ℕ :=
+  (newAxialNeighbors a p).card
 
 private theorem earlierAxialNeighbors_snoc_castSucc {n : ℕ}
     (a : Fin n → Axial) (p : Axial) (j : Fin n) :
@@ -15,17 +20,18 @@ private theorem earlierAxialNeighbors_snoc_castSucc {n : ℕ}
   ext i
   refine Fin.lastCases ?_ (fun k => ?_) i
   · simp [earlierAxialNeighbors]
+    omega
   · simp [earlierAxialNeighbors]
 
 private theorem earlierAxialNeighbors_snoc_last {n : ℕ}
     (a : Fin n → Axial) (p : Axial) :
     earlierAxialNeighbors (Fin.snoc a p) (Fin.last n) =
-      (Finset.univ.filter fun i => AxialAdjacent (a i) p).map Fin.castSuccEmb := by
+      (newAxialNeighbors a p).map Fin.castSuccEmb := by
   classical
   ext i
   refine Fin.lastCases ?_ (fun k => ?_) i
-  · simp [earlierAxialNeighbors]
-  · simp [earlierAxialNeighbors]
+  · simp [earlierAxialNeighbors, newAxialNeighbors]
+  · simp [earlierAxialNeighbors, newAxialNeighbors]
 
 @[simp] theorem earlierAxialNeighbors_snoc_castSucc_card {n : ℕ}
     (a : Fin n → Axial) (p : Axial) (j : Fin n) :
