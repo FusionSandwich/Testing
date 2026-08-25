@@ -108,14 +108,18 @@ private theorem block5_radius {r : ℕ} {p : Axial}
 /-- Every point in the explicit radius-`r` shell has exact axial radius `r`. -/
 theorem axialHexRadius_eq_of_mem_shell {r : ℕ} {p : Axial}
     (h : p ∈ axialShell r) : axialHexRadius p = (r : ℤ) := by
-  simp only [axialShell, List.mem_append] at h
-  rcases h with h | h | h | h | h | h
-  · exact block0_radius h
-  · exact block1_radius h
-  · exact block2_radius h
-  · exact block3_radius h
-  · exact block4_radius h
-  · exact block5_radius h
+  unfold axialShell at h
+  rcases List.mem_append.mp h with h0 | h
+  · exact block0_radius h0
+  rcases List.mem_append.mp h with h1 | h
+  · exact block1_radius h1
+  rcases List.mem_append.mp h with h2 | h
+  · exact block2_radius h2
+  rcases List.mem_append.mp h with h3 | h
+  · exact block3_radius h3
+  rcases List.mem_append.mp h with h4 | h5
+  · exact block4_radius h4
+  · exact block5_radius h5
 
 /-- Centered axial hexagons, listed by increasing shells. -/
 def axialBall : ℕ → List Axial
