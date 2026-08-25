@@ -7,7 +7,6 @@ import PlanarContactNumber.TriangularLattice
 import PlanarContactNumber.LatticeRealization
 import PlanarContactNumber.ContactFiberCount
 import PlanarContactNumber.ContactSnoc
-import PlanarContactNumber.ContactList
 import PlanarContactNumber.AxialShell
 import PlanarContactNumber.AxialShellNodup
 import PlanarContactNumber.AxialBall
