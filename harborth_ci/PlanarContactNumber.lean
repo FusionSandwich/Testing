@@ -19,4 +19,5 @@ import PlanarContactNumber.AxialRotation
 import PlanarContactNumber.AxialRotationCount
 import PlanarContactNumber.AxialInwardNeighbors
 import PlanarContactNumber.AxialAllInwardNeighbors
+import PlanarContactNumber.AxialShellAdjacency
 import PlanarContactNumber.AxialPartial
