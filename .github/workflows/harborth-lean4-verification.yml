@@ -1,0 +1,100 @@
+name: Harborth Lean 4 verification
+
+on:
+  push:
+    branches:
+      - ci/harborth-lean4-verification-20260823
+      - ci/harborth-geometric-core-20260823
+    paths:
+      - 'harborth_ci/**'
+      - '.github/workflows/harborth-lean4-verification.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: harborth-lean4-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare diagnostics
+        run: mkdir -p harborth_ci/ci-logs
+
+      - name: Source audit
+        shell: bash
+        run: |
+          set -o pipefail
+          {
+            echo "head_sha=${GITHUB_SHA}"
+            echo "toolchain=$(cat harborth_ci/lean-toolchain)"
+            ! grep -RInE '(^|[^[:alnum:]_])(sorry|admit)([^[:alnum:]_]|$)' harborth_ci/PlanarContactNumber harborth_ci/PlanarContactNumber.lean
+            ! grep -RInE '^[[:space:]]*(axiom|opaque)[[:space:]]' harborth_ci/PlanarContactNumber harborth_ci/PlanarContactNumber.lean
+          } 2>&1 | tee harborth_ci/ci-logs/source-audit.log
+
+      - name: Verify pinned Lake manifest
+        shell: bash
+        run: |
+          set -o pipefail
+          test -s harborth_ci/lake-manifest.json
+          sha256sum harborth_ci/lake-manifest.json | tee harborth_ci/ci-logs/lake-manifest.sha256
+
+      - name: Restore resolved Lean workspace
+        id: lean-workspace-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: harborth_ci/.lake
+          key: harborth-lake-v4.32.2-${{ hashFiles('harborth_ci/lake-manifest.json') }}
+
+      - name: Build with maintained Lean action
+        id: lean-build
+        uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: harborth_ci
+          build: true
+          test: false
+          lint: false
+          use-mathlib-cache: true
+          use-github-cache: false
+
+      - name: Save resolved Lean workspace
+        if: always() && steps.lean-workspace-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: harborth_ci/.lake
+          key: harborth-lake-v4.32.2-${{ hashFiles('harborth_ci/lake-manifest.json') }}
+
+      - name: Audit theorem axioms
+        working-directory: harborth_ci
+        shell: bash
+        run: |
+          set -o pipefail
+          lake env lean PlanarContactNumber/AxiomAudit.lean 2>&1 | tee ci-logs/axiom-audit.log
+
+      - name: Upload diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: harborth-lean4-${{ github.run_id }}-${{ github.run_attempt }}
+          path: harborth_ci/ci-logs
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload source snapshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: harborth-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            harborth_ci/PlanarContactNumber
+            harborth_ci/PlanarContactNumber.lean
+            harborth_ci/lakefile.toml
+            harborth_ci/lean-toolchain
+            harborth_ci/lake-manifest.json
+          if-no-files-found: error
+          retention-days: 30

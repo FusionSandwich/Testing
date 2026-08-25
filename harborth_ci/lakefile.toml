@@ -1,0 +1,22 @@
+name = "planar_contact_number"
+version = "0.2.0"
+defaultTargets = ["PlanarContactNumber"]
+
+[leanOptions]
+pp.unicode.fun = true
+relaxedAutoImplicit = false
+maxRecDepth = 10000
+maxHeartbeats = 800000
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "v4.32.2"
+
+[[require]]
+name = "schoenflies-lean"
+git = "https://github.com/alonamaloh/schoenflies-lean"
+rev = "05a43d29cde026618777db3d4e4316204ccca237"
+
+[[lean_lib]]
+name = "PlanarContactNumber"
