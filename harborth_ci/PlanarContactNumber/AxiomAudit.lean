@@ -29,7 +29,11 @@ import PlanarContactNumber
 #print axioms PlanarContactNumber.axialShellBlock5_nodup
 #print axioms PlanarContactNumber.axialShell_nodup
 #print axioms PlanarContactNumber.axialHexRadius_eq_of_mem_shell
+#print axioms PlanarContactNumber.mem_axialShell_of_axialHexRadius_eq
+#print axioms PlanarContactNumber.mem_axialShell_iff_axialHexRadius_eq
+#print axioms PlanarContactNumber.axialHexRadius_nonneg
 #print axioms PlanarContactNumber.axialHexRadius_le_of_mem_ball
+#print axioms PlanarContactNumber.mem_axialBall_iff_axialHexRadius_le
 #print axioms PlanarContactNumber.axialBall_disjoint_nextShell
 #print axioms PlanarContactNumber.axialBall_nodup
 #print axioms PlanarContactNumber.axialBall_length
