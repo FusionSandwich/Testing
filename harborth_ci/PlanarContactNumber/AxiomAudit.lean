@@ -16,3 +16,10 @@ import PlanarContactNumber
 #print axioms PlanarContactNumber.contactPairs_triangularPoint_comp
 #print axioms PlanarContactNumber.contactNumber_triangularPoint_comp
 #print axioms PlanarContactNumber.realizedContactNumber_of_axialEnumeration
+#print axioms PlanarContactNumber.axialShell_length
+#print axioms PlanarContactNumber.axialShellBlock0_nodup
+#print axioms PlanarContactNumber.axialShellBlock1_nodup
+#print axioms PlanarContactNumber.axialShellBlock2_nodup
+#print axioms PlanarContactNumber.axialShellBlock3_nodup
+#print axioms PlanarContactNumber.axialShellBlock4_nodup
+#print axioms PlanarContactNumber.axialShellBlock5_nodup
