@@ -32,8 +32,9 @@ private theorem axialBall_disjoint_shellTake (s q : ℕ) :
 
 /-- The partial-shell listing never repeats a lattice site. -/
 theorem axialPartial_nodup (s q : ℕ) : (axialPartial s q).Nodup := by
-  exact (axialBall_nodup s).append
-    ((axialShell_nodup (s + 1)).take q)
+  have htake : ((axialShell (s + 1)).take q).Nodup := by
+    exact (axialShell_nodup (s + 1)).take
+  exact (axialBall_nodup s).append htake
     (axialBall_disjoint_shellTake s q)
 
 /-- Exact cardinality of a partial shell, provided the prefix does not exceed
@@ -48,8 +49,8 @@ theorem axialPartial_length (s q : ℕ) (hq : q ≤ 6 * (s + 1)) :
 theorem axialPartialN_length (s i j : ℕ) (hi : i ≤ 5) (hj : j ≤ s) :
     (axialPartialN s i j).length = partialN s i j := by
   unfold axialPartialN partialN
-  apply axialPartial_length
-  omega
+  have hlen := axialPartial_length s ((s + 1) * i + j) (by omega)
+  simpa [Nat.add_assoc] using hlen
 
 /-- Every partial shell already gives an actual Euclidean one-separated
 configuration with its exact axial adjacency count. -/
