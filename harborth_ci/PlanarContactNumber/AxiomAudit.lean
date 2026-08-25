@@ -28,3 +28,8 @@ import PlanarContactNumber
 #print axioms PlanarContactNumber.axialShellBlock4_nodup
 #print axioms PlanarContactNumber.axialShellBlock5_nodup
 #print axioms PlanarContactNumber.axialShell_nodup
+#print axioms PlanarContactNumber.axialHexRadius_eq_of_mem_shell
+#print axioms PlanarContactNumber.axialHexRadius_le_of_mem_ball
+#print axioms PlanarContactNumber.axialBall_disjoint_nextShell
+#print axioms PlanarContactNumber.axialBall_nodup
+#print axioms PlanarContactNumber.axialBall_length
