@@ -43,15 +43,12 @@ jobs:
             ! grep -RInE '^[[:space:]]*(axiom|opaque)[[:space:]]' harborth_ci/PlanarContactNumber harborth_ci/PlanarContactNumber.lean
           } 2>&1 | tee harborth_ci/ci-logs/source-audit.log
 
-      - name: Generate pinned Lake manifest
+      - name: Verify pinned Lake manifest
         shell: bash
         run: |
           set -o pipefail
-          curl https://elan.lean-lang.org/elan-init.sh -sSf | sh -s -- -y --default-toolchain none 2>&1 | tee harborth_ci/ci-logs/elan-bootstrap.log
-          cd harborth_ci
-          "$HOME/.elan/bin/lake" --version 2>&1 | tee ci-logs/lake-version.log
-          "$HOME/.elan/bin/lake" update 2>&1 | tee ci-logs/lake-update.log
-          sha256sum lake-manifest.json | tee ci-logs/lake-manifest.sha256
+          test -s harborth_ci/lake-manifest.json
+          sha256sum harborth_ci/lake-manifest.json | tee harborth_ci/ci-logs/lake-manifest.sha256
 
       - name: Build with maintained Lean action
         id: lean-build
