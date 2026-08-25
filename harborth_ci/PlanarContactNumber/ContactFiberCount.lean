@@ -31,20 +31,38 @@ theorem axialContactPairs_eq_biUnion_fibers {n : ℕ} (a : Fin n → Axial) :
       Finset.univ.biUnion (axialContactFiber a) := by
   classical
   ext p
-  simp [axialContactPairs, axialContactFiber, earlierAxialNeighbors,
-    pairWithSecond]
+  constructor
+  · intro hp
+    have hp' : p.1 < p.2 ∧ AxialAdjacent (a p.1) (a p.2) := by
+      simpa [axialContactPairs] using hp
+    apply Finset.mem_biUnion.mpr
+    refine ⟨p.2, Finset.mem_univ _, ?_⟩
+    apply Finset.mem_map.mpr
+    refine ⟨p.1, ?_, rfl⟩
+    simpa [earlierAxialNeighbors] using hp'
+  · intro hp
+    rcases Finset.mem_biUnion.mp hp with ⟨j, _hj, hpj⟩
+    rcases Finset.mem_map.mp hpj with ⟨i, hi, hip⟩
+    have hi' : i < j ∧ AxialAdjacent (a i) (a j) := by
+      simpa [earlierAxialNeighbors] using hi
+    have hp_eq : p = (i, j) := by
+      simpa [pairWithSecond] using hip.symm
+    subst p
+    simpa [axialContactPairs] using hi'
 
 private theorem pairwiseDisjoint_axialContactFiber {n : ℕ} (a : Fin n → Axial) :
-    (Set.univ : Set (Fin n)).PairwiseDisjoint (axialContactFiber a) := by
+    ∀ j ∈ (Finset.univ : Finset (Fin n)),
+      ∀ k ∈ (Finset.univ : Finset (Fin n)),
+        j ≠ k → Disjoint (axialContactFiber a j) (axialContactFiber a k) := by
   classical
   intro j _ k _ hjk
-  rw [Finset.disjoint_left]
+  apply Finset.disjoint_left.mpr
   intro p hpj hpk
-  rcases Finset.mem_map.mp hpj with ⟨i, hi, hip⟩
-  rcases Finset.mem_map.mp hpk with ⟨m, hm, hmp⟩
-  have hsecond : j = k := by
-    simpa [pairWithSecond] using congrArg Prod.snd (hip.trans hmp.symm)
-  exact hjk hsecond
+  rcases Finset.mem_map.mp hpj with ⟨i, _hi, hip⟩
+  rcases Finset.mem_map.mp hpk with ⟨m, _hm, hmp⟩
+  have hpair : (i, j) = (m, k) := by
+    simpa [pairWithSecond] using hip.trans hmp.symm
+  exact hjk (congrArg Prod.snd hpair)
 
 /-- The exact contact count is the sum of the numbers of earlier neighbours. -/
 theorem axialContactNumber_eq_sum_fibers {n : ℕ} (a : Fin n → Axial) :
@@ -52,8 +70,7 @@ theorem axialContactNumber_eq_sum_fibers {n : ℕ} (a : Fin n → Axial) :
       ∑ j : Fin n, (earlierAxialNeighbors a j).card := by
   classical
   rw [axialContactNumber, axialContactPairs_eq_biUnion_fibers]
-  rw [Finset.card_biUnion]
-  · simp
-  · exact (pairwiseDisjoint_axialContactFiber a).subset (Set.subset_univ _)
+  rw [Finset.card_biUnion (pairwiseDisjoint_axialContactFiber a)]
+  simp
 
 end PlanarContactNumber
