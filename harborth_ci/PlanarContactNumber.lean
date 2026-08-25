@@ -6,3 +6,4 @@ import PlanarContactNumber.Optimization
 import PlanarContactNumber.TriangularLattice
 import PlanarContactNumber.LatticeRealization
 import PlanarContactNumber.AxialShell
+import PlanarContactNumber.AxialShellNodup
