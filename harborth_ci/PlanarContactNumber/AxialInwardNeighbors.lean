@@ -127,6 +127,5 @@ theorem newAxialNeighborCount_ball_block0 (s : ℕ) (i : Fin (s + 1)) :
   · have hlt : i.1 < s := by omega
     rw [ball_inter_neighbors_block0_of_lt s i hlt]
     simp [Prod.ext_iff]
-    omega
 
 end PlanarContactNumber
