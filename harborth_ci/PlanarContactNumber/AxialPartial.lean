@@ -49,7 +49,11 @@ theorem axialPartial_length (s q : ℕ) (hq : q ≤ 6 * (s + 1)) :
 theorem axialPartialN_length (s i j : ℕ) (hi : i ≤ 5) (hj : j ≤ s) :
     (axialPartialN s i j).length = partialN s i j := by
   unfold axialPartialN partialN
-  have hlen := axialPartial_length s ((s + 1) * i + j) (by omega)
+  have hmul : (s + 1) * i ≤ (s + 1) * 5 :=
+    Nat.mul_le_mul_left (s + 1) hi
+  have hq : (s + 1) * i + j ≤ 6 * (s + 1) := by
+    omega
+  have hlen := axialPartial_length s ((s + 1) * i + j) hq
   simpa [Nat.add_assoc] using hlen
 
 /-- Every partial shell already gives an actual Euclidean one-separated
