@@ -5,3 +5,11 @@ import PlanarContactNumber
 #print axioms PlanarContactNumber.floor_harborthReal_eq_shellCandidateZ
 #print axioms PlanarContactNumber.interior_induction_closure
 #print axioms PlanarContactNumber.boundary_only_closure
+#print axioms PlanarContactNumber.f₂_eq_of_realized_of_upper
+#print axioms PlanarContactNumber.axialNormSq_nonneg
+#print axioms PlanarContactNumber.axialNormSq_eq_zero_iff
+#print axioms PlanarContactNumber.triangularPoint_dist_sq
+#print axioms PlanarContactNumber.axialNormSq_eq_one_iff
+#print axioms PlanarContactNumber.triangularPoint_dist_eq_one_iff_neighbor
+#print axioms PlanarContactNumber.one_le_dist_triangularPoint_of_ne
+#print axioms PlanarContactNumber.oneSeparated_triangularPoint_comp
