@@ -89,7 +89,7 @@ private theorem block5_sector {r : ℕ} {p : Axial}
   constructor <;> omega
 
 private theorem block01_disjoint (r : ℕ) :
-    Disjoint (axialShellBlock0 r) (axialShellBlock1 r) := by
+    List.Disjoint (axialShellBlock0 r) (axialShellBlock1 r) := by
   rw [List.disjoint_iff_ne]
   intro p hp q hq
   intro hpq
@@ -99,7 +99,7 @@ private theorem block01_disjoint (r : ℕ) :
   omega
 
 private theorem block02_disjoint (r : ℕ) :
-    Disjoint (axialShellBlock0 r) (axialShellBlock2 r) := by
+    List.Disjoint (axialShellBlock0 r) (axialShellBlock2 r) := by
   rw [List.disjoint_iff_ne]
   intro p hp q hq
   intro hpq
@@ -109,7 +109,7 @@ private theorem block02_disjoint (r : ℕ) :
   omega
 
 private theorem block03_disjoint (r : ℕ) :
-    Disjoint (axialShellBlock0 r) (axialShellBlock3 r) := by
+    List.Disjoint (axialShellBlock0 r) (axialShellBlock3 r) := by
   rw [List.disjoint_iff_ne]
   intro p hp q hq
   intro hpq
@@ -119,7 +119,7 @@ private theorem block03_disjoint (r : ℕ) :
   omega
 
 private theorem block04_disjoint (r : ℕ) :
-    Disjoint (axialShellBlock0 r) (axialShellBlock4 r) := by
+    List.Disjoint (axialShellBlock0 r) (axialShellBlock4 r) := by
   rw [List.disjoint_iff_ne]
   intro p hp q hq
   intro hpq
@@ -129,7 +129,7 @@ private theorem block04_disjoint (r : ℕ) :
   omega
 
 private theorem block05_disjoint (r : ℕ) :
-    Disjoint (axialShellBlock0 r) (axialShellBlock5 r) := by
+    List.Disjoint (axialShellBlock0 r) (axialShellBlock5 r) := by
   rw [List.disjoint_iff_ne]
   intro p hp q hq
   intro hpq
@@ -139,7 +139,7 @@ private theorem block05_disjoint (r : ℕ) :
   omega
 
 private theorem block12_disjoint (r : ℕ) :
-    Disjoint (axialShellBlock1 r) (axialShellBlock2 r) := by
+    List.Disjoint (axialShellBlock1 r) (axialShellBlock2 r) := by
   rw [List.disjoint_iff_ne]
   intro p hp q hq
   intro hpq
@@ -149,7 +149,7 @@ private theorem block12_disjoint (r : ℕ) :
   omega
 
 private theorem block13_disjoint (r : ℕ) :
-    Disjoint (axialShellBlock1 r) (axialShellBlock3 r) := by
+    List.Disjoint (axialShellBlock1 r) (axialShellBlock3 r) := by
   rw [List.disjoint_iff_ne]
   intro p hp q hq
   intro hpq
@@ -159,7 +159,7 @@ private theorem block13_disjoint (r : ℕ) :
   omega
 
 private theorem block14_disjoint (r : ℕ) :
-    Disjoint (axialShellBlock1 r) (axialShellBlock4 r) := by
+    List.Disjoint (axialShellBlock1 r) (axialShellBlock4 r) := by
   rw [List.disjoint_iff_ne]
   intro p hp q hq
   intro hpq
@@ -169,7 +169,7 @@ private theorem block14_disjoint (r : ℕ) :
   omega
 
 private theorem block15_disjoint (r : ℕ) :
-    Disjoint (axialShellBlock1 r) (axialShellBlock5 r) := by
+    List.Disjoint (axialShellBlock1 r) (axialShellBlock5 r) := by
   rw [List.disjoint_iff_ne]
   intro p hp q hq
   intro hpq
@@ -179,7 +179,7 @@ private theorem block15_disjoint (r : ℕ) :
   omega
 
 private theorem block23_disjoint (r : ℕ) :
-    Disjoint (axialShellBlock2 r) (axialShellBlock3 r) := by
+    List.Disjoint (axialShellBlock2 r) (axialShellBlock3 r) := by
   rw [List.disjoint_iff_ne]
   intro p hp q hq
   intro hpq
@@ -189,7 +189,7 @@ private theorem block23_disjoint (r : ℕ) :
   omega
 
 private theorem block24_disjoint (r : ℕ) :
-    Disjoint (axialShellBlock2 r) (axialShellBlock4 r) := by
+    List.Disjoint (axialShellBlock2 r) (axialShellBlock4 r) := by
   rw [List.disjoint_iff_ne]
   intro p hp q hq
   intro hpq
@@ -199,7 +199,7 @@ private theorem block24_disjoint (r : ℕ) :
   omega
 
 private theorem block25_disjoint (r : ℕ) :
-    Disjoint (axialShellBlock2 r) (axialShellBlock5 r) := by
+    List.Disjoint (axialShellBlock2 r) (axialShellBlock5 r) := by
   rw [List.disjoint_iff_ne]
   intro p hp q hq
   intro hpq
@@ -209,7 +209,7 @@ private theorem block25_disjoint (r : ℕ) :
   omega
 
 private theorem block34_disjoint (r : ℕ) :
-    Disjoint (axialShellBlock3 r) (axialShellBlock4 r) := by
+    List.Disjoint (axialShellBlock3 r) (axialShellBlock4 r) := by
   rw [List.disjoint_iff_ne]
   intro p hp q hq
   intro hpq
@@ -219,7 +219,7 @@ private theorem block34_disjoint (r : ℕ) :
   omega
 
 private theorem block35_disjoint (r : ℕ) :
-    Disjoint (axialShellBlock3 r) (axialShellBlock5 r) := by
+    List.Disjoint (axialShellBlock3 r) (axialShellBlock5 r) := by
   rw [List.disjoint_iff_ne]
   intro p hp q hq
   intro hpq
@@ -229,7 +229,7 @@ private theorem block35_disjoint (r : ℕ) :
   omega
 
 private theorem block45_disjoint (r : ℕ) :
-    Disjoint (axialShellBlock4 r) (axialShellBlock5 r) := by
+    List.Disjoint (axialShellBlock4 r) (axialShellBlock5 r) := by
   rw [List.disjoint_iff_ne]
   intro p hp q hq
   intro hpq
@@ -239,8 +239,8 @@ private theorem block45_disjoint (r : ℕ) :
   omega
 
 private theorem disjoint_append_left_of_pair {α : Type*}
-    {a b c : List α} (hac : Disjoint a c) (hbc : Disjoint b c) :
-    Disjoint (a ++ b) c := by
+    {a b c : List α} (hac : List.Disjoint a c) (hbc : List.Disjoint b c) :
+    List.Disjoint (a ++ b) c := by
   rw [List.disjoint_iff_ne] at hac hbc ⊢
   intro x hx y hy
   rcases List.mem_append.mp hx with hxa | hxb
@@ -261,45 +261,45 @@ theorem axialShell_nodup (r : ℕ) : (axialShell r).Nodup := by
   have n3 : b3.Nodup := axialShellBlock3_nodup r
   have n4 : b4.Nodup := axialShellBlock4_nodup r
   have n5 : b5.Nodup := axialShellBlock5_nodup r
-  have d01 : Disjoint b0 b1 := block01_disjoint r
-  have d02 : Disjoint b0 b2 := block02_disjoint r
-  have d03 : Disjoint b0 b3 := block03_disjoint r
-  have d04 : Disjoint b0 b4 := block04_disjoint r
-  have d05 : Disjoint b0 b5 := block05_disjoint r
-  have d12 : Disjoint b1 b2 := block12_disjoint r
-  have d13 : Disjoint b1 b3 := block13_disjoint r
-  have d14 : Disjoint b1 b4 := block14_disjoint r
-  have d15 : Disjoint b1 b5 := block15_disjoint r
-  have d23 : Disjoint b2 b3 := block23_disjoint r
-  have d24 : Disjoint b2 b4 := block24_disjoint r
-  have d25 : Disjoint b2 b5 := block25_disjoint r
-  have d34 : Disjoint b3 b4 := block34_disjoint r
-  have d35 : Disjoint b3 b5 := block35_disjoint r
-  have d45 : Disjoint b4 b5 := block45_disjoint r
+  have d01 : List.Disjoint b0 b1 := block01_disjoint r
+  have d02 : List.Disjoint b0 b2 := block02_disjoint r
+  have d03 : List.Disjoint b0 b3 := block03_disjoint r
+  have d04 : List.Disjoint b0 b4 := block04_disjoint r
+  have d05 : List.Disjoint b0 b5 := block05_disjoint r
+  have d12 : List.Disjoint b1 b2 := block12_disjoint r
+  have d13 : List.Disjoint b1 b3 := block13_disjoint r
+  have d14 : List.Disjoint b1 b4 := block14_disjoint r
+  have d15 : List.Disjoint b1 b5 := block15_disjoint r
+  have d23 : List.Disjoint b2 b3 := block23_disjoint r
+  have d24 : List.Disjoint b2 b4 := block24_disjoint r
+  have d25 : List.Disjoint b2 b5 := block25_disjoint r
+  have d34 : List.Disjoint b3 b4 := block34_disjoint r
+  have d35 : List.Disjoint b3 b5 := block35_disjoint r
+  have d45 : List.Disjoint b4 b5 := block45_disjoint r
   have n01 : (b0 ++ b1).Nodup := n0.append n1 d01
-  have d01_2 : Disjoint (b0 ++ b1) b2 :=
+  have d01_2 : List.Disjoint (b0 ++ b1) b2 :=
     disjoint_append_left_of_pair d02 d12
   have n012 : ((b0 ++ b1) ++ b2).Nodup := n01.append n2 d01_2
-  have d01_3 : Disjoint (b0 ++ b1) b3 :=
+  have d01_3 : List.Disjoint (b0 ++ b1) b3 :=
     disjoint_append_left_of_pair d03 d13
-  have d012_3 : Disjoint ((b0 ++ b1) ++ b2) b3 :=
+  have d012_3 : List.Disjoint ((b0 ++ b1) ++ b2) b3 :=
     disjoint_append_left_of_pair d01_3 d23
   have n0123 : (((b0 ++ b1) ++ b2) ++ b3).Nodup := n012.append n3 d012_3
-  have d01_4 : Disjoint (b0 ++ b1) b4 :=
+  have d01_4 : List.Disjoint (b0 ++ b1) b4 :=
     disjoint_append_left_of_pair d04 d14
-  have d012_4 : Disjoint ((b0 ++ b1) ++ b2) b4 :=
+  have d012_4 : List.Disjoint ((b0 ++ b1) ++ b2) b4 :=
     disjoint_append_left_of_pair d01_4 d24
-  have d0123_4 : Disjoint (((b0 ++ b1) ++ b2) ++ b3) b4 :=
+  have d0123_4 : List.Disjoint (((b0 ++ b1) ++ b2) ++ b3) b4 :=
     disjoint_append_left_of_pair d012_4 d34
   have n01234 : ((((b0 ++ b1) ++ b2) ++ b3) ++ b4).Nodup :=
     n0123.append n4 d0123_4
-  have d01_5 : Disjoint (b0 ++ b1) b5 :=
+  have d01_5 : List.Disjoint (b0 ++ b1) b5 :=
     disjoint_append_left_of_pair d05 d15
-  have d012_5 : Disjoint ((b0 ++ b1) ++ b2) b5 :=
+  have d012_5 : List.Disjoint ((b0 ++ b1) ++ b2) b5 :=
     disjoint_append_left_of_pair d01_5 d25
-  have d0123_5 : Disjoint (((b0 ++ b1) ++ b2) ++ b3) b5 :=
+  have d0123_5 : List.Disjoint (((b0 ++ b1) ++ b2) ++ b3) b5 :=
     disjoint_append_left_of_pair d012_5 d35
-  have d01234_5 : Disjoint ((((b0 ++ b1) ++ b2) ++ b3) ++ b4) b5 :=
+  have d01234_5 : List.Disjoint ((((b0 ++ b1) ++ b2) ++ b3) ++ b4) b5 :=
     disjoint_append_left_of_pair d0123_5 d45
   have hall : (((((b0 ++ b1) ++ b2) ++ b3) ++ b4) ++ b5).Nodup :=
     n01234.append n5 d01234_5
