@@ -16,6 +16,9 @@ import PlanarContactNumber
 #print axioms PlanarContactNumber.contactPairs_triangularPoint_comp
 #print axioms PlanarContactNumber.contactNumber_triangularPoint_comp
 #print axioms PlanarContactNumber.realizedContactNumber_of_axialEnumeration
+#print axioms PlanarContactNumber.realizedContactNumber_of_axialList
+#print axioms PlanarContactNumber.axialContactPairs_eq_biUnion_fibers
+#print axioms PlanarContactNumber.axialContactNumber_eq_sum_fibers
 #print axioms PlanarContactNumber.axialShell_length
 #print axioms PlanarContactNumber.axialShellBlock0_nodup
 #print axioms PlanarContactNumber.axialShellBlock1_nodup
