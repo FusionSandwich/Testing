@@ -26,7 +26,8 @@ private theorem mem_block0_of_sector {r : ℕ} {p : Axial}
     (by omega : p.2 ≤ (r : ℤ))
   have hpoint : axialShellBlock0At r i = p := by
     apply Prod.ext <;> dsimp [axialShellBlock0At] <;> omega
-  simpa [axialShellBlock0] using (show ∃ i : Fin r, axialShellBlock0At r i = p from ⟨i, hpoint⟩)
+  simpa [axialShellBlock0] using
+    (show ∃ i : Fin r, axialShellBlock0At r i = p from ⟨i, hpoint⟩)
 
 private theorem mem_block1_of_sector {r : ℕ} {p : Axial}
     (hx : p.1 < 0) (hy : 0 < p.2) (hys : p.2 = (r : ℤ))
@@ -36,7 +37,8 @@ private theorem mem_block1_of_sector {r : ℕ} {p : Axial}
     (by omega : -p.1 ≤ (r : ℤ))
   have hpoint : axialShellBlock1At r i = p := by
     apply Prod.ext <;> dsimp [axialShellBlock1At] <;> omega
-  simpa [axialShellBlock1] using (show ∃ i : Fin r, axialShellBlock1At r i = p from ⟨i, hpoint⟩)
+  simpa [axialShellBlock1] using
+    (show ∃ i : Fin r, axialShellBlock1At r i = p from ⟨i, hpoint⟩)
 
 private theorem mem_block2_of_sector {r : ℕ} {p : Axial}
     (hx : p.1 = -(r : ℤ)) (hy0 : 0 ≤ p.2) (hyr : p.2 < (r : ℤ)) :
@@ -46,7 +48,8 @@ private theorem mem_block2_of_sector {r : ℕ} {p : Axial}
     (by omega : (r : ℤ) - p.2 ≤ (r : ℤ))
   have hpoint : axialShellBlock2At r i = p := by
     apply Prod.ext <;> dsimp [axialShellBlock2At] <;> omega
-  simpa [axialShellBlock2] using (show ∃ i : Fin r, axialShellBlock2At r i = p from ⟨i, hpoint⟩)
+  simpa [axialShellBlock2] using
+    (show ∃ i : Fin r, axialShellBlock2At r i = p from ⟨i, hpoint⟩)
 
 private theorem mem_block3_of_sector {r : ℕ} {p : Axial}
     (hx : p.1 ≤ 0) (hy : p.2 < 0) (hs : p.1 + p.2 = -(r : ℤ)) :
@@ -55,7 +58,8 @@ private theorem mem_block3_of_sector {r : ℕ} {p : Axial}
     (by omega : -p.2 ≤ (r : ℤ))
   have hpoint : axialShellBlock3At r i = p := by
     apply Prod.ext <;> dsimp [axialShellBlock3At] <;> omega
-  simpa [axialShellBlock3] using (show ∃ i : Fin r, axialShellBlock3At r i = p from ⟨i, hpoint⟩)
+  simpa [axialShellBlock3] using
+    (show ∃ i : Fin r, axialShellBlock3At r i = p from ⟨i, hpoint⟩)
 
 private theorem mem_block4_of_sector {r : ℕ} {p : Axial}
     (hx : 0 < p.1) (hxr : p.1 ≤ (r : ℤ)) (hy : p.2 = -(r : ℤ)) :
@@ -63,7 +67,8 @@ private theorem mem_block4_of_sector {r : ℕ} {p : Axial}
   obtain ⟨i, hi⟩ := exists_fin_with_cast_succ (by omega : 1 ≤ p.1) hxr
   have hpoint : axialShellBlock4At r i = p := by
     apply Prod.ext <;> dsimp [axialShellBlock4At] <;> omega
-  simpa [axialShellBlock4] using (show ∃ i : Fin r, axialShellBlock4At r i = p from ⟨i, hpoint⟩)
+  simpa [axialShellBlock4] using
+    (show ∃ i : Fin r, axialShellBlock4At r i = p from ⟨i, hpoint⟩)
 
 private theorem mem_block5_of_sector {r : ℕ} {p : Axial}
     (hx : p.1 = (r : ℤ)) (hy : p.2 ≤ 0) (hyr : -(r : ℤ) < p.2) :
@@ -73,7 +78,8 @@ private theorem mem_block5_of_sector {r : ℕ} {p : Axial}
     (by omega : (r : ℤ) + p.2 ≤ (r : ℤ))
   have hpoint : axialShellBlock5At r i = p := by
     apply Prod.ext <;> dsimp [axialShellBlock5At] <;> omega
-  simpa [axialShellBlock5] using (show ∃ i : Fin r, axialShellBlock5At r i = p from ⟨i, hpoint⟩)
+  simpa [axialShellBlock5] using
+    (show ∃ i : Fin r, axialShellBlock5At r i = p from ⟨i, hpoint⟩)
 
 /-- Every integer point of positive exact hexagonal radius `r` occurs in the
 explicit six-block shell listing. -/
@@ -99,10 +105,9 @@ theorem mem_axialShell_of_axialHexRadius_eq {r : ℕ} (hr : 0 < r) {p : Axial}
         have hxR : x = (r : ℤ) := by
           subst y
           simpa [axialHexRadius, abs_of_nonneg hx0, max_eq_right hx0] using hR
-        have hxpos : 0 < x := by omega
         have hmem5 := mem_block5_of_sector (r := r) (p := (x, 0)) hxR
           (by omega : (0 : ℤ) ≤ 0) (by omega : -(r : ℤ) < 0)
-        simp [axialShell, hmem5]
+        simpa [hyz, axialShell, hmem5]
     · have hx : x < 0 := by omega
       by_cases hs0 : 0 ≤ x + y
       · have hy : 0 < y := by omega
@@ -161,7 +166,8 @@ theorem mem_axialShell_of_axialHexRadius_eq {r : ℕ} (hr : 0 < r) {p : Axial}
           rw [max_eq_left hinner] at hR
           exact hR
         have hyr : -(r : ℤ) < y := by omega
-        have hmem5 := mem_block5_of_sector (r := r) (p := (x, y)) hxR (by omega : y ≤ 0) hyr
+        have hmem5 := mem_block5_of_sector (r := r) (p := (x, y)) hxR
+          (by omega : y ≤ 0) hyr
         simp [axialShell, hmem5]
 
 /-- Exact membership characterization of a positive axial shell. -/
