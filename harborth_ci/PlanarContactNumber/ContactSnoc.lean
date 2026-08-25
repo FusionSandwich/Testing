@@ -19,8 +19,11 @@ private theorem earlierAxialNeighbors_snoc_castSucc {n : ℕ}
   classical
   ext i
   refine Fin.lastCases ?_ (fun k => ?_) i
-  · simp [earlierAxialNeighbors]
-    omega
+  · have hnot : ¬ (Fin.last n < j.castSucc) := by
+      intro hlt
+      change n < j.1 at hlt
+      exact (Nat.not_lt_of_ge (Nat.le_of_lt j.isLt)) hlt
+    simp [earlierAxialNeighbors, hnot]
   · simp [earlierAxialNeighbors]
 
 private theorem earlierAxialNeighbors_snoc_last {n : ℕ}
