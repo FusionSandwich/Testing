@@ -60,6 +60,72 @@ jobs:
             julia --version
             uname -a
           } | tee "qualification-output/environment-julia-${{ matrix.julia-version }}.txt"
+          cp Radiant.jl/test/runtests.jl \
+            "qualification-output/runtests-source-julia-${{ matrix.julia-version }}.jl"
+
+      - name: Audit two-positional-argument range calls
+        if: ${{ matrix.julia-version == '1.6.7' }}
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          root = Path("Radiant.jl")
+          findings = []
+          pattern = re.compile(r"\brange\s*\(")
+
+          for path in sorted(root.rglob("*.jl")):
+              text = path.read_text(encoding="utf-8")
+              for match in pattern.finditer(text):
+                  opening = text.find("(", match.start())
+                  depth = 0
+                  commas = 0
+                  semicolons = 0
+                  quote = None
+                  escaped = False
+                  end = None
+                  i = opening
+                  while i < len(text):
+                      char = text[i]
+                      if quote is not None:
+                          if escaped:
+                              escaped = False
+                          elif char == "\\":
+                              escaped = True
+                          elif text.startswith(quote, i):
+                              i += len(quote) - 1
+                              quote = None
+                      else:
+                          if text.startswith('"""', i) or text.startswith("'''", i):
+                              quote = text[i:i+3]
+                              i += 2
+                          elif char in ('"', "'"):
+                              quote = char
+                          elif char == "(":
+                              depth += 1
+                          elif char == ")":
+                              depth -= 1
+                              if depth == 0:
+                                  end = i + 1
+                                  break
+                          elif depth == 1 and char == ",":
+                              commas += 1
+                          elif depth == 1 and char == ";":
+                              semicolons += 1
+                      i += 1
+                  if end is None or commas != 1 or semicolons != 0:
+                      continue
+                  line = text.count("\n", 0, match.start()) + 1
+                  snippet = " ".join(text[match.start():end].split())
+                  findings.append(f"{path.relative_to(root)}:{line}: {snippet}")
+
+          output = Path("qualification-output/julia-1.6-two-positional-range-audit.txt")
+          output.write_text("\n".join(findings) + ("\n" if findings else ""), encoding="utf-8")
+          print(f"two-positional range calls: {len(findings)}")
+          for finding in findings:
+              print(finding)
+          PY
 
       - name: Instantiate and precompile
         shell: bash
