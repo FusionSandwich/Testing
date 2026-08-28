@@ -1,0 +1,85 @@
+name: Radiant HTS qualification
+
+on:
+  push:
+    branches:
+      - codex/radiant-qualification-runner-20260828
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: radiant-hts-qualification-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  julia-test:
+    name: Julia ${{ matrix.julia-version }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        julia-version:
+          - '1.6.7'
+          - '1.10.12'
+
+    steps:
+      - name: Check out qualification harness
+        uses: actions/checkout@v4
+
+      - name: Check out Radiant HTS branch
+        uses: actions/checkout@v4
+        with:
+          repository: FusionSandwich/Radiant.jl
+          ref: codex/radianthts-core-foundation-20260828
+          path: Radiant.jl
+          fetch-depth: 1
+
+      - name: Set up Julia
+        uses: julia-actions/setup-julia@v3
+        with:
+          version: ${{ matrix.julia-version }}
+          arch: x64
+
+      - name: Cache Julia packages
+        uses: julia-actions/cache@v3
+
+      - name: Record environment
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p qualification-output
+          {
+            echo "runner_repository=${GITHUB_REPOSITORY}"
+            echo "runner_ref=${GITHUB_REF}"
+            echo "radiant_repository=FusionSandwich/Radiant.jl"
+            echo "radiant_ref=codex/radianthts-core-foundation-20260828"
+            echo "radiant_sha=$(git -C Radiant.jl rev-parse HEAD)"
+            julia --version
+            uname -a
+          } | tee "qualification-output/environment-julia-${{ matrix.julia-version }}.txt"
+
+      - name: Instantiate and precompile
+        shell: bash
+        run: |
+          set -o pipefail
+          julia --project=Radiant.jl -e 'using Pkg; Pkg.instantiate(); Pkg.precompile()' \
+            2>&1 | tee "qualification-output/precompile-julia-${{ matrix.julia-version }}.log"
+
+      - name: Run package tests
+        shell: bash
+        run: |
+          set -o pipefail
+          julia --project=Radiant.jl -e 'using Pkg; Pkg.test(; coverage=true)' \
+            2>&1 | tee "qualification-output/tests-julia-${{ matrix.julia-version }}.log"
+
+      - name: Upload qualification logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: radiant-hts-julia-${{ matrix.julia-version }}
+          path: qualification-output
+          if-no-files-found: warn
+          retention-days: 30
