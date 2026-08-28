@@ -62,6 +62,8 @@ jobs:
           } | tee "qualification-output/environment-julia-${{ matrix.julia-version }}.txt"
           cp Radiant.jl/test/runtests.jl \
             "qualification-output/runtests-source-julia-${{ matrix.julia-version }}.jl"
+          cp Radiant.jl/qualification/radiant_em_qualification.jl \
+            "qualification-output/radiant-em-qualification-source-julia-${{ matrix.julia-version }}.jl"
 
       - name: Audit two-positional-argument range calls
         if: ${{ matrix.julia-version == '1.6.7' }}
@@ -74,7 +76,6 @@ jobs:
           root = Path("Radiant.jl")
           findings = []
           pattern = re.compile(r"\brange\s*\(")
-
           for path in sorted(root.rglob("*.jl")):
               text = path.read_text(encoding="utf-8")
               for match in pattern.finditer(text):
@@ -123,8 +124,6 @@ jobs:
           output = Path("qualification-output/julia-1.6-two-positional-range-audit.txt")
           output.write_text("\n".join(findings) + ("\n" if findings else ""), encoding="utf-8")
           print(f"two-positional range calls: {len(findings)}")
-          for finding in findings:
-              print(finding)
           PY
 
       - name: Instantiate and precompile
@@ -140,6 +139,13 @@ jobs:
           set -o pipefail
           julia --project=Radiant.jl -e 'using Pkg; Pkg.test(; coverage=true)' \
             2>&1 | tee "qualification-output/tests-julia-${{ matrix.julia-version }}.log"
+
+      - name: Run executed EM and OpenSn replay qualification
+        shell: bash
+        run: |
+          set -o pipefail
+          julia --project=Radiant.jl Radiant.jl/qualification/radiant_em_qualification.jl \
+            2>&1 | tee "qualification-output/em-coupling-julia-${{ matrix.julia-version }}.log"
 
       - name: Upload qualification logs
         if: always()
